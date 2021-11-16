@@ -12,7 +12,7 @@ import logging.config
 import os
 import sys
 
-from pythonjsonlogger import jsonlogger
+# from pythonjsonlogger import jsonlogger
 
 from fit_tool.fit_file import FitFile
 
@@ -53,31 +53,24 @@ def main():
     args = parse_args()
 
     logger = logging.getLogger('fit_tool')
+    logger.handlers = []
+    logger.addHandler(logging.NullHandler())
+    logger.propagate = False
 
-    # output filename
+    # logging filename
     if args.log:
-        handler = logging.FileHandler(args.output)
-        formatter = jsonlogger.JsonFormatter(
-            '%(asctime) %(levelname) %(message)')
+        handler = logging.FileHandler(args.log)
+        formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
     # log to screen
     if args.verbose:
         handler = logging.StreamHandler()
-        formatter = jsonlogger.JsonFormatter(
-            '%(asctime) %(levelname) %(message)')
-        handler.setFormatter(formatter)
         logger.addHandler(handler)
 
-        print_file = sys.stdout
-    else:
-        print_file = open(os.devnull, 'w')
-
     logger.setLevel(logging.DEBUG)
-    print('Loading fit file {}...'.format(
-        args.fitfile.name), file=print_file)
-
+    logger.info('Loading fit file {}...'.format(args.fitfile.name))
     fit_filename = args.fitfile.name
 
     # if args.validate:
@@ -104,8 +97,8 @@ def main():
     basename_noext, out_ext = os.path.splitext(os.path.basename(fit_filename))
     output_filename = args.output if args.output else basename_noext + '.' + format_type
 
-    print('Exporting fit file to {} as format {}...'.format(
-        output_filename, format_type), file=print_file)
+    logger.info('Exporting fit file to {} as format {}...'.format(
+        output_filename, format_type))
 
     if format_type == 'csv':
         # fit_file.to_csv(output_filename, include=args.include,

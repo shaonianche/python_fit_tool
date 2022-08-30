@@ -171,6 +171,9 @@ class DefinitionMessage(Message):
     @classmethod
     def from_data_message(cls, data_message, min_string_size: int = 0):
 
+        if data_message.definition_message:
+            return data_message.definition_message
+
         field_definitions = []
 
         for field in data_message.fields:

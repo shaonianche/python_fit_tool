@@ -176,7 +176,8 @@ def main():
     profile.types_by_name.pop('bool')
     profile.types_by_name.pop('fit_base_type')
 
-    profile_types = {convert_type_name2(k) for k in profile.types_by_name.keys()}
+    profile_types = list({convert_type_name2(k) for k in profile.types_by_name.keys()})
+    profile_types.sort()
 
     profile.type_class_name_by_name = {k: convert_type_name(k) for k in profile.types_by_name.keys()}
 

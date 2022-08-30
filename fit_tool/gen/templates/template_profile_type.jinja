@@ -16,7 +16,7 @@ class ProfileType(Enum):
 class {{profile.type_class_name_by_name[type_name]}}(Enum):
 
     {%- for key, value in profile.types_by_name[type_name].values_by_name.items() if key != 'forecast' %}
-    {{key | e}} = {{loop.index - 1}}
+    {{key | e}} = {{ value|e }}
     {%- endfor %}
 
 

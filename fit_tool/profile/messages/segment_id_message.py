@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,34 +36,34 @@ class SegmentIdMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             SegmentIdNameField(
-                                 size=self.__get_field_size(definition_message, SegmentIdNameField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdUuidField(
-                                 size=self.__get_field_size(definition_message, SegmentIdUuidField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdSportField(
-                                 size=self.__get_field_size(definition_message, SegmentIdSportField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdEnabledField(
-                                 size=self.__get_field_size(definition_message, SegmentIdEnabledField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdUserProfilePrimaryKeyField(
-                                 size=self.__get_field_size(definition_message, SegmentIdUserProfilePrimaryKeyField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdDeviceIdField(
-                                 size=self.__get_field_size(definition_message, SegmentIdDeviceIdField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdDefaultRaceLeaderField(
-                                 size=self.__get_field_size(definition_message, SegmentIdDefaultRaceLeaderField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdDeleteStatusField(
-                                 size=self.__get_field_size(definition_message, SegmentIdDeleteStatusField.ID),
-                                 growable=definition_message is None),
-                             SegmentIdSelectionTypeField(
-                                 size=self.__get_field_size(definition_message, SegmentIdSelectionTypeField.ID),
-                                 growable=definition_message is None)
-                         ])
+        SegmentIdNameField(
+            size=self.__get_field_size(definition_message, SegmentIdNameField.ID),
+            growable=definition_message is None), 
+        SegmentIdUuidField(
+            size=self.__get_field_size(definition_message, SegmentIdUuidField.ID),
+            growable=definition_message is None), 
+        SegmentIdSportField(
+            size=self.__get_field_size(definition_message, SegmentIdSportField.ID),
+            growable=definition_message is None), 
+        SegmentIdEnabledField(
+            size=self.__get_field_size(definition_message, SegmentIdEnabledField.ID),
+            growable=definition_message is None), 
+        SegmentIdUserProfilePrimaryKeyField(
+            size=self.__get_field_size(definition_message, SegmentIdUserProfilePrimaryKeyField.ID),
+            growable=definition_message is None), 
+        SegmentIdDeviceIdField(
+            size=self.__get_field_size(definition_message, SegmentIdDeviceIdField.ID),
+            growable=definition_message is None), 
+        SegmentIdDefaultRaceLeaderField(
+            size=self.__get_field_size(definition_message, SegmentIdDefaultRaceLeaderField.ID),
+            growable=definition_message is None), 
+        SegmentIdDeleteStatusField(
+            size=self.__get_field_size(definition_message, SegmentIdDeleteStatusField.ID),
+            growable=definition_message is None), 
+        SegmentIdSelectionTypeField(
+            size=self.__get_field_size(definition_message, SegmentIdSelectionTypeField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -73,6 +74,9 @@ class SegmentIdMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def segment_id_name(self) -> Optional[str]:
         field = self.get_field(SegmentIdNameField.ID)
@@ -81,6 +85,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @segment_id_name.setter
     def segment_id_name(self, value: str):
@@ -93,6 +99,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def uuid(self) -> Optional[str]:
         field = self.get_field(SegmentIdUuidField.ID)
@@ -101,6 +109,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @uuid.setter
     def uuid(self, value: str):
@@ -113,6 +123,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(SegmentIdSportField.ID)
@@ -121,6 +133,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sport.setter
     def sport(self, value: Sport):
@@ -133,6 +147,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enabled(self) -> Optional[bool]:
         field = self.get_field(SegmentIdEnabledField.ID)
@@ -141,6 +157,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enabled.setter
     def enabled(self, value: bool):
@@ -153,6 +171,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_profile_primary_key(self) -> Optional[int]:
         field = self.get_field(SegmentIdUserProfilePrimaryKeyField.ID)
@@ -161,6 +181,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_profile_primary_key.setter
     def user_profile_primary_key(self, value: int):
@@ -173,6 +195,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def device_id(self) -> Optional[int]:
         field = self.get_field(SegmentIdDeviceIdField.ID)
@@ -181,6 +205,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @device_id.setter
     def device_id(self, value: int):
@@ -193,6 +219,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def default_race_leader(self) -> Optional[int]:
         field = self.get_field(SegmentIdDefaultRaceLeaderField.ID)
@@ -201,6 +229,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @default_race_leader.setter
     def default_race_leader(self, value: int):
@@ -213,6 +243,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def delete_status(self) -> Optional[SegmentDeleteStatus]:
         field = self.get_field(SegmentIdDeleteStatusField.ID)
@@ -221,6 +253,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @delete_status.setter
     def delete_status(self, value: SegmentDeleteStatus):
@@ -233,6 +267,8 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def selection_type(self) -> Optional[SegmentSelectionType]:
         field = self.get_field(SegmentIdSelectionTypeField.ID)
@@ -241,6 +277,8 @@ class SegmentIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @selection_type.setter
     def selection_type(self, value: SegmentSelectionType):
@@ -253,6 +291,11 @@ class SegmentIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class SegmentIdNameField(Field):
     ID = 0
@@ -262,12 +305,12 @@ class SegmentIdNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -279,12 +322,12 @@ class SegmentIdUuidField(Field):
             name='uuid',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -296,12 +339,12 @@ class SegmentIdSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -313,12 +356,12 @@ class SegmentIdEnabledField(Field):
             name='enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -330,12 +373,12 @@ class SegmentIdUserProfilePrimaryKeyField(Field):
             name='user_profile_primary_key',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -347,12 +390,12 @@ class SegmentIdDeviceIdField(Field):
             name='device_id',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -364,12 +407,12 @@ class SegmentIdDefaultRaceLeaderField(Field):
             name='default_race_leader',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -381,12 +424,12 @@ class SegmentIdDeleteStatusField(Field):
             name='delete_status',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -398,10 +441,10 @@ class SegmentIdSelectionTypeField(Field):
             name='selection_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

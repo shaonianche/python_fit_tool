@@ -170,6 +170,7 @@ class ProfileType(Enum):
     WORKOUT_STEP_TARGET = 162
 
 
+
 class FileType(Enum):
     DEVICE = 1
     SETTINGS = 2
@@ -1972,6 +1973,8 @@ class WeatherSevereType(Enum):
     SPECIAL_WEATHER = 84
 
 
+
+
 class StrokeType(Enum):
     NO_EVENT = 0
     OTHER = 1
@@ -2061,6 +2064,7 @@ class SourceType(Enum):
     BLUETOOTH_LOW_ENERGY = 3
     WIFI = 4
     LOCAL = 5
+
 
 
 class DisplayOrientation(Enum):

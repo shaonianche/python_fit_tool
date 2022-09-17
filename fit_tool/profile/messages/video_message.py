@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class VideoMessage(DataMessage):
@@ -34,16 +36,16 @@ class VideoMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             VideoUrlField(
-                                 size=self.__get_field_size(definition_message, VideoUrlField.ID),
-                                 growable=definition_message is None),
-                             VideoHostingProviderField(
-                                 size=self.__get_field_size(definition_message, VideoHostingProviderField.ID),
-                                 growable=definition_message is None),
-                             VideoDurationField(
-                                 size=self.__get_field_size(definition_message, VideoDurationField.ID),
-                                 growable=definition_message is None)
-                         ])
+        VideoUrlField(
+            size=self.__get_field_size(definition_message, VideoUrlField.ID),
+            growable=definition_message is None), 
+        VideoHostingProviderField(
+            size=self.__get_field_size(definition_message, VideoHostingProviderField.ID),
+            growable=definition_message is None), 
+        VideoDurationField(
+            size=self.__get_field_size(definition_message, VideoDurationField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -54,6 +56,9 @@ class VideoMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def url(self) -> Optional[str]:
         field = self.get_field(VideoUrlField.ID)
@@ -62,6 +67,8 @@ class VideoMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @url.setter
     def url(self, value: str):
@@ -74,6 +81,8 @@ class VideoMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def hosting_provider(self) -> Optional[str]:
         field = self.get_field(VideoHostingProviderField.ID)
@@ -82,6 +91,8 @@ class VideoMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @hosting_provider.setter
     def hosting_provider(self, value: str):
@@ -94,6 +105,8 @@ class VideoMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def duration(self) -> Optional[int]:
         field = self.get_field(VideoDurationField.ID)
@@ -102,6 +115,8 @@ class VideoMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @duration.setter
     def duration(self, value: int):
@@ -114,6 +129,11 @@ class VideoMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class VideoUrlField(Field):
     ID = 0
@@ -123,12 +143,12 @@ class VideoUrlField(Field):
             name='url',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -140,12 +160,12 @@ class VideoHostingProviderField(Field):
             name='hosting_provider',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -157,12 +177,12 @@ class VideoDurationField(Field):
             name='duration',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='ms',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'ms',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )

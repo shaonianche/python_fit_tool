@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class LapMessage(DataMessage):
@@ -36,358 +36,355 @@ class LapMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             LapEventField(
-                                 size=self.__get_field_size(definition_message, LapEventField.ID),
-                                 growable=definition_message is None),
-                             LapEventTypeField(
-                                 size=self.__get_field_size(definition_message, LapEventTypeField.ID),
-                                 growable=definition_message is None),
-                             LapStartTimeField(
-                                 size=self.__get_field_size(definition_message, LapStartTimeField.ID),
-                                 growable=definition_message is None),
-                             LapStartPositionLatField(
-                                 size=self.__get_field_size(definition_message, LapStartPositionLatField.ID),
-                                 growable=definition_message is None),
-                             LapStartPositionLongField(
-                                 size=self.__get_field_size(definition_message, LapStartPositionLongField.ID),
-                                 growable=definition_message is None),
-                             LapEndPositionLatField(
-                                 size=self.__get_field_size(definition_message, LapEndPositionLatField.ID),
-                                 growable=definition_message is None),
-                             LapEndPositionLongField(
-                                 size=self.__get_field_size(definition_message, LapEndPositionLongField.ID),
-                                 growable=definition_message is None),
-                             LapTotalElapsedTimeField(
-                                 size=self.__get_field_size(definition_message, LapTotalElapsedTimeField.ID),
-                                 growable=definition_message is None),
-                             LapTotalTimerTimeField(
-                                 size=self.__get_field_size(definition_message, LapTotalTimerTimeField.ID),
-                                 growable=definition_message is None),
-                             LapTotalDistanceField(
-                                 size=self.__get_field_size(definition_message, LapTotalDistanceField.ID),
-                                 growable=definition_message is None),
-                             LapTotalCyclesField(
-                                 size=self.__get_field_size(definition_message, LapTotalCyclesField.ID),
-                                 growable=definition_message is None),
-                             LapTotalCaloriesField(
-                                 size=self.__get_field_size(definition_message, LapTotalCaloriesField.ID),
-                                 growable=definition_message is None),
-                             LapTotalFatCaloriesField(
-                                 size=self.__get_field_size(definition_message, LapTotalFatCaloriesField.ID),
-                                 growable=definition_message is None),
-                             LapAvgSpeedField(
-                                 size=self.__get_field_size(definition_message, LapAvgSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapMaxSpeedField(
-                                 size=self.__get_field_size(definition_message, LapMaxSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapAvgHeartRateField(
-                                 size=self.__get_field_size(definition_message, LapAvgHeartRateField.ID),
-                                 growable=definition_message is None),
-                             LapMaxHeartRateField(
-                                 size=self.__get_field_size(definition_message, LapMaxHeartRateField.ID),
-                                 growable=definition_message is None),
-                             LapAvgCadenceField(
-                                 size=self.__get_field_size(definition_message, LapAvgCadenceField.ID),
-                                 growable=definition_message is None),
-                             LapMaxCadenceField(
-                                 size=self.__get_field_size(definition_message, LapMaxCadenceField.ID),
-                                 growable=definition_message is None),
-                             LapAvgPowerField(
-                                 size=self.__get_field_size(definition_message, LapAvgPowerField.ID),
-                                 growable=definition_message is None),
-                             LapMaxPowerField(
-                                 size=self.__get_field_size(definition_message, LapMaxPowerField.ID),
-                                 growable=definition_message is None),
-                             LapTotalAscentField(
-                                 size=self.__get_field_size(definition_message, LapTotalAscentField.ID),
-                                 growable=definition_message is None),
-                             LapTotalDescentField(
-                                 size=self.__get_field_size(definition_message, LapTotalDescentField.ID),
-                                 growable=definition_message is None),
-                             LapIntensityField(
-                                 size=self.__get_field_size(definition_message, LapIntensityField.ID),
-                                 growable=definition_message is None),
-                             LapLapTriggerField(
-                                 size=self.__get_field_size(definition_message, LapLapTriggerField.ID),
-                                 growable=definition_message is None),
-                             LapSportField(
-                                 size=self.__get_field_size(definition_message, LapSportField.ID),
-                                 growable=definition_message is None),
-                             LapEventGroupField(
-                                 size=self.__get_field_size(definition_message, LapEventGroupField.ID),
-                                 growable=definition_message is None),
-                             LapNumLengthsField(
-                                 size=self.__get_field_size(definition_message, LapNumLengthsField.ID),
-                                 growable=definition_message is None),
-                             LapNormalizedPowerField(
-                                 size=self.__get_field_size(definition_message, LapNormalizedPowerField.ID),
-                                 growable=definition_message is None),
-                             LapLeftRightBalanceField(
-                                 size=self.__get_field_size(definition_message, LapLeftRightBalanceField.ID),
-                                 growable=definition_message is None),
-                             LapFirstLengthIndexField(
-                                 size=self.__get_field_size(definition_message, LapFirstLengthIndexField.ID),
-                                 growable=definition_message is None),
-                             LapAvgStrokeDistanceField(
-                                 size=self.__get_field_size(definition_message, LapAvgStrokeDistanceField.ID),
-                                 growable=definition_message is None),
-                             LapSwimStrokeField(
-                                 size=self.__get_field_size(definition_message, LapSwimStrokeField.ID),
-                                 growable=definition_message is None),
-                             LapSubSportField(
-                                 size=self.__get_field_size(definition_message, LapSubSportField.ID),
-                                 growable=definition_message is None),
-                             LapNumActiveLengthsField(
-                                 size=self.__get_field_size(definition_message, LapNumActiveLengthsField.ID),
-                                 growable=definition_message is None),
-                             LapTotalWorkField(
-                                 size=self.__get_field_size(definition_message, LapTotalWorkField.ID),
-                                 growable=definition_message is None),
-                             LapAvgAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapAvgAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapMaxAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapMaxAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapGpsAccuracyField(
-                                 size=self.__get_field_size(definition_message, LapGpsAccuracyField.ID),
-                                 growable=definition_message is None),
-                             LapAvgGradeField(
-                                 size=self.__get_field_size(definition_message, LapAvgGradeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgPosGradeField(
-                                 size=self.__get_field_size(definition_message, LapAvgPosGradeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgNegGradeField(
-                                 size=self.__get_field_size(definition_message, LapAvgNegGradeField.ID),
-                                 growable=definition_message is None),
-                             LapMaxPosGradeField(
-                                 size=self.__get_field_size(definition_message, LapMaxPosGradeField.ID),
-                                 growable=definition_message is None),
-                             LapMaxNegGradeField(
-                                 size=self.__get_field_size(definition_message, LapMaxNegGradeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgTemperatureField(
-                                 size=self.__get_field_size(definition_message, LapAvgTemperatureField.ID),
-                                 growable=definition_message is None),
-                             LapMaxTemperatureField(
-                                 size=self.__get_field_size(definition_message, LapMaxTemperatureField.ID),
-                                 growable=definition_message is None),
-                             LapTotalMovingTimeField(
-                                 size=self.__get_field_size(definition_message, LapTotalMovingTimeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgPosVerticalSpeedField(
-                                 size=self.__get_field_size(definition_message, LapAvgPosVerticalSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapAvgNegVerticalSpeedField(
-                                 size=self.__get_field_size(definition_message, LapAvgNegVerticalSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapMaxPosVerticalSpeedField(
-                                 size=self.__get_field_size(definition_message, LapMaxPosVerticalSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapMaxNegVerticalSpeedField(
-                                 size=self.__get_field_size(definition_message, LapMaxNegVerticalSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapTimeInHrZoneField(
-                                 size=self.__get_field_size(definition_message, LapTimeInHrZoneField.ID),
-                                 growable=definition_message is None),
-                             LapTimeInSpeedZoneField(
-                                 size=self.__get_field_size(definition_message, LapTimeInSpeedZoneField.ID),
-                                 growable=definition_message is None),
-                             LapTimeInCadenceZoneField(
-                                 size=self.__get_field_size(definition_message, LapTimeInCadenceZoneField.ID),
-                                 growable=definition_message is None),
-                             LapTimeInPowerZoneField(
-                                 size=self.__get_field_size(definition_message, LapTimeInPowerZoneField.ID),
-                                 growable=definition_message is None),
-                             LapRepetitionNumField(
-                                 size=self.__get_field_size(definition_message, LapRepetitionNumField.ID),
-                                 growable=definition_message is None),
-                             LapMinAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapMinAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapMinHeartRateField(
-                                 size=self.__get_field_size(definition_message, LapMinHeartRateField.ID),
-                                 growable=definition_message is None),
-                             LapWorkoutStepIndexField(
-                                 size=self.__get_field_size(definition_message, LapWorkoutStepIndexField.ID),
-                                 growable=definition_message is None),
-                             LapOpponentScoreField(
-                                 size=self.__get_field_size(definition_message, LapOpponentScoreField.ID),
-                                 growable=definition_message is None),
-                             LapStrokeCountField(
-                                 size=self.__get_field_size(definition_message, LapStrokeCountField.ID),
-                                 growable=definition_message is None),
-                             LapZoneCountField(
-                                 size=self.__get_field_size(definition_message, LapZoneCountField.ID),
-                                 growable=definition_message is None),
-                             LapAvgVerticalOscillationField(
-                                 size=self.__get_field_size(definition_message, LapAvgVerticalOscillationField.ID),
-                                 growable=definition_message is None),
-                             LapAvgStanceTimePercentField(
-                                 size=self.__get_field_size(definition_message, LapAvgStanceTimePercentField.ID),
-                                 growable=definition_message is None),
-                             LapAvgStanceTimeField(
-                                 size=self.__get_field_size(definition_message, LapAvgStanceTimeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgFractionalCadenceField(
-                                 size=self.__get_field_size(definition_message, LapAvgFractionalCadenceField.ID),
-                                 growable=definition_message is None),
-                             LapMaxFractionalCadenceField(
-                                 size=self.__get_field_size(definition_message, LapMaxFractionalCadenceField.ID),
-                                 growable=definition_message is None),
-                             LapTotalFractionalCyclesField(
-                                 size=self.__get_field_size(definition_message, LapTotalFractionalCyclesField.ID),
-                                 growable=definition_message is None),
-                             LapPlayerScoreField(
-                                 size=self.__get_field_size(definition_message, LapPlayerScoreField.ID),
-                                 growable=definition_message is None),
-                             LapAvgTotalHemoglobinConcField(
-                                 size=self.__get_field_size(definition_message, LapAvgTotalHemoglobinConcField.ID),
-                                 growable=definition_message is None),
-                             LapMinTotalHemoglobinConcField(
-                                 size=self.__get_field_size(definition_message, LapMinTotalHemoglobinConcField.ID),
-                                 growable=definition_message is None),
-                             LapMaxTotalHemoglobinConcField(
-                                 size=self.__get_field_size(definition_message, LapMaxTotalHemoglobinConcField.ID),
-                                 growable=definition_message is None),
-                             LapAvgSaturatedHemoglobinPercentField(
-                                 size=self.__get_field_size(definition_message,
-                                                            LapAvgSaturatedHemoglobinPercentField.ID),
-                                 growable=definition_message is None),
-                             LapMinSaturatedHemoglobinPercentField(
-                                 size=self.__get_field_size(definition_message,
-                                                            LapMinSaturatedHemoglobinPercentField.ID),
-                                 growable=definition_message is None),
-                             LapMaxSaturatedHemoglobinPercentField(
-                                 size=self.__get_field_size(definition_message,
-                                                            LapMaxSaturatedHemoglobinPercentField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLeftTorqueEffectivenessField(
-                                 size=self.__get_field_size(definition_message, LapAvgLeftTorqueEffectivenessField.ID),
-                                 growable=definition_message is None),
-                             LapAvgRightTorqueEffectivenessField(
-                                 size=self.__get_field_size(definition_message, LapAvgRightTorqueEffectivenessField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLeftPedalSmoothnessField(
-                                 size=self.__get_field_size(definition_message, LapAvgLeftPedalSmoothnessField.ID),
-                                 growable=definition_message is None),
-                             LapAvgRightPedalSmoothnessField(
-                                 size=self.__get_field_size(definition_message, LapAvgRightPedalSmoothnessField.ID),
-                                 growable=definition_message is None),
-                             LapAvgCombinedPedalSmoothnessField(
-                                 size=self.__get_field_size(definition_message, LapAvgCombinedPedalSmoothnessField.ID),
-                                 growable=definition_message is None),
-                             LapTimeStandingField(
-                                 size=self.__get_field_size(definition_message, LapTimeStandingField.ID),
-                                 growable=definition_message is None),
-                             LapStandCountField(
-                                 size=self.__get_field_size(definition_message, LapStandCountField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLeftPcoField(
-                                 size=self.__get_field_size(definition_message, LapAvgLeftPcoField.ID),
-                                 growable=definition_message is None),
-                             LapAvgRightPcoField(
-                                 size=self.__get_field_size(definition_message, LapAvgRightPcoField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLeftPowerPhaseField(
-                                 size=self.__get_field_size(definition_message, LapAvgLeftPowerPhaseField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLeftPowerPhasePeakField(
-                                 size=self.__get_field_size(definition_message, LapAvgLeftPowerPhasePeakField.ID),
-                                 growable=definition_message is None),
-                             LapAvgRightPowerPhaseField(
-                                 size=self.__get_field_size(definition_message, LapAvgRightPowerPhaseField.ID),
-                                 growable=definition_message is None),
-                             LapAvgRightPowerPhasePeakField(
-                                 size=self.__get_field_size(definition_message, LapAvgRightPowerPhasePeakField.ID),
-                                 growable=definition_message is None),
-                             LapAvgPowerPositionField(
-                                 size=self.__get_field_size(definition_message, LapAvgPowerPositionField.ID),
-                                 growable=definition_message is None),
-                             LapMaxPowerPositionField(
-                                 size=self.__get_field_size(definition_message, LapMaxPowerPositionField.ID),
-                                 growable=definition_message is None),
-                             LapAvgCadencePositionField(
-                                 size=self.__get_field_size(definition_message, LapAvgCadencePositionField.ID),
-                                 growable=definition_message is None),
-                             LapMaxCadencePositionField(
-                                 size=self.__get_field_size(definition_message, LapMaxCadencePositionField.ID),
-                                 growable=definition_message is None),
-                             LapEnhancedAvgSpeedField(
-                                 size=self.__get_field_size(definition_message, LapEnhancedAvgSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapEnhancedMaxSpeedField(
-                                 size=self.__get_field_size(definition_message, LapEnhancedMaxSpeedField.ID),
-                                 growable=definition_message is None),
-                             LapEnhancedAvgAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapEnhancedAvgAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapEnhancedMinAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapEnhancedMinAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapEnhancedMaxAltitudeField(
-                                 size=self.__get_field_size(definition_message, LapEnhancedMaxAltitudeField.ID),
-                                 growable=definition_message is None),
-                             LapAvgLevMotorPowerField(
-                                 size=self.__get_field_size(definition_message, LapAvgLevMotorPowerField.ID),
-                                 growable=definition_message is None),
-                             LapMaxLevMotorPowerField(
-                                 size=self.__get_field_size(definition_message, LapMaxLevMotorPowerField.ID),
-                                 growable=definition_message is None),
-                             LapLevBatteryConsumptionField(
-                                 size=self.__get_field_size(definition_message, LapLevBatteryConsumptionField.ID),
-                                 growable=definition_message is None),
-                             LapAvgVerticalRatioField(
-                                 size=self.__get_field_size(definition_message, LapAvgVerticalRatioField.ID),
-                                 growable=definition_message is None),
-                             LapAvgStanceTimeBalanceField(
-                                 size=self.__get_field_size(definition_message, LapAvgStanceTimeBalanceField.ID),
-                                 growable=definition_message is None),
-                             LapAvgStepLengthField(
-                                 size=self.__get_field_size(definition_message, LapAvgStepLengthField.ID),
-                                 growable=definition_message is None),
-                             LapAvgVamField(
-                                 size=self.__get_field_size(definition_message, LapAvgVamField.ID),
-                                 growable=definition_message is None),
-                             LapTotalGritField(
-                                 size=self.__get_field_size(definition_message, LapTotalGritField.ID),
-                                 growable=definition_message is None),
-                             LapTotalFlowField(
-                                 size=self.__get_field_size(definition_message, LapTotalFlowField.ID),
-                                 growable=definition_message is None),
-                             LapJumpCountField(
-                                 size=self.__get_field_size(definition_message, LapJumpCountField.ID),
-                                 growable=definition_message is None),
-                             LapAvgGritField(
-                                 size=self.__get_field_size(definition_message, LapAvgGritField.ID),
-                                 growable=definition_message is None),
-                             LapAvgFlowField(
-                                 size=self.__get_field_size(definition_message, LapAvgFlowField.ID),
-                                 growable=definition_message is None),
-                             LapTotalFractionalAscentField(
-                                 size=self.__get_field_size(definition_message, LapTotalFractionalAscentField.ID),
-                                 growable=definition_message is None),
-                             LapTotalFractionalDescentField(
-                                 size=self.__get_field_size(definition_message, LapTotalFractionalDescentField.ID),
-                                 growable=definition_message is None),
-                             LapAvgCoreTemperatureField(
-                                 size=self.__get_field_size(definition_message, LapAvgCoreTemperatureField.ID),
-                                 growable=definition_message is None),
-                             LapMinCoreTemperatureField(
-                                 size=self.__get_field_size(definition_message, LapMinCoreTemperatureField.ID),
-                                 growable=definition_message is None),
-                             LapMaxCoreTemperatureField(
-                                 size=self.__get_field_size(definition_message, LapMaxCoreTemperatureField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        LapEventField(
+            size=self.__get_field_size(definition_message, LapEventField.ID),
+            growable=definition_message is None), 
+        LapEventTypeField(
+            size=self.__get_field_size(definition_message, LapEventTypeField.ID),
+            growable=definition_message is None), 
+        LapStartTimeField(
+            size=self.__get_field_size(definition_message, LapStartTimeField.ID),
+            growable=definition_message is None), 
+        LapStartPositionLatField(
+            size=self.__get_field_size(definition_message, LapStartPositionLatField.ID),
+            growable=definition_message is None), 
+        LapStartPositionLongField(
+            size=self.__get_field_size(definition_message, LapStartPositionLongField.ID),
+            growable=definition_message is None), 
+        LapEndPositionLatField(
+            size=self.__get_field_size(definition_message, LapEndPositionLatField.ID),
+            growable=definition_message is None), 
+        LapEndPositionLongField(
+            size=self.__get_field_size(definition_message, LapEndPositionLongField.ID),
+            growable=definition_message is None), 
+        LapTotalElapsedTimeField(
+            size=self.__get_field_size(definition_message, LapTotalElapsedTimeField.ID),
+            growable=definition_message is None), 
+        LapTotalTimerTimeField(
+            size=self.__get_field_size(definition_message, LapTotalTimerTimeField.ID),
+            growable=definition_message is None), 
+        LapTotalDistanceField(
+            size=self.__get_field_size(definition_message, LapTotalDistanceField.ID),
+            growable=definition_message is None), 
+        LapTotalCyclesField(
+            size=self.__get_field_size(definition_message, LapTotalCyclesField.ID),
+            growable=definition_message is None), 
+        LapTotalCaloriesField(
+            size=self.__get_field_size(definition_message, LapTotalCaloriesField.ID),
+            growable=definition_message is None), 
+        LapTotalFatCaloriesField(
+            size=self.__get_field_size(definition_message, LapTotalFatCaloriesField.ID),
+            growable=definition_message is None), 
+        LapAvgSpeedField(
+            size=self.__get_field_size(definition_message, LapAvgSpeedField.ID),
+            growable=definition_message is None), 
+        LapMaxSpeedField(
+            size=self.__get_field_size(definition_message, LapMaxSpeedField.ID),
+            growable=definition_message is None), 
+        LapAvgHeartRateField(
+            size=self.__get_field_size(definition_message, LapAvgHeartRateField.ID),
+            growable=definition_message is None), 
+        LapMaxHeartRateField(
+            size=self.__get_field_size(definition_message, LapMaxHeartRateField.ID),
+            growable=definition_message is None), 
+        LapAvgCadenceField(
+            size=self.__get_field_size(definition_message, LapAvgCadenceField.ID),
+            growable=definition_message is None), 
+        LapMaxCadenceField(
+            size=self.__get_field_size(definition_message, LapMaxCadenceField.ID),
+            growable=definition_message is None), 
+        LapAvgPowerField(
+            size=self.__get_field_size(definition_message, LapAvgPowerField.ID),
+            growable=definition_message is None), 
+        LapMaxPowerField(
+            size=self.__get_field_size(definition_message, LapMaxPowerField.ID),
+            growable=definition_message is None), 
+        LapTotalAscentField(
+            size=self.__get_field_size(definition_message, LapTotalAscentField.ID),
+            growable=definition_message is None), 
+        LapTotalDescentField(
+            size=self.__get_field_size(definition_message, LapTotalDescentField.ID),
+            growable=definition_message is None), 
+        LapIntensityField(
+            size=self.__get_field_size(definition_message, LapIntensityField.ID),
+            growable=definition_message is None), 
+        LapLapTriggerField(
+            size=self.__get_field_size(definition_message, LapLapTriggerField.ID),
+            growable=definition_message is None), 
+        LapSportField(
+            size=self.__get_field_size(definition_message, LapSportField.ID),
+            growable=definition_message is None), 
+        LapEventGroupField(
+            size=self.__get_field_size(definition_message, LapEventGroupField.ID),
+            growable=definition_message is None), 
+        LapNumLengthsField(
+            size=self.__get_field_size(definition_message, LapNumLengthsField.ID),
+            growable=definition_message is None), 
+        LapNormalizedPowerField(
+            size=self.__get_field_size(definition_message, LapNormalizedPowerField.ID),
+            growable=definition_message is None), 
+        LapLeftRightBalanceField(
+            size=self.__get_field_size(definition_message, LapLeftRightBalanceField.ID),
+            growable=definition_message is None), 
+        LapFirstLengthIndexField(
+            size=self.__get_field_size(definition_message, LapFirstLengthIndexField.ID),
+            growable=definition_message is None), 
+        LapAvgStrokeDistanceField(
+            size=self.__get_field_size(definition_message, LapAvgStrokeDistanceField.ID),
+            growable=definition_message is None), 
+        LapSwimStrokeField(
+            size=self.__get_field_size(definition_message, LapSwimStrokeField.ID),
+            growable=definition_message is None), 
+        LapSubSportField(
+            size=self.__get_field_size(definition_message, LapSubSportField.ID),
+            growable=definition_message is None), 
+        LapNumActiveLengthsField(
+            size=self.__get_field_size(definition_message, LapNumActiveLengthsField.ID),
+            growable=definition_message is None), 
+        LapTotalWorkField(
+            size=self.__get_field_size(definition_message, LapTotalWorkField.ID),
+            growable=definition_message is None), 
+        LapAvgAltitudeField(
+            size=self.__get_field_size(definition_message, LapAvgAltitudeField.ID),
+            growable=definition_message is None), 
+        LapMaxAltitudeField(
+            size=self.__get_field_size(definition_message, LapMaxAltitudeField.ID),
+            growable=definition_message is None), 
+        LapGpsAccuracyField(
+            size=self.__get_field_size(definition_message, LapGpsAccuracyField.ID),
+            growable=definition_message is None), 
+        LapAvgGradeField(
+            size=self.__get_field_size(definition_message, LapAvgGradeField.ID),
+            growable=definition_message is None), 
+        LapAvgPosGradeField(
+            size=self.__get_field_size(definition_message, LapAvgPosGradeField.ID),
+            growable=definition_message is None), 
+        LapAvgNegGradeField(
+            size=self.__get_field_size(definition_message, LapAvgNegGradeField.ID),
+            growable=definition_message is None), 
+        LapMaxPosGradeField(
+            size=self.__get_field_size(definition_message, LapMaxPosGradeField.ID),
+            growable=definition_message is None), 
+        LapMaxNegGradeField(
+            size=self.__get_field_size(definition_message, LapMaxNegGradeField.ID),
+            growable=definition_message is None), 
+        LapAvgTemperatureField(
+            size=self.__get_field_size(definition_message, LapAvgTemperatureField.ID),
+            growable=definition_message is None), 
+        LapMaxTemperatureField(
+            size=self.__get_field_size(definition_message, LapMaxTemperatureField.ID),
+            growable=definition_message is None), 
+        LapTotalMovingTimeField(
+            size=self.__get_field_size(definition_message, LapTotalMovingTimeField.ID),
+            growable=definition_message is None), 
+        LapAvgPosVerticalSpeedField(
+            size=self.__get_field_size(definition_message, LapAvgPosVerticalSpeedField.ID),
+            growable=definition_message is None), 
+        LapAvgNegVerticalSpeedField(
+            size=self.__get_field_size(definition_message, LapAvgNegVerticalSpeedField.ID),
+            growable=definition_message is None), 
+        LapMaxPosVerticalSpeedField(
+            size=self.__get_field_size(definition_message, LapMaxPosVerticalSpeedField.ID),
+            growable=definition_message is None), 
+        LapMaxNegVerticalSpeedField(
+            size=self.__get_field_size(definition_message, LapMaxNegVerticalSpeedField.ID),
+            growable=definition_message is None), 
+        LapTimeInHrZoneField(
+            size=self.__get_field_size(definition_message, LapTimeInHrZoneField.ID),
+            growable=definition_message is None), 
+        LapTimeInSpeedZoneField(
+            size=self.__get_field_size(definition_message, LapTimeInSpeedZoneField.ID),
+            growable=definition_message is None), 
+        LapTimeInCadenceZoneField(
+            size=self.__get_field_size(definition_message, LapTimeInCadenceZoneField.ID),
+            growable=definition_message is None), 
+        LapTimeInPowerZoneField(
+            size=self.__get_field_size(definition_message, LapTimeInPowerZoneField.ID),
+            growable=definition_message is None), 
+        LapRepetitionNumField(
+            size=self.__get_field_size(definition_message, LapRepetitionNumField.ID),
+            growable=definition_message is None), 
+        LapMinAltitudeField(
+            size=self.__get_field_size(definition_message, LapMinAltitudeField.ID),
+            growable=definition_message is None), 
+        LapMinHeartRateField(
+            size=self.__get_field_size(definition_message, LapMinHeartRateField.ID),
+            growable=definition_message is None), 
+        LapWorkoutStepIndexField(
+            size=self.__get_field_size(definition_message, LapWorkoutStepIndexField.ID),
+            growable=definition_message is None), 
+        LapOpponentScoreField(
+            size=self.__get_field_size(definition_message, LapOpponentScoreField.ID),
+            growable=definition_message is None), 
+        LapStrokeCountField(
+            size=self.__get_field_size(definition_message, LapStrokeCountField.ID),
+            growable=definition_message is None), 
+        LapZoneCountField(
+            size=self.__get_field_size(definition_message, LapZoneCountField.ID),
+            growable=definition_message is None), 
+        LapAvgVerticalOscillationField(
+            size=self.__get_field_size(definition_message, LapAvgVerticalOscillationField.ID),
+            growable=definition_message is None), 
+        LapAvgStanceTimePercentField(
+            size=self.__get_field_size(definition_message, LapAvgStanceTimePercentField.ID),
+            growable=definition_message is None), 
+        LapAvgStanceTimeField(
+            size=self.__get_field_size(definition_message, LapAvgStanceTimeField.ID),
+            growable=definition_message is None), 
+        LapAvgFractionalCadenceField(
+            size=self.__get_field_size(definition_message, LapAvgFractionalCadenceField.ID),
+            growable=definition_message is None), 
+        LapMaxFractionalCadenceField(
+            size=self.__get_field_size(definition_message, LapMaxFractionalCadenceField.ID),
+            growable=definition_message is None), 
+        LapTotalFractionalCyclesField(
+            size=self.__get_field_size(definition_message, LapTotalFractionalCyclesField.ID),
+            growable=definition_message is None), 
+        LapPlayerScoreField(
+            size=self.__get_field_size(definition_message, LapPlayerScoreField.ID),
+            growable=definition_message is None), 
+        LapAvgTotalHemoglobinConcField(
+            size=self.__get_field_size(definition_message, LapAvgTotalHemoglobinConcField.ID),
+            growable=definition_message is None), 
+        LapMinTotalHemoglobinConcField(
+            size=self.__get_field_size(definition_message, LapMinTotalHemoglobinConcField.ID),
+            growable=definition_message is None), 
+        LapMaxTotalHemoglobinConcField(
+            size=self.__get_field_size(definition_message, LapMaxTotalHemoglobinConcField.ID),
+            growable=definition_message is None), 
+        LapAvgSaturatedHemoglobinPercentField(
+            size=self.__get_field_size(definition_message, LapAvgSaturatedHemoglobinPercentField.ID),
+            growable=definition_message is None), 
+        LapMinSaturatedHemoglobinPercentField(
+            size=self.__get_field_size(definition_message, LapMinSaturatedHemoglobinPercentField.ID),
+            growable=definition_message is None), 
+        LapMaxSaturatedHemoglobinPercentField(
+            size=self.__get_field_size(definition_message, LapMaxSaturatedHemoglobinPercentField.ID),
+            growable=definition_message is None), 
+        LapAvgLeftTorqueEffectivenessField(
+            size=self.__get_field_size(definition_message, LapAvgLeftTorqueEffectivenessField.ID),
+            growable=definition_message is None), 
+        LapAvgRightTorqueEffectivenessField(
+            size=self.__get_field_size(definition_message, LapAvgRightTorqueEffectivenessField.ID),
+            growable=definition_message is None), 
+        LapAvgLeftPedalSmoothnessField(
+            size=self.__get_field_size(definition_message, LapAvgLeftPedalSmoothnessField.ID),
+            growable=definition_message is None), 
+        LapAvgRightPedalSmoothnessField(
+            size=self.__get_field_size(definition_message, LapAvgRightPedalSmoothnessField.ID),
+            growable=definition_message is None), 
+        LapAvgCombinedPedalSmoothnessField(
+            size=self.__get_field_size(definition_message, LapAvgCombinedPedalSmoothnessField.ID),
+            growable=definition_message is None), 
+        LapTimeStandingField(
+            size=self.__get_field_size(definition_message, LapTimeStandingField.ID),
+            growable=definition_message is None), 
+        LapStandCountField(
+            size=self.__get_field_size(definition_message, LapStandCountField.ID),
+            growable=definition_message is None), 
+        LapAvgLeftPcoField(
+            size=self.__get_field_size(definition_message, LapAvgLeftPcoField.ID),
+            growable=definition_message is None), 
+        LapAvgRightPcoField(
+            size=self.__get_field_size(definition_message, LapAvgRightPcoField.ID),
+            growable=definition_message is None), 
+        LapAvgLeftPowerPhaseField(
+            size=self.__get_field_size(definition_message, LapAvgLeftPowerPhaseField.ID),
+            growable=definition_message is None), 
+        LapAvgLeftPowerPhasePeakField(
+            size=self.__get_field_size(definition_message, LapAvgLeftPowerPhasePeakField.ID),
+            growable=definition_message is None), 
+        LapAvgRightPowerPhaseField(
+            size=self.__get_field_size(definition_message, LapAvgRightPowerPhaseField.ID),
+            growable=definition_message is None), 
+        LapAvgRightPowerPhasePeakField(
+            size=self.__get_field_size(definition_message, LapAvgRightPowerPhasePeakField.ID),
+            growable=definition_message is None), 
+        LapAvgPowerPositionField(
+            size=self.__get_field_size(definition_message, LapAvgPowerPositionField.ID),
+            growable=definition_message is None), 
+        LapMaxPowerPositionField(
+            size=self.__get_field_size(definition_message, LapMaxPowerPositionField.ID),
+            growable=definition_message is None), 
+        LapAvgCadencePositionField(
+            size=self.__get_field_size(definition_message, LapAvgCadencePositionField.ID),
+            growable=definition_message is None), 
+        LapMaxCadencePositionField(
+            size=self.__get_field_size(definition_message, LapMaxCadencePositionField.ID),
+            growable=definition_message is None), 
+        LapEnhancedAvgSpeedField(
+            size=self.__get_field_size(definition_message, LapEnhancedAvgSpeedField.ID),
+            growable=definition_message is None), 
+        LapEnhancedMaxSpeedField(
+            size=self.__get_field_size(definition_message, LapEnhancedMaxSpeedField.ID),
+            growable=definition_message is None), 
+        LapEnhancedAvgAltitudeField(
+            size=self.__get_field_size(definition_message, LapEnhancedAvgAltitudeField.ID),
+            growable=definition_message is None), 
+        LapEnhancedMinAltitudeField(
+            size=self.__get_field_size(definition_message, LapEnhancedMinAltitudeField.ID),
+            growable=definition_message is None), 
+        LapEnhancedMaxAltitudeField(
+            size=self.__get_field_size(definition_message, LapEnhancedMaxAltitudeField.ID),
+            growable=definition_message is None), 
+        LapAvgLevMotorPowerField(
+            size=self.__get_field_size(definition_message, LapAvgLevMotorPowerField.ID),
+            growable=definition_message is None), 
+        LapMaxLevMotorPowerField(
+            size=self.__get_field_size(definition_message, LapMaxLevMotorPowerField.ID),
+            growable=definition_message is None), 
+        LapLevBatteryConsumptionField(
+            size=self.__get_field_size(definition_message, LapLevBatteryConsumptionField.ID),
+            growable=definition_message is None), 
+        LapAvgVerticalRatioField(
+            size=self.__get_field_size(definition_message, LapAvgVerticalRatioField.ID),
+            growable=definition_message is None), 
+        LapAvgStanceTimeBalanceField(
+            size=self.__get_field_size(definition_message, LapAvgStanceTimeBalanceField.ID),
+            growable=definition_message is None), 
+        LapAvgStepLengthField(
+            size=self.__get_field_size(definition_message, LapAvgStepLengthField.ID),
+            growable=definition_message is None), 
+        LapAvgVamField(
+            size=self.__get_field_size(definition_message, LapAvgVamField.ID),
+            growable=definition_message is None), 
+        LapTotalGritField(
+            size=self.__get_field_size(definition_message, LapTotalGritField.ID),
+            growable=definition_message is None), 
+        LapTotalFlowField(
+            size=self.__get_field_size(definition_message, LapTotalFlowField.ID),
+            growable=definition_message is None), 
+        LapJumpCountField(
+            size=self.__get_field_size(definition_message, LapJumpCountField.ID),
+            growable=definition_message is None), 
+        LapAvgGritField(
+            size=self.__get_field_size(definition_message, LapAvgGritField.ID),
+            growable=definition_message is None), 
+        LapAvgFlowField(
+            size=self.__get_field_size(definition_message, LapAvgFlowField.ID),
+            growable=definition_message is None), 
+        LapTotalFractionalAscentField(
+            size=self.__get_field_size(definition_message, LapTotalFractionalAscentField.ID),
+            growable=definition_message is None), 
+        LapTotalFractionalDescentField(
+            size=self.__get_field_size(definition_message, LapTotalFractionalDescentField.ID),
+            growable=definition_message is None), 
+        LapAvgCoreTemperatureField(
+            size=self.__get_field_size(definition_message, LapAvgCoreTemperatureField.ID),
+            growable=definition_message is None), 
+        LapMinCoreTemperatureField(
+            size=self.__get_field_size(definition_message, LapMinCoreTemperatureField.ID),
+            growable=definition_message is None), 
+        LapMaxCoreTemperatureField(
+            size=self.__get_field_size(definition_message, LapMaxCoreTemperatureField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -398,6 +395,9 @@ class LapMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -406,6 +406,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -418,7 +420,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -428,6 +431,7 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -442,6 +446,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event(self) -> Optional[Event]:
         field = self.get_field(LapEventField.ID)
@@ -450,6 +456,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event.setter
     def event(self, value: Event):
@@ -462,6 +470,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event_type(self) -> Optional[EventType]:
         field = self.get_field(LapEventTypeField.ID)
@@ -470,6 +480,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event_type.setter
     def event_type(self, value: EventType):
@@ -482,7 +494,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def start_time(self) -> Optional[int]:
@@ -492,6 +505,7 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -506,6 +520,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def start_position_lat(self) -> Optional[float]:
         field = self.get_field(LapStartPositionLatField.ID)
@@ -514,6 +530,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @start_position_lat.setter
     def start_position_lat(self, value: float):
@@ -526,6 +544,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def start_position_long(self) -> Optional[float]:
         field = self.get_field(LapStartPositionLongField.ID)
@@ -534,6 +554,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @start_position_long.setter
     def start_position_long(self, value: float):
@@ -546,6 +568,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def end_position_lat(self) -> Optional[float]:
         field = self.get_field(LapEndPositionLatField.ID)
@@ -554,6 +578,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @end_position_lat.setter
     def end_position_lat(self, value: float):
@@ -566,6 +592,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def end_position_long(self) -> Optional[float]:
         field = self.get_field(LapEndPositionLongField.ID)
@@ -574,6 +602,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @end_position_long.setter
     def end_position_long(self, value: float):
@@ -586,6 +616,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(LapTotalElapsedTimeField.ID)
@@ -594,6 +626,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_elapsed_time.setter
     def total_elapsed_time(self, value: float):
@@ -606,6 +640,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_timer_time(self) -> Optional[float]:
         field = self.get_field(LapTotalTimerTimeField.ID)
@@ -614,6 +650,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_timer_time.setter
     def total_timer_time(self, value: float):
@@ -626,6 +664,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_distance(self) -> Optional[float]:
         field = self.get_field(LapTotalDistanceField.ID)
@@ -634,6 +674,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_distance.setter
     def total_distance(self, value: float):
@@ -646,6 +688,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_cycles(self) -> Optional[int]:
         field = self.get_field(LapTotalCyclesField.ID)
@@ -654,6 +698,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_cycles.setter
     def total_cycles(self, value: int):
@@ -665,6 +711,9 @@ class LapMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
+
+    
+
 
     @property
     def total_strides(self) -> Optional[int]:
@@ -682,11 +731,12 @@ class LapMessage(DataMessage):
     def total_strides(self, value: int):
         field = self.get_field(LapTotalCyclesField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
+
 
     @property
     def total_strokes(self) -> Optional[int]:
@@ -704,11 +754,11 @@ class LapMessage(DataMessage):
     def total_strokes(self, value: int):
         field = self.get_field(LapTotalCyclesField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def total_calories(self) -> Optional[int]:
@@ -718,6 +768,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_calories.setter
     def total_calories(self, value: int):
@@ -730,6 +782,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_fat_calories(self) -> Optional[int]:
         field = self.get_field(LapTotalFatCaloriesField.ID)
@@ -738,6 +792,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_fat_calories.setter
     def total_fat_calories(self, value: int):
@@ -750,6 +806,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgSpeedField.ID)
@@ -758,6 +816,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_speed.setter
     def avg_speed(self, value: float):
@@ -770,6 +830,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxSpeedField.ID)
@@ -778,6 +840,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_speed.setter
     def max_speed(self, value: float):
@@ -790,6 +854,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_heart_rate(self) -> Optional[int]:
         field = self.get_field(LapAvgHeartRateField.ID)
@@ -798,6 +864,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_heart_rate.setter
     def avg_heart_rate(self, value: int):
@@ -810,6 +878,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_heart_rate(self) -> Optional[int]:
         field = self.get_field(LapMaxHeartRateField.ID)
@@ -818,6 +888,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_heart_rate.setter
     def max_heart_rate(self, value: int):
@@ -830,6 +902,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_cadence(self) -> Optional[int]:
         field = self.get_field(LapAvgCadenceField.ID)
@@ -838,6 +912,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_cadence.setter
     def avg_cadence(self, value: int):
@@ -849,6 +925,9 @@ class LapMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
+
+    
+
 
     @property
     def avg_running_cadence(self) -> Optional[int]:
@@ -866,11 +945,11 @@ class LapMessage(DataMessage):
     def avg_running_cadence(self, value: int):
         field = self.get_field(LapAvgCadenceField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def max_cadence(self) -> Optional[int]:
@@ -880,6 +959,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_cadence.setter
     def max_cadence(self, value: int):
@@ -891,6 +972,9 @@ class LapMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
+
+    
+
 
     @property
     def max_running_cadence(self) -> Optional[int]:
@@ -908,11 +992,11 @@ class LapMessage(DataMessage):
     def max_running_cadence(self, value: int):
         field = self.get_field(LapMaxCadenceField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def avg_power(self) -> Optional[int]:
@@ -922,6 +1006,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_power.setter
     def avg_power(self, value: int):
@@ -934,6 +1020,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_power(self) -> Optional[int]:
         field = self.get_field(LapMaxPowerField.ID)
@@ -942,6 +1030,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_power.setter
     def max_power(self, value: int):
@@ -954,6 +1044,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_ascent(self) -> Optional[int]:
         field = self.get_field(LapTotalAscentField.ID)
@@ -962,6 +1054,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_ascent.setter
     def total_ascent(self, value: int):
@@ -974,6 +1068,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_descent(self) -> Optional[int]:
         field = self.get_field(LapTotalDescentField.ID)
@@ -982,6 +1078,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_descent.setter
     def total_descent(self, value: int):
@@ -994,6 +1092,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def intensity(self) -> Optional[Intensity]:
         field = self.get_field(LapIntensityField.ID)
@@ -1002,6 +1102,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @intensity.setter
     def intensity(self, value: Intensity):
@@ -1014,6 +1116,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def lap_trigger(self) -> Optional[LapTrigger]:
         field = self.get_field(LapLapTriggerField.ID)
@@ -1022,6 +1126,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @lap_trigger.setter
     def lap_trigger(self, value: LapTrigger):
@@ -1034,6 +1140,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(LapSportField.ID)
@@ -1042,6 +1150,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sport.setter
     def sport(self, value: Sport):
@@ -1054,6 +1164,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event_group(self) -> Optional[int]:
         field = self.get_field(LapEventGroupField.ID)
@@ -1062,6 +1174,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event_group.setter
     def event_group(self, value: int):
@@ -1074,6 +1188,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def num_lengths(self) -> Optional[int]:
         field = self.get_field(LapNumLengthsField.ID)
@@ -1082,6 +1198,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @num_lengths.setter
     def num_lengths(self, value: int):
@@ -1094,6 +1212,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def normalized_power(self) -> Optional[int]:
         field = self.get_field(LapNormalizedPowerField.ID)
@@ -1102,6 +1222,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @normalized_power.setter
     def normalized_power(self, value: int):
@@ -1114,6 +1236,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def left_right_balance(self) -> Optional[int]:
         field = self.get_field(LapLeftRightBalanceField.ID)
@@ -1122,6 +1246,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @left_right_balance.setter
     def left_right_balance(self, value: int):
@@ -1134,6 +1260,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def first_length_index(self) -> Optional[int]:
         field = self.get_field(LapFirstLengthIndexField.ID)
@@ -1142,6 +1270,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @first_length_index.setter
     def first_length_index(self, value: int):
@@ -1154,6 +1284,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_stroke_distance(self) -> Optional[float]:
         field = self.get_field(LapAvgStrokeDistanceField.ID)
@@ -1162,6 +1294,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_stroke_distance.setter
     def avg_stroke_distance(self, value: float):
@@ -1174,6 +1308,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def swim_stroke(self) -> Optional[SwimStroke]:
         field = self.get_field(LapSwimStrokeField.ID)
@@ -1182,6 +1318,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @swim_stroke.setter
     def swim_stroke(self, value: SwimStroke):
@@ -1194,6 +1332,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sub_sport(self) -> Optional[SubSport]:
         field = self.get_field(LapSubSportField.ID)
@@ -1202,6 +1342,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sub_sport.setter
     def sub_sport(self, value: SubSport):
@@ -1214,6 +1356,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def num_active_lengths(self) -> Optional[int]:
         field = self.get_field(LapNumActiveLengthsField.ID)
@@ -1222,6 +1366,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @num_active_lengths.setter
     def num_active_lengths(self, value: int):
@@ -1234,6 +1380,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_work(self) -> Optional[int]:
         field = self.get_field(LapTotalWorkField.ID)
@@ -1242,6 +1390,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_work.setter
     def total_work(self, value: int):
@@ -1254,6 +1404,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_altitude(self) -> Optional[float]:
         field = self.get_field(LapAvgAltitudeField.ID)
@@ -1262,6 +1414,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_altitude.setter
     def avg_altitude(self, value: float):
@@ -1274,6 +1428,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_altitude(self) -> Optional[float]:
         field = self.get_field(LapMaxAltitudeField.ID)
@@ -1282,6 +1438,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_altitude.setter
     def max_altitude(self, value: float):
@@ -1294,6 +1452,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def gps_accuracy(self) -> Optional[int]:
         field = self.get_field(LapGpsAccuracyField.ID)
@@ -1302,6 +1462,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @gps_accuracy.setter
     def gps_accuracy(self, value: int):
@@ -1314,6 +1476,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgGradeField.ID)
@@ -1322,6 +1486,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_grade.setter
     def avg_grade(self, value: float):
@@ -1334,6 +1500,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_pos_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgPosGradeField.ID)
@@ -1342,6 +1510,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_pos_grade.setter
     def avg_pos_grade(self, value: float):
@@ -1354,6 +1524,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_neg_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgNegGradeField.ID)
@@ -1362,6 +1534,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_neg_grade.setter
     def avg_neg_grade(self, value: float):
@@ -1374,6 +1548,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_pos_grade(self) -> Optional[float]:
         field = self.get_field(LapMaxPosGradeField.ID)
@@ -1382,6 +1558,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_pos_grade.setter
     def max_pos_grade(self, value: float):
@@ -1394,6 +1572,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_neg_grade(self) -> Optional[float]:
         field = self.get_field(LapMaxNegGradeField.ID)
@@ -1402,6 +1582,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_neg_grade.setter
     def max_neg_grade(self, value: float):
@@ -1414,6 +1596,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_temperature(self) -> Optional[int]:
         field = self.get_field(LapAvgTemperatureField.ID)
@@ -1422,6 +1606,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_temperature.setter
     def avg_temperature(self, value: int):
@@ -1434,6 +1620,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_temperature(self) -> Optional[int]:
         field = self.get_field(LapMaxTemperatureField.ID)
@@ -1442,6 +1630,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_temperature.setter
     def max_temperature(self, value: int):
@@ -1454,6 +1644,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_moving_time(self) -> Optional[float]:
         field = self.get_field(LapTotalMovingTimeField.ID)
@@ -1462,6 +1654,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_moving_time.setter
     def total_moving_time(self, value: float):
@@ -1474,6 +1668,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgPosVerticalSpeedField.ID)
@@ -1482,6 +1678,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_pos_vertical_speed.setter
     def avg_pos_vertical_speed(self, value: float):
@@ -1494,6 +1692,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgNegVerticalSpeedField.ID)
@@ -1502,6 +1702,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_neg_vertical_speed.setter
     def avg_neg_vertical_speed(self, value: float):
@@ -1514,6 +1716,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxPosVerticalSpeedField.ID)
@@ -1522,6 +1726,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_pos_vertical_speed.setter
     def max_pos_vertical_speed(self, value: float):
@@ -1534,6 +1740,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxNegVerticalSpeedField.ID)
@@ -1542,6 +1750,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_neg_vertical_speed.setter
     def max_neg_vertical_speed(self, value: float):
@@ -1554,6 +1764,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time_in_hr_zone(self) -> Optional[float]:
         field = self.get_field(LapTimeInHrZoneField.ID)
@@ -1562,6 +1774,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time_in_hr_zone.setter
     def time_in_hr_zone(self, value: float):
@@ -1574,6 +1788,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time_in_speed_zone(self) -> Optional[float]:
         field = self.get_field(LapTimeInSpeedZoneField.ID)
@@ -1582,6 +1798,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time_in_speed_zone.setter
     def time_in_speed_zone(self, value: float):
@@ -1594,6 +1812,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time_in_cadence_zone(self) -> Optional[float]:
         field = self.get_field(LapTimeInCadenceZoneField.ID)
@@ -1602,6 +1822,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time_in_cadence_zone.setter
     def time_in_cadence_zone(self, value: float):
@@ -1614,6 +1836,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time_in_power_zone(self) -> Optional[float]:
         field = self.get_field(LapTimeInPowerZoneField.ID)
@@ -1622,6 +1846,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time_in_power_zone.setter
     def time_in_power_zone(self, value: float):
@@ -1634,6 +1860,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def repetition_num(self) -> Optional[int]:
         field = self.get_field(LapRepetitionNumField.ID)
@@ -1642,6 +1870,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @repetition_num.setter
     def repetition_num(self, value: int):
@@ -1654,6 +1884,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def min_altitude(self) -> Optional[float]:
         field = self.get_field(LapMinAltitudeField.ID)
@@ -1662,6 +1894,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @min_altitude.setter
     def min_altitude(self, value: float):
@@ -1674,6 +1908,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def min_heart_rate(self) -> Optional[int]:
         field = self.get_field(LapMinHeartRateField.ID)
@@ -1682,6 +1918,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @min_heart_rate.setter
     def min_heart_rate(self, value: int):
@@ -1694,6 +1932,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def workout_step_index(self) -> Optional[int]:
         field = self.get_field(LapWorkoutStepIndexField.ID)
@@ -1702,6 +1942,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @workout_step_index.setter
     def workout_step_index(self, value: int):
@@ -1714,6 +1956,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def opponent_score(self) -> Optional[int]:
         field = self.get_field(LapOpponentScoreField.ID)
@@ -1722,6 +1966,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @opponent_score.setter
     def opponent_score(self, value: int):
@@ -1734,6 +1980,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def stroke_count(self) -> Optional[int]:
         field = self.get_field(LapStrokeCountField.ID)
@@ -1742,6 +1990,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @stroke_count.setter
     def stroke_count(self, value: int):
@@ -1754,6 +2004,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def zone_count(self) -> Optional[int]:
         field = self.get_field(LapZoneCountField.ID)
@@ -1762,6 +2014,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @zone_count.setter
     def zone_count(self, value: int):
@@ -1774,6 +2028,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_vertical_oscillation(self) -> Optional[float]:
         field = self.get_field(LapAvgVerticalOscillationField.ID)
@@ -1782,6 +2038,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_vertical_oscillation.setter
     def avg_vertical_oscillation(self, value: float):
@@ -1794,6 +2052,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_stance_time_percent(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimePercentField.ID)
@@ -1802,6 +2062,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_stance_time_percent.setter
     def avg_stance_time_percent(self, value: float):
@@ -1814,6 +2076,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_stance_time(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimeField.ID)
@@ -1822,6 +2086,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_stance_time.setter
     def avg_stance_time(self, value: float):
@@ -1834,6 +2100,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(LapAvgFractionalCadenceField.ID)
@@ -1842,6 +2110,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_fractional_cadence.setter
     def avg_fractional_cadence(self, value: float):
@@ -1854,6 +2124,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(LapMaxFractionalCadenceField.ID)
@@ -1862,6 +2134,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_fractional_cadence.setter
     def max_fractional_cadence(self, value: float):
@@ -1874,6 +2148,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_fractional_cycles(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalCyclesField.ID)
@@ -1882,6 +2158,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_fractional_cycles.setter
     def total_fractional_cycles(self, value: float):
@@ -1894,6 +2172,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def player_score(self) -> Optional[int]:
         field = self.get_field(LapPlayerScoreField.ID)
@@ -1902,6 +2182,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @player_score.setter
     def player_score(self, value: int):
@@ -1914,6 +2196,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_total_hemoglobin_conc(self) -> Optional[float]:
         field = self.get_field(LapAvgTotalHemoglobinConcField.ID)
@@ -1922,6 +2206,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_total_hemoglobin_conc.setter
     def avg_total_hemoglobin_conc(self, value: float):
@@ -1934,6 +2220,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def min_total_hemoglobin_conc(self) -> Optional[float]:
         field = self.get_field(LapMinTotalHemoglobinConcField.ID)
@@ -1942,6 +2230,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @min_total_hemoglobin_conc.setter
     def min_total_hemoglobin_conc(self, value: float):
@@ -1954,6 +2244,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_total_hemoglobin_conc(self) -> Optional[float]:
         field = self.get_field(LapMaxTotalHemoglobinConcField.ID)
@@ -1962,6 +2254,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_total_hemoglobin_conc.setter
     def max_total_hemoglobin_conc(self, value: float):
@@ -1974,6 +2268,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_saturated_hemoglobin_percent(self) -> Optional[float]:
         field = self.get_field(LapAvgSaturatedHemoglobinPercentField.ID)
@@ -1982,6 +2278,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_saturated_hemoglobin_percent.setter
     def avg_saturated_hemoglobin_percent(self, value: float):
@@ -1994,6 +2292,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def min_saturated_hemoglobin_percent(self) -> Optional[float]:
         field = self.get_field(LapMinSaturatedHemoglobinPercentField.ID)
@@ -2002,6 +2302,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @min_saturated_hemoglobin_percent.setter
     def min_saturated_hemoglobin_percent(self, value: float):
@@ -2014,6 +2316,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_saturated_hemoglobin_percent(self) -> Optional[float]:
         field = self.get_field(LapMaxSaturatedHemoglobinPercentField.ID)
@@ -2022,6 +2326,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_saturated_hemoglobin_percent.setter
     def max_saturated_hemoglobin_percent(self, value: float):
@@ -2034,6 +2340,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftTorqueEffectivenessField.ID)
@@ -2042,6 +2350,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_left_torque_effectiveness.setter
     def avg_left_torque_effectiveness(self, value: float):
@@ -2054,6 +2364,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(LapAvgRightTorqueEffectivenessField.ID)
@@ -2062,6 +2374,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_right_torque_effectiveness.setter
     def avg_right_torque_effectiveness(self, value: float):
@@ -2074,6 +2388,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftPedalSmoothnessField.ID)
@@ -2082,6 +2398,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_left_pedal_smoothness.setter
     def avg_left_pedal_smoothness(self, value: float):
@@ -2094,6 +2412,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgRightPedalSmoothnessField.ID)
@@ -2102,6 +2422,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_right_pedal_smoothness.setter
     def avg_right_pedal_smoothness(self, value: float):
@@ -2114,6 +2436,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgCombinedPedalSmoothnessField.ID)
@@ -2122,6 +2446,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_combined_pedal_smoothness.setter
     def avg_combined_pedal_smoothness(self, value: float):
@@ -2134,6 +2460,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time_standing(self) -> Optional[float]:
         field = self.get_field(LapTimeStandingField.ID)
@@ -2142,6 +2470,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time_standing.setter
     def time_standing(self, value: float):
@@ -2154,6 +2484,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def stand_count(self) -> Optional[int]:
         field = self.get_field(LapStandCountField.ID)
@@ -2162,6 +2494,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @stand_count.setter
     def stand_count(self, value: int):
@@ -2174,6 +2508,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_left_pco(self) -> Optional[int]:
         field = self.get_field(LapAvgLeftPcoField.ID)
@@ -2182,6 +2518,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_left_pco.setter
     def avg_left_pco(self, value: int):
@@ -2194,6 +2532,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_right_pco(self) -> Optional[int]:
         field = self.get_field(LapAvgRightPcoField.ID)
@@ -2202,6 +2542,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_right_pco.setter
     def avg_right_pco(self, value: int):
@@ -2214,6 +2556,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_left_power_phase(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftPowerPhaseField.ID)
@@ -2222,6 +2566,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_left_power_phase.setter
     def avg_left_power_phase(self, value: float):
@@ -2234,6 +2580,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_left_power_phase_peak(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftPowerPhasePeakField.ID)
@@ -2242,6 +2590,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_left_power_phase_peak.setter
     def avg_left_power_phase_peak(self, value: float):
@@ -2254,6 +2604,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_right_power_phase(self) -> Optional[float]:
         field = self.get_field(LapAvgRightPowerPhaseField.ID)
@@ -2262,6 +2614,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_right_power_phase.setter
     def avg_right_power_phase(self, value: float):
@@ -2274,6 +2628,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_right_power_phase_peak(self) -> Optional[float]:
         field = self.get_field(LapAvgRightPowerPhasePeakField.ID)
@@ -2282,6 +2638,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_right_power_phase_peak.setter
     def avg_right_power_phase_peak(self, value: float):
@@ -2294,6 +2652,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_power_position(self) -> Optional[int]:
         field = self.get_field(LapAvgPowerPositionField.ID)
@@ -2302,6 +2662,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_power_position.setter
     def avg_power_position(self, value: int):
@@ -2314,6 +2676,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_power_position(self) -> Optional[int]:
         field = self.get_field(LapMaxPowerPositionField.ID)
@@ -2322,6 +2686,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_power_position.setter
     def max_power_position(self, value: int):
@@ -2334,6 +2700,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_cadence_position(self) -> Optional[int]:
         field = self.get_field(LapAvgCadencePositionField.ID)
@@ -2342,6 +2710,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_cadence_position.setter
     def avg_cadence_position(self, value: int):
@@ -2354,6 +2724,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_cadence_position(self) -> Optional[int]:
         field = self.get_field(LapMaxCadencePositionField.ID)
@@ -2362,6 +2734,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_cadence_position.setter
     def max_cadence_position(self, value: int):
@@ -2374,6 +2748,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_avg_speed(self) -> Optional[float]:
         field = self.get_field(LapEnhancedAvgSpeedField.ID)
@@ -2382,6 +2758,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_avg_speed.setter
     def enhanced_avg_speed(self, value: float):
@@ -2394,6 +2772,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_max_speed(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMaxSpeedField.ID)
@@ -2402,6 +2782,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_max_speed.setter
     def enhanced_max_speed(self, value: float):
@@ -2414,6 +2796,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_avg_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedAvgAltitudeField.ID)
@@ -2422,6 +2806,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_avg_altitude.setter
     def enhanced_avg_altitude(self, value: float):
@@ -2434,6 +2820,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_min_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMinAltitudeField.ID)
@@ -2442,6 +2830,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_min_altitude.setter
     def enhanced_min_altitude(self, value: float):
@@ -2454,6 +2844,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_max_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMaxAltitudeField.ID)
@@ -2462,6 +2854,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_max_altitude.setter
     def enhanced_max_altitude(self, value: float):
@@ -2474,6 +2868,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_lev_motor_power(self) -> Optional[int]:
         field = self.get_field(LapAvgLevMotorPowerField.ID)
@@ -2482,6 +2878,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_lev_motor_power.setter
     def avg_lev_motor_power(self, value: int):
@@ -2494,6 +2892,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_lev_motor_power(self) -> Optional[int]:
         field = self.get_field(LapMaxLevMotorPowerField.ID)
@@ -2502,6 +2902,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_lev_motor_power.setter
     def max_lev_motor_power(self, value: int):
@@ -2514,6 +2916,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def lev_battery_consumption(self) -> Optional[float]:
         field = self.get_field(LapLevBatteryConsumptionField.ID)
@@ -2522,6 +2926,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @lev_battery_consumption.setter
     def lev_battery_consumption(self, value: float):
@@ -2534,6 +2940,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_vertical_ratio(self) -> Optional[float]:
         field = self.get_field(LapAvgVerticalRatioField.ID)
@@ -2542,6 +2950,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_vertical_ratio.setter
     def avg_vertical_ratio(self, value: float):
@@ -2554,6 +2964,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_stance_time_balance(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimeBalanceField.ID)
@@ -2562,6 +2974,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_stance_time_balance.setter
     def avg_stance_time_balance(self, value: float):
@@ -2574,6 +2988,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_step_length(self) -> Optional[float]:
         field = self.get_field(LapAvgStepLengthField.ID)
@@ -2582,6 +2998,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_step_length.setter
     def avg_step_length(self, value: float):
@@ -2594,6 +3012,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_vam(self) -> Optional[float]:
         field = self.get_field(LapAvgVamField.ID)
@@ -2602,6 +3022,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_vam.setter
     def avg_vam(self, value: float):
@@ -2614,6 +3036,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_grit(self) -> Optional[float]:
         field = self.get_field(LapTotalGritField.ID)
@@ -2622,6 +3046,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_grit.setter
     def total_grit(self, value: float):
@@ -2634,6 +3060,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_flow(self) -> Optional[float]:
         field = self.get_field(LapTotalFlowField.ID)
@@ -2642,6 +3070,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_flow.setter
     def total_flow(self, value: float):
@@ -2654,6 +3084,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def jump_count(self) -> Optional[int]:
         field = self.get_field(LapJumpCountField.ID)
@@ -2662,6 +3094,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @jump_count.setter
     def jump_count(self, value: int):
@@ -2674,6 +3108,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_grit(self) -> Optional[float]:
         field = self.get_field(LapAvgGritField.ID)
@@ -2682,6 +3118,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_grit.setter
     def avg_grit(self, value: float):
@@ -2694,6 +3132,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_flow(self) -> Optional[float]:
         field = self.get_field(LapAvgFlowField.ID)
@@ -2702,6 +3142,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_flow.setter
     def avg_flow(self, value: float):
@@ -2714,6 +3156,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_fractional_ascent(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalAscentField.ID)
@@ -2722,6 +3166,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_fractional_ascent.setter
     def total_fractional_ascent(self, value: float):
@@ -2734,6 +3180,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_fractional_descent(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalDescentField.ID)
@@ -2742,6 +3190,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_fractional_descent.setter
     def total_fractional_descent(self, value: float):
@@ -2754,6 +3204,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def avg_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapAvgCoreTemperatureField.ID)
@@ -2762,6 +3214,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @avg_core_temperature.setter
     def avg_core_temperature(self, value: float):
@@ -2774,6 +3228,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def min_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapMinCoreTemperatureField.ID)
@@ -2782,6 +3238,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @min_core_temperature.setter
     def min_core_temperature(self, value: float):
@@ -2794,6 +3252,8 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def max_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapMaxCoreTemperatureField.ID)
@@ -2802,6 +3262,8 @@ class LapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_core_temperature.setter
     def max_core_temperature(self, value: float):
@@ -2814,6 +3276,11 @@ class LapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -2823,12 +3290,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2840,14 +3307,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2859,12 +3326,12 @@ class LapEventField(Field):
             name='event',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2876,12 +3343,12 @@ class LapEventTypeField(Field):
             name='event_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2893,14 +3360,14 @@ class LapStartTimeField(Field):
             name='start_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2912,14 +3379,14 @@ class LapStartPositionLatField(Field):
             name='start_position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2931,14 +3398,14 @@ class LapStartPositionLongField(Field):
             name='start_position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2950,14 +3417,14 @@ class LapEndPositionLatField(Field):
             name='end_position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2969,14 +3436,14 @@ class LapEndPositionLongField(Field):
             name='end_position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -2988,14 +3455,14 @@ class LapTotalElapsedTimeField(Field):
             name='total_elapsed_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3007,14 +3474,14 @@ class LapTotalTimerTimeField(Field):
             name='total_timer_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3026,14 +3493,14 @@ class LapTotalDistanceField(Field):
             name='total_distance',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3045,32 +3512,32 @@ class LapTotalCyclesField(Field):
             name='total_cycles',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='cycles',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-                SubField(
-                    name='total_strides',
-                    base_type=BaseType.UINT32,
-                    scale=1,
-                    offset=0,
-                    units='strides',
-                    reference_map={
-                        LapSportField.ID: [1, 11]
-                    }),
-                SubField(
-                    name='total_strokes',
-                    base_type=BaseType.UINT32,
-                    scale=1,
-                    offset=0,
-                    units='strokes',
-                    reference_map={
-                        LapSportField.ID: [2, 5, 15, 37]
-                    })
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'cycles',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        SubField(
+            name='total_strides',
+            base_type=BaseType.UINT32,
+        scale = 1,
+                offset = 0,
+        units = 'strides',
+        reference_map = {
+        LapSportField.ID: [1, 11]
+        }), 
+        SubField(
+            name='total_strokes',
+            base_type=BaseType.UINT32,
+        scale = 1,
+                offset = 0,
+        units = 'strokes',
+        reference_map = {
+        LapSportField.ID: [2, 5, 15, 37]
+        })
+        ]
         )
 
 
@@ -3082,14 +3549,14 @@ class LapTotalCaloriesField(Field):
             name='total_calories',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='kcal',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'kcal',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3101,14 +3568,14 @@ class LapTotalFatCaloriesField(Field):
             name='total_fat_calories',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='kcal',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'kcal',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3120,14 +3587,14 @@ class LapAvgSpeedField(Field):
             name='avg_speed',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3139,14 +3606,14 @@ class LapMaxSpeedField(Field):
             name='max_speed',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3158,14 +3625,14 @@ class LapAvgHeartRateField(Field):
             name='avg_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3177,14 +3644,14 @@ class LapMaxHeartRateField(Field):
             name='max_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3196,23 +3663,23 @@ class LapAvgCadenceField(Field):
             name='avg_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-                SubField(
-                    name='avg_running_cadence',
-                    base_type=BaseType.UINT8,
-                    scale=1,
-                    offset=0,
-                    units='strides/min',
-                    reference_map={
-                        LapSportField.ID: [1]
-                    })
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        SubField(
+            name='avg_running_cadence',
+            base_type=BaseType.UINT8,
+        scale = 1,
+                offset = 0,
+        units = 'strides/min',
+        reference_map = {
+        LapSportField.ID: [1]
+        })
+        ]
         )
 
 
@@ -3224,23 +3691,23 @@ class LapMaxCadenceField(Field):
             name='max_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-                SubField(
-                    name='max_running_cadence',
-                    base_type=BaseType.UINT8,
-                    scale=1,
-                    offset=0,
-                    units='strides/min',
-                    reference_map={
-                        LapSportField.ID: [1]
-                    })
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        SubField(
+            name='max_running_cadence',
+            base_type=BaseType.UINT8,
+        scale = 1,
+                offset = 0,
+        units = 'strides/min',
+        reference_map = {
+        LapSportField.ID: [1]
+        })
+        ]
         )
 
 
@@ -3252,14 +3719,14 @@ class LapAvgPowerField(Field):
             name='avg_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3271,14 +3738,14 @@ class LapMaxPowerField(Field):
             name='max_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3290,14 +3757,14 @@ class LapTotalAscentField(Field):
             name='total_ascent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3309,14 +3776,14 @@ class LapTotalDescentField(Field):
             name='total_descent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3328,12 +3795,12 @@ class LapIntensityField(Field):
             name='intensity',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3345,12 +3812,12 @@ class LapLapTriggerField(Field):
             name='lap_trigger',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3362,12 +3829,12 @@ class LapSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3379,12 +3846,12 @@ class LapEventGroupField(Field):
             name='event_group',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3396,14 +3863,14 @@ class LapNumLengthsField(Field):
             name='num_lengths',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='lengths',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'lengths',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3415,14 +3882,14 @@ class LapNormalizedPowerField(Field):
             name='normalized_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3434,12 +3901,12 @@ class LapLeftRightBalanceField(Field):
             name='left_right_balance',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3451,12 +3918,12 @@ class LapFirstLengthIndexField(Field):
             name='first_length_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3468,14 +3935,14 @@ class LapAvgStrokeDistanceField(Field):
             name='avg_stroke_distance',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3487,12 +3954,12 @@ class LapSwimStrokeField(Field):
             name='swim_stroke',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3504,12 +3971,12 @@ class LapSubSportField(Field):
             name='sub_sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3521,14 +3988,14 @@ class LapNumActiveLengthsField(Field):
             name='num_active_lengths',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='lengths',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'lengths',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3540,14 +4007,14 @@ class LapTotalWorkField(Field):
             name='total_work',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='J',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'J',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3559,14 +4026,14 @@ class LapAvgAltitudeField(Field):
             name='avg_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3578,14 +4045,14 @@ class LapMaxAltitudeField(Field):
             name='max_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3597,14 +4064,14 @@ class LapGpsAccuracyField(Field):
             name='gps_accuracy',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3616,14 +4083,14 @@ class LapAvgGradeField(Field):
             name='avg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3635,14 +4102,14 @@ class LapAvgPosGradeField(Field):
             name='avg_pos_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3654,14 +4121,14 @@ class LapAvgNegGradeField(Field):
             name='avg_neg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3673,14 +4140,14 @@ class LapMaxPosGradeField(Field):
             name='max_pos_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3692,14 +4159,14 @@ class LapMaxNegGradeField(Field):
             name='max_neg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3711,14 +4178,14 @@ class LapAvgTemperatureField(Field):
             name='avg_temperature',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='C',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'C',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3730,14 +4197,14 @@ class LapMaxTemperatureField(Field):
             name='max_temperature',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='C',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'C',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3749,14 +4216,14 @@ class LapTotalMovingTimeField(Field):
             name='total_moving_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3768,14 +4235,14 @@ class LapAvgPosVerticalSpeedField(Field):
             name='avg_pos_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3787,14 +4254,14 @@ class LapAvgNegVerticalSpeedField(Field):
             name='avg_neg_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3806,14 +4273,14 @@ class LapMaxPosVerticalSpeedField(Field):
             name='max_pos_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3825,14 +4292,14 @@ class LapMaxNegVerticalSpeedField(Field):
             name='max_neg_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3844,14 +4311,14 @@ class LapTimeInHrZoneField(Field):
             name='time_in_hr_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3863,14 +4330,14 @@ class LapTimeInSpeedZoneField(Field):
             name='time_in_speed_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3882,14 +4349,14 @@ class LapTimeInCadenceZoneField(Field):
             name='time_in_cadence_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3901,14 +4368,14 @@ class LapTimeInPowerZoneField(Field):
             name='time_in_power_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3920,12 +4387,12 @@ class LapRepetitionNumField(Field):
             name='repetition_num',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3937,14 +4404,14 @@ class LapMinAltitudeField(Field):
             name='min_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3956,14 +4423,14 @@ class LapMinHeartRateField(Field):
             name='min_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3975,12 +4442,12 @@ class LapWorkoutStepIndexField(Field):
             name='wkt_step_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -3992,12 +4459,12 @@ class LapOpponentScoreField(Field):
             name='opponent_score',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4009,14 +4476,14 @@ class LapStrokeCountField(Field):
             name='stroke_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='counts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'counts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4028,14 +4495,14 @@ class LapZoneCountField(Field):
             name='zone_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='counts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'counts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4047,14 +4514,14 @@ class LapAvgVerticalOscillationField(Field):
             name='avg_vertical_oscillation',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='mm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = 'mm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4066,14 +4533,14 @@ class LapAvgStanceTimePercentField(Field):
             name='avg_stance_time_percent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4085,14 +4552,14 @@ class LapAvgStanceTimeField(Field):
             name='avg_stance_time',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='ms',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = 'ms',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4104,14 +4571,14 @@ class LapAvgFractionalCadenceField(Field):
             name='avg_fractional_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=128,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 128,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4123,14 +4590,14 @@ class LapMaxFractionalCadenceField(Field):
             name='max_fractional_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=128,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 128,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4142,14 +4609,14 @@ class LapTotalFractionalCyclesField(Field):
             name='total_fractional_cycles',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=128,
-            size=size,
-            units='cycles',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 128,
+                         size = size,
+        units = 'cycles',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4161,12 +4628,12 @@ class LapPlayerScoreField(Field):
             name='player_score',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4178,14 +4645,14 @@ class LapAvgTotalHemoglobinConcField(Field):
             name='avg_total_hemoglobin_conc',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='g/dL',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'g/dL',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4197,14 +4664,14 @@ class LapMinTotalHemoglobinConcField(Field):
             name='min_total_hemoglobin_conc',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='g/dL',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'g/dL',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4216,14 +4683,14 @@ class LapMaxTotalHemoglobinConcField(Field):
             name='max_total_hemoglobin_conc',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='g/dL',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'g/dL',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4235,14 +4702,14 @@ class LapAvgSaturatedHemoglobinPercentField(Field):
             name='avg_saturated_hemoglobin_percent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4254,14 +4721,14 @@ class LapMinSaturatedHemoglobinPercentField(Field):
             name='min_saturated_hemoglobin_percent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4273,14 +4740,14 @@ class LapMaxSaturatedHemoglobinPercentField(Field):
             name='max_saturated_hemoglobin_percent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4292,14 +4759,14 @@ class LapAvgLeftTorqueEffectivenessField(Field):
             name='avg_left_torque_effectiveness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4311,14 +4778,14 @@ class LapAvgRightTorqueEffectivenessField(Field):
             name='avg_right_torque_effectiveness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4330,14 +4797,14 @@ class LapAvgLeftPedalSmoothnessField(Field):
             name='avg_left_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4349,14 +4816,14 @@ class LapAvgRightPedalSmoothnessField(Field):
             name='avg_right_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4368,14 +4835,14 @@ class LapAvgCombinedPedalSmoothnessField(Field):
             name='avg_combined_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4387,14 +4854,14 @@ class LapTimeStandingField(Field):
             name='time_standing',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4406,12 +4873,12 @@ class LapStandCountField(Field):
             name='stand_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4423,14 +4890,14 @@ class LapAvgLeftPcoField(Field):
             name='avg_left_pco',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='mm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'mm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4442,14 +4909,14 @@ class LapAvgRightPcoField(Field):
             name='avg_right_pco',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='mm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'mm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4461,14 +4928,14 @@ class LapAvgLeftPowerPhaseField(Field):
             name='avg_left_power_phase',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=0.7111111,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 0.7111111,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4480,14 +4947,14 @@ class LapAvgLeftPowerPhasePeakField(Field):
             name='avg_left_power_phase_peak',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=0.7111111,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 0.7111111,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4499,14 +4966,14 @@ class LapAvgRightPowerPhaseField(Field):
             name='avg_right_power_phase',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=0.7111111,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 0.7111111,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4518,14 +4985,14 @@ class LapAvgRightPowerPhasePeakField(Field):
             name='avg_right_power_phase_peak',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=0.7111111,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 0.7111111,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4537,14 +5004,14 @@ class LapAvgPowerPositionField(Field):
             name='avg_power_position',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4556,14 +5023,14 @@ class LapMaxPowerPositionField(Field):
             name='max_power_position',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4575,14 +5042,14 @@ class LapAvgCadencePositionField(Field):
             name='avg_cadence_position',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4594,14 +5061,14 @@ class LapMaxCadencePositionField(Field):
             name='max_cadence_position',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='rpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'rpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4613,14 +5080,14 @@ class LapEnhancedAvgSpeedField(Field):
             name='enhanced_avg_speed',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4632,14 +5099,14 @@ class LapEnhancedMaxSpeedField(Field):
             name='enhanced_max_speed',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4651,14 +5118,14 @@ class LapEnhancedAvgAltitudeField(Field):
             name='enhanced_avg_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4670,14 +5137,14 @@ class LapEnhancedMinAltitudeField(Field):
             name='enhanced_min_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4689,14 +5156,14 @@ class LapEnhancedMaxAltitudeField(Field):
             name='enhanced_max_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4708,14 +5175,14 @@ class LapAvgLevMotorPowerField(Field):
             name='avg_lev_motor_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4727,14 +5194,14 @@ class LapMaxLevMotorPowerField(Field):
             name='max_lev_motor_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='watts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'watts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4746,14 +5213,14 @@ class LapLevBatteryConsumptionField(Field):
             name='lev_battery_consumption',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=2,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 2,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4765,14 +5232,14 @@ class LapAvgVerticalRatioField(Field):
             name='avg_vertical_ratio',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4784,14 +5251,14 @@ class LapAvgStanceTimeBalanceField(Field):
             name='avg_stance_time_balance',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4803,14 +5270,14 @@ class LapAvgStepLengthField(Field):
             name='avg_step_length',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='mm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = 'mm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4822,14 +5289,14 @@ class LapAvgVamField(Field):
             name='avg_vam',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4841,14 +5308,14 @@ class LapTotalGritField(Field):
             name='total_grit',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='kGrit',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'kGrit',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4860,14 +5327,14 @@ class LapTotalFlowField(Field):
             name='total_flow',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='Flow',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'Flow',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4879,12 +5346,12 @@ class LapJumpCountField(Field):
             name='jump_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4896,14 +5363,14 @@ class LapAvgGritField(Field):
             name='avg_grit',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='kGrit',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'kGrit',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4915,14 +5382,14 @@ class LapAvgFlowField(Field):
             name='avg_flow',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='Flow',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'Flow',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4934,14 +5401,14 @@ class LapTotalFractionalAscentField(Field):
             name='total_fractional_ascent',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4953,14 +5420,14 @@ class LapTotalFractionalDescentField(Field):
             name='total_fractional_descent',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4972,14 +5439,14 @@ class LapAvgCoreTemperatureField(Field):
             name='avg_core_temperature',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='C',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'C',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -4991,14 +5458,14 @@ class LapMinCoreTemperatureField(Field):
             name='min_core_temperature',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='C',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'C',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -5010,12 +5477,12 @@ class LapMaxCoreTemperatureField(Field):
             name='max_core_temperature',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='C',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'C',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )

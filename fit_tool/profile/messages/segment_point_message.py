@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class SegmentPointMessage(DataMessage):
@@ -34,25 +36,25 @@ class SegmentPointMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             SegmentPointPositionLatField(
-                                 size=self.__get_field_size(definition_message, SegmentPointPositionLatField.ID),
-                                 growable=definition_message is None),
-                             SegmentPointPositionLongField(
-                                 size=self.__get_field_size(definition_message, SegmentPointPositionLongField.ID),
-                                 growable=definition_message is None),
-                             SegmentPointDistanceField(
-                                 size=self.__get_field_size(definition_message, SegmentPointDistanceField.ID),
-                                 growable=definition_message is None),
-                             SegmentPointAltitudeField(
-                                 size=self.__get_field_size(definition_message, SegmentPointAltitudeField.ID),
-                                 growable=definition_message is None),
-                             SegmentPointLeaderTimeField(
-                                 size=self.__get_field_size(definition_message, SegmentPointLeaderTimeField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        SegmentPointPositionLatField(
+            size=self.__get_field_size(definition_message, SegmentPointPositionLatField.ID),
+            growable=definition_message is None), 
+        SegmentPointPositionLongField(
+            size=self.__get_field_size(definition_message, SegmentPointPositionLongField.ID),
+            growable=definition_message is None), 
+        SegmentPointDistanceField(
+            size=self.__get_field_size(definition_message, SegmentPointDistanceField.ID),
+            growable=definition_message is None), 
+        SegmentPointAltitudeField(
+            size=self.__get_field_size(definition_message, SegmentPointAltitudeField.ID),
+            growable=definition_message is None), 
+        SegmentPointLeaderTimeField(
+            size=self.__get_field_size(definition_message, SegmentPointLeaderTimeField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -63,6 +65,9 @@ class SegmentPointMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -71,6 +76,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -83,6 +90,8 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def position_lat(self) -> Optional[float]:
         field = self.get_field(SegmentPointPositionLatField.ID)
@@ -91,6 +100,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @position_lat.setter
     def position_lat(self, value: float):
@@ -103,6 +114,8 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def position_long(self) -> Optional[float]:
         field = self.get_field(SegmentPointPositionLongField.ID)
@@ -111,6 +124,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @position_long.setter
     def position_long(self, value: float):
@@ -123,6 +138,8 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def distance(self) -> Optional[float]:
         field = self.get_field(SegmentPointDistanceField.ID)
@@ -131,6 +148,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @distance.setter
     def distance(self, value: float):
@@ -143,6 +162,8 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def altitude(self) -> Optional[float]:
         field = self.get_field(SegmentPointAltitudeField.ID)
@@ -151,6 +172,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @altitude.setter
     def altitude(self, value: float):
@@ -163,6 +186,8 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def leader_time(self) -> Optional[float]:
         field = self.get_field(SegmentPointLeaderTimeField.ID)
@@ -171,6 +196,8 @@ class SegmentPointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @leader_time.setter
     def leader_time(self, value: float):
@@ -183,6 +210,11 @@ class SegmentPointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -192,12 +224,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -209,14 +241,14 @@ class SegmentPointPositionLatField(Field):
             name='position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -228,14 +260,14 @@ class SegmentPointPositionLongField(Field):
             name='position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -247,14 +279,14 @@ class SegmentPointDistanceField(Field):
             name='distance',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -266,14 +298,14 @@ class SegmentPointAltitudeField(Field):
             name='altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=500,
-            scale=5,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 500,
+                 scale = 5,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -285,12 +317,12 @@ class SegmentPointLeaderTimeField(Field):
             name='leader_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )

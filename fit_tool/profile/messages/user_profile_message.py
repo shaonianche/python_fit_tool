@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,98 +36,94 @@ class UserProfileMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             UserProfileFriendlyNameField(
-                                 size=self.__get_field_size(definition_message, UserProfileFriendlyNameField.ID),
-                                 growable=definition_message is None),
-                             UserProfileGenderField(
-                                 size=self.__get_field_size(definition_message, UserProfileGenderField.ID),
-                                 growable=definition_message is None),
-                             UserProfileAgeField(
-                                 size=self.__get_field_size(definition_message, UserProfileAgeField.ID),
-                                 growable=definition_message is None),
-                             UserProfileHeightField(
-                                 size=self.__get_field_size(definition_message, UserProfileHeightField.ID),
-                                 growable=definition_message is None),
-                             UserProfileWeightField(
-                                 size=self.__get_field_size(definition_message, UserProfileWeightField.ID),
-                                 growable=definition_message is None),
-                             UserProfileLanguageField(
-                                 size=self.__get_field_size(definition_message, UserProfileLanguageField.ID),
-                                 growable=definition_message is None),
-                             UserProfileElevSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileElevSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileWeightSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileWeightSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileRestingHeartRateField(
-                                 size=self.__get_field_size(definition_message, UserProfileRestingHeartRateField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDefaultMaxRunningHeartRateField(
-                                 size=self.__get_field_size(definition_message,
-                                                            UserProfileDefaultMaxRunningHeartRateField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDefaultMaxBikingHeartRateField(
-                                 size=self.__get_field_size(definition_message,
-                                                            UserProfileDefaultMaxBikingHeartRateField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDefaultMaxHeartRateField(
-                                 size=self.__get_field_size(definition_message, UserProfileDefaultMaxHeartRateField.ID),
-                                 growable=definition_message is None),
-                             UserProfileHrSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileHrSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileSpeedSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileSpeedSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDistSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileDistSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfilePowerSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfilePowerSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileActivityClassField(
-                                 size=self.__get_field_size(definition_message, UserProfileActivityClassField.ID),
-                                 growable=definition_message is None),
-                             UserProfilePositionSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfilePositionSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileTemperatureSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileTemperatureSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileLocalIdField(
-                                 size=self.__get_field_size(definition_message, UserProfileLocalIdField.ID),
-                                 growable=definition_message is None),
-                             UserProfileGlobalIdField(
-                                 size=self.__get_field_size(definition_message, UserProfileGlobalIdField.ID),
-                                 growable=definition_message is None),
-                             UserProfileWakeTimeField(
-                                 size=self.__get_field_size(definition_message, UserProfileWakeTimeField.ID),
-                                 growable=definition_message is None),
-                             UserProfileSleepTimeField(
-                                 size=self.__get_field_size(definition_message, UserProfileSleepTimeField.ID),
-                                 growable=definition_message is None),
-                             UserProfileHeightSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileHeightSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileUserRunningStepLengthField(
-                                 size=self.__get_field_size(definition_message,
-                                                            UserProfileUserRunningStepLengthField.ID),
-                                 growable=definition_message is None),
-                             UserProfileUserWalkingStepLengthField(
-                                 size=self.__get_field_size(definition_message,
-                                                            UserProfileUserWalkingStepLengthField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDepthSettingField(
-                                 size=self.__get_field_size(definition_message, UserProfileDepthSettingField.ID),
-                                 growable=definition_message is None),
-                             UserProfileDiveCountField(
-                                 size=self.__get_field_size(definition_message, UserProfileDiveCountField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        UserProfileFriendlyNameField(
+            size=self.__get_field_size(definition_message, UserProfileFriendlyNameField.ID),
+            growable=definition_message is None), 
+        UserProfileGenderField(
+            size=self.__get_field_size(definition_message, UserProfileGenderField.ID),
+            growable=definition_message is None), 
+        UserProfileAgeField(
+            size=self.__get_field_size(definition_message, UserProfileAgeField.ID),
+            growable=definition_message is None), 
+        UserProfileHeightField(
+            size=self.__get_field_size(definition_message, UserProfileHeightField.ID),
+            growable=definition_message is None), 
+        UserProfileWeightField(
+            size=self.__get_field_size(definition_message, UserProfileWeightField.ID),
+            growable=definition_message is None), 
+        UserProfileLanguageField(
+            size=self.__get_field_size(definition_message, UserProfileLanguageField.ID),
+            growable=definition_message is None), 
+        UserProfileElevSettingField(
+            size=self.__get_field_size(definition_message, UserProfileElevSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileWeightSettingField(
+            size=self.__get_field_size(definition_message, UserProfileWeightSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileRestingHeartRateField(
+            size=self.__get_field_size(definition_message, UserProfileRestingHeartRateField.ID),
+            growable=definition_message is None), 
+        UserProfileDefaultMaxRunningHeartRateField(
+            size=self.__get_field_size(definition_message, UserProfileDefaultMaxRunningHeartRateField.ID),
+            growable=definition_message is None), 
+        UserProfileDefaultMaxBikingHeartRateField(
+            size=self.__get_field_size(definition_message, UserProfileDefaultMaxBikingHeartRateField.ID),
+            growable=definition_message is None), 
+        UserProfileDefaultMaxHeartRateField(
+            size=self.__get_field_size(definition_message, UserProfileDefaultMaxHeartRateField.ID),
+            growable=definition_message is None), 
+        UserProfileHrSettingField(
+            size=self.__get_field_size(definition_message, UserProfileHrSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileSpeedSettingField(
+            size=self.__get_field_size(definition_message, UserProfileSpeedSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileDistSettingField(
+            size=self.__get_field_size(definition_message, UserProfileDistSettingField.ID),
+            growable=definition_message is None), 
+        UserProfilePowerSettingField(
+            size=self.__get_field_size(definition_message, UserProfilePowerSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileActivityClassField(
+            size=self.__get_field_size(definition_message, UserProfileActivityClassField.ID),
+            growable=definition_message is None), 
+        UserProfilePositionSettingField(
+            size=self.__get_field_size(definition_message, UserProfilePositionSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileTemperatureSettingField(
+            size=self.__get_field_size(definition_message, UserProfileTemperatureSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileLocalIdField(
+            size=self.__get_field_size(definition_message, UserProfileLocalIdField.ID),
+            growable=definition_message is None), 
+        UserProfileGlobalIdField(
+            size=self.__get_field_size(definition_message, UserProfileGlobalIdField.ID),
+            growable=definition_message is None), 
+        UserProfileWakeTimeField(
+            size=self.__get_field_size(definition_message, UserProfileWakeTimeField.ID),
+            growable=definition_message is None), 
+        UserProfileSleepTimeField(
+            size=self.__get_field_size(definition_message, UserProfileSleepTimeField.ID),
+            growable=definition_message is None), 
+        UserProfileHeightSettingField(
+            size=self.__get_field_size(definition_message, UserProfileHeightSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileUserRunningStepLengthField(
+            size=self.__get_field_size(definition_message, UserProfileUserRunningStepLengthField.ID),
+            growable=definition_message is None), 
+        UserProfileUserWalkingStepLengthField(
+            size=self.__get_field_size(definition_message, UserProfileUserWalkingStepLengthField.ID),
+            growable=definition_message is None), 
+        UserProfileDepthSettingField(
+            size=self.__get_field_size(definition_message, UserProfileDepthSettingField.ID),
+            growable=definition_message is None), 
+        UserProfileDiveCountField(
+            size=self.__get_field_size(definition_message, UserProfileDiveCountField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -137,6 +134,9 @@ class UserProfileMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -145,6 +145,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -157,6 +159,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def friendly_name(self) -> Optional[str]:
         field = self.get_field(UserProfileFriendlyNameField.ID)
@@ -165,6 +169,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @friendly_name.setter
     def friendly_name(self, value: str):
@@ -177,6 +183,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def gender(self) -> Optional[Gender]:
         field = self.get_field(UserProfileGenderField.ID)
@@ -185,6 +193,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @gender.setter
     def gender(self, value: Gender):
@@ -197,6 +207,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def age(self) -> Optional[int]:
         field = self.get_field(UserProfileAgeField.ID)
@@ -205,6 +217,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @age.setter
     def age(self, value: int):
@@ -217,6 +231,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def height(self) -> Optional[float]:
         field = self.get_field(UserProfileHeightField.ID)
@@ -225,6 +241,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @height.setter
     def height(self, value: float):
@@ -237,6 +255,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def weight(self) -> Optional[float]:
         field = self.get_field(UserProfileWeightField.ID)
@@ -245,6 +265,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @weight.setter
     def weight(self, value: float):
@@ -257,6 +279,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def language(self) -> Optional[Language]:
         field = self.get_field(UserProfileLanguageField.ID)
@@ -265,6 +289,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @language.setter
     def language(self, value: Language):
@@ -277,6 +303,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def elev_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileElevSettingField.ID)
@@ -285,6 +313,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @elev_setting.setter
     def elev_setting(self, value: DisplayMeasure):
@@ -297,6 +327,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def weight_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileWeightSettingField.ID)
@@ -305,6 +337,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @weight_setting.setter
     def weight_setting(self, value: DisplayMeasure):
@@ -317,6 +351,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def resting_heart_rate(self) -> Optional[int]:
         field = self.get_field(UserProfileRestingHeartRateField.ID)
@@ -325,6 +361,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @resting_heart_rate.setter
     def resting_heart_rate(self, value: int):
@@ -337,6 +375,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def default_max_running_heart_rate(self) -> Optional[int]:
         field = self.get_field(UserProfileDefaultMaxRunningHeartRateField.ID)
@@ -345,6 +385,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @default_max_running_heart_rate.setter
     def default_max_running_heart_rate(self, value: int):
@@ -357,6 +399,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def default_max_biking_heart_rate(self) -> Optional[int]:
         field = self.get_field(UserProfileDefaultMaxBikingHeartRateField.ID)
@@ -365,6 +409,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @default_max_biking_heart_rate.setter
     def default_max_biking_heart_rate(self, value: int):
@@ -377,6 +423,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def default_max_heart_rate(self) -> Optional[int]:
         field = self.get_field(UserProfileDefaultMaxHeartRateField.ID)
@@ -385,6 +433,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @default_max_heart_rate.setter
     def default_max_heart_rate(self, value: int):
@@ -397,6 +447,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def hr_setting(self) -> Optional[DisplayHeart]:
         field = self.get_field(UserProfileHrSettingField.ID)
@@ -405,6 +457,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @hr_setting.setter
     def hr_setting(self, value: DisplayHeart):
@@ -417,6 +471,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def speed_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileSpeedSettingField.ID)
@@ -425,6 +481,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @speed_setting.setter
     def speed_setting(self, value: DisplayMeasure):
@@ -437,6 +495,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def dist_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileDistSettingField.ID)
@@ -445,6 +505,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @dist_setting.setter
     def dist_setting(self, value: DisplayMeasure):
@@ -457,6 +519,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def power_setting(self) -> Optional[DisplayPower]:
         field = self.get_field(UserProfilePowerSettingField.ID)
@@ -465,6 +529,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @power_setting.setter
     def power_setting(self, value: DisplayPower):
@@ -477,6 +543,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def activity_class(self) -> Optional[ActivityClass]:
         field = self.get_field(UserProfileActivityClassField.ID)
@@ -485,6 +553,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @activity_class.setter
     def activity_class(self, value: ActivityClass):
@@ -497,6 +567,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def position_setting(self) -> Optional[DisplayPosition]:
         field = self.get_field(UserProfilePositionSettingField.ID)
@@ -505,6 +577,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @position_setting.setter
     def position_setting(self, value: DisplayPosition):
@@ -517,6 +591,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def temperature_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileTemperatureSettingField.ID)
@@ -525,6 +601,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @temperature_setting.setter
     def temperature_setting(self, value: DisplayMeasure):
@@ -537,6 +615,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_profile_local_id(self) -> Optional[int]:
         field = self.get_field(UserProfileLocalIdField.ID)
@@ -545,6 +625,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_profile_local_id.setter
     def user_profile_local_id(self, value: int):
@@ -557,6 +639,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_profile_global_id(self) -> Optional[int]:
         field = self.get_field(UserProfileGlobalIdField.ID)
@@ -565,6 +649,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_profile_global_id.setter
     def user_profile_global_id(self, value: int):
@@ -577,6 +663,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def wake_time(self) -> Optional[int]:
         field = self.get_field(UserProfileWakeTimeField.ID)
@@ -585,6 +673,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @wake_time.setter
     def wake_time(self, value: int):
@@ -597,6 +687,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sleep_time(self) -> Optional[int]:
         field = self.get_field(UserProfileSleepTimeField.ID)
@@ -605,6 +697,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sleep_time.setter
     def sleep_time(self, value: int):
@@ -617,6 +711,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def height_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileHeightSettingField.ID)
@@ -625,6 +721,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @height_setting.setter
     def height_setting(self, value: DisplayMeasure):
@@ -637,6 +735,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_running_step_length(self) -> Optional[float]:
         field = self.get_field(UserProfileUserRunningStepLengthField.ID)
@@ -645,6 +745,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_running_step_length.setter
     def user_running_step_length(self, value: float):
@@ -657,6 +759,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_walking_step_length(self) -> Optional[float]:
         field = self.get_field(UserProfileUserWalkingStepLengthField.ID)
@@ -665,6 +769,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_walking_step_length.setter
     def user_walking_step_length(self, value: float):
@@ -677,6 +783,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def depth_setting(self) -> Optional[DisplayMeasure]:
         field = self.get_field(UserProfileDepthSettingField.ID)
@@ -685,6 +793,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @depth_setting.setter
     def depth_setting(self, value: DisplayMeasure):
@@ -697,6 +807,8 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def dive_count(self) -> Optional[int]:
         field = self.get_field(UserProfileDiveCountField.ID)
@@ -705,6 +817,8 @@ class UserProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @dive_count.setter
     def dive_count(self, value: int):
@@ -717,6 +831,11 @@ class UserProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -726,12 +845,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -743,12 +862,12 @@ class UserProfileFriendlyNameField(Field):
             name='friendly_name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -760,12 +879,12 @@ class UserProfileGenderField(Field):
             name='gender',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -777,14 +896,14 @@ class UserProfileAgeField(Field):
             name='age',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='years',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'years',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -796,14 +915,14 @@ class UserProfileHeightField(Field):
             name='height',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -815,14 +934,14 @@ class UserProfileWeightField(Field):
             name='weight',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='kg',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = 'kg',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -834,12 +953,12 @@ class UserProfileLanguageField(Field):
             name='language',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -851,12 +970,12 @@ class UserProfileElevSettingField(Field):
             name='elev_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -868,12 +987,12 @@ class UserProfileWeightSettingField(Field):
             name='weight_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -885,14 +1004,14 @@ class UserProfileRestingHeartRateField(Field):
             name='resting_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -904,14 +1023,14 @@ class UserProfileDefaultMaxRunningHeartRateField(Field):
             name='default_max_running_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -923,14 +1042,14 @@ class UserProfileDefaultMaxBikingHeartRateField(Field):
             name='default_max_biking_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -942,14 +1061,14 @@ class UserProfileDefaultMaxHeartRateField(Field):
             name='default_max_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='bpm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'bpm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -961,12 +1080,12 @@ class UserProfileHrSettingField(Field):
             name='hr_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -978,12 +1097,12 @@ class UserProfileSpeedSettingField(Field):
             name='speed_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -995,12 +1114,12 @@ class UserProfileDistSettingField(Field):
             name='dist_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1012,12 +1131,12 @@ class UserProfilePowerSettingField(Field):
             name='power_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1029,12 +1148,12 @@ class UserProfileActivityClassField(Field):
             name='activity_class',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1046,12 +1165,12 @@ class UserProfilePositionSettingField(Field):
             name='position_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1063,12 +1182,12 @@ class UserProfileTemperatureSettingField(Field):
             name='temperature_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1080,12 +1199,12 @@ class UserProfileLocalIdField(Field):
             name='local_id',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1097,12 +1216,12 @@ class UserProfileGlobalIdField(Field):
             name='global_id',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1114,12 +1233,12 @@ class UserProfileWakeTimeField(Field):
             name='wake_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1131,12 +1250,12 @@ class UserProfileSleepTimeField(Field):
             name='sleep_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1148,12 +1267,12 @@ class UserProfileHeightSettingField(Field):
             name='height_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1165,14 +1284,14 @@ class UserProfileUserRunningStepLengthField(Field):
             name='user_running_step_length',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1184,14 +1303,14 @@ class UserProfileUserWalkingStepLengthField(Field):
             name='user_walking_step_length',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1203,12 +1322,12 @@ class UserProfileDepthSettingField(Field):
             name='depth_setting',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1220,10 +1339,10 @@ class UserProfileDiveCountField(Field):
             name='dive_count',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

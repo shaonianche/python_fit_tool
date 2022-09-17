@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,22 +36,22 @@ class FieldCapabilitiesMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             FieldCapabilitiesFileField(
-                                 size=self.__get_field_size(definition_message, FieldCapabilitiesFileField.ID),
-                                 growable=definition_message is None),
-                             FieldCapabilitiesMesgNumField(
-                                 size=self.__get_field_size(definition_message, FieldCapabilitiesMesgNumField.ID),
-                                 growable=definition_message is None),
-                             FieldCapabilitiesFieldNumField(
-                                 size=self.__get_field_size(definition_message, FieldCapabilitiesFieldNumField.ID),
-                                 growable=definition_message is None),
-                             FieldCapabilitiesCountField(
-                                 size=self.__get_field_size(definition_message, FieldCapabilitiesCountField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        FieldCapabilitiesFileField(
+            size=self.__get_field_size(definition_message, FieldCapabilitiesFileField.ID),
+            growable=definition_message is None), 
+        FieldCapabilitiesMesgNumField(
+            size=self.__get_field_size(definition_message, FieldCapabilitiesMesgNumField.ID),
+            growable=definition_message is None), 
+        FieldCapabilitiesFieldNumField(
+            size=self.__get_field_size(definition_message, FieldCapabilitiesFieldNumField.ID),
+            growable=definition_message is None), 
+        FieldCapabilitiesCountField(
+            size=self.__get_field_size(definition_message, FieldCapabilitiesCountField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -61,6 +62,9 @@ class FieldCapabilitiesMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -69,6 +73,8 @@ class FieldCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -81,6 +87,8 @@ class FieldCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def file(self) -> Optional[FileType]:
         field = self.get_field(FieldCapabilitiesFileField.ID)
@@ -89,6 +97,8 @@ class FieldCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @file.setter
     def file(self, value: FileType):
@@ -101,6 +111,8 @@ class FieldCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def mesg_num(self) -> Optional[int]:
         field = self.get_field(FieldCapabilitiesMesgNumField.ID)
@@ -109,6 +121,8 @@ class FieldCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @mesg_num.setter
     def mesg_num(self, value: int):
@@ -121,6 +135,8 @@ class FieldCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def field_num(self) -> Optional[int]:
         field = self.get_field(FieldCapabilitiesFieldNumField.ID)
@@ -129,6 +145,8 @@ class FieldCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @field_num.setter
     def field_num(self, value: int):
@@ -141,6 +159,8 @@ class FieldCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def count(self) -> Optional[int]:
         field = self.get_field(FieldCapabilitiesCountField.ID)
@@ -149,6 +169,8 @@ class FieldCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @count.setter
     def count(self, value: int):
@@ -161,6 +183,11 @@ class FieldCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -170,12 +197,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -187,12 +214,12 @@ class FieldCapabilitiesFileField(Field):
             name='file',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -204,12 +231,12 @@ class FieldCapabilitiesMesgNumField(Field):
             name='mesg_num',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -221,12 +248,12 @@ class FieldCapabilitiesFieldNumField(Field):
             name='field_num',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -238,10 +265,10 @@ class FieldCapabilitiesCountField(Field):
             name='count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

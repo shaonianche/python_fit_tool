@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,107 +36,103 @@ class BikeProfileMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileNameField(
-                                 size=self.__get_field_size(definition_message, BikeProfileNameField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileSportField(
-                                 size=self.__get_field_size(definition_message, BikeProfileSportField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileSubSportField(
-                                 size=self.__get_field_size(definition_message, BikeProfileSubSportField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileOdometerField(
-                                 size=self.__get_field_size(definition_message, BikeProfileOdometerField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeSpdAntIdField(
-                                 size=self.__get_field_size(definition_message, BikeProfileBikeSpdAntIdField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeCadAntIdField(
-                                 size=self.__get_field_size(definition_message, BikeProfileBikeCadAntIdField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeSpdcadAntIdField(
-                                 size=self.__get_field_size(definition_message, BikeProfileBikeSpdcadAntIdField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikePowerAntIdField(
-                                 size=self.__get_field_size(definition_message, BikeProfileBikePowerAntIdField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileCustomWheelsizeField(
-                                 size=self.__get_field_size(definition_message, BikeProfileCustomWheelsizeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileAutoWheelsizeField(
-                                 size=self.__get_field_size(definition_message, BikeProfileAutoWheelsizeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeWeightField(
-                                 size=self.__get_field_size(definition_message, BikeProfileBikeWeightField.ID),
-                                 growable=definition_message is None),
-                             BikeProfilePowerCalFactorField(
-                                 size=self.__get_field_size(definition_message, BikeProfilePowerCalFactorField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileAutoWheelCalField(
-                                 size=self.__get_field_size(definition_message, BikeProfileAutoWheelCalField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileAutoPowerZeroField(
-                                 size=self.__get_field_size(definition_message, BikeProfileAutoPowerZeroField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileIdField(
-                                 size=self.__get_field_size(definition_message, BikeProfileIdField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileSpdEnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfileSpdEnabledField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileCadEnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfileCadEnabledField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileSpdcadEnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfileSpdcadEnabledField.ID),
-                                 growable=definition_message is None),
-                             BikeProfilePowerEnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfilePowerEnabledField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileCrankLengthField(
-                                 size=self.__get_field_size(definition_message, BikeProfileCrankLengthField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileEnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfileEnabledField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeSpdAntIdTransTypeField(
-                                 size=self.__get_field_size(definition_message,
-                                                            BikeProfileBikeSpdAntIdTransTypeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeCadAntIdTransTypeField(
-                                 size=self.__get_field_size(definition_message,
-                                                            BikeProfileBikeCadAntIdTransTypeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikeSpdcadAntIdTransTypeField(
-                                 size=self.__get_field_size(definition_message,
-                                                            BikeProfileBikeSpdcadAntIdTransTypeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileBikePowerAntIdTransTypeField(
-                                 size=self.__get_field_size(definition_message,
-                                                            BikeProfileBikePowerAntIdTransTypeField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileOdometerRolloverField(
-                                 size=self.__get_field_size(definition_message, BikeProfileOdometerRolloverField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileFrontGearNumField(
-                                 size=self.__get_field_size(definition_message, BikeProfileFrontGearNumField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileFrontGearField(
-                                 size=self.__get_field_size(definition_message, BikeProfileFrontGearField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileRearGearNumField(
-                                 size=self.__get_field_size(definition_message, BikeProfileRearGearNumField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileRearGearField(
-                                 size=self.__get_field_size(definition_message, BikeProfileRearGearField.ID),
-                                 growable=definition_message is None),
-                             BikeProfileShimanoDi2EnabledField(
-                                 size=self.__get_field_size(definition_message, BikeProfileShimanoDi2EnabledField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        BikeProfileNameField(
+            size=self.__get_field_size(definition_message, BikeProfileNameField.ID),
+            growable=definition_message is None), 
+        BikeProfileSportField(
+            size=self.__get_field_size(definition_message, BikeProfileSportField.ID),
+            growable=definition_message is None), 
+        BikeProfileSubSportField(
+            size=self.__get_field_size(definition_message, BikeProfileSubSportField.ID),
+            growable=definition_message is None), 
+        BikeProfileOdometerField(
+            size=self.__get_field_size(definition_message, BikeProfileOdometerField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeSpdAntIdField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeSpdAntIdField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeCadAntIdField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeCadAntIdField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeSpdcadAntIdField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeSpdcadAntIdField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikePowerAntIdField(
+            size=self.__get_field_size(definition_message, BikeProfileBikePowerAntIdField.ID),
+            growable=definition_message is None), 
+        BikeProfileCustomWheelsizeField(
+            size=self.__get_field_size(definition_message, BikeProfileCustomWheelsizeField.ID),
+            growable=definition_message is None), 
+        BikeProfileAutoWheelsizeField(
+            size=self.__get_field_size(definition_message, BikeProfileAutoWheelsizeField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeWeightField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeWeightField.ID),
+            growable=definition_message is None), 
+        BikeProfilePowerCalFactorField(
+            size=self.__get_field_size(definition_message, BikeProfilePowerCalFactorField.ID),
+            growable=definition_message is None), 
+        BikeProfileAutoWheelCalField(
+            size=self.__get_field_size(definition_message, BikeProfileAutoWheelCalField.ID),
+            growable=definition_message is None), 
+        BikeProfileAutoPowerZeroField(
+            size=self.__get_field_size(definition_message, BikeProfileAutoPowerZeroField.ID),
+            growable=definition_message is None), 
+        BikeProfileIdField(
+            size=self.__get_field_size(definition_message, BikeProfileIdField.ID),
+            growable=definition_message is None), 
+        BikeProfileSpdEnabledField(
+            size=self.__get_field_size(definition_message, BikeProfileSpdEnabledField.ID),
+            growable=definition_message is None), 
+        BikeProfileCadEnabledField(
+            size=self.__get_field_size(definition_message, BikeProfileCadEnabledField.ID),
+            growable=definition_message is None), 
+        BikeProfileSpdcadEnabledField(
+            size=self.__get_field_size(definition_message, BikeProfileSpdcadEnabledField.ID),
+            growable=definition_message is None), 
+        BikeProfilePowerEnabledField(
+            size=self.__get_field_size(definition_message, BikeProfilePowerEnabledField.ID),
+            growable=definition_message is None), 
+        BikeProfileCrankLengthField(
+            size=self.__get_field_size(definition_message, BikeProfileCrankLengthField.ID),
+            growable=definition_message is None), 
+        BikeProfileEnabledField(
+            size=self.__get_field_size(definition_message, BikeProfileEnabledField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeSpdAntIdTransTypeField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeSpdAntIdTransTypeField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeCadAntIdTransTypeField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeCadAntIdTransTypeField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikeSpdcadAntIdTransTypeField(
+            size=self.__get_field_size(definition_message, BikeProfileBikeSpdcadAntIdTransTypeField.ID),
+            growable=definition_message is None), 
+        BikeProfileBikePowerAntIdTransTypeField(
+            size=self.__get_field_size(definition_message, BikeProfileBikePowerAntIdTransTypeField.ID),
+            growable=definition_message is None), 
+        BikeProfileOdometerRolloverField(
+            size=self.__get_field_size(definition_message, BikeProfileOdometerRolloverField.ID),
+            growable=definition_message is None), 
+        BikeProfileFrontGearNumField(
+            size=self.__get_field_size(definition_message, BikeProfileFrontGearNumField.ID),
+            growable=definition_message is None), 
+        BikeProfileFrontGearField(
+            size=self.__get_field_size(definition_message, BikeProfileFrontGearField.ID),
+            growable=definition_message is None), 
+        BikeProfileRearGearNumField(
+            size=self.__get_field_size(definition_message, BikeProfileRearGearNumField.ID),
+            growable=definition_message is None), 
+        BikeProfileRearGearField(
+            size=self.__get_field_size(definition_message, BikeProfileRearGearField.ID),
+            growable=definition_message is None), 
+        BikeProfileShimanoDi2EnabledField(
+            size=self.__get_field_size(definition_message, BikeProfileShimanoDi2EnabledField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -146,6 +143,9 @@ class BikeProfileMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -154,6 +154,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -166,6 +168,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_profile_name(self) -> Optional[str]:
         field = self.get_field(BikeProfileNameField.ID)
@@ -174,6 +178,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_profile_name.setter
     def bike_profile_name(self, value: str):
@@ -186,6 +192,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(BikeProfileSportField.ID)
@@ -194,6 +202,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sport.setter
     def sport(self, value: Sport):
@@ -206,6 +216,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sub_sport(self) -> Optional[SubSport]:
         field = self.get_field(BikeProfileSubSportField.ID)
@@ -214,6 +226,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sub_sport.setter
     def sub_sport(self, value: SubSport):
@@ -226,6 +240,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def odometer(self) -> Optional[float]:
         field = self.get_field(BikeProfileOdometerField.ID)
@@ -234,6 +250,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @odometer.setter
     def odometer(self, value: float):
@@ -246,6 +264,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_spd_ant_id(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeSpdAntIdField.ID)
@@ -254,6 +274,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_spd_ant_id.setter
     def bike_spd_ant_id(self, value: int):
@@ -266,6 +288,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_cad_ant_id(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeCadAntIdField.ID)
@@ -274,6 +298,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_cad_ant_id.setter
     def bike_cad_ant_id(self, value: int):
@@ -286,6 +312,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_spdcad_ant_id(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeSpdcadAntIdField.ID)
@@ -294,6 +322,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_spdcad_ant_id.setter
     def bike_spdcad_ant_id(self, value: int):
@@ -306,6 +336,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_power_ant_id(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikePowerAntIdField.ID)
@@ -314,6 +346,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_power_ant_id.setter
     def bike_power_ant_id(self, value: int):
@@ -326,6 +360,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def custom_wheelsize(self) -> Optional[float]:
         field = self.get_field(BikeProfileCustomWheelsizeField.ID)
@@ -334,6 +370,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @custom_wheelsize.setter
     def custom_wheelsize(self, value: float):
@@ -346,6 +384,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def auto_wheelsize(self) -> Optional[float]:
         field = self.get_field(BikeProfileAutoWheelsizeField.ID)
@@ -354,6 +394,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @auto_wheelsize.setter
     def auto_wheelsize(self, value: float):
@@ -366,6 +408,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_weight(self) -> Optional[float]:
         field = self.get_field(BikeProfileBikeWeightField.ID)
@@ -374,6 +418,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_weight.setter
     def bike_weight(self, value: float):
@@ -386,6 +432,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def power_cal_factor(self) -> Optional[float]:
         field = self.get_field(BikeProfilePowerCalFactorField.ID)
@@ -394,6 +442,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @power_cal_factor.setter
     def power_cal_factor(self, value: float):
@@ -406,6 +456,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def auto_wheel_cal(self) -> Optional[bool]:
         field = self.get_field(BikeProfileAutoWheelCalField.ID)
@@ -414,6 +466,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @auto_wheel_cal.setter
     def auto_wheel_cal(self, value: bool):
@@ -426,6 +480,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def auto_power_zero(self) -> Optional[bool]:
         field = self.get_field(BikeProfileAutoPowerZeroField.ID)
@@ -434,6 +490,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @auto_power_zero.setter
     def auto_power_zero(self, value: bool):
@@ -446,6 +504,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def id(self) -> Optional[int]:
         field = self.get_field(BikeProfileIdField.ID)
@@ -454,6 +514,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @id.setter
     def id(self, value: int):
@@ -466,6 +528,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def spd_enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfileSpdEnabledField.ID)
@@ -474,6 +538,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @spd_enabled.setter
     def spd_enabled(self, value: bool):
@@ -486,6 +552,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def cad_enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfileCadEnabledField.ID)
@@ -494,6 +562,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @cad_enabled.setter
     def cad_enabled(self, value: bool):
@@ -506,6 +576,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def spdcad_enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfileSpdcadEnabledField.ID)
@@ -514,6 +586,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @spdcad_enabled.setter
     def spdcad_enabled(self, value: bool):
@@ -526,6 +600,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def power_enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfilePowerEnabledField.ID)
@@ -534,6 +610,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @power_enabled.setter
     def power_enabled(self, value: bool):
@@ -546,6 +624,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def crank_length(self) -> Optional[float]:
         field = self.get_field(BikeProfileCrankLengthField.ID)
@@ -554,6 +634,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @crank_length.setter
     def crank_length(self, value: float):
@@ -566,6 +648,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfileEnabledField.ID)
@@ -574,6 +658,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enabled.setter
     def enabled(self, value: bool):
@@ -586,6 +672,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_spd_ant_id_trans_type(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeSpdAntIdTransTypeField.ID)
@@ -594,6 +682,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_spd_ant_id_trans_type.setter
     def bike_spd_ant_id_trans_type(self, value: int):
@@ -606,6 +696,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_cad_ant_id_trans_type(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeCadAntIdTransTypeField.ID)
@@ -614,6 +706,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_cad_ant_id_trans_type.setter
     def bike_cad_ant_id_trans_type(self, value: int):
@@ -626,6 +720,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_spdcad_ant_id_trans_type(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikeSpdcadAntIdTransTypeField.ID)
@@ -634,6 +730,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_spdcad_ant_id_trans_type.setter
     def bike_spdcad_ant_id_trans_type(self, value: int):
@@ -646,6 +744,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bike_power_ant_id_trans_type(self) -> Optional[int]:
         field = self.get_field(BikeProfileBikePowerAntIdTransTypeField.ID)
@@ -654,6 +754,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bike_power_ant_id_trans_type.setter
     def bike_power_ant_id_trans_type(self, value: int):
@@ -666,6 +768,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def odometer_rollover(self) -> Optional[int]:
         field = self.get_field(BikeProfileOdometerRolloverField.ID)
@@ -674,6 +778,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @odometer_rollover.setter
     def odometer_rollover(self, value: int):
@@ -686,6 +792,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def front_gear_num(self) -> Optional[int]:
         field = self.get_field(BikeProfileFrontGearNumField.ID)
@@ -694,6 +802,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @front_gear_num.setter
     def front_gear_num(self, value: int):
@@ -706,6 +816,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def front_gear(self) -> Optional[int]:
         field = self.get_field(BikeProfileFrontGearField.ID)
@@ -714,6 +826,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @front_gear.setter
     def front_gear(self, value: int):
@@ -726,6 +840,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def rear_gear_num(self) -> Optional[int]:
         field = self.get_field(BikeProfileRearGearNumField.ID)
@@ -734,6 +850,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @rear_gear_num.setter
     def rear_gear_num(self, value: int):
@@ -746,6 +864,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def rear_gear(self) -> Optional[int]:
         field = self.get_field(BikeProfileRearGearField.ID)
@@ -754,6 +874,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @rear_gear.setter
     def rear_gear(self, value: int):
@@ -766,6 +888,8 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def shimano_di2_enabled(self) -> Optional[bool]:
         field = self.get_field(BikeProfileShimanoDi2EnabledField.ID)
@@ -774,6 +898,8 @@ class BikeProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @shimano_di2_enabled.setter
     def shimano_di2_enabled(self, value: bool):
@@ -786,6 +912,11 @@ class BikeProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -795,12 +926,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -812,12 +943,12 @@ class BikeProfileNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -829,12 +960,12 @@ class BikeProfileSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -846,12 +977,12 @@ class BikeProfileSubSportField(Field):
             name='sub_sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -863,14 +994,14 @@ class BikeProfileOdometerField(Field):
             name='odometer',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=100,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -882,12 +1013,12 @@ class BikeProfileBikeSpdAntIdField(Field):
             name='bike_spd_ant_id',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -899,12 +1030,12 @@ class BikeProfileBikeCadAntIdField(Field):
             name='bike_cad_ant_id',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -916,12 +1047,12 @@ class BikeProfileBikeSpdcadAntIdField(Field):
             name='bike_spdcad_ant_id',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -933,12 +1064,12 @@ class BikeProfileBikePowerAntIdField(Field):
             name='bike_power_ant_id',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -950,14 +1081,14 @@ class BikeProfileCustomWheelsizeField(Field):
             name='custom_wheelsize',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -969,14 +1100,14 @@ class BikeProfileAutoWheelsizeField(Field):
             name='auto_wheelsize',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -988,14 +1119,14 @@ class BikeProfileBikeWeightField(Field):
             name='bike_weight',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='kg',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = 'kg',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1007,14 +1138,14 @@ class BikeProfilePowerCalFactorField(Field):
             name='power_cal_factor',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=10,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 10,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1026,12 +1157,12 @@ class BikeProfileAutoWheelCalField(Field):
             name='auto_wheel_cal',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1043,12 +1174,12 @@ class BikeProfileAutoPowerZeroField(Field):
             name='auto_power_zero',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1060,12 +1191,12 @@ class BikeProfileIdField(Field):
             name='id',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1077,12 +1208,12 @@ class BikeProfileSpdEnabledField(Field):
             name='spd_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1094,12 +1225,12 @@ class BikeProfileCadEnabledField(Field):
             name='cad_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1111,12 +1242,12 @@ class BikeProfileSpdcadEnabledField(Field):
             name='spdcad_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1128,12 +1259,12 @@ class BikeProfilePowerEnabledField(Field):
             name='power_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1145,14 +1276,14 @@ class BikeProfileCrankLengthField(Field):
             name='crank_length',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=-110,
-            scale=2,
-            size=size,
-            units='mm',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -110,
+                 scale = 2,
+                         size = size,
+        units = 'mm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1164,12 +1295,12 @@ class BikeProfileEnabledField(Field):
             name='enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1181,12 +1312,12 @@ class BikeProfileBikeSpdAntIdTransTypeField(Field):
             name='bike_spd_ant_id_trans_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1198,12 +1329,12 @@ class BikeProfileBikeCadAntIdTransTypeField(Field):
             name='bike_cad_ant_id_trans_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1215,12 +1346,12 @@ class BikeProfileBikeSpdcadAntIdTransTypeField(Field):
             name='bike_spdcad_ant_id_trans_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1232,12 +1363,12 @@ class BikeProfileBikePowerAntIdTransTypeField(Field):
             name='bike_power_ant_id_trans_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1249,12 +1380,12 @@ class BikeProfileOdometerRolloverField(Field):
             name='odometer_rollover',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1266,12 +1397,12 @@ class BikeProfileFrontGearNumField(Field):
             name='front_gear_num',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1283,12 +1414,12 @@ class BikeProfileFrontGearField(Field):
             name='front_gear',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1300,12 +1431,12 @@ class BikeProfileRearGearNumField(Field):
             name='rear_gear_num',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1317,12 +1448,12 @@ class BikeProfileRearGearField(Field):
             name='rear_gear',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -1334,10 +1465,10 @@ class BikeProfileShimanoDi2EnabledField(Field):
             name='shimano_di2_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

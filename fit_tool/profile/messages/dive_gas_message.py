@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,19 +36,19 @@ class DiveGasMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             DiveGasHeliumContentField(
-                                 size=self.__get_field_size(definition_message, DiveGasHeliumContentField.ID),
-                                 growable=definition_message is None),
-                             DiveGasOxygenContentField(
-                                 size=self.__get_field_size(definition_message, DiveGasOxygenContentField.ID),
-                                 growable=definition_message is None),
-                             DiveGasStatusField(
-                                 size=self.__get_field_size(definition_message, DiveGasStatusField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        DiveGasHeliumContentField(
+            size=self.__get_field_size(definition_message, DiveGasHeliumContentField.ID),
+            growable=definition_message is None), 
+        DiveGasOxygenContentField(
+            size=self.__get_field_size(definition_message, DiveGasOxygenContentField.ID),
+            growable=definition_message is None), 
+        DiveGasStatusField(
+            size=self.__get_field_size(definition_message, DiveGasStatusField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -58,6 +59,9 @@ class DiveGasMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -66,6 +70,8 @@ class DiveGasMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -78,6 +84,8 @@ class DiveGasMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def helium_content(self) -> Optional[int]:
         field = self.get_field(DiveGasHeliumContentField.ID)
@@ -86,6 +94,8 @@ class DiveGasMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @helium_content.setter
     def helium_content(self, value: int):
@@ -98,6 +108,8 @@ class DiveGasMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def oxygen_content(self) -> Optional[int]:
         field = self.get_field(DiveGasOxygenContentField.ID)
@@ -106,6 +118,8 @@ class DiveGasMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @oxygen_content.setter
     def oxygen_content(self, value: int):
@@ -118,6 +132,8 @@ class DiveGasMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def status(self) -> Optional[DiveGasStatus]:
         field = self.get_field(DiveGasStatusField.ID)
@@ -126,6 +142,8 @@ class DiveGasMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @status.setter
     def status(self, value: DiveGasStatus):
@@ -138,6 +156,11 @@ class DiveGasMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -147,12 +170,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -164,14 +187,14 @@ class DiveGasHeliumContentField(Field):
             name='helium_content',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -183,14 +206,14 @@ class DiveGasOxygenContentField(Field):
             name='oxygen_content',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='percent',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'percent',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -202,10 +225,10 @@ class DiveGasStatusField(Field):
             name='status',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

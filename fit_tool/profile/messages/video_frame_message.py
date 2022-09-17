@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class VideoFrameMessage(DataMessage):
@@ -34,16 +36,16 @@ class VideoFrameMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             VideoFrameTimestampMsField(
-                                 size=self.__get_field_size(definition_message, VideoFrameTimestampMsField.ID),
-                                 growable=definition_message is None),
-                             VideoFrameFrameNumberField(
-                                 size=self.__get_field_size(definition_message, VideoFrameFrameNumberField.ID),
-                                 growable=definition_message is None)
-                         ])
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        VideoFrameTimestampMsField(
+            size=self.__get_field_size(definition_message, VideoFrameTimestampMsField.ID),
+            growable=definition_message is None), 
+        VideoFrameFrameNumberField(
+            size=self.__get_field_size(definition_message, VideoFrameFrameNumberField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -54,7 +56,9 @@ class VideoFrameMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -64,6 +68,7 @@ class VideoFrameMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -78,6 +83,8 @@ class VideoFrameMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def timestamp_ms(self) -> Optional[int]:
         field = self.get_field(VideoFrameTimestampMsField.ID)
@@ -86,6 +93,8 @@ class VideoFrameMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @timestamp_ms.setter
     def timestamp_ms(self, value: int):
@@ -98,6 +107,8 @@ class VideoFrameMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def frame_number(self) -> Optional[int]:
         field = self.get_field(VideoFrameFrameNumberField.ID)
@@ -106,6 +117,8 @@ class VideoFrameMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @frame_number.setter
     def frame_number(self, value: int):
@@ -118,6 +131,11 @@ class VideoFrameMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class TimestampField(Field):
     ID = 253
@@ -127,14 +145,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -146,14 +164,14 @@ class VideoFrameTimestampMsField(Field):
             name='timestamp_ms',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            units='ms',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'ms',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -165,10 +183,10 @@ class VideoFrameFrameNumberField(Field):
             name='frame_number',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

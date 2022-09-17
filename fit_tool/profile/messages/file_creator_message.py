@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class FileCreatorMessage(DataMessage):
@@ -34,13 +36,13 @@ class FileCreatorMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             FileCreatorSoftwareVersionField(
-                                 size=self.__get_field_size(definition_message, FileCreatorSoftwareVersionField.ID),
-                                 growable=definition_message is None),
-                             FileCreatorHardwareVersionField(
-                                 size=self.__get_field_size(definition_message, FileCreatorHardwareVersionField.ID),
-                                 growable=definition_message is None)
-                         ])
+        FileCreatorSoftwareVersionField(
+            size=self.__get_field_size(definition_message, FileCreatorSoftwareVersionField.ID),
+            growable=definition_message is None), 
+        FileCreatorHardwareVersionField(
+            size=self.__get_field_size(definition_message, FileCreatorHardwareVersionField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -51,6 +53,9 @@ class FileCreatorMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def software_version(self) -> Optional[int]:
         field = self.get_field(FileCreatorSoftwareVersionField.ID)
@@ -59,6 +64,8 @@ class FileCreatorMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @software_version.setter
     def software_version(self, value: int):
@@ -71,6 +78,8 @@ class FileCreatorMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def hardware_version(self) -> Optional[int]:
         field = self.get_field(FileCreatorHardwareVersionField.ID)
@@ -79,6 +88,8 @@ class FileCreatorMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @hardware_version.setter
     def hardware_version(self, value: int):
@@ -91,6 +102,11 @@ class FileCreatorMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class FileCreatorSoftwareVersionField(Field):
     ID = 0
@@ -100,12 +116,12 @@ class FileCreatorSoftwareVersionField(Field):
             name='software_version',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -117,10 +133,10 @@ class FileCreatorHardwareVersionField(Field):
             name='hardware_version',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class JumpMessage(DataMessage):
@@ -34,37 +36,37 @@ class JumpMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             JumpDistanceField(
-                                 size=self.__get_field_size(definition_message, JumpDistanceField.ID),
-                                 growable=definition_message is None),
-                             JumpHeightField(
-                                 size=self.__get_field_size(definition_message, JumpHeightField.ID),
-                                 growable=definition_message is None),
-                             JumpRotationsField(
-                                 size=self.__get_field_size(definition_message, JumpRotationsField.ID),
-                                 growable=definition_message is None),
-                             JumpHangTimeField(
-                                 size=self.__get_field_size(definition_message, JumpHangTimeField.ID),
-                                 growable=definition_message is None),
-                             JumpScoreField(
-                                 size=self.__get_field_size(definition_message, JumpScoreField.ID),
-                                 growable=definition_message is None),
-                             JumpPositionLatField(
-                                 size=self.__get_field_size(definition_message, JumpPositionLatField.ID),
-                                 growable=definition_message is None),
-                             JumpPositionLongField(
-                                 size=self.__get_field_size(definition_message, JumpPositionLongField.ID),
-                                 growable=definition_message is None),
-                             JumpSpeedField(
-                                 size=self.__get_field_size(definition_message, JumpSpeedField.ID),
-                                 growable=definition_message is None),
-                             JumpEnhancedSpeedField(
-                                 size=self.__get_field_size(definition_message, JumpEnhancedSpeedField.ID),
-                                 growable=definition_message is None)
-                         ])
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        JumpDistanceField(
+            size=self.__get_field_size(definition_message, JumpDistanceField.ID),
+            growable=definition_message is None), 
+        JumpHeightField(
+            size=self.__get_field_size(definition_message, JumpHeightField.ID),
+            growable=definition_message is None), 
+        JumpRotationsField(
+            size=self.__get_field_size(definition_message, JumpRotationsField.ID),
+            growable=definition_message is None), 
+        JumpHangTimeField(
+            size=self.__get_field_size(definition_message, JumpHangTimeField.ID),
+            growable=definition_message is None), 
+        JumpScoreField(
+            size=self.__get_field_size(definition_message, JumpScoreField.ID),
+            growable=definition_message is None), 
+        JumpPositionLatField(
+            size=self.__get_field_size(definition_message, JumpPositionLatField.ID),
+            growable=definition_message is None), 
+        JumpPositionLongField(
+            size=self.__get_field_size(definition_message, JumpPositionLongField.ID),
+            growable=definition_message is None), 
+        JumpSpeedField(
+            size=self.__get_field_size(definition_message, JumpSpeedField.ID),
+            growable=definition_message is None), 
+        JumpEnhancedSpeedField(
+            size=self.__get_field_size(definition_message, JumpEnhancedSpeedField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -75,7 +77,9 @@ class JumpMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -85,6 +89,7 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -99,6 +104,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def distance(self) -> Optional[float]:
         field = self.get_field(JumpDistanceField.ID)
@@ -107,6 +114,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @distance.setter
     def distance(self, value: float):
@@ -119,6 +128,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def height(self) -> Optional[float]:
         field = self.get_field(JumpHeightField.ID)
@@ -127,6 +138,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @height.setter
     def height(self, value: float):
@@ -139,6 +152,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def rotations(self) -> Optional[int]:
         field = self.get_field(JumpRotationsField.ID)
@@ -147,6 +162,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @rotations.setter
     def rotations(self, value: int):
@@ -159,6 +176,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def hang_time(self) -> Optional[float]:
         field = self.get_field(JumpHangTimeField.ID)
@@ -167,6 +186,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @hang_time.setter
     def hang_time(self, value: float):
@@ -179,6 +200,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def score(self) -> Optional[float]:
         field = self.get_field(JumpScoreField.ID)
@@ -187,6 +210,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @score.setter
     def score(self, value: float):
@@ -199,6 +224,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def position_lat(self) -> Optional[float]:
         field = self.get_field(JumpPositionLatField.ID)
@@ -207,6 +234,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @position_lat.setter
     def position_lat(self, value: float):
@@ -219,6 +248,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def position_long(self) -> Optional[float]:
         field = self.get_field(JumpPositionLongField.ID)
@@ -227,6 +258,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @position_long.setter
     def position_long(self, value: float):
@@ -239,6 +272,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def speed(self) -> Optional[float]:
         field = self.get_field(JumpSpeedField.ID)
@@ -247,6 +282,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @speed.setter
     def speed(self, value: float):
@@ -259,6 +296,8 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enhanced_speed(self) -> Optional[float]:
         field = self.get_field(JumpEnhancedSpeedField.ID)
@@ -267,6 +306,8 @@ class JumpMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enhanced_speed.setter
     def enhanced_speed(self, value: float):
@@ -279,6 +320,11 @@ class JumpMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class TimestampField(Field):
     ID = 253
@@ -288,14 +334,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -307,14 +353,14 @@ class JumpDistanceField(Field):
             name='distance',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -326,14 +372,14 @@ class JumpHeightField(Field):
             name='height',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -345,12 +391,12 @@ class JumpRotationsField(Field):
             name='rotations',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -362,14 +408,14 @@ class JumpHangTimeField(Field):
             name='hang_time',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -381,12 +427,12 @@ class JumpScoreField(Field):
             name='score',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -398,14 +444,14 @@ class JumpPositionLatField(Field):
             name='position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -417,14 +463,14 @@ class JumpPositionLongField(Field):
             name='position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=11930464.711111112,
-            size=size,
-            units='degrees',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 11930464.711111112,
+                         size = size,
+        units = 'degrees',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -436,14 +482,14 @@ class JumpSpeedField(Field):
             name='speed',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -455,12 +501,12 @@ class JumpEnhancedSpeedField(Field):
             name='enhanced_speed',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m/s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm/s',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )

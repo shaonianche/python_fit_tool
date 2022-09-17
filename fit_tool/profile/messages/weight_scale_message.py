@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class WeightScaleMessage(DataMessage):
@@ -34,46 +36,46 @@ class WeightScaleMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleWeightField(
-                                 size=self.__get_field_size(definition_message, WeightScaleWeightField.ID),
-                                 growable=definition_message is None),
-                             WeightScalePercentFatField(
-                                 size=self.__get_field_size(definition_message, WeightScalePercentFatField.ID),
-                                 growable=definition_message is None),
-                             WeightScalePercentHydrationField(
-                                 size=self.__get_field_size(definition_message, WeightScalePercentHydrationField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleVisceralFatMassField(
-                                 size=self.__get_field_size(definition_message, WeightScaleVisceralFatMassField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleBoneMassField(
-                                 size=self.__get_field_size(definition_message, WeightScaleBoneMassField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleMuscleMassField(
-                                 size=self.__get_field_size(definition_message, WeightScaleMuscleMassField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleBasalMetField(
-                                 size=self.__get_field_size(definition_message, WeightScaleBasalMetField.ID),
-                                 growable=definition_message is None),
-                             WeightScalePhysiqueRatingField(
-                                 size=self.__get_field_size(definition_message, WeightScalePhysiqueRatingField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleActiveMetField(
-                                 size=self.__get_field_size(definition_message, WeightScaleActiveMetField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleMetabolicAgeField(
-                                 size=self.__get_field_size(definition_message, WeightScaleMetabolicAgeField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleVisceralFatRatingField(
-                                 size=self.__get_field_size(definition_message, WeightScaleVisceralFatRatingField.ID),
-                                 growable=definition_message is None),
-                             WeightScaleUserProfileIndexField(
-                                 size=self.__get_field_size(definition_message, WeightScaleUserProfileIndexField.ID),
-                                 growable=definition_message is None)
-                         ])
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        WeightScaleWeightField(
+            size=self.__get_field_size(definition_message, WeightScaleWeightField.ID),
+            growable=definition_message is None), 
+        WeightScalePercentFatField(
+            size=self.__get_field_size(definition_message, WeightScalePercentFatField.ID),
+            growable=definition_message is None), 
+        WeightScalePercentHydrationField(
+            size=self.__get_field_size(definition_message, WeightScalePercentHydrationField.ID),
+            growable=definition_message is None), 
+        WeightScaleVisceralFatMassField(
+            size=self.__get_field_size(definition_message, WeightScaleVisceralFatMassField.ID),
+            growable=definition_message is None), 
+        WeightScaleBoneMassField(
+            size=self.__get_field_size(definition_message, WeightScaleBoneMassField.ID),
+            growable=definition_message is None), 
+        WeightScaleMuscleMassField(
+            size=self.__get_field_size(definition_message, WeightScaleMuscleMassField.ID),
+            growable=definition_message is None), 
+        WeightScaleBasalMetField(
+            size=self.__get_field_size(definition_message, WeightScaleBasalMetField.ID),
+            growable=definition_message is None), 
+        WeightScalePhysiqueRatingField(
+            size=self.__get_field_size(definition_message, WeightScalePhysiqueRatingField.ID),
+            growable=definition_message is None), 
+        WeightScaleActiveMetField(
+            size=self.__get_field_size(definition_message, WeightScaleActiveMetField.ID),
+            growable=definition_message is None), 
+        WeightScaleMetabolicAgeField(
+            size=self.__get_field_size(definition_message, WeightScaleMetabolicAgeField.ID),
+            growable=definition_message is None), 
+        WeightScaleVisceralFatRatingField(
+            size=self.__get_field_size(definition_message, WeightScaleVisceralFatRatingField.ID),
+            growable=definition_message is None), 
+        WeightScaleUserProfileIndexField(
+            size=self.__get_field_size(definition_message, WeightScaleUserProfileIndexField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -84,7 +86,9 @@ class WeightScaleMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -94,6 +98,7 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -108,6 +113,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def weight(self) -> Optional[float]:
         field = self.get_field(WeightScaleWeightField.ID)
@@ -116,6 +123,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @weight.setter
     def weight(self, value: float):
@@ -128,6 +137,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def percent_fat(self) -> Optional[float]:
         field = self.get_field(WeightScalePercentFatField.ID)
@@ -136,6 +147,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @percent_fat.setter
     def percent_fat(self, value: float):
@@ -148,6 +161,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def percent_hydration(self) -> Optional[float]:
         field = self.get_field(WeightScalePercentHydrationField.ID)
@@ -156,6 +171,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @percent_hydration.setter
     def percent_hydration(self, value: float):
@@ -168,6 +185,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def visceral_fat_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleVisceralFatMassField.ID)
@@ -176,6 +195,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @visceral_fat_mass.setter
     def visceral_fat_mass(self, value: float):
@@ -188,6 +209,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def bone_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleBoneMassField.ID)
@@ -196,6 +219,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @bone_mass.setter
     def bone_mass(self, value: float):
@@ -208,6 +233,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def muscle_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleMuscleMassField.ID)
@@ -216,6 +243,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @muscle_mass.setter
     def muscle_mass(self, value: float):
@@ -228,6 +257,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def basal_met(self) -> Optional[float]:
         field = self.get_field(WeightScaleBasalMetField.ID)
@@ -236,6 +267,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @basal_met.setter
     def basal_met(self, value: float):
@@ -248,6 +281,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def physique_rating(self) -> Optional[int]:
         field = self.get_field(WeightScalePhysiqueRatingField.ID)
@@ -256,6 +291,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @physique_rating.setter
     def physique_rating(self, value: int):
@@ -268,6 +305,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def active_met(self) -> Optional[float]:
         field = self.get_field(WeightScaleActiveMetField.ID)
@@ -276,6 +315,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @active_met.setter
     def active_met(self, value: float):
@@ -288,6 +329,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def metabolic_age(self) -> Optional[int]:
         field = self.get_field(WeightScaleMetabolicAgeField.ID)
@@ -296,6 +339,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @metabolic_age.setter
     def metabolic_age(self, value: int):
@@ -308,6 +353,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def visceral_fat_rating(self) -> Optional[int]:
         field = self.get_field(WeightScaleVisceralFatRatingField.ID)
@@ -316,6 +363,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @visceral_fat_rating.setter
     def visceral_fat_rating(self, value: int):
@@ -328,6 +377,8 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def user_profile_index(self) -> Optional[int]:
         field = self.get_field(WeightScaleUserProfileIndexField.ID)
@@ -336,6 +387,8 @@ class WeightScaleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @user_profile_index.setter
     def user_profile_index(self, value: int):
@@ -348,6 +401,11 @@ class WeightScaleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class TimestampField(Field):
     ID = 253
@@ -357,14 +415,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -376,14 +434,14 @@ class WeightScaleWeightField(Field):
             name='weight',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='kg',
-            type_name='weight',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'kg',
+        type_name = 'weight',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -395,14 +453,14 @@ class WeightScalePercentFatField(Field):
             name='percent_fat',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -414,14 +472,14 @@ class WeightScalePercentHydrationField(Field):
             name='percent_hydration',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='%',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = '%',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -433,14 +491,14 @@ class WeightScaleVisceralFatMassField(Field):
             name='visceral_fat_mass',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='kg',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'kg',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -452,14 +510,14 @@ class WeightScaleBoneMassField(Field):
             name='bone_mass',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='kg',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'kg',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -471,14 +529,14 @@ class WeightScaleMuscleMassField(Field):
             name='muscle_mass',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=100,
-            size=size,
-            units='kg',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 100,
+                         size = size,
+        units = 'kg',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -490,14 +548,14 @@ class WeightScaleBasalMetField(Field):
             name='basal_met',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=4,
-            size=size,
-            units='kcal/day',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 4,
+                         size = size,
+        units = 'kcal/day',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -509,12 +567,12 @@ class WeightScalePhysiqueRatingField(Field):
             name='physique_rating',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -526,14 +584,14 @@ class WeightScaleActiveMetField(Field):
             name='active_met',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=4,
-            size=size,
-            units='kcal/day',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 4,
+                         size = size,
+        units = 'kcal/day',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -545,14 +603,14 @@ class WeightScaleMetabolicAgeField(Field):
             name='metabolic_age',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            units='years',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'years',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -564,12 +622,12 @@ class WeightScaleVisceralFatRatingField(Field):
             name='visceral_fat_rating',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -581,10 +639,10 @@ class WeightScaleUserProfileIndexField(Field):
             name='user_profile_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

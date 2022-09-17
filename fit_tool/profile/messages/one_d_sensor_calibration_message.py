@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class OneDSensorCalibrationMessage(DataMessage):
@@ -36,29 +36,25 @@ class OneDSensorCalibrationMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             OneDSensorCalibrationSensorTypeField(
-                                 size=self.__get_field_size(definition_message,
-                                                            OneDSensorCalibrationSensorTypeField.ID),
-                                 growable=definition_message is None),
-                             OneDSensorCalibrationCalibrationFactorField(
-                                 size=self.__get_field_size(definition_message,
-                                                            OneDSensorCalibrationCalibrationFactorField.ID),
-                                 growable=definition_message is None),
-                             OneDSensorCalibrationCalibrationDivisorField(
-                                 size=self.__get_field_size(definition_message,
-                                                            OneDSensorCalibrationCalibrationDivisorField.ID),
-                                 growable=definition_message is None),
-                             OneDSensorCalibrationLevelShiftField(
-                                 size=self.__get_field_size(definition_message,
-                                                            OneDSensorCalibrationLevelShiftField.ID),
-                                 growable=definition_message is None),
-                             OneDSensorCalibrationOffsetCalField(
-                                 size=self.__get_field_size(definition_message, OneDSensorCalibrationOffsetCalField.ID),
-                                 growable=definition_message is None)
-                         ])
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        OneDSensorCalibrationSensorTypeField(
+            size=self.__get_field_size(definition_message, OneDSensorCalibrationSensorTypeField.ID),
+            growable=definition_message is None), 
+        OneDSensorCalibrationCalibrationFactorField(
+            size=self.__get_field_size(definition_message, OneDSensorCalibrationCalibrationFactorField.ID),
+            growable=definition_message is None), 
+        OneDSensorCalibrationCalibrationDivisorField(
+            size=self.__get_field_size(definition_message, OneDSensorCalibrationCalibrationDivisorField.ID),
+            growable=definition_message is None), 
+        OneDSensorCalibrationLevelShiftField(
+            size=self.__get_field_size(definition_message, OneDSensorCalibrationLevelShiftField.ID),
+            growable=definition_message is None), 
+        OneDSensorCalibrationOffsetCalField(
+            size=self.__get_field_size(definition_message, OneDSensorCalibrationOffsetCalField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -69,7 +65,9 @@ class OneDSensorCalibrationMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -79,6 +77,7 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -93,6 +92,8 @@ class OneDSensorCalibrationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sensor_type(self) -> Optional[SensorType]:
         field = self.get_field(OneDSensorCalibrationSensorTypeField.ID)
@@ -101,6 +102,8 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sensor_type.setter
     def sensor_type(self, value: SensorType):
@@ -113,6 +116,8 @@ class OneDSensorCalibrationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def calibration_factor(self) -> Optional[int]:
         field = self.get_field(OneDSensorCalibrationCalibrationFactorField.ID)
@@ -121,6 +126,8 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @calibration_factor.setter
     def calibration_factor(self, value: int):
@@ -132,6 +139,9 @@ class OneDSensorCalibrationMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
+
+    
+
 
     @property
     def baro_cal_factor(self) -> Optional[int]:
@@ -149,11 +159,11 @@ class OneDSensorCalibrationMessage(DataMessage):
     def baro_cal_factor(self, value: int):
         field = self.get_field(OneDSensorCalibrationCalibrationFactorField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def calibration_divisor(self) -> Optional[int]:
@@ -163,6 +173,8 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @calibration_divisor.setter
     def calibration_divisor(self, value: int):
@@ -175,6 +187,8 @@ class OneDSensorCalibrationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def level_shift(self) -> Optional[int]:
         field = self.get_field(OneDSensorCalibrationLevelShiftField.ID)
@@ -183,6 +197,8 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @level_shift.setter
     def level_shift(self, value: int):
@@ -195,6 +211,8 @@ class OneDSensorCalibrationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def offset_cal(self) -> Optional[int]:
         field = self.get_field(OneDSensorCalibrationOffsetCalField.ID)
@@ -203,6 +221,8 @@ class OneDSensorCalibrationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @offset_cal.setter
     def offset_cal(self, value: int):
@@ -215,6 +235,11 @@ class OneDSensorCalibrationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class TimestampField(Field):
     ID = 253
@@ -224,14 +249,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -243,12 +268,12 @@ class OneDSensorCalibrationSensorTypeField(Field):
             name='sensor_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -260,21 +285,21 @@ class OneDSensorCalibrationCalibrationFactorField(Field):
             name='calibration_factor',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-                SubField(
-                    name='baro_cal_factor',
-                    base_type=BaseType.UINT32,
-                    scale=1,
-                    offset=0,
-                    units='Pa',
-                    reference_map={
-                        OneDSensorCalibrationSensorTypeField.ID: [3]
-                    })
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        SubField(
+            name='baro_cal_factor',
+            base_type=BaseType.UINT32,
+        scale = 1,
+                offset = 0,
+        units = 'Pa',
+        reference_map = {
+        OneDSensorCalibrationSensorTypeField.ID: [3]
+        })
+        ]
         )
 
 
@@ -286,14 +311,14 @@ class OneDSensorCalibrationCalibrationDivisorField(Field):
             name='calibration_divisor',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='counts',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'counts',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -305,12 +330,12 @@ class OneDSensorCalibrationLevelShiftField(Field):
             name='level_shift',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -322,10 +347,10 @@ class OneDSensorCalibrationOffsetCalField(Field):
             name='offset_cal',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,23 +36,22 @@ class ZonesTargetMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             ZonesTargetMaxHeartRateField(
-                                 size=self.__get_field_size(definition_message, ZonesTargetMaxHeartRateField.ID),
-                                 growable=definition_message is None),
-                             ZonesTargetThresholdHeartRateField(
-                                 size=self.__get_field_size(definition_message, ZonesTargetThresholdHeartRateField.ID),
-                                 growable=definition_message is None),
-                             ZonesTargetFunctionalThresholdPowerField(
-                                 size=self.__get_field_size(definition_message,
-                                                            ZonesTargetFunctionalThresholdPowerField.ID),
-                                 growable=definition_message is None),
-                             ZonesTargetHrCalcTypeField(
-                                 size=self.__get_field_size(definition_message, ZonesTargetHrCalcTypeField.ID),
-                                 growable=definition_message is None),
-                             ZonesTargetPwrCalcTypeField(
-                                 size=self.__get_field_size(definition_message, ZonesTargetPwrCalcTypeField.ID),
-                                 growable=definition_message is None)
-                         ])
+        ZonesTargetMaxHeartRateField(
+            size=self.__get_field_size(definition_message, ZonesTargetMaxHeartRateField.ID),
+            growable=definition_message is None), 
+        ZonesTargetThresholdHeartRateField(
+            size=self.__get_field_size(definition_message, ZonesTargetThresholdHeartRateField.ID),
+            growable=definition_message is None), 
+        ZonesTargetFunctionalThresholdPowerField(
+            size=self.__get_field_size(definition_message, ZonesTargetFunctionalThresholdPowerField.ID),
+            growable=definition_message is None), 
+        ZonesTargetHrCalcTypeField(
+            size=self.__get_field_size(definition_message, ZonesTargetHrCalcTypeField.ID),
+            growable=definition_message is None), 
+        ZonesTargetPwrCalcTypeField(
+            size=self.__get_field_size(definition_message, ZonesTargetPwrCalcTypeField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -62,6 +62,9 @@ class ZonesTargetMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def max_heart_rate(self) -> Optional[int]:
         field = self.get_field(ZonesTargetMaxHeartRateField.ID)
@@ -70,6 +73,8 @@ class ZonesTargetMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @max_heart_rate.setter
     def max_heart_rate(self, value: int):
@@ -82,6 +87,8 @@ class ZonesTargetMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def threshold_heart_rate(self) -> Optional[int]:
         field = self.get_field(ZonesTargetThresholdHeartRateField.ID)
@@ -90,6 +97,8 @@ class ZonesTargetMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @threshold_heart_rate.setter
     def threshold_heart_rate(self, value: int):
@@ -102,6 +111,8 @@ class ZonesTargetMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def functional_threshold_power(self) -> Optional[int]:
         field = self.get_field(ZonesTargetFunctionalThresholdPowerField.ID)
@@ -110,6 +121,8 @@ class ZonesTargetMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @functional_threshold_power.setter
     def functional_threshold_power(self, value: int):
@@ -122,6 +135,8 @@ class ZonesTargetMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def hr_calc_type(self) -> Optional[HrZoneCalc]:
         field = self.get_field(ZonesTargetHrCalcTypeField.ID)
@@ -130,6 +145,8 @@ class ZonesTargetMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @hr_calc_type.setter
     def hr_calc_type(self, value: HrZoneCalc):
@@ -142,6 +159,8 @@ class ZonesTargetMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def pwr_calc_type(self) -> Optional[PwrZoneCalc]:
         field = self.get_field(ZonesTargetPwrCalcTypeField.ID)
@@ -150,6 +169,8 @@ class ZonesTargetMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @pwr_calc_type.setter
     def pwr_calc_type(self, value: PwrZoneCalc):
@@ -162,6 +183,11 @@ class ZonesTargetMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class ZonesTargetMaxHeartRateField(Field):
     ID = 1
@@ -171,12 +197,12 @@ class ZonesTargetMaxHeartRateField(Field):
             name='max_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -188,12 +214,12 @@ class ZonesTargetThresholdHeartRateField(Field):
             name='threshold_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -205,12 +231,12 @@ class ZonesTargetFunctionalThresholdPowerField(Field):
             name='functional_threshold_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -222,12 +248,12 @@ class ZonesTargetHrCalcTypeField(Field):
             name='hr_calc_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -239,10 +265,10 @@ class ZonesTargetPwrCalcTypeField(Field):
             name='pwr_calc_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

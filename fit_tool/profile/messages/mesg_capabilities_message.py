@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class MesgCapabilitiesMessage(DataMessage):
@@ -36,22 +36,22 @@ class MesgCapabilitiesMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             MesgCapabilitiesFileField(
-                                 size=self.__get_field_size(definition_message, MesgCapabilitiesFileField.ID),
-                                 growable=definition_message is None),
-                             MesgCapabilitiesMesgNumField(
-                                 size=self.__get_field_size(definition_message, MesgCapabilitiesMesgNumField.ID),
-                                 growable=definition_message is None),
-                             MesgCapabilitiesCountTypeField(
-                                 size=self.__get_field_size(definition_message, MesgCapabilitiesCountTypeField.ID),
-                                 growable=definition_message is None),
-                             MesgCapabilitiesCountField(
-                                 size=self.__get_field_size(definition_message, MesgCapabilitiesCountField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        MesgCapabilitiesFileField(
+            size=self.__get_field_size(definition_message, MesgCapabilitiesFileField.ID),
+            growable=definition_message is None), 
+        MesgCapabilitiesMesgNumField(
+            size=self.__get_field_size(definition_message, MesgCapabilitiesMesgNumField.ID),
+            growable=definition_message is None), 
+        MesgCapabilitiesCountTypeField(
+            size=self.__get_field_size(definition_message, MesgCapabilitiesCountTypeField.ID),
+            growable=definition_message is None), 
+        MesgCapabilitiesCountField(
+            size=self.__get_field_size(definition_message, MesgCapabilitiesCountField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -62,6 +62,9 @@ class MesgCapabilitiesMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -70,6 +73,8 @@ class MesgCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -82,6 +87,8 @@ class MesgCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def file(self) -> Optional[FileType]:
         field = self.get_field(MesgCapabilitiesFileField.ID)
@@ -90,6 +97,8 @@ class MesgCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @file.setter
     def file(self, value: FileType):
@@ -102,6 +111,8 @@ class MesgCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def mesg_num(self) -> Optional[int]:
         field = self.get_field(MesgCapabilitiesMesgNumField.ID)
@@ -110,6 +121,8 @@ class MesgCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @mesg_num.setter
     def mesg_num(self, value: int):
@@ -122,6 +135,8 @@ class MesgCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def count_type(self) -> Optional[MesgCount]:
         field = self.get_field(MesgCapabilitiesCountTypeField.ID)
@@ -130,6 +145,8 @@ class MesgCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @count_type.setter
     def count_type(self, value: MesgCount):
@@ -142,6 +159,8 @@ class MesgCapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def count(self) -> Optional[int]:
         field = self.get_field(MesgCapabilitiesCountField.ID)
@@ -150,6 +169,8 @@ class MesgCapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @count.setter
     def count(self, value: int):
@@ -161,6 +182,9 @@ class MesgCapabilitiesMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
+
+    
+
 
     @property
     def num_per_file(self) -> Optional[int]:
@@ -178,11 +202,12 @@ class MesgCapabilitiesMessage(DataMessage):
     def num_per_file(self, value: int):
         field = self.get_field(MesgCapabilitiesCountField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
+
 
     @property
     def max_per_file(self) -> Optional[int]:
@@ -200,11 +225,12 @@ class MesgCapabilitiesMessage(DataMessage):
     def max_per_file(self, value: int):
         field = self.get_field(MesgCapabilitiesCountField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
+
 
     @property
     def max_per_file_type(self) -> Optional[int]:
@@ -222,11 +248,14 @@ class MesgCapabilitiesMessage(DataMessage):
     def max_per_file_type(self, value: int):
         field = self.get_field(MesgCapabilitiesCountField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
+
+
+
 
 
 class MessageIndexField(Field):
@@ -237,12 +266,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -254,12 +283,12 @@ class MesgCapabilitiesFileField(Field):
             name='file',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -271,12 +300,12 @@ class MesgCapabilitiesMesgNumField(Field):
             name='mesg_num',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -288,12 +317,12 @@ class MesgCapabilitiesCountTypeField(Field):
             name='count_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -305,34 +334,34 @@ class MesgCapabilitiesCountField(Field):
             name='count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-                SubField(
-                    name='num_per_file',
-                    base_type=BaseType.UINT16,
-                    scale=1,
-                    offset=0,
-                    reference_map={
-                        MesgCapabilitiesCountTypeField.ID: [0]
-                    }),
-                SubField(
-                    name='max_per_file',
-                    base_type=BaseType.UINT16,
-                    scale=1,
-                    offset=0,
-                    reference_map={
-                        MesgCapabilitiesCountTypeField.ID: [1]
-                    }),
-                SubField(
-                    name='max_per_file_type',
-                    base_type=BaseType.UINT16,
-                    scale=1,
-                    offset=0,
-                    reference_map={
-                        MesgCapabilitiesCountTypeField.ID: [2]
-                    })
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        SubField(
+            name='num_per_file',
+            base_type=BaseType.UINT16,
+        scale = 1,
+                offset = 0,
+        reference_map = {
+        MesgCapabilitiesCountTypeField.ID: [0]
+        }), 
+        SubField(
+            name='max_per_file',
+            base_type=BaseType.UINT16,
+        scale = 1,
+                offset = 0,
+        reference_map = {
+        MesgCapabilitiesCountTypeField.ID: [1]
+        }), 
+        SubField(
+            name='max_per_file_type',
+            base_type=BaseType.UINT16,
+        scale = 1,
+                offset = 0,
+        reference_map = {
+        MesgCapabilitiesCountTypeField.ID: [2]
+        })
+        ]
         )

@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class VideoTitleMessage(DataMessage):
@@ -34,16 +36,16 @@ class VideoTitleMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             VideoTitleMessageCountField(
-                                 size=self.__get_field_size(definition_message, VideoTitleMessageCountField.ID),
-                                 growable=definition_message is None),
-                             VideoTitleTextField(
-                                 size=self.__get_field_size(definition_message, VideoTitleTextField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        VideoTitleMessageCountField(
+            size=self.__get_field_size(definition_message, VideoTitleMessageCountField.ID),
+            growable=definition_message is None), 
+        VideoTitleTextField(
+            size=self.__get_field_size(definition_message, VideoTitleTextField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -54,6 +56,9 @@ class VideoTitleMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -62,6 +67,8 @@ class VideoTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -74,6 +81,8 @@ class VideoTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def message_count(self) -> Optional[int]:
         field = self.get_field(VideoTitleMessageCountField.ID)
@@ -82,6 +91,8 @@ class VideoTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_count.setter
     def message_count(self, value: int):
@@ -94,6 +105,8 @@ class VideoTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def text(self) -> Optional[str]:
         field = self.get_field(VideoTitleTextField.ID)
@@ -102,6 +115,8 @@ class VideoTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @text.setter
     def text(self, value: str):
@@ -114,6 +129,11 @@ class VideoTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -123,12 +143,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -140,12 +160,12 @@ class VideoTitleMessageCountField(Field):
             name='message_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -157,10 +177,10 @@ class VideoTitleTextField(Field):
             name='text',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

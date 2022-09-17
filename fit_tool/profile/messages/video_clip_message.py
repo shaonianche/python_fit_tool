@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class VideoClipMessage(DataMessage):
@@ -34,28 +36,28 @@ class VideoClipMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             VideoClipClipNumberField(
-                                 size=self.__get_field_size(definition_message, VideoClipClipNumberField.ID),
-                                 growable=definition_message is None),
-                             VideoClipStartTimestampField(
-                                 size=self.__get_field_size(definition_message, VideoClipStartTimestampField.ID),
-                                 growable=definition_message is None),
-                             VideoClipStartTimestampMsField(
-                                 size=self.__get_field_size(definition_message, VideoClipStartTimestampMsField.ID),
-                                 growable=definition_message is None),
-                             VideoClipEndTimestampField(
-                                 size=self.__get_field_size(definition_message, VideoClipEndTimestampField.ID),
-                                 growable=definition_message is None),
-                             VideoClipEndTimestampMsField(
-                                 size=self.__get_field_size(definition_message, VideoClipEndTimestampMsField.ID),
-                                 growable=definition_message is None),
-                             VideoClipClipStartField(
-                                 size=self.__get_field_size(definition_message, VideoClipClipStartField.ID),
-                                 growable=definition_message is None),
-                             VideoClipClipEndField(
-                                 size=self.__get_field_size(definition_message, VideoClipClipEndField.ID),
-                                 growable=definition_message is None)
-                         ])
+        VideoClipClipNumberField(
+            size=self.__get_field_size(definition_message, VideoClipClipNumberField.ID),
+            growable=definition_message is None), 
+        VideoClipStartTimestampField(
+            size=self.__get_field_size(definition_message, VideoClipStartTimestampField.ID),
+            growable=definition_message is None), 
+        VideoClipStartTimestampMsField(
+            size=self.__get_field_size(definition_message, VideoClipStartTimestampMsField.ID),
+            growable=definition_message is None), 
+        VideoClipEndTimestampField(
+            size=self.__get_field_size(definition_message, VideoClipEndTimestampField.ID),
+            growable=definition_message is None), 
+        VideoClipEndTimestampMsField(
+            size=self.__get_field_size(definition_message, VideoClipEndTimestampMsField.ID),
+            growable=definition_message is None), 
+        VideoClipClipStartField(
+            size=self.__get_field_size(definition_message, VideoClipClipStartField.ID),
+            growable=definition_message is None), 
+        VideoClipClipEndField(
+            size=self.__get_field_size(definition_message, VideoClipClipEndField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -66,6 +68,9 @@ class VideoClipMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def clip_number(self) -> Optional[int]:
         field = self.get_field(VideoClipClipNumberField.ID)
@@ -74,6 +79,8 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @clip_number.setter
     def clip_number(self, value: int):
@@ -86,7 +93,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def start_timestamp(self) -> Optional[int]:
@@ -96,6 +104,7 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -110,6 +119,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def start_timestamp_ms(self) -> Optional[int]:
         field = self.get_field(VideoClipStartTimestampMsField.ID)
@@ -118,6 +129,8 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @start_timestamp_ms.setter
     def start_timestamp_ms(self, value: int):
@@ -130,7 +143,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def end_timestamp(self) -> Optional[int]:
@@ -140,6 +154,7 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -154,6 +169,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def end_timestamp_ms(self) -> Optional[int]:
         field = self.get_field(VideoClipEndTimestampMsField.ID)
@@ -162,6 +179,8 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @end_timestamp_ms.setter
     def end_timestamp_ms(self, value: int):
@@ -174,6 +193,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def clip_start(self) -> Optional[int]:
         field = self.get_field(VideoClipClipStartField.ID)
@@ -182,6 +203,8 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @clip_start.setter
     def clip_start(self, value: int):
@@ -194,6 +217,8 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def clip_end(self) -> Optional[int]:
         field = self.get_field(VideoClipClipEndField.ID)
@@ -202,6 +227,8 @@ class VideoClipMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @clip_end.setter
     def clip_end(self, value: int):
@@ -214,6 +241,11 @@ class VideoClipMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class VideoClipClipNumberField(Field):
     ID = 0
@@ -223,12 +255,12 @@ class VideoClipClipNumberField(Field):
             name='clip_number',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -240,14 +272,14 @@ class VideoClipStartTimestampField(Field):
             name='start_timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -259,12 +291,12 @@ class VideoClipStartTimestampMsField(Field):
             name='start_timestamp_ms',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -276,14 +308,14 @@ class VideoClipEndTimestampField(Field):
             name='end_timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -295,12 +327,12 @@ class VideoClipEndTimestampMsField(Field):
             name='end_timestamp_ms',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -312,14 +344,14 @@ class VideoClipClipStartField(Field):
             name='clip_start',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='ms',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'ms',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -331,12 +363,12 @@ class VideoClipClipEndField(Field):
             name='clip_end',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='ms',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'ms',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )

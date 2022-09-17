@@ -9,8 +9,7 @@ class TimestampField(Field):
     ID = 253
 
     def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(name='timestamp', field_id=self.ID, base_type=BaseType.UINT32, offset=-631065600000,
-                         scale=0.001,
+        super().__init__(name='timestamp', field_id=self.ID, base_type=BaseType.UINT32, offset=-631065600000, scale=0.001,
                          size=size,
                          units='ms', type_name='date_time', growable=growable, sub_fields=[])
 

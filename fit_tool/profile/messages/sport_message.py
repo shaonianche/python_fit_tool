@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,16 +36,16 @@ class SportMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             SportSportField(
-                                 size=self.__get_field_size(definition_message, SportSportField.ID),
-                                 growable=definition_message is None),
-                             SportSubSportField(
-                                 size=self.__get_field_size(definition_message, SportSubSportField.ID),
-                                 growable=definition_message is None),
-                             SportNameField(
-                                 size=self.__get_field_size(definition_message, SportNameField.ID),
-                                 growable=definition_message is None)
-                         ])
+        SportSportField(
+            size=self.__get_field_size(definition_message, SportSportField.ID),
+            growable=definition_message is None), 
+        SportSubSportField(
+            size=self.__get_field_size(definition_message, SportSubSportField.ID),
+            growable=definition_message is None), 
+        SportNameField(
+            size=self.__get_field_size(definition_message, SportNameField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -55,6 +56,9 @@ class SportMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(SportSportField.ID)
@@ -63,6 +67,8 @@ class SportMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sport.setter
     def sport(self, value: Sport):
@@ -75,6 +81,8 @@ class SportMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sub_sport(self) -> Optional[SubSport]:
         field = self.get_field(SportSubSportField.ID)
@@ -83,6 +91,8 @@ class SportMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sub_sport.setter
     def sub_sport(self, value: SubSport):
@@ -95,6 +105,8 @@ class SportMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sport_name(self) -> Optional[str]:
         field = self.get_field(SportNameField.ID)
@@ -103,6 +115,8 @@ class SportMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sport_name.setter
     def sport_name(self, value: str):
@@ -115,6 +129,11 @@ class SportMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class SportSportField(Field):
     ID = 0
@@ -124,12 +143,12 @@ class SportSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -141,12 +160,12 @@ class SportSubSportField(Field):
             name='sub_sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -158,10 +177,10 @@ class SportNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,28 +36,28 @@ class DiveAlarmMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MessageIndexField(
-                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmDepthField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmDepthField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmTimeField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmTimeField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmEnabledField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmEnabledField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmAlarmTypeField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmAlarmTypeField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmSoundField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmSoundField.ID),
-                                 growable=definition_message is None),
-                             DiveAlarmDiveTypesField(
-                                 size=self.__get_field_size(definition_message, DiveAlarmDiveTypesField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
+        DiveAlarmDepthField(
+            size=self.__get_field_size(definition_message, DiveAlarmDepthField.ID),
+            growable=definition_message is None), 
+        DiveAlarmTimeField(
+            size=self.__get_field_size(definition_message, DiveAlarmTimeField.ID),
+            growable=definition_message is None), 
+        DiveAlarmEnabledField(
+            size=self.__get_field_size(definition_message, DiveAlarmEnabledField.ID),
+            growable=definition_message is None), 
+        DiveAlarmAlarmTypeField(
+            size=self.__get_field_size(definition_message, DiveAlarmAlarmTypeField.ID),
+            growable=definition_message is None), 
+        DiveAlarmSoundField(
+            size=self.__get_field_size(definition_message, DiveAlarmSoundField.ID),
+            growable=definition_message is None), 
+        DiveAlarmDiveTypesField(
+            size=self.__get_field_size(definition_message, DiveAlarmDiveTypesField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -67,6 +68,9 @@ class DiveAlarmMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -75,6 +79,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -87,6 +93,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def depth(self) -> Optional[float]:
         field = self.get_field(DiveAlarmDepthField.ID)
@@ -95,6 +103,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @depth.setter
     def depth(self, value: float):
@@ -107,6 +117,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def time(self) -> Optional[int]:
         field = self.get_field(DiveAlarmTimeField.ID)
@@ -115,6 +127,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @time.setter
     def time(self, value: int):
@@ -127,6 +141,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def enabled(self) -> Optional[bool]:
         field = self.get_field(DiveAlarmEnabledField.ID)
@@ -135,6 +151,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @enabled.setter
     def enabled(self, value: bool):
@@ -147,6 +165,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def alarm_type(self) -> Optional[DiveAlarmType]:
         field = self.get_field(DiveAlarmAlarmTypeField.ID)
@@ -155,6 +175,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @alarm_type.setter
     def alarm_type(self, value: DiveAlarmType):
@@ -167,6 +189,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def sound(self) -> Optional[Tone]:
         field = self.get_field(DiveAlarmSoundField.ID)
@@ -175,6 +199,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @sound.setter
     def sound(self, value: Tone):
@@ -187,6 +213,8 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def dive_types(self) -> Optional[SubSport]:
         field = self.get_field(DiveAlarmDiveTypesField.ID)
@@ -195,6 +223,8 @@ class DiveAlarmMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @dive_types.setter
     def dive_types(self, value: SubSport):
@@ -207,6 +237,11 @@ class DiveAlarmMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MessageIndexField(Field):
     ID = 254
@@ -216,12 +251,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -233,14 +268,14 @@ class DiveAlarmDepthField(Field):
             name='depth',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='m',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 'm',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -252,14 +287,14 @@ class DiveAlarmTimeField(Field):
             name='time',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -271,12 +306,12 @@ class DiveAlarmEnabledField(Field):
             name='enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -288,12 +323,12 @@ class DiveAlarmAlarmTypeField(Field):
             name='alarm_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -305,12 +340,12 @@ class DiveAlarmSoundField(Field):
             name='sound',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -322,10 +357,10 @@ class DiveAlarmDiveTypesField(Field):
             name='dive_types',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

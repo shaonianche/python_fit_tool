@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
 from fit_tool.profile.profile_type import *
 
 
@@ -35,31 +36,31 @@ class ActivityMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             TimestampField(
-                                 size=self.__get_field_size(definition_message, TimestampField.ID),
-                                 growable=definition_message is None),
-                             ActivityTotalTimerTimeField(
-                                 size=self.__get_field_size(definition_message, ActivityTotalTimerTimeField.ID),
-                                 growable=definition_message is None),
-                             ActivityNumSessionsField(
-                                 size=self.__get_field_size(definition_message, ActivityNumSessionsField.ID),
-                                 growable=definition_message is None),
-                             ActivityTypeField(
-                                 size=self.__get_field_size(definition_message, ActivityTypeField.ID),
-                                 growable=definition_message is None),
-                             ActivityEventField(
-                                 size=self.__get_field_size(definition_message, ActivityEventField.ID),
-                                 growable=definition_message is None),
-                             ActivityEventTypeField(
-                                 size=self.__get_field_size(definition_message, ActivityEventTypeField.ID),
-                                 growable=definition_message is None),
-                             ActivityLocalTimestampField(
-                                 size=self.__get_field_size(definition_message, ActivityLocalTimestampField.ID),
-                                 growable=definition_message is None),
-                             ActivityEventGroupField(
-                                 size=self.__get_field_size(definition_message, ActivityEventGroupField.ID),
-                                 growable=definition_message is None)
-                         ])
+        TimestampField(
+            size=self.__get_field_size(definition_message, TimestampField.ID),
+            growable=definition_message is None), 
+        ActivityTotalTimerTimeField(
+            size=self.__get_field_size(definition_message, ActivityTotalTimerTimeField.ID),
+            growable=definition_message is None), 
+        ActivityNumSessionsField(
+            size=self.__get_field_size(definition_message, ActivityNumSessionsField.ID),
+            growable=definition_message is None), 
+        ActivityTypeField(
+            size=self.__get_field_size(definition_message, ActivityTypeField.ID),
+            growable=definition_message is None), 
+        ActivityEventField(
+            size=self.__get_field_size(definition_message, ActivityEventField.ID),
+            growable=definition_message is None), 
+        ActivityEventTypeField(
+            size=self.__get_field_size(definition_message, ActivityEventTypeField.ID),
+            growable=definition_message is None), 
+        ActivityLocalTimestampField(
+            size=self.__get_field_size(definition_message, ActivityLocalTimestampField.ID),
+            growable=definition_message is None), 
+        ActivityEventGroupField(
+            size=self.__get_field_size(definition_message, ActivityEventGroupField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -70,7 +71,9 @@ class ActivityMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -80,6 +83,7 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -94,6 +98,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def total_timer_time(self) -> Optional[float]:
         field = self.get_field(ActivityTotalTimerTimeField.ID)
@@ -102,6 +108,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @total_timer_time.setter
     def total_timer_time(self, value: float):
@@ -114,6 +122,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def num_sessions(self) -> Optional[int]:
         field = self.get_field(ActivityNumSessionsField.ID)
@@ -122,6 +132,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @num_sessions.setter
     def num_sessions(self, value: int):
@@ -134,6 +146,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def type(self) -> Optional[Activity]:
         field = self.get_field(ActivityTypeField.ID)
@@ -142,6 +156,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @type.setter
     def type(self, value: Activity):
@@ -154,6 +170,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event(self) -> Optional[Event]:
         field = self.get_field(ActivityEventField.ID)
@@ -162,6 +180,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event.setter
     def event(self, value: Event):
@@ -174,6 +194,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event_type(self) -> Optional[EventType]:
         field = self.get_field(ActivityEventTypeField.ID)
@@ -182,6 +204,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event_type.setter
     def event_type(self, value: EventType):
@@ -194,6 +218,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def local_timestamp(self) -> Optional[int]:
         field = self.get_field(ActivityLocalTimestampField.ID)
@@ -202,6 +228,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @local_timestamp.setter
     def local_timestamp(self, value: int):
@@ -214,6 +242,8 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def event_group(self) -> Optional[int]:
         field = self.get_field(ActivityEventGroupField.ID)
@@ -222,6 +252,8 @@ class ActivityMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @event_group.setter
     def event_group(self, value: int):
@@ -234,6 +266,11 @@ class ActivityMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class TimestampField(Field):
     ID = 253
@@ -243,14 +280,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=-631065600000,
-            scale=0.001,
-            size=size,
-            units='ms',
-            type_name='date_time',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -262,14 +299,14 @@ class ActivityTotalTimerTimeField(Field):
             name='total_timer_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1000,
-            size=size,
-            units='s',
-            type_name='',
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1000,
+                         size = size,
+        units = 's',
+        type_name = '',
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -281,12 +318,12 @@ class ActivityNumSessionsField(Field):
             name='num_sessions',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -298,12 +335,12 @@ class ActivityTypeField(Field):
             name='type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -315,12 +352,12 @@ class ActivityEventField(Field):
             name='event',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -332,12 +369,12 @@ class ActivityEventTypeField(Field):
             name='event_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -349,12 +386,12 @@ class ActivityLocalTimestampField(Field):
             name='local_timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -366,10 +403,10 @@ class ActivityEventGroupField(Field):
             name='event_group',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

@@ -9,6 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class MemoGlobMessage(DataMessage):
@@ -34,19 +36,19 @@ class MemoGlobMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-                             MemoGlobPartIndexField(
-                                 size=self.__get_field_size(definition_message, MemoGlobPartIndexField.ID),
-                                 growable=definition_message is None),
-                             MemoGlobMemoField(
-                                 size=self.__get_field_size(definition_message, MemoGlobMemoField.ID),
-                                 growable=definition_message is None),
-                             MemoGlobMessageNumberField(
-                                 size=self.__get_field_size(definition_message, MemoGlobMessageNumberField.ID),
-                                 growable=definition_message is None),
-                             MemoGlobMessageIndexField(
-                                 size=self.__get_field_size(definition_message, MemoGlobMessageIndexField.ID),
-                                 growable=definition_message is None)
-                         ])
+        MemoGlobPartIndexField(
+            size=self.__get_field_size(definition_message, MemoGlobPartIndexField.ID),
+            growable=definition_message is None), 
+        MemoGlobMemoField(
+            size=self.__get_field_size(definition_message, MemoGlobMemoField.ID),
+            growable=definition_message is None), 
+        MemoGlobMessageNumberField(
+            size=self.__get_field_size(definition_message, MemoGlobMessageNumberField.ID),
+            growable=definition_message is None), 
+        MemoGlobMessageIndexField(
+            size=self.__get_field_size(definition_message, MemoGlobMessageIndexField.ID),
+            growable=definition_message is None)
+        ])
 
         self.growable = self.definition_message is None
 
@@ -57,6 +59,9 @@ class MemoGlobMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
+
+
+
     @property
     def part_index(self) -> Optional[int]:
         field = self.get_field(MemoGlobPartIndexField.ID)
@@ -65,6 +70,8 @@ class MemoGlobMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @part_index.setter
     def part_index(self, value: int):
@@ -77,6 +84,8 @@ class MemoGlobMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def memo(self) -> Optional[int]:
         field = self.get_field(MemoGlobMemoField.ID)
@@ -85,6 +94,8 @@ class MemoGlobMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @memo.setter
     def memo(self, value: int):
@@ -97,6 +108,8 @@ class MemoGlobMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def message_number(self) -> Optional[int]:
         field = self.get_field(MemoGlobMessageNumberField.ID)
@@ -105,6 +118,8 @@ class MemoGlobMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_number.setter
     def message_number(self, value: int):
@@ -117,6 +132,8 @@ class MemoGlobMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MemoGlobMessageIndexField.ID)
@@ -125,6 +142,8 @@ class MemoGlobMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
+
+
 
     @message_index.setter
     def message_index(self, value: int):
@@ -137,6 +156,11 @@ class MemoGlobMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
+    
+
+
+
+
 
 class MemoGlobPartIndexField(Field):
     ID = 250
@@ -146,12 +170,12 @@ class MemoGlobPartIndexField(Field):
             name='part_index',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -163,12 +187,12 @@ class MemoGlobMemoField(Field):
             name='memo',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -180,12 +204,12 @@ class MemoGlobMessageNumberField(Field):
             name='message_number',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )
 
 
@@ -197,10 +221,10 @@ class MemoGlobMessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-            offset=0,
-            scale=1,
-            size=size,
-            growable=growable,
-            sub_fields=[
-            ]
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        growable = growable,
+                   sub_fields = [
+        ]
         )

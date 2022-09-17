@@ -115,10 +115,11 @@ class {{class_name}}(DataMessage):
         if field and field.is_valid() and is_sub_field_valid:
             sub_field = field.get_valid_sub_field(self.fields)
             value = field.get_value(sub_field=sub_field)
-            if value:
-                return {{message.field_property_type_by_name[field_name]}}(field.get_value())
-            else:
+            if value is None:
                 return None
+            else:
+                return {{message.field_property_type_by_name[field_name]}}(field.get_value())
+
         else:
             return None
 
@@ -134,15 +135,15 @@ class {{class_name}}(DataMessage):
     def {{field.subfield_property_name_by_name[sub_field.name]}}(self, value: {{field.subfield_property_type_by_name[sub_field.name]}}):
         field = self.get_field({{message.field_class_name_by_name[field_name]}}.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 {%- if field.type_ and field.type_.base_type.name == 'enum' %}
                 field.set_value(0, value.value, sub_field)
                 {%- else %}
                 field.set_value(0, value, sub_field)
                 {%- endif %}
-            else:
-                field.clear()
 
     {%- endfor %}
     {%- endfor %}

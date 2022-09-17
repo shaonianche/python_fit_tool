@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class MonitoringMessage(DataMessage):
@@ -257,11 +257,11 @@ class MonitoringMessage(DataMessage):
     def steps(self, value: int):
         field = self.get_field(MonitoringCyclesField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def strokes(self) -> Optional[float]:
@@ -279,11 +279,11 @@ class MonitoringMessage(DataMessage):
     def strokes(self, value: float):
         field = self.get_field(MonitoringCyclesField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def active_time(self) -> Optional[float]:

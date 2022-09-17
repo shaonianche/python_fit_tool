@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class EventMessage(DataMessage):
@@ -212,11 +212,11 @@ class EventMessage(DataMessage):
     def timer_trigger(self, value: TimerTrigger):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def course_point_index(self) -> Optional[int]:
@@ -234,11 +234,11 @@ class EventMessage(DataMessage):
     def course_point_index(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def battery_level(self) -> Optional[float]:
@@ -256,11 +256,11 @@ class EventMessage(DataMessage):
     def battery_level(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def virtual_partner_speed(self) -> Optional[float]:
@@ -278,11 +278,11 @@ class EventMessage(DataMessage):
     def virtual_partner_speed(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def hr_high_alert(self) -> Optional[int]:
@@ -300,11 +300,11 @@ class EventMessage(DataMessage):
     def hr_high_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def hr_low_alert(self) -> Optional[int]:
@@ -322,11 +322,11 @@ class EventMessage(DataMessage):
     def hr_low_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def speed_high_alert(self) -> Optional[float]:
@@ -344,11 +344,11 @@ class EventMessage(DataMessage):
     def speed_high_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def speed_low_alert(self) -> Optional[float]:
@@ -366,11 +366,11 @@ class EventMessage(DataMessage):
     def speed_low_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def cad_high_alert(self) -> Optional[int]:
@@ -388,11 +388,11 @@ class EventMessage(DataMessage):
     def cad_high_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def cad_low_alert(self) -> Optional[int]:
@@ -410,11 +410,11 @@ class EventMessage(DataMessage):
     def cad_low_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def power_high_alert(self) -> Optional[int]:
@@ -432,11 +432,11 @@ class EventMessage(DataMessage):
     def power_high_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def power_low_alert(self) -> Optional[int]:
@@ -454,11 +454,11 @@ class EventMessage(DataMessage):
     def power_low_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def time_duration_alert(self) -> Optional[float]:
@@ -476,11 +476,11 @@ class EventMessage(DataMessage):
     def time_duration_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def distance_duration_alert(self) -> Optional[float]:
@@ -498,11 +498,11 @@ class EventMessage(DataMessage):
     def distance_duration_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def calorie_duration_alert(self) -> Optional[int]:
@@ -520,11 +520,11 @@ class EventMessage(DataMessage):
     def calorie_duration_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def fitness_equipment_state(self) -> Optional[FitnessEquipmentState]:
@@ -542,11 +542,11 @@ class EventMessage(DataMessage):
     def fitness_equipment_state(self, value: FitnessEquipmentState):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def sport_point(self) -> Optional[int]:
@@ -564,11 +564,11 @@ class EventMessage(DataMessage):
     def sport_point(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def gear_change_data(self) -> Optional[int]:
@@ -586,11 +586,11 @@ class EventMessage(DataMessage):
     def gear_change_data(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def rider_position(self) -> Optional[RiderPositionType]:
@@ -608,11 +608,11 @@ class EventMessage(DataMessage):
     def rider_position(self, value: RiderPositionType):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def comm_timeout(self) -> Optional[int]:
@@ -630,11 +630,11 @@ class EventMessage(DataMessage):
     def comm_timeout(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def radar_threat_alert(self) -> Optional[int]:
@@ -652,11 +652,11 @@ class EventMessage(DataMessage):
     def radar_threat_alert(self, value: int):
         field = self.get_field(EventDataField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def event_group(self) -> Optional[int]:

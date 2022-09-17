@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class WorkoutStepMessage(DataMessage):
@@ -190,11 +190,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_time(self, value: float):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_distance(self) -> Optional[float]:
@@ -212,11 +212,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_distance(self, value: float):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_hr(self) -> Optional[int]:
@@ -234,11 +234,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_hr(self, value: int):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_calories(self) -> Optional[int]:
@@ -256,11 +256,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_calories(self, value: int):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_step(self) -> Optional[int]:
@@ -278,11 +278,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_step(self, value: int):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_power(self) -> Optional[int]:
@@ -300,11 +300,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_power(self, value: int):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def duration_reps(self) -> Optional[int]:
@@ -322,11 +322,11 @@ class WorkoutStepMessage(DataMessage):
     def duration_reps(self, value: int):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_type(self) -> Optional[WorkoutStepTarget]:
@@ -384,11 +384,11 @@ class WorkoutStepMessage(DataMessage):
     def target_speed_zone(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_hr_zone(self) -> Optional[int]:
@@ -406,11 +406,11 @@ class WorkoutStepMessage(DataMessage):
     def target_hr_zone(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_cadence_zone(self) -> Optional[int]:
@@ -428,11 +428,11 @@ class WorkoutStepMessage(DataMessage):
     def target_cadence_zone(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_power_zone(self) -> Optional[int]:
@@ -450,11 +450,11 @@ class WorkoutStepMessage(DataMessage):
     def target_power_zone(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_steps(self) -> Optional[int]:
@@ -472,11 +472,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_steps(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_time(self) -> Optional[float]:
@@ -494,11 +494,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_time(self, value: float):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_distance(self) -> Optional[float]:
@@ -516,11 +516,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_distance(self, value: float):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_calories(self) -> Optional[int]:
@@ -538,11 +538,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_calories(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_hr(self) -> Optional[int]:
@@ -560,11 +560,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_hr(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_repeat_power(self) -> Optional[int]:
@@ -582,11 +582,11 @@ class WorkoutStepMessage(DataMessage):
     def target_repeat_power(self, value: int):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def target_stroke_type(self) -> Optional[SwimStroke]:
@@ -604,11 +604,11 @@ class WorkoutStepMessage(DataMessage):
     def target_stroke_type(self, value: SwimStroke):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_value_low(self) -> Optional[int]:
@@ -646,11 +646,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_speed_low(self, value: float):
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_heart_rate_low(self) -> Optional[int]:
@@ -668,11 +668,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_heart_rate_low(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_cadence_low(self) -> Optional[int]:
@@ -690,11 +690,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_cadence_low(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_power_low(self) -> Optional[int]:
@@ -712,11 +712,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_power_low(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_value_high(self) -> Optional[int]:
@@ -754,11 +754,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_speed_high(self, value: float):
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_heart_rate_high(self) -> Optional[int]:
@@ -776,11 +776,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_heart_rate_high(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_cadence_high(self) -> Optional[int]:
@@ -798,11 +798,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_cadence_high(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def custom_target_power_high(self) -> Optional[int]:
@@ -820,11 +820,11 @@ class WorkoutStepMessage(DataMessage):
     def custom_target_power_high(self, value: int):
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def intensity(self) -> Optional[Intensity]:

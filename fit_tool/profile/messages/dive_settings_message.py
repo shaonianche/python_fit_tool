@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class DiveSettingsMessage(DataMessage):
@@ -572,11 +572,11 @@ class DiveSettingsMessage(DataMessage):
     def heart_rate_antplus_device_type(self, value: int):
         field = self.get_field(DiveSettingsHeartRateSourceField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def heart_rate_local_device_type(self) -> Optional[int]:
@@ -594,11 +594,11 @@ class DiveSettingsMessage(DataMessage):
     def heart_rate_local_device_type(self, value: int):
         field = self.get_field(DiveSettingsHeartRateSourceField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
 
 class MessageIndexField(Field):

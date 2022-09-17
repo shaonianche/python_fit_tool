@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class DeviceInfoMessage(DataMessage):
@@ -181,11 +181,11 @@ class DeviceInfoMessage(DataMessage):
     def antplus_device_type(self, value: int):
         field = self.get_field(DeviceInfoDeviceTypeField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def ant_device_type(self) -> Optional[int]:
@@ -203,11 +203,11 @@ class DeviceInfoMessage(DataMessage):
     def ant_device_type(self, value: int):
         field = self.get_field(DeviceInfoDeviceTypeField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def manufacturer(self) -> Optional[int]:
@@ -285,11 +285,11 @@ class DeviceInfoMessage(DataMessage):
     def favero_product(self, value: int):
         field = self.get_field(DeviceInfoProductField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def garmin_product(self) -> Optional[int]:
@@ -307,11 +307,11 @@ class DeviceInfoMessage(DataMessage):
     def garmin_product(self, value: int):
         field = self.get_field(DeviceInfoProductField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def software_version(self) -> Optional[float]:

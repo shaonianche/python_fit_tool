@@ -9,8 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.profile.profile_type import *
 from fit_tool.sub_field import SubField
+from fit_tool.profile.profile_type import *
 
 
 class WatchfaceSettingsMessage(DataMessage):
@@ -132,11 +132,11 @@ class WatchfaceSettingsMessage(DataMessage):
     def digital_layout(self, value: DigitalWatchfaceLayout):
         field = self.get_field(WatchfaceSettingsLayoutField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
     @property
     def analog_layout(self) -> Optional[AnalogWatchfaceLayout]:
@@ -154,11 +154,11 @@ class WatchfaceSettingsMessage(DataMessage):
     def analog_layout(self, value: AnalogWatchfaceLayout):
         field = self.get_field(WatchfaceSettingsLayoutField.ID)
         if field:
-            if value:
+            if value is None:
+                field.clear()
+            else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-            else:
-                field.clear()
 
 
 class MessageIndexField(Field):

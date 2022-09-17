@@ -36,19 +36,19 @@ class MetZoneMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        MetZoneHighBpmField(
-            size=self.__get_field_size(definition_message, MetZoneHighBpmField.ID),
-            growable=definition_message is None), 
-        MetZoneCaloriesField(
-            size=self.__get_field_size(definition_message, MetZoneCaloriesField.ID),
-            growable=definition_message is None), 
-        MetZoneFatCaloriesField(
-            size=self.__get_field_size(definition_message, MetZoneFatCaloriesField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             MetZoneHighBpmField(
+                                 size=self.__get_field_size(definition_message, MetZoneHighBpmField.ID),
+                                 growable=definition_message is None),
+                             MetZoneCaloriesField(
+                                 size=self.__get_field_size(definition_message, MetZoneCaloriesField.ID),
+                                 growable=definition_message is None),
+                             MetZoneFatCaloriesField(
+                                 size=self.__get_field_size(definition_message, MetZoneFatCaloriesField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -59,9 +59,6 @@ class MetZoneMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -70,8 +67,6 @@ class MetZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -84,8 +79,6 @@ class MetZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def high_bpm(self) -> Optional[int]:
         field = self.get_field(MetZoneHighBpmField.ID)
@@ -94,8 +87,6 @@ class MetZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @high_bpm.setter
     def high_bpm(self, value: int):
@@ -108,8 +99,6 @@ class MetZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def calories(self) -> Optional[float]:
         field = self.get_field(MetZoneCaloriesField.ID)
@@ -118,8 +107,6 @@ class MetZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @calories.setter
     def calories(self, value: float):
@@ -132,8 +119,6 @@ class MetZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def fat_calories(self) -> Optional[float]:
         field = self.get_field(MetZoneFatCaloriesField.ID)
@@ -142,8 +127,6 @@ class MetZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @fat_calories.setter
     def fat_calories(self, value: float):
@@ -156,11 +139,6 @@ class MetZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -170,12 +148,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -187,12 +165,12 @@ class MetZoneHighBpmField(Field):
             name='high_bpm',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -204,14 +182,14 @@ class MetZoneCaloriesField(Field):
             name='calories',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 10,
-                         size = size,
-        units = 'kcal / min',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=10,
+            size=size,
+            units='kcal / min',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -223,12 +201,12 @@ class MetZoneFatCaloriesField(Field):
             name='fat_calories',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 10,
-                         size = size,
-        units = 'kcal / min',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=10,
+            size=size,
+            units='kcal / min',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )

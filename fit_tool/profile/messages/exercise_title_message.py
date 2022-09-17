@@ -36,19 +36,19 @@ class ExerciseTitleMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        ExerciseTitleExerciseCategoryField(
-            size=self.__get_field_size(definition_message, ExerciseTitleExerciseCategoryField.ID),
-            growable=definition_message is None), 
-        ExerciseTitleExerciseNameField(
-            size=self.__get_field_size(definition_message, ExerciseTitleExerciseNameField.ID),
-            growable=definition_message is None), 
-        ExerciseTitleWorkoutStepNameField(
-            size=self.__get_field_size(definition_message, ExerciseTitleWorkoutStepNameField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             ExerciseTitleExerciseCategoryField(
+                                 size=self.__get_field_size(definition_message, ExerciseTitleExerciseCategoryField.ID),
+                                 growable=definition_message is None),
+                             ExerciseTitleExerciseNameField(
+                                 size=self.__get_field_size(definition_message, ExerciseTitleExerciseNameField.ID),
+                                 growable=definition_message is None),
+                             ExerciseTitleWorkoutStepNameField(
+                                 size=self.__get_field_size(definition_message, ExerciseTitleWorkoutStepNameField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -59,9 +59,6 @@ class ExerciseTitleMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -70,8 +67,6 @@ class ExerciseTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -84,8 +79,6 @@ class ExerciseTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def exercise_category(self) -> Optional[int]:
         field = self.get_field(ExerciseTitleExerciseCategoryField.ID)
@@ -94,8 +87,6 @@ class ExerciseTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @exercise_category.setter
     def exercise_category(self, value: int):
@@ -108,8 +99,6 @@ class ExerciseTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def exercise_name(self) -> Optional[int]:
         field = self.get_field(ExerciseTitleExerciseNameField.ID)
@@ -118,8 +107,6 @@ class ExerciseTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @exercise_name.setter
     def exercise_name(self, value: int):
@@ -132,8 +119,6 @@ class ExerciseTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def workout_step_name(self) -> Optional[str]:
         field = self.get_field(ExerciseTitleWorkoutStepNameField.ID)
@@ -142,8 +127,6 @@ class ExerciseTitleMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @workout_step_name.setter
     def workout_step_name(self, value: str):
@@ -156,11 +139,6 @@ class ExerciseTitleMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -170,12 +148,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -187,12 +165,12 @@ class ExerciseTitleExerciseCategoryField(Field):
             name='exercise_category',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -204,12 +182,12 @@ class ExerciseTitleExerciseNameField(Field):
             name='exercise_name',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -221,10 +199,10 @@ class ExerciseTitleWorkoutStepNameField(Field):
             name='wkt_step_name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

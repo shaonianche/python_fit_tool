@@ -36,10 +36,10 @@ class HrvMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        HrvTimeField(
-            size=self.__get_field_size(definition_message, HrvTimeField.ID),
-            growable=definition_message is None)
-        ])
+                             HrvTimeField(
+                                 size=self.__get_field_size(definition_message, HrvTimeField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -50,9 +50,6 @@ class HrvMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def time(self) -> Optional[float]:
         field = self.get_field(HrvTimeField.ID)
@@ -61,8 +58,6 @@ class HrvMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time.setter
     def time(self, value: float):
@@ -75,11 +70,6 @@ class HrvMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class HrvTimeField(Field):
     ID = 0
@@ -89,12 +79,12 @@ class HrvTimeField(Field):
             name='time',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )

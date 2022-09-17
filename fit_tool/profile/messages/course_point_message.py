@@ -36,31 +36,31 @@ class CoursePointMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        CoursePointTimestampField(
-            size=self.__get_field_size(definition_message, CoursePointTimestampField.ID),
-            growable=definition_message is None), 
-        CoursePointPositionLatField(
-            size=self.__get_field_size(definition_message, CoursePointPositionLatField.ID),
-            growable=definition_message is None), 
-        CoursePointPositionLongField(
-            size=self.__get_field_size(definition_message, CoursePointPositionLongField.ID),
-            growable=definition_message is None), 
-        CoursePointDistanceField(
-            size=self.__get_field_size(definition_message, CoursePointDistanceField.ID),
-            growable=definition_message is None), 
-        CoursePointTypeField(
-            size=self.__get_field_size(definition_message, CoursePointTypeField.ID),
-            growable=definition_message is None), 
-        CoursePointNameField(
-            size=self.__get_field_size(definition_message, CoursePointNameField.ID),
-            growable=definition_message is None), 
-        CoursePointFavoriteField(
-            size=self.__get_field_size(definition_message, CoursePointFavoriteField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             CoursePointTimestampField(
+                                 size=self.__get_field_size(definition_message, CoursePointTimestampField.ID),
+                                 growable=definition_message is None),
+                             CoursePointPositionLatField(
+                                 size=self.__get_field_size(definition_message, CoursePointPositionLatField.ID),
+                                 growable=definition_message is None),
+                             CoursePointPositionLongField(
+                                 size=self.__get_field_size(definition_message, CoursePointPositionLongField.ID),
+                                 growable=definition_message is None),
+                             CoursePointDistanceField(
+                                 size=self.__get_field_size(definition_message, CoursePointDistanceField.ID),
+                                 growable=definition_message is None),
+                             CoursePointTypeField(
+                                 size=self.__get_field_size(definition_message, CoursePointTypeField.ID),
+                                 growable=definition_message is None),
+                             CoursePointNameField(
+                                 size=self.__get_field_size(definition_message, CoursePointNameField.ID),
+                                 growable=definition_message is None),
+                             CoursePointFavoriteField(
+                                 size=self.__get_field_size(definition_message, CoursePointFavoriteField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -71,9 +71,6 @@ class CoursePointMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -82,8 +79,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -96,8 +91,7 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -107,7 +101,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -122,8 +115,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def position_lat(self) -> Optional[float]:
         field = self.get_field(CoursePointPositionLatField.ID)
@@ -132,8 +123,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @position_lat.setter
     def position_lat(self, value: float):
@@ -146,8 +135,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def position_long(self) -> Optional[float]:
         field = self.get_field(CoursePointPositionLongField.ID)
@@ -156,8 +143,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @position_long.setter
     def position_long(self, value: float):
@@ -170,8 +155,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def distance(self) -> Optional[float]:
         field = self.get_field(CoursePointDistanceField.ID)
@@ -180,8 +163,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @distance.setter
     def distance(self, value: float):
@@ -194,8 +175,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def type(self) -> Optional[CoursePoint]:
         field = self.get_field(CoursePointTypeField.ID)
@@ -204,8 +183,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @type.setter
     def type(self, value: CoursePoint):
@@ -218,8 +195,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def course_point_name(self) -> Optional[str]:
         field = self.get_field(CoursePointNameField.ID)
@@ -228,8 +203,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @course_point_name.setter
     def course_point_name(self, value: str):
@@ -242,8 +215,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def favorite(self) -> Optional[bool]:
         field = self.get_field(CoursePointFavoriteField.ID)
@@ -252,8 +223,6 @@ class CoursePointMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @favorite.setter
     def favorite(self, value: bool):
@@ -266,11 +235,6 @@ class CoursePointMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -280,12 +244,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -297,14 +261,14 @@ class CoursePointTimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -316,14 +280,14 @@ class CoursePointPositionLatField(Field):
             name='position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -335,14 +299,14 @@ class CoursePointPositionLongField(Field):
             name='position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -354,14 +318,14 @@ class CoursePointDistanceField(Field):
             name='distance',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -373,12 +337,12 @@ class CoursePointTypeField(Field):
             name='type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -390,12 +354,12 @@ class CoursePointNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -407,10 +371,10 @@ class CoursePointFavoriteField(Field):
             name='favorite',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

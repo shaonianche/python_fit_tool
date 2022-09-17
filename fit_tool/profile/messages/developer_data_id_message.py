@@ -36,22 +36,24 @@ class DeveloperDataIdMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        DeveloperDataIdDeveloperIdField(
-            size=self.__get_field_size(definition_message, DeveloperDataIdDeveloperIdField.ID),
-            growable=definition_message is None), 
-        DeveloperDataIdApplicationIdField(
-            size=self.__get_field_size(definition_message, DeveloperDataIdApplicationIdField.ID),
-            growable=definition_message is None), 
-        DeveloperDataIdManufacturerIdField(
-            size=self.__get_field_size(definition_message, DeveloperDataIdManufacturerIdField.ID),
-            growable=definition_message is None), 
-        DeveloperDataIdDeveloperDataIndexField(
-            size=self.__get_field_size(definition_message, DeveloperDataIdDeveloperDataIndexField.ID),
-            growable=definition_message is None), 
-        DeveloperDataIdApplicationVersionField(
-            size=self.__get_field_size(definition_message, DeveloperDataIdApplicationVersionField.ID),
-            growable=definition_message is None)
-        ])
+                             DeveloperDataIdDeveloperIdField(
+                                 size=self.__get_field_size(definition_message, DeveloperDataIdDeveloperIdField.ID),
+                                 growable=definition_message is None),
+                             DeveloperDataIdApplicationIdField(
+                                 size=self.__get_field_size(definition_message, DeveloperDataIdApplicationIdField.ID),
+                                 growable=definition_message is None),
+                             DeveloperDataIdManufacturerIdField(
+                                 size=self.__get_field_size(definition_message, DeveloperDataIdManufacturerIdField.ID),
+                                 growable=definition_message is None),
+                             DeveloperDataIdDeveloperDataIndexField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeveloperDataIdDeveloperDataIndexField.ID),
+                                 growable=definition_message is None),
+                             DeveloperDataIdApplicationVersionField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeveloperDataIdApplicationVersionField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -62,9 +64,6 @@ class DeveloperDataIdMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def developer_id(self) -> Optional[int]:
         field = self.get_field(DeveloperDataIdDeveloperIdField.ID)
@@ -73,8 +72,6 @@ class DeveloperDataIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @developer_id.setter
     def developer_id(self, value: int):
@@ -87,8 +84,6 @@ class DeveloperDataIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def application_id(self) -> Optional[int]:
         field = self.get_field(DeveloperDataIdApplicationIdField.ID)
@@ -97,8 +92,6 @@ class DeveloperDataIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @application_id.setter
     def application_id(self, value: int):
@@ -111,8 +104,6 @@ class DeveloperDataIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def manufacturer_id(self) -> Optional[int]:
         field = self.get_field(DeveloperDataIdManufacturerIdField.ID)
@@ -121,8 +112,6 @@ class DeveloperDataIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @manufacturer_id.setter
     def manufacturer_id(self, value: int):
@@ -135,8 +124,6 @@ class DeveloperDataIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def developer_data_index(self) -> Optional[int]:
         field = self.get_field(DeveloperDataIdDeveloperDataIndexField.ID)
@@ -145,8 +132,6 @@ class DeveloperDataIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @developer_data_index.setter
     def developer_data_index(self, value: int):
@@ -159,8 +144,6 @@ class DeveloperDataIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def application_version(self) -> Optional[int]:
         field = self.get_field(DeveloperDataIdApplicationVersionField.ID)
@@ -169,8 +152,6 @@ class DeveloperDataIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @application_version.setter
     def application_version(self, value: int):
@@ -183,11 +164,6 @@ class DeveloperDataIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class DeveloperDataIdDeveloperIdField(Field):
     ID = 0
@@ -197,12 +173,12 @@ class DeveloperDataIdDeveloperIdField(Field):
             name='developer_id',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -214,12 +190,12 @@ class DeveloperDataIdApplicationIdField(Field):
             name='application_id',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -231,12 +207,12 @@ class DeveloperDataIdManufacturerIdField(Field):
             name='manufacturer_id',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -248,12 +224,12 @@ class DeveloperDataIdDeveloperDataIndexField(Field):
             name='developer_data_index',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -265,10 +241,10 @@ class DeveloperDataIdApplicationVersionField(Field):
             name='application_version',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

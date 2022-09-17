@@ -36,25 +36,25 @@ class HrMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
-        HrFractionalTimestampField(
-            size=self.__get_field_size(definition_message, HrFractionalTimestampField.ID),
-            growable=definition_message is None), 
-        HrTime256Field(
-            size=self.__get_field_size(definition_message, HrTime256Field.ID),
-            growable=definition_message is None), 
-        HrFilteredBpmField(
-            size=self.__get_field_size(definition_message, HrFilteredBpmField.ID),
-            growable=definition_message is None), 
-        HrEventTimestampField(
-            size=self.__get_field_size(definition_message, HrEventTimestampField.ID),
-            growable=definition_message is None), 
-        HrEventTimestamp12Field(
-            size=self.__get_field_size(definition_message, HrEventTimestamp12Field.ID),
-            growable=definition_message is None)
-        ])
+                             TimestampField(
+                                 size=self.__get_field_size(definition_message, TimestampField.ID),
+                                 growable=definition_message is None),
+                             HrFractionalTimestampField(
+                                 size=self.__get_field_size(definition_message, HrFractionalTimestampField.ID),
+                                 growable=definition_message is None),
+                             HrTime256Field(
+                                 size=self.__get_field_size(definition_message, HrTime256Field.ID),
+                                 growable=definition_message is None),
+                             HrFilteredBpmField(
+                                 size=self.__get_field_size(definition_message, HrFilteredBpmField.ID),
+                                 growable=definition_message is None),
+                             HrEventTimestampField(
+                                 size=self.__get_field_size(definition_message, HrEventTimestampField.ID),
+                                 growable=definition_message is None),
+                             HrEventTimestamp12Field(
+                                 size=self.__get_field_size(definition_message, HrEventTimestamp12Field.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -65,9 +65,7 @@ class HrMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -77,7 +75,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -92,8 +89,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def fractional_timestamp(self) -> Optional[float]:
         field = self.get_field(HrFractionalTimestampField.ID)
@@ -102,8 +97,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @fractional_timestamp.setter
     def fractional_timestamp(self, value: float):
@@ -116,8 +109,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time256(self) -> Optional[float]:
         field = self.get_field(HrTime256Field.ID)
@@ -126,8 +117,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time256.setter
     def time256(self, value: float):
@@ -140,8 +129,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def filtered_bpm(self) -> Optional[int]:
         field = self.get_field(HrFilteredBpmField.ID)
@@ -150,8 +137,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @filtered_bpm.setter
     def filtered_bpm(self, value: int):
@@ -164,8 +149,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def event_timestamp(self) -> Optional[float]:
         field = self.get_field(HrEventTimestampField.ID)
@@ -174,8 +157,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @event_timestamp.setter
     def event_timestamp(self, value: float):
@@ -188,8 +169,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def event_timestamp_12(self) -> Optional[int]:
         field = self.get_field(HrEventTimestamp12Field.ID)
@@ -198,8 +177,6 @@ class HrMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @event_timestamp_12.setter
     def event_timestamp_12(self, value: int):
@@ -212,11 +189,6 @@ class HrMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class TimestampField(Field):
     ID = 253
@@ -226,14 +198,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -245,14 +217,14 @@ class HrFractionalTimestampField(Field):
             name='fractional_timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 32768,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=32768,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -264,14 +236,14 @@ class HrTime256Field(Field):
             name='time256',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 256,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=256,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -283,14 +255,14 @@ class HrFilteredBpmField(Field):
             name='filtered_bpm',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'bpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='bpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -302,14 +274,14 @@ class HrEventTimestampField(Field):
             name='event_timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1024,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1024,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -321,12 +293,12 @@ class HrEventTimestamp12Field(Field):
             name='event_timestamp_12',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )

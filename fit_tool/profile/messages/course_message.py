@@ -36,19 +36,19 @@ class CourseMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        CourseSportField(
-            size=self.__get_field_size(definition_message, CourseSportField.ID),
-            growable=definition_message is None), 
-        CourseNameField(
-            size=self.__get_field_size(definition_message, CourseNameField.ID),
-            growable=definition_message is None), 
-        CourseCapabilitiesField(
-            size=self.__get_field_size(definition_message, CourseCapabilitiesField.ID),
-            growable=definition_message is None), 
-        CourseSubSportField(
-            size=self.__get_field_size(definition_message, CourseSubSportField.ID),
-            growable=definition_message is None)
-        ])
+                             CourseSportField(
+                                 size=self.__get_field_size(definition_message, CourseSportField.ID),
+                                 growable=definition_message is None),
+                             CourseNameField(
+                                 size=self.__get_field_size(definition_message, CourseNameField.ID),
+                                 growable=definition_message is None),
+                             CourseCapabilitiesField(
+                                 size=self.__get_field_size(definition_message, CourseCapabilitiesField.ID),
+                                 growable=definition_message is None),
+                             CourseSubSportField(
+                                 size=self.__get_field_size(definition_message, CourseSubSportField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -59,9 +59,6 @@ class CourseMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(CourseSportField.ID)
@@ -70,8 +67,6 @@ class CourseMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sport.setter
     def sport(self, value: Sport):
@@ -84,8 +79,6 @@ class CourseMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def course_name(self) -> Optional[str]:
         field = self.get_field(CourseNameField.ID)
@@ -94,8 +87,6 @@ class CourseMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @course_name.setter
     def course_name(self, value: str):
@@ -108,8 +99,6 @@ class CourseMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def capabilities(self) -> Optional[int]:
         field = self.get_field(CourseCapabilitiesField.ID)
@@ -118,8 +107,6 @@ class CourseMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @capabilities.setter
     def capabilities(self, value: int):
@@ -132,8 +119,6 @@ class CourseMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sub_sport(self) -> Optional[SubSport]:
         field = self.get_field(CourseSubSportField.ID)
@@ -142,8 +127,6 @@ class CourseMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sub_sport.setter
     def sub_sport(self, value: SubSport):
@@ -156,11 +139,6 @@ class CourseMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class CourseSportField(Field):
     ID = 4
@@ -170,12 +148,12 @@ class CourseSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -187,12 +165,12 @@ class CourseNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -204,12 +182,12 @@ class CourseCapabilitiesField(Field):
             name='capabilities',
             field_id=self.ID,
             base_type=BaseType.UINT32Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -221,10 +199,10 @@ class CourseSubSportField(Field):
             name='sub_sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

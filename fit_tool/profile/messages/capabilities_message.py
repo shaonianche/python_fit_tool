@@ -36,19 +36,20 @@ class CapabilitiesMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        CapabilitiesLanguagesField(
-            size=self.__get_field_size(definition_message, CapabilitiesLanguagesField.ID),
-            growable=definition_message is None), 
-        CapabilitiesSportsField(
-            size=self.__get_field_size(definition_message, CapabilitiesSportsField.ID),
-            growable=definition_message is None), 
-        CapabilitiesWorkoutsSupportedField(
-            size=self.__get_field_size(definition_message, CapabilitiesWorkoutsSupportedField.ID),
-            growable=definition_message is None), 
-        CapabilitiesConnectivitySupportedField(
-            size=self.__get_field_size(definition_message, CapabilitiesConnectivitySupportedField.ID),
-            growable=definition_message is None)
-        ])
+                             CapabilitiesLanguagesField(
+                                 size=self.__get_field_size(definition_message, CapabilitiesLanguagesField.ID),
+                                 growable=definition_message is None),
+                             CapabilitiesSportsField(
+                                 size=self.__get_field_size(definition_message, CapabilitiesSportsField.ID),
+                                 growable=definition_message is None),
+                             CapabilitiesWorkoutsSupportedField(
+                                 size=self.__get_field_size(definition_message, CapabilitiesWorkoutsSupportedField.ID),
+                                 growable=definition_message is None),
+                             CapabilitiesConnectivitySupportedField(
+                                 size=self.__get_field_size(definition_message,
+                                                            CapabilitiesConnectivitySupportedField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -59,9 +60,6 @@ class CapabilitiesMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def languages(self) -> Optional[int]:
         field = self.get_field(CapabilitiesLanguagesField.ID)
@@ -70,8 +68,6 @@ class CapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @languages.setter
     def languages(self, value: int):
@@ -84,8 +80,6 @@ class CapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sports(self) -> Optional[int]:
         field = self.get_field(CapabilitiesSportsField.ID)
@@ -94,8 +88,6 @@ class CapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sports.setter
     def sports(self, value: int):
@@ -108,8 +100,6 @@ class CapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def workouts_supported(self) -> Optional[int]:
         field = self.get_field(CapabilitiesWorkoutsSupportedField.ID)
@@ -118,8 +108,6 @@ class CapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @workouts_supported.setter
     def workouts_supported(self, value: int):
@@ -132,8 +120,6 @@ class CapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def connectivity_supported(self) -> Optional[int]:
         field = self.get_field(CapabilitiesConnectivitySupportedField.ID)
@@ -142,8 +128,6 @@ class CapabilitiesMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @connectivity_supported.setter
     def connectivity_supported(self, value: int):
@@ -156,11 +140,6 @@ class CapabilitiesMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class CapabilitiesLanguagesField(Field):
     ID = 0
@@ -170,12 +149,12 @@ class CapabilitiesLanguagesField(Field):
             name='languages',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -187,12 +166,12 @@ class CapabilitiesSportsField(Field):
             name='sports',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -204,12 +183,12 @@ class CapabilitiesWorkoutsSupportedField(Field):
             name='workouts_supported',
             field_id=self.ID,
             base_type=BaseType.UINT32Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -221,10 +200,10 @@ class CapabilitiesConnectivitySupportedField(Field):
             name='connectivity_supported',
             field_id=self.ID,
             base_type=BaseType.UINT32Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

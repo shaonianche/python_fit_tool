@@ -36,46 +36,46 @@ class DiveSummaryMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
-        DiveSummaryReferenceMesgField(
-            size=self.__get_field_size(definition_message, DiveSummaryReferenceMesgField.ID),
-            growable=definition_message is None), 
-        DiveSummaryReferenceIndexField(
-            size=self.__get_field_size(definition_message, DiveSummaryReferenceIndexField.ID),
-            growable=definition_message is None), 
-        DiveSummaryAvgDepthField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgDepthField.ID),
-            growable=definition_message is None), 
-        DiveSummaryMaxDepthField(
-            size=self.__get_field_size(definition_message, DiveSummaryMaxDepthField.ID),
-            growable=definition_message is None), 
-        DiveSummarySurfaceIntervalField(
-            size=self.__get_field_size(definition_message, DiveSummarySurfaceIntervalField.ID),
-            growable=definition_message is None), 
-        DiveSummaryStartCnsField(
-            size=self.__get_field_size(definition_message, DiveSummaryStartCnsField.ID),
-            growable=definition_message is None), 
-        DiveSummaryEndCnsField(
-            size=self.__get_field_size(definition_message, DiveSummaryEndCnsField.ID),
-            growable=definition_message is None), 
-        DiveSummaryStartN2Field(
-            size=self.__get_field_size(definition_message, DiveSummaryStartN2Field.ID),
-            growable=definition_message is None), 
-        DiveSummaryEndN2Field(
-            size=self.__get_field_size(definition_message, DiveSummaryEndN2Field.ID),
-            growable=definition_message is None), 
-        DiveSummaryO2ToxicityField(
-            size=self.__get_field_size(definition_message, DiveSummaryO2ToxicityField.ID),
-            growable=definition_message is None), 
-        DiveSummaryDiveNumberField(
-            size=self.__get_field_size(definition_message, DiveSummaryDiveNumberField.ID),
-            growable=definition_message is None), 
-        DiveSummaryBottomTimeField(
-            size=self.__get_field_size(definition_message, DiveSummaryBottomTimeField.ID),
-            growable=definition_message is None)
-        ])
+                             TimestampField(
+                                 size=self.__get_field_size(definition_message, TimestampField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryReferenceMesgField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryReferenceMesgField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryReferenceIndexField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryReferenceIndexField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryAvgDepthField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryAvgDepthField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryMaxDepthField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryMaxDepthField.ID),
+                                 growable=definition_message is None),
+                             DiveSummarySurfaceIntervalField(
+                                 size=self.__get_field_size(definition_message, DiveSummarySurfaceIntervalField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryStartCnsField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryStartCnsField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryEndCnsField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryEndCnsField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryStartN2Field(
+                                 size=self.__get_field_size(definition_message, DiveSummaryStartN2Field.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryEndN2Field(
+                                 size=self.__get_field_size(definition_message, DiveSummaryEndN2Field.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryO2ToxicityField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryO2ToxicityField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryDiveNumberField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryDiveNumberField.ID),
+                                 growable=definition_message is None),
+                             DiveSummaryBottomTimeField(
+                                 size=self.__get_field_size(definition_message, DiveSummaryBottomTimeField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -86,9 +86,7 @@ class DiveSummaryMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -98,7 +96,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -113,8 +110,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def reference_mesg(self) -> Optional[int]:
         field = self.get_field(DiveSummaryReferenceMesgField.ID)
@@ -123,8 +118,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @reference_mesg.setter
     def reference_mesg(self, value: int):
@@ -137,8 +130,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def reference_index(self) -> Optional[int]:
         field = self.get_field(DiveSummaryReferenceIndexField.ID)
@@ -147,8 +138,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @reference_index.setter
     def reference_index(self, value: int):
@@ -161,8 +150,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_depth(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgDepthField.ID)
@@ -171,8 +158,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_depth.setter
     def avg_depth(self, value: float):
@@ -185,8 +170,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_depth(self) -> Optional[float]:
         field = self.get_field(DiveSummaryMaxDepthField.ID)
@@ -195,8 +178,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_depth.setter
     def max_depth(self, value: float):
@@ -209,8 +190,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def surface_interval(self) -> Optional[int]:
         field = self.get_field(DiveSummarySurfaceIntervalField.ID)
@@ -219,8 +198,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @surface_interval.setter
     def surface_interval(self, value: int):
@@ -233,8 +210,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def start_cns(self) -> Optional[int]:
         field = self.get_field(DiveSummaryStartCnsField.ID)
@@ -243,8 +218,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @start_cns.setter
     def start_cns(self, value: int):
@@ -257,8 +230,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def end_cns(self) -> Optional[int]:
         field = self.get_field(DiveSummaryEndCnsField.ID)
@@ -267,8 +238,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @end_cns.setter
     def end_cns(self, value: int):
@@ -281,8 +250,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def start_n2(self) -> Optional[int]:
         field = self.get_field(DiveSummaryStartN2Field.ID)
@@ -291,8 +258,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @start_n2.setter
     def start_n2(self, value: int):
@@ -305,8 +270,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def end_n2(self) -> Optional[int]:
         field = self.get_field(DiveSummaryEndN2Field.ID)
@@ -315,8 +278,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @end_n2.setter
     def end_n2(self, value: int):
@@ -329,8 +290,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def o2_toxicity(self) -> Optional[int]:
         field = self.get_field(DiveSummaryO2ToxicityField.ID)
@@ -339,8 +298,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @o2_toxicity.setter
     def o2_toxicity(self, value: int):
@@ -353,8 +310,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def dive_number(self) -> Optional[int]:
         field = self.get_field(DiveSummaryDiveNumberField.ID)
@@ -363,8 +318,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @dive_number.setter
     def dive_number(self, value: int):
@@ -377,8 +330,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def bottom_time(self) -> Optional[float]:
         field = self.get_field(DiveSummaryBottomTimeField.ID)
@@ -387,8 +338,6 @@ class DiveSummaryMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @bottom_time.setter
     def bottom_time(self, value: float):
@@ -401,11 +350,6 @@ class DiveSummaryMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class TimestampField(Field):
     ID = 253
@@ -415,14 +359,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -434,12 +378,12 @@ class DiveSummaryReferenceMesgField(Field):
             name='reference_mesg',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -451,12 +395,12 @@ class DiveSummaryReferenceIndexField(Field):
             name='reference_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -468,14 +412,14 @@ class DiveSummaryAvgDepthField(Field):
             name='avg_depth',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -487,14 +431,14 @@ class DiveSummaryMaxDepthField(Field):
             name='max_depth',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -506,14 +450,14 @@ class DiveSummarySurfaceIntervalField(Field):
             name='surface_interval',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -525,14 +469,14 @@ class DiveSummaryStartCnsField(Field):
             name='start_cns',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -544,14 +488,14 @@ class DiveSummaryEndCnsField(Field):
             name='end_cns',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -563,14 +507,14 @@ class DiveSummaryStartN2Field(Field):
             name='start_n2',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -582,14 +526,14 @@ class DiveSummaryEndN2Field(Field):
             name='end_n2',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -601,14 +545,14 @@ class DiveSummaryO2ToxicityField(Field):
             name='o2_toxicity',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'OTUs',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='OTUs',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -620,12 +564,12 @@ class DiveSummaryDiveNumberField(Field):
             name='dive_number',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -637,12 +581,12 @@ class DiveSummaryBottomTimeField(Field):
             name='bottom_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )

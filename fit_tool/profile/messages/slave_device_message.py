@@ -36,13 +36,13 @@ class SlaveDeviceMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        SlaveDeviceManufacturerField(
-            size=self.__get_field_size(definition_message, SlaveDeviceManufacturerField.ID),
-            growable=definition_message is None), 
-        SlaveDeviceProductField(
-            size=self.__get_field_size(definition_message, SlaveDeviceProductField.ID),
-            growable=definition_message is None)
-        ])
+                             SlaveDeviceManufacturerField(
+                                 size=self.__get_field_size(definition_message, SlaveDeviceManufacturerField.ID),
+                                 growable=definition_message is None),
+                             SlaveDeviceProductField(
+                                 size=self.__get_field_size(definition_message, SlaveDeviceProductField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -53,9 +53,6 @@ class SlaveDeviceMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def manufacturer(self) -> Optional[int]:
         field = self.get_field(SlaveDeviceManufacturerField.ID)
@@ -64,8 +61,6 @@ class SlaveDeviceMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @manufacturer.setter
     def manufacturer(self, value: int):
@@ -78,8 +73,6 @@ class SlaveDeviceMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def product(self) -> Optional[int]:
         field = self.get_field(SlaveDeviceProductField.ID)
@@ -88,8 +81,6 @@ class SlaveDeviceMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @product.setter
     def product(self, value: int):
@@ -101,9 +92,6 @@ class SlaveDeviceMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-
-    
-
 
     @property
     def favero_product(self) -> Optional[int]:
@@ -126,7 +114,6 @@ class SlaveDeviceMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-
 
     @property
     def garmin_product(self) -> Optional[int]:
@@ -151,9 +138,6 @@ class SlaveDeviceMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
 
-
-
-
 class SlaveDeviceManufacturerField(Field):
     ID = 0
 
@@ -162,12 +146,12 @@ class SlaveDeviceManufacturerField(Field):
             name='manufacturer',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -179,26 +163,26 @@ class SlaveDeviceProductField(Field):
             name='product',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        SubField(
-            name='favero_product',
-            base_type=BaseType.UINT16,
-        scale = 1,
-                offset = 0,
-        reference_map = {
-        SlaveDeviceManufacturerField.ID: [263]
-        }), 
-        SubField(
-            name='garmin_product',
-            base_type=BaseType.UINT16,
-        scale = 1,
-                offset = 0,
-        reference_map = {
-        SlaveDeviceManufacturerField.ID: [1, 15, 13, 89]
-        })
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+                SubField(
+                    name='favero_product',
+                    base_type=BaseType.UINT16,
+                    scale=1,
+                    offset=0,
+                    reference_map={
+                        SlaveDeviceManufacturerField.ID: [263]
+                    }),
+                SubField(
+                    name='garmin_product',
+                    base_type=BaseType.UINT16,
+                    scale=1,
+                    offset=0,
+                    reference_map={
+                        SlaveDeviceManufacturerField.ID: [1, 15, 13, 89]
+                    })
+            ]
         )

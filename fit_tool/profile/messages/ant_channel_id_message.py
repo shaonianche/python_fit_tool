@@ -36,22 +36,22 @@ class AntChannelIdMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        AntChannelIdChannelNumberField(
-            size=self.__get_field_size(definition_message, AntChannelIdChannelNumberField.ID),
-            growable=definition_message is None), 
-        AntChannelIdDeviceTypeField(
-            size=self.__get_field_size(definition_message, AntChannelIdDeviceTypeField.ID),
-            growable=definition_message is None), 
-        AntChannelIdDeviceNumberField(
-            size=self.__get_field_size(definition_message, AntChannelIdDeviceNumberField.ID),
-            growable=definition_message is None), 
-        AntChannelIdTransmissionTypeField(
-            size=self.__get_field_size(definition_message, AntChannelIdTransmissionTypeField.ID),
-            growable=definition_message is None), 
-        AntChannelIdDeviceIndexField(
-            size=self.__get_field_size(definition_message, AntChannelIdDeviceIndexField.ID),
-            growable=definition_message is None)
-        ])
+                             AntChannelIdChannelNumberField(
+                                 size=self.__get_field_size(definition_message, AntChannelIdChannelNumberField.ID),
+                                 growable=definition_message is None),
+                             AntChannelIdDeviceTypeField(
+                                 size=self.__get_field_size(definition_message, AntChannelIdDeviceTypeField.ID),
+                                 growable=definition_message is None),
+                             AntChannelIdDeviceNumberField(
+                                 size=self.__get_field_size(definition_message, AntChannelIdDeviceNumberField.ID),
+                                 growable=definition_message is None),
+                             AntChannelIdTransmissionTypeField(
+                                 size=self.__get_field_size(definition_message, AntChannelIdTransmissionTypeField.ID),
+                                 growable=definition_message is None),
+                             AntChannelIdDeviceIndexField(
+                                 size=self.__get_field_size(definition_message, AntChannelIdDeviceIndexField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -62,9 +62,6 @@ class AntChannelIdMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def channel_number(self) -> Optional[int]:
         field = self.get_field(AntChannelIdChannelNumberField.ID)
@@ -73,8 +70,6 @@ class AntChannelIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @channel_number.setter
     def channel_number(self, value: int):
@@ -87,8 +82,6 @@ class AntChannelIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def device_type(self) -> Optional[int]:
         field = self.get_field(AntChannelIdDeviceTypeField.ID)
@@ -97,8 +90,6 @@ class AntChannelIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @device_type.setter
     def device_type(self, value: int):
@@ -111,8 +102,6 @@ class AntChannelIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def device_number(self) -> Optional[int]:
         field = self.get_field(AntChannelIdDeviceNumberField.ID)
@@ -121,8 +110,6 @@ class AntChannelIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @device_number.setter
     def device_number(self, value: int):
@@ -135,8 +122,6 @@ class AntChannelIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def transmission_type(self) -> Optional[int]:
         field = self.get_field(AntChannelIdTransmissionTypeField.ID)
@@ -145,8 +130,6 @@ class AntChannelIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @transmission_type.setter
     def transmission_type(self, value: int):
@@ -159,8 +142,6 @@ class AntChannelIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def device_index(self) -> Optional[int]:
         field = self.get_field(AntChannelIdDeviceIndexField.ID)
@@ -169,8 +150,6 @@ class AntChannelIdMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @device_index.setter
     def device_index(self, value: int):
@@ -183,11 +162,6 @@ class AntChannelIdMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class AntChannelIdChannelNumberField(Field):
     ID = 0
@@ -197,12 +171,12 @@ class AntChannelIdChannelNumberField(Field):
             name='channel_number',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -214,12 +188,12 @@ class AntChannelIdDeviceTypeField(Field):
             name='device_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -231,12 +205,12 @@ class AntChannelIdDeviceNumberField(Field):
             name='device_number',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -248,12 +222,12 @@ class AntChannelIdTransmissionTypeField(Field):
             name='transmission_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -265,10 +239,10 @@ class AntChannelIdDeviceIndexField(Field):
             name='device_index',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

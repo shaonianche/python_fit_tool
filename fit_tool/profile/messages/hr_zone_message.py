@@ -36,16 +36,16 @@ class HrZoneMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        HrZoneHighBpmField(
-            size=self.__get_field_size(definition_message, HrZoneHighBpmField.ID),
-            growable=definition_message is None), 
-        HrZoneNameField(
-            size=self.__get_field_size(definition_message, HrZoneNameField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             HrZoneHighBpmField(
+                                 size=self.__get_field_size(definition_message, HrZoneHighBpmField.ID),
+                                 growable=definition_message is None),
+                             HrZoneNameField(
+                                 size=self.__get_field_size(definition_message, HrZoneNameField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -56,9 +56,6 @@ class HrZoneMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -67,8 +64,6 @@ class HrZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -81,8 +76,6 @@ class HrZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def high_bpm(self) -> Optional[int]:
         field = self.get_field(HrZoneHighBpmField.ID)
@@ -91,8 +84,6 @@ class HrZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @high_bpm.setter
     def high_bpm(self, value: int):
@@ -105,8 +96,6 @@ class HrZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def hr_zone_name(self) -> Optional[str]:
         field = self.get_field(HrZoneNameField.ID)
@@ -115,8 +104,6 @@ class HrZoneMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @hr_zone_name.setter
     def hr_zone_name(self, value: str):
@@ -129,11 +116,6 @@ class HrZoneMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -143,12 +125,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -160,14 +142,14 @@ class HrZoneHighBpmField(Field):
             name='high_bpm',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'bpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='bpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -179,10 +161,10 @@ class HrZoneNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

@@ -36,40 +36,51 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        ExdDataConceptConfigurationScreenIndexField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationScreenIndexField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationConceptField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationFieldIdField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationFieldIdField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationConceptIndexField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptIndexField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationDataPageField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDataPageField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationConceptKeyField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptKeyField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationScalingField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationScalingField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationDataUnitsField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDataUnitsField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationQualifierField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationQualifierField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationDescriptorField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDescriptorField.ID),
-            growable=definition_message is None), 
-        ExdDataConceptConfigurationIsSignedField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationIsSignedField.ID),
-            growable=definition_message is None)
-        ])
+                             ExdDataConceptConfigurationScreenIndexField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationScreenIndexField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationConceptField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationConceptField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationFieldIdField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationFieldIdField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationConceptIndexField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationConceptIndexField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationDataPageField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationDataPageField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationConceptKeyField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationConceptKeyField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationScalingField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationScalingField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationDataUnitsField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationDataUnitsField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationQualifierField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationQualifierField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationDescriptorField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationDescriptorField.ID),
+                                 growable=definition_message is None),
+                             ExdDataConceptConfigurationIsSignedField(
+                                 size=self.__get_field_size(definition_message,
+                                                            ExdDataConceptConfigurationIsSignedField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -80,9 +91,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def screen_index(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationScreenIndexField.ID)
@@ -91,8 +99,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @screen_index.setter
     def screen_index(self, value: int):
@@ -105,8 +111,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def concept_field(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationConceptField.ID)
@@ -115,8 +119,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @concept_field.setter
     def concept_field(self, value: int):
@@ -129,8 +131,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def field_id(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationFieldIdField.ID)
@@ -139,8 +139,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @field_id.setter
     def field_id(self, value: int):
@@ -153,8 +151,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def concept_index(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationConceptIndexField.ID)
@@ -163,8 +159,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @concept_index.setter
     def concept_index(self, value: int):
@@ -177,8 +171,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def data_page(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationDataPageField.ID)
@@ -187,8 +179,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @data_page.setter
     def data_page(self, value: int):
@@ -201,8 +191,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def concept_key(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationConceptKeyField.ID)
@@ -211,8 +199,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @concept_key.setter
     def concept_key(self, value: int):
@@ -225,8 +211,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def scaling(self) -> Optional[int]:
         field = self.get_field(ExdDataConceptConfigurationScalingField.ID)
@@ -235,8 +219,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @scaling.setter
     def scaling(self, value: int):
@@ -249,8 +231,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def data_units(self) -> Optional[ExdDataUnits]:
         field = self.get_field(ExdDataConceptConfigurationDataUnitsField.ID)
@@ -259,8 +239,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @data_units.setter
     def data_units(self, value: ExdDataUnits):
@@ -273,8 +251,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def qualifier(self) -> Optional[ExdQualifiers]:
         field = self.get_field(ExdDataConceptConfigurationQualifierField.ID)
@@ -283,8 +259,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @qualifier.setter
     def qualifier(self, value: ExdQualifiers):
@@ -297,8 +271,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def descriptor(self) -> Optional[ExdDescriptors]:
         field = self.get_field(ExdDataConceptConfigurationDescriptorField.ID)
@@ -307,8 +279,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @descriptor.setter
     def descriptor(self, value: ExdDescriptors):
@@ -321,8 +291,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def is_signed(self) -> Optional[bool]:
         field = self.get_field(ExdDataConceptConfigurationIsSignedField.ID)
@@ -331,8 +299,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @is_signed.setter
     def is_signed(self, value: bool):
@@ -345,11 +311,6 @@ class ExdDataConceptConfigurationMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class ExdDataConceptConfigurationScreenIndexField(Field):
     ID = 0
@@ -359,12 +320,12 @@ class ExdDataConceptConfigurationScreenIndexField(Field):
             name='screen_index',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -376,12 +337,12 @@ class ExdDataConceptConfigurationConceptField(Field):
             name='concept_field',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -393,12 +354,12 @@ class ExdDataConceptConfigurationFieldIdField(Field):
             name='field_id',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -410,12 +371,12 @@ class ExdDataConceptConfigurationConceptIndexField(Field):
             name='concept_index',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -427,12 +388,12 @@ class ExdDataConceptConfigurationDataPageField(Field):
             name='data_page',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -444,12 +405,12 @@ class ExdDataConceptConfigurationConceptKeyField(Field):
             name='concept_key',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -461,12 +422,12 @@ class ExdDataConceptConfigurationScalingField(Field):
             name='scaling',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -478,12 +439,12 @@ class ExdDataConceptConfigurationDataUnitsField(Field):
             name='data_units',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -495,12 +456,12 @@ class ExdDataConceptConfigurationQualifierField(Field):
             name='qualifier',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -512,12 +473,12 @@ class ExdDataConceptConfigurationDescriptorField(Field):
             name='descriptor',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -529,10 +490,10 @@ class ExdDataConceptConfigurationIsSignedField(Field):
             name='is_signed',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

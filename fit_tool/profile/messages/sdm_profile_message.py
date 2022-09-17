@@ -36,31 +36,31 @@ class SdmProfileMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        SdmProfileEnabledField(
-            size=self.__get_field_size(definition_message, SdmProfileEnabledField.ID),
-            growable=definition_message is None), 
-        SdmProfileSdmAntIdField(
-            size=self.__get_field_size(definition_message, SdmProfileSdmAntIdField.ID),
-            growable=definition_message is None), 
-        SdmProfileSdmCalFactorField(
-            size=self.__get_field_size(definition_message, SdmProfileSdmCalFactorField.ID),
-            growable=definition_message is None), 
-        SdmProfileOdometerField(
-            size=self.__get_field_size(definition_message, SdmProfileOdometerField.ID),
-            growable=definition_message is None), 
-        SdmProfileSpeedSourceField(
-            size=self.__get_field_size(definition_message, SdmProfileSpeedSourceField.ID),
-            growable=definition_message is None), 
-        SdmProfileSdmAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, SdmProfileSdmAntIdTransTypeField.ID),
-            growable=definition_message is None), 
-        SdmProfileOdometerRolloverField(
-            size=self.__get_field_size(definition_message, SdmProfileOdometerRolloverField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileEnabledField(
+                                 size=self.__get_field_size(definition_message, SdmProfileEnabledField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileSdmAntIdField(
+                                 size=self.__get_field_size(definition_message, SdmProfileSdmAntIdField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileSdmCalFactorField(
+                                 size=self.__get_field_size(definition_message, SdmProfileSdmCalFactorField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileOdometerField(
+                                 size=self.__get_field_size(definition_message, SdmProfileOdometerField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileSpeedSourceField(
+                                 size=self.__get_field_size(definition_message, SdmProfileSpeedSourceField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileSdmAntIdTransTypeField(
+                                 size=self.__get_field_size(definition_message, SdmProfileSdmAntIdTransTypeField.ID),
+                                 growable=definition_message is None),
+                             SdmProfileOdometerRolloverField(
+                                 size=self.__get_field_size(definition_message, SdmProfileOdometerRolloverField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -71,9 +71,6 @@ class SdmProfileMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -82,8 +79,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -96,8 +91,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def enabled(self) -> Optional[bool]:
         field = self.get_field(SdmProfileEnabledField.ID)
@@ -106,8 +99,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @enabled.setter
     def enabled(self, value: bool):
@@ -120,8 +111,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sdm_ant_id(self) -> Optional[int]:
         field = self.get_field(SdmProfileSdmAntIdField.ID)
@@ -130,8 +119,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sdm_ant_id.setter
     def sdm_ant_id(self, value: int):
@@ -144,8 +131,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sdm_cal_factor(self) -> Optional[float]:
         field = self.get_field(SdmProfileSdmCalFactorField.ID)
@@ -154,8 +139,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sdm_cal_factor.setter
     def sdm_cal_factor(self, value: float):
@@ -168,8 +151,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def odometer(self) -> Optional[float]:
         field = self.get_field(SdmProfileOdometerField.ID)
@@ -178,8 +159,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @odometer.setter
     def odometer(self, value: float):
@@ -192,8 +171,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def speed_source(self) -> Optional[bool]:
         field = self.get_field(SdmProfileSpeedSourceField.ID)
@@ -202,8 +179,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @speed_source.setter
     def speed_source(self, value: bool):
@@ -216,8 +191,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sdm_ant_id_trans_type(self) -> Optional[int]:
         field = self.get_field(SdmProfileSdmAntIdTransTypeField.ID)
@@ -226,8 +199,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sdm_ant_id_trans_type.setter
     def sdm_ant_id_trans_type(self, value: int):
@@ -240,8 +211,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def odometer_rollover(self) -> Optional[int]:
         field = self.get_field(SdmProfileOdometerRolloverField.ID)
@@ -250,8 +219,6 @@ class SdmProfileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @odometer_rollover.setter
     def odometer_rollover(self, value: int):
@@ -264,11 +231,6 @@ class SdmProfileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -278,12 +240,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -295,12 +257,12 @@ class SdmProfileEnabledField(Field):
             name='enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -312,12 +274,12 @@ class SdmProfileSdmAntIdField(Field):
             name='sdm_ant_id',
             field_id=self.ID,
             base_type=BaseType.UINT16Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -329,14 +291,14 @@ class SdmProfileSdmCalFactorField(Field):
             name='sdm_cal_factor',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 10,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=10,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -348,14 +310,14 @@ class SdmProfileOdometerField(Field):
             name='odometer',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -367,12 +329,12 @@ class SdmProfileSpeedSourceField(Field):
             name='speed_source',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -384,12 +346,12 @@ class SdmProfileSdmAntIdTransTypeField(Field):
             name='sdm_ant_id_trans_type',
             field_id=self.ID,
             base_type=BaseType.UINT8Z,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -401,10 +363,10 @@ class SdmProfileOdometerRolloverField(Field):
             name='odometer_rollover',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

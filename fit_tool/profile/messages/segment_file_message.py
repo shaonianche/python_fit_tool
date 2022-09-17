@@ -36,34 +36,37 @@ class SegmentFileMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        SegmentFileFileUuidField(
-            size=self.__get_field_size(definition_message, SegmentFileFileUuidField.ID),
-            growable=definition_message is None), 
-        SegmentFileEnabledField(
-            size=self.__get_field_size(definition_message, SegmentFileEnabledField.ID),
-            growable=definition_message is None), 
-        SegmentFileUserProfilePrimaryKeyField(
-            size=self.__get_field_size(definition_message, SegmentFileUserProfilePrimaryKeyField.ID),
-            growable=definition_message is None), 
-        SegmentFileLeaderTypeField(
-            size=self.__get_field_size(definition_message, SegmentFileLeaderTypeField.ID),
-            growable=definition_message is None), 
-        SegmentFileLeaderGroupPrimaryKeyField(
-            size=self.__get_field_size(definition_message, SegmentFileLeaderGroupPrimaryKeyField.ID),
-            growable=definition_message is None), 
-        SegmentFileLeaderActivityIdField(
-            size=self.__get_field_size(definition_message, SegmentFileLeaderActivityIdField.ID),
-            growable=definition_message is None), 
-        SegmentFileLeaderActivityIdStringField(
-            size=self.__get_field_size(definition_message, SegmentFileLeaderActivityIdStringField.ID),
-            growable=definition_message is None), 
-        SegmentFileDefaultRaceLeaderField(
-            size=self.__get_field_size(definition_message, SegmentFileDefaultRaceLeaderField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileFileUuidField(
+                                 size=self.__get_field_size(definition_message, SegmentFileFileUuidField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileEnabledField(
+                                 size=self.__get_field_size(definition_message, SegmentFileEnabledField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileUserProfilePrimaryKeyField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentFileUserProfilePrimaryKeyField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileLeaderTypeField(
+                                 size=self.__get_field_size(definition_message, SegmentFileLeaderTypeField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileLeaderGroupPrimaryKeyField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentFileLeaderGroupPrimaryKeyField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileLeaderActivityIdField(
+                                 size=self.__get_field_size(definition_message, SegmentFileLeaderActivityIdField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileLeaderActivityIdStringField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentFileLeaderActivityIdStringField.ID),
+                                 growable=definition_message is None),
+                             SegmentFileDefaultRaceLeaderField(
+                                 size=self.__get_field_size(definition_message, SegmentFileDefaultRaceLeaderField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -74,9 +77,6 @@ class SegmentFileMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -85,8 +85,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -99,8 +97,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def file_uuid(self) -> Optional[str]:
         field = self.get_field(SegmentFileFileUuidField.ID)
@@ -109,8 +105,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @file_uuid.setter
     def file_uuid(self, value: str):
@@ -123,8 +117,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def enabled(self) -> Optional[bool]:
         field = self.get_field(SegmentFileEnabledField.ID)
@@ -133,8 +125,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @enabled.setter
     def enabled(self, value: bool):
@@ -147,8 +137,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def user_profile_primary_key(self) -> Optional[int]:
         field = self.get_field(SegmentFileUserProfilePrimaryKeyField.ID)
@@ -157,8 +145,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @user_profile_primary_key.setter
     def user_profile_primary_key(self, value: int):
@@ -171,8 +157,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def leader_type(self) -> Optional[SegmentLeaderboardType]:
         field = self.get_field(SegmentFileLeaderTypeField.ID)
@@ -181,8 +165,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @leader_type.setter
     def leader_type(self, value: SegmentLeaderboardType):
@@ -195,8 +177,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def leader_group_primary_key(self) -> Optional[int]:
         field = self.get_field(SegmentFileLeaderGroupPrimaryKeyField.ID)
@@ -205,8 +185,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @leader_group_primary_key.setter
     def leader_group_primary_key(self, value: int):
@@ -219,8 +197,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def leader_activity_id(self) -> Optional[int]:
         field = self.get_field(SegmentFileLeaderActivityIdField.ID)
@@ -229,8 +205,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @leader_activity_id.setter
     def leader_activity_id(self, value: int):
@@ -243,8 +217,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def leader_activity_id_string(self) -> Optional[str]:
         field = self.get_field(SegmentFileLeaderActivityIdStringField.ID)
@@ -253,8 +225,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @leader_activity_id_string.setter
     def leader_activity_id_string(self, value: str):
@@ -267,8 +237,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def default_race_leader(self) -> Optional[int]:
         field = self.get_field(SegmentFileDefaultRaceLeaderField.ID)
@@ -277,8 +245,6 @@ class SegmentFileMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @default_race_leader.setter
     def default_race_leader(self, value: int):
@@ -291,11 +257,6 @@ class SegmentFileMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -305,12 +266,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -322,12 +283,12 @@ class SegmentFileFileUuidField(Field):
             name='file_uuid',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -339,12 +300,12 @@ class SegmentFileEnabledField(Field):
             name='enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -356,12 +317,12 @@ class SegmentFileUserProfilePrimaryKeyField(Field):
             name='user_profile_primary_key',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -373,12 +334,12 @@ class SegmentFileLeaderTypeField(Field):
             name='leader_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -390,12 +351,12 @@ class SegmentFileLeaderGroupPrimaryKeyField(Field):
             name='leader_group_primary_key',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -407,12 +368,12 @@ class SegmentFileLeaderActivityIdField(Field):
             name='leader_activity_id',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -424,12 +385,12 @@ class SegmentFileLeaderActivityIdStringField(Field):
             name='leader_activity_id_string',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -441,10 +402,10 @@ class SegmentFileDefaultRaceLeaderField(Field):
             name='default_race_leader',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

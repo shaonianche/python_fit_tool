@@ -6,7 +6,6 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.generic_message import GenericMessage
 
-
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.file_creator_message import FileCreatorMessage
 from fit_tool.profile.messages.timestamp_correlation_message import TimestampCorrelationMessage
@@ -94,6 +93,7 @@ from fit_tool.profile.messages.field_description_message import FieldDescription
 from fit_tool.profile.messages.developer_data_id_message import DeveloperDataIdMessage
 from fit_tool.profile.messages.dive_summary_message import DiveSummaryMessage
 from fit_tool.profile.messages.climb_pro_message import ClimbProMessage
+
 
 class MessageFactory:
 
@@ -236,10 +236,12 @@ class MessageFactory:
             return BarometerDataMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ThreeDSensorCalibrationMessage.ID:
-            return ThreeDSensorCalibrationMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return ThreeDSensorCalibrationMessage(definition_message=definition_message,
+                                                  developer_fields=developer_fields)
 
         elif definition_message.global_id == OneDSensorCalibrationMessage.ID:
-            return OneDSensorCalibrationMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return OneDSensorCalibrationMessage(definition_message=definition_message,
+                                                developer_fields=developer_fields)
 
         elif definition_message.global_id == VideoFrameMessage.ID:
             return VideoFrameMessage(definition_message=definition_message, developer_fields=developer_fields)
@@ -281,7 +283,8 @@ class MessageFactory:
             return SegmentIdMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == SegmentLeaderboardEntryMessage.ID:
-            return SegmentLeaderboardEntryMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return SegmentLeaderboardEntryMessage(definition_message=definition_message,
+                                                  developer_fields=developer_fields)
 
         elif definition_message.global_id == SegmentPointMessage.ID:
             return SegmentPointMessage(definition_message=definition_message, developer_fields=developer_fields)
@@ -341,13 +344,16 @@ class MessageFactory:
             return AntTxMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdScreenConfigurationMessage.ID:
-            return ExdScreenConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return ExdScreenConfigurationMessage(definition_message=definition_message,
+                                                 developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdDataFieldConfigurationMessage.ID:
-            return ExdDataFieldConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return ExdDataFieldConfigurationMessage(definition_message=definition_message,
+                                                    developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdDataConceptConfigurationMessage.ID:
-            return ExdDataConceptConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return ExdDataConceptConfigurationMessage(definition_message=definition_message,
+                                                      developer_fields=developer_fields)
 
         elif definition_message.global_id == FieldDescriptionMessage.ID:
             return FieldDescriptionMessage(definition_message=definition_message, developer_fields=developer_fields)

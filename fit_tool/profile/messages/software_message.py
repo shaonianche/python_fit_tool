@@ -36,16 +36,16 @@ class SoftwareMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        SoftwareVersionField(
-            size=self.__get_field_size(definition_message, SoftwareVersionField.ID),
-            growable=definition_message is None), 
-        SoftwarePartNumberField(
-            size=self.__get_field_size(definition_message, SoftwarePartNumberField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             SoftwareVersionField(
+                                 size=self.__get_field_size(definition_message, SoftwareVersionField.ID),
+                                 growable=definition_message is None),
+                             SoftwarePartNumberField(
+                                 size=self.__get_field_size(definition_message, SoftwarePartNumberField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -56,9 +56,6 @@ class SoftwareMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -67,8 +64,6 @@ class SoftwareMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -81,8 +76,6 @@ class SoftwareMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def version(self) -> Optional[float]:
         field = self.get_field(SoftwareVersionField.ID)
@@ -91,8 +84,6 @@ class SoftwareMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @version.setter
     def version(self, value: float):
@@ -105,8 +96,6 @@ class SoftwareMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def part_number(self) -> Optional[str]:
         field = self.get_field(SoftwarePartNumberField.ID)
@@ -115,8 +104,6 @@ class SoftwareMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @part_number.setter
     def part_number(self, value: str):
@@ -129,11 +116,6 @@ class SoftwareMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -143,12 +125,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -160,12 +142,12 @@ class SoftwareVersionField(Field):
             name='version',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -177,10 +159,10 @@ class SoftwarePartNumberField(Field):
             name='part_number',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

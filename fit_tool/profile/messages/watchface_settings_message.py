@@ -36,16 +36,16 @@ class WatchfaceSettingsMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        WatchfaceSettingsModeField(
-            size=self.__get_field_size(definition_message, WatchfaceSettingsModeField.ID),
-            growable=definition_message is None), 
-        WatchfaceSettingsLayoutField(
-            size=self.__get_field_size(definition_message, WatchfaceSettingsLayoutField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             WatchfaceSettingsModeField(
+                                 size=self.__get_field_size(definition_message, WatchfaceSettingsModeField.ID),
+                                 growable=definition_message is None),
+                             WatchfaceSettingsLayoutField(
+                                 size=self.__get_field_size(definition_message, WatchfaceSettingsLayoutField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -56,9 +56,6 @@ class WatchfaceSettingsMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -67,8 +64,6 @@ class WatchfaceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -81,8 +76,6 @@ class WatchfaceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def mode(self) -> Optional[WatchfaceMode]:
         field = self.get_field(WatchfaceSettingsModeField.ID)
@@ -91,8 +84,6 @@ class WatchfaceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @mode.setter
     def mode(self, value: WatchfaceMode):
@@ -105,8 +96,6 @@ class WatchfaceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def layout(self) -> Optional[int]:
         field = self.get_field(WatchfaceSettingsLayoutField.ID)
@@ -115,8 +104,6 @@ class WatchfaceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @layout.setter
     def layout(self, value: int):
@@ -128,9 +115,6 @@ class WatchfaceSettingsMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-
-    
-
 
     @property
     def digital_layout(self) -> Optional[DigitalWatchfaceLayout]:
@@ -153,7 +137,6 @@ class WatchfaceSettingsMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-
 
     @property
     def analog_layout(self) -> Optional[AnalogWatchfaceLayout]:
@@ -178,9 +161,6 @@ class WatchfaceSettingsMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
 
-
-
-
 class MessageIndexField(Field):
     ID = 254
 
@@ -189,12 +169,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -206,12 +186,12 @@ class WatchfaceSettingsModeField(Field):
             name='mode',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -223,26 +203,26 @@ class WatchfaceSettingsLayoutField(Field):
             name='layout',
             field_id=self.ID,
             base_type=BaseType.BYTE,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        SubField(
-            name='digital_layout',
-            base_type=BaseType.ENUM,
-        scale = 1,
-                offset = 0,
-        reference_map = {
-        WatchfaceSettingsModeField.ID: [0]
-        }), 
-        SubField(
-            name='analog_layout',
-            base_type=BaseType.ENUM,
-        scale = 1,
-                offset = 0,
-        reference_map = {
-        WatchfaceSettingsModeField.ID: [1]
-        })
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+                SubField(
+                    name='digital_layout',
+                    base_type=BaseType.ENUM,
+                    scale=1,
+                    offset=0,
+                    reference_map={
+                        WatchfaceSettingsModeField.ID: [0]
+                    }),
+                SubField(
+                    name='analog_layout',
+                    base_type=BaseType.ENUM,
+                    scale=1,
+                    offset=0,
+                    reference_map={
+                        WatchfaceSettingsModeField.ID: [1]
+                    })
+            ]
         )

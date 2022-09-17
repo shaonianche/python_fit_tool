@@ -36,79 +36,86 @@ class DeviceSettingsMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        DeviceSettingsActiveTimeZoneField(
-            size=self.__get_field_size(definition_message, DeviceSettingsActiveTimeZoneField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsUtcOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsUtcOffsetField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsTimeOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeOffsetField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsTimeModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeModeField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsTimeZoneOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeZoneOffsetField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsBacklightModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsBacklightModeField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsActivityTrackerEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsActivityTrackerEnabledField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsClockTimeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsClockTimeField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsPagesEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsPagesEnabledField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsMoveAlertEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsMoveAlertEnabledField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsDateModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDateModeField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsDisplayOrientationField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDisplayOrientationField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsMountingSideField(
-            size=self.__get_field_size(definition_message, DeviceSettingsMountingSideField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsDefaultPageField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDefaultPageField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsAutosyncMinStepsField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinStepsField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsAutosyncMinTimeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinTimeField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsLactateThresholdAutodetectEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsLactateThresholdAutodetectEnabledField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsBleAutoUploadEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsBleAutoUploadEnabledField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsAutoSyncFrequencyField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutoSyncFrequencyField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsAutoActivityDetectField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutoActivityDetectField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsNumberOfScreensField(
-            size=self.__get_field_size(definition_message, DeviceSettingsNumberOfScreensField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsSmartNotificationDisplayOrientationField(
-            size=self.__get_field_size(definition_message, DeviceSettingsSmartNotificationDisplayOrientationField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsTapInterfaceField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTapInterfaceField.ID),
-            growable=definition_message is None), 
-        DeviceSettingsTapSensitivityField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTapSensitivityField.ID),
-            growable=definition_message is None)
-        ])
+                             DeviceSettingsActiveTimeZoneField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsActiveTimeZoneField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsUtcOffsetField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsUtcOffsetField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsTimeOffsetField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsTimeOffsetField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsTimeModeField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsTimeModeField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsTimeZoneOffsetField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsTimeZoneOffsetField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsBacklightModeField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsBacklightModeField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsActivityTrackerEnabledField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsActivityTrackerEnabledField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsClockTimeField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsClockTimeField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsPagesEnabledField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsPagesEnabledField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsMoveAlertEnabledField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsMoveAlertEnabledField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsDateModeField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsDateModeField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsDisplayOrientationField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsDisplayOrientationField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsMountingSideField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsMountingSideField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsDefaultPageField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsDefaultPageField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsAutosyncMinStepsField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinStepsField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsAutosyncMinTimeField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinTimeField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsLactateThresholdAutodetectEnabledField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsLactateThresholdAutodetectEnabledField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsBleAutoUploadEnabledField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsBleAutoUploadEnabledField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsAutoSyncFrequencyField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsAutoSyncFrequencyField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsAutoActivityDetectField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsAutoActivityDetectField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsNumberOfScreensField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsNumberOfScreensField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsSmartNotificationDisplayOrientationField(
+                                 size=self.__get_field_size(definition_message,
+                                                            DeviceSettingsSmartNotificationDisplayOrientationField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsTapInterfaceField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsTapInterfaceField.ID),
+                                 growable=definition_message is None),
+                             DeviceSettingsTapSensitivityField(
+                                 size=self.__get_field_size(definition_message, DeviceSettingsTapSensitivityField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -119,9 +126,6 @@ class DeviceSettingsMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def active_time_zone(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsActiveTimeZoneField.ID)
@@ -130,8 +134,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @active_time_zone.setter
     def active_time_zone(self, value: int):
@@ -144,8 +146,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def utc_offset(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsUtcOffsetField.ID)
@@ -154,8 +154,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @utc_offset.setter
     def utc_offset(self, value: int):
@@ -168,8 +166,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_offset(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsTimeOffsetField.ID)
@@ -178,8 +174,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_offset.setter
     def time_offset(self, value: int):
@@ -192,8 +186,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_mode(self) -> Optional[TimeMode]:
         field = self.get_field(DeviceSettingsTimeModeField.ID)
@@ -202,8 +194,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_mode.setter
     def time_mode(self, value: TimeMode):
@@ -216,8 +206,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_zone_offset(self) -> Optional[float]:
         field = self.get_field(DeviceSettingsTimeZoneOffsetField.ID)
@@ -226,8 +214,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_zone_offset.setter
     def time_zone_offset(self, value: float):
@@ -240,8 +226,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def backlight_mode(self) -> Optional[BacklightMode]:
         field = self.get_field(DeviceSettingsBacklightModeField.ID)
@@ -250,8 +234,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @backlight_mode.setter
     def backlight_mode(self, value: BacklightMode):
@@ -264,8 +246,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def activity_tracker_enabled(self) -> Optional[bool]:
         field = self.get_field(DeviceSettingsActivityTrackerEnabledField.ID)
@@ -274,8 +254,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @activity_tracker_enabled.setter
     def activity_tracker_enabled(self, value: bool):
@@ -288,8 +266,7 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def clock_time(self) -> Optional[int]:
@@ -299,7 +276,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -314,8 +290,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def pages_enabled(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsPagesEnabledField.ID)
@@ -324,8 +298,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @pages_enabled.setter
     def pages_enabled(self, value: int):
@@ -338,8 +310,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def move_alert_enabled(self) -> Optional[bool]:
         field = self.get_field(DeviceSettingsMoveAlertEnabledField.ID)
@@ -348,8 +318,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @move_alert_enabled.setter
     def move_alert_enabled(self, value: bool):
@@ -362,8 +330,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def date_mode(self) -> Optional[DateMode]:
         field = self.get_field(DeviceSettingsDateModeField.ID)
@@ -372,8 +338,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @date_mode.setter
     def date_mode(self, value: DateMode):
@@ -386,8 +350,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def display_orientation(self) -> Optional[DisplayOrientation]:
         field = self.get_field(DeviceSettingsDisplayOrientationField.ID)
@@ -396,8 +358,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @display_orientation.setter
     def display_orientation(self, value: DisplayOrientation):
@@ -410,8 +370,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def mounting_side(self) -> Optional[Side]:
         field = self.get_field(DeviceSettingsMountingSideField.ID)
@@ -420,8 +378,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @mounting_side.setter
     def mounting_side(self, value: Side):
@@ -434,8 +390,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def default_page(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsDefaultPageField.ID)
@@ -444,8 +398,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @default_page.setter
     def default_page(self, value: int):
@@ -458,8 +410,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def autosync_min_steps(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsAutosyncMinStepsField.ID)
@@ -468,8 +418,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @autosync_min_steps.setter
     def autosync_min_steps(self, value: int):
@@ -482,8 +430,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def autosync_min_time(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsAutosyncMinTimeField.ID)
@@ -492,8 +438,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @autosync_min_time.setter
     def autosync_min_time(self, value: int):
@@ -506,8 +450,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def lactate_threshold_autodetect_enabled(self) -> Optional[bool]:
         field = self.get_field(DeviceSettingsLactateThresholdAutodetectEnabledField.ID)
@@ -516,8 +458,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @lactate_threshold_autodetect_enabled.setter
     def lactate_threshold_autodetect_enabled(self, value: bool):
@@ -530,8 +470,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def ble_auto_upload_enabled(self) -> Optional[bool]:
         field = self.get_field(DeviceSettingsBleAutoUploadEnabledField.ID)
@@ -540,8 +478,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @ble_auto_upload_enabled.setter
     def ble_auto_upload_enabled(self, value: bool):
@@ -554,8 +490,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def auto_sync_frequency(self) -> Optional[AutoSyncFrequency]:
         field = self.get_field(DeviceSettingsAutoSyncFrequencyField.ID)
@@ -564,8 +498,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @auto_sync_frequency.setter
     def auto_sync_frequency(self, value: AutoSyncFrequency):
@@ -578,8 +510,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def auto_activity_detect(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsAutoActivityDetectField.ID)
@@ -588,8 +518,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @auto_activity_detect.setter
     def auto_activity_detect(self, value: int):
@@ -602,8 +530,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def number_of_screens(self) -> Optional[int]:
         field = self.get_field(DeviceSettingsNumberOfScreensField.ID)
@@ -612,8 +538,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @number_of_screens.setter
     def number_of_screens(self, value: int):
@@ -626,8 +550,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def smart_notification_display_orientation(self) -> Optional[DisplayOrientation]:
         field = self.get_field(DeviceSettingsSmartNotificationDisplayOrientationField.ID)
@@ -636,8 +558,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @smart_notification_display_orientation.setter
     def smart_notification_display_orientation(self, value: DisplayOrientation):
@@ -650,8 +570,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def tap_interface(self) -> Optional[SwitchType]:
         field = self.get_field(DeviceSettingsTapInterfaceField.ID)
@@ -660,8 +578,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @tap_interface.setter
     def tap_interface(self, value: SwitchType):
@@ -674,8 +590,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def tap_sensitivity(self) -> Optional[TapSensitivity]:
         field = self.get_field(DeviceSettingsTapSensitivityField.ID)
@@ -684,8 +598,6 @@ class DeviceSettingsMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @tap_sensitivity.setter
     def tap_sensitivity(self, value: TapSensitivity):
@@ -698,11 +610,6 @@ class DeviceSettingsMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class DeviceSettingsActiveTimeZoneField(Field):
     ID = 0
@@ -712,12 +619,12 @@ class DeviceSettingsActiveTimeZoneField(Field):
             name='active_time_zone',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -729,12 +636,12 @@ class DeviceSettingsUtcOffsetField(Field):
             name='utc_offset',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -746,14 +653,14 @@ class DeviceSettingsTimeOffsetField(Field):
             name='time_offset',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -765,12 +672,12 @@ class DeviceSettingsTimeModeField(Field):
             name='time_mode',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -782,14 +689,14 @@ class DeviceSettingsTimeZoneOffsetField(Field):
             name='time_zone_offset',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-        offset = 0,
-                 scale = 4,
-                         size = size,
-        units = 'hr',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=4,
+            size=size,
+            units='hr',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -801,12 +708,12 @@ class DeviceSettingsBacklightModeField(Field):
             name='backlight_mode',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -818,12 +725,12 @@ class DeviceSettingsActivityTrackerEnabledField(Field):
             name='activity_tracker_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -835,14 +742,14 @@ class DeviceSettingsClockTimeField(Field):
             name='clock_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -854,12 +761,12 @@ class DeviceSettingsPagesEnabledField(Field):
             name='pages_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -871,12 +778,12 @@ class DeviceSettingsMoveAlertEnabledField(Field):
             name='move_alert_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -888,12 +795,12 @@ class DeviceSettingsDateModeField(Field):
             name='date_mode',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -905,12 +812,12 @@ class DeviceSettingsDisplayOrientationField(Field):
             name='display_orientation',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -922,12 +829,12 @@ class DeviceSettingsMountingSideField(Field):
             name='mounting_side',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -939,12 +846,12 @@ class DeviceSettingsDefaultPageField(Field):
             name='default_page',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -956,14 +863,14 @@ class DeviceSettingsAutosyncMinStepsField(Field):
             name='autosync_min_steps',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'steps',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='steps',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -975,14 +882,14 @@ class DeviceSettingsAutosyncMinTimeField(Field):
             name='autosync_min_time',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'minutes',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='minutes',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -994,12 +901,12 @@ class DeviceSettingsLactateThresholdAutodetectEnabledField(Field):
             name='lactate_threshold_autodetect_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1011,12 +918,12 @@ class DeviceSettingsBleAutoUploadEnabledField(Field):
             name='ble_auto_upload_enabled',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1028,12 +935,12 @@ class DeviceSettingsAutoSyncFrequencyField(Field):
             name='auto_sync_frequency',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1045,12 +952,12 @@ class DeviceSettingsAutoActivityDetectField(Field):
             name='auto_activity_detect',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1062,12 +969,12 @@ class DeviceSettingsNumberOfScreensField(Field):
             name='number_of_screens',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1079,12 +986,12 @@ class DeviceSettingsSmartNotificationDisplayOrientationField(Field):
             name='smart_notification_display_orientation',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1096,12 +1003,12 @@ class DeviceSettingsTapInterfaceField(Field):
             name='tap_interface',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -1113,10 +1020,10 @@ class DeviceSettingsTapSensitivityField(Field):
             name='tap_sensitivity',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 1,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=1,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )

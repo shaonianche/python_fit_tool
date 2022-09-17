@@ -36,283 +36,293 @@ class SegmentLapMessage(DataMessage):
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
-        MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
-        TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
-        SegmentLapEventField(
-            size=self.__get_field_size(definition_message, SegmentLapEventField.ID),
-            growable=definition_message is None), 
-        SegmentLapEventTypeField(
-            size=self.__get_field_size(definition_message, SegmentLapEventTypeField.ID),
-            growable=definition_message is None), 
-        SegmentLapStartTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapStartTimeField.ID),
-            growable=definition_message is None), 
-        SegmentLapStartPositionLatField(
-            size=self.__get_field_size(definition_message, SegmentLapStartPositionLatField.ID),
-            growable=definition_message is None), 
-        SegmentLapStartPositionLongField(
-            size=self.__get_field_size(definition_message, SegmentLapStartPositionLongField.ID),
-            growable=definition_message is None), 
-        SegmentLapEndPositionLatField(
-            size=self.__get_field_size(definition_message, SegmentLapEndPositionLatField.ID),
-            growable=definition_message is None), 
-        SegmentLapEndPositionLongField(
-            size=self.__get_field_size(definition_message, SegmentLapEndPositionLongField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalElapsedTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalElapsedTimeField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalTimerTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalTimerTimeField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalDistanceField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalDistanceField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalCyclesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalCyclesField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalCaloriesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalCaloriesField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalFatCaloriesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFatCaloriesField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgHeartRateField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxHeartRateField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCadenceField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxCadenceField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPowerField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPowerField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalAscentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalAscentField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalDescentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalDescentField.ID),
-            growable=definition_message is None), 
-        SegmentLapSportField(
-            size=self.__get_field_size(definition_message, SegmentLapSportField.ID),
-            growable=definition_message is None), 
-        SegmentLapEventGroupField(
-            size=self.__get_field_size(definition_message, SegmentLapEventGroupField.ID),
-            growable=definition_message is None), 
-        SegmentLapNecLatField(
-            size=self.__get_field_size(definition_message, SegmentLapNecLatField.ID),
-            growable=definition_message is None), 
-        SegmentLapNecLongField(
-            size=self.__get_field_size(definition_message, SegmentLapNecLongField.ID),
-            growable=definition_message is None), 
-        SegmentLapSwcLatField(
-            size=self.__get_field_size(definition_message, SegmentLapSwcLatField.ID),
-            growable=definition_message is None), 
-        SegmentLapSwcLongField(
-            size=self.__get_field_size(definition_message, SegmentLapSwcLongField.ID),
-            growable=definition_message is None), 
-        SegmentLapNameField(
-            size=self.__get_field_size(definition_message, SegmentLapNameField.ID),
-            growable=definition_message is None), 
-        SegmentLapNormalizedPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapNormalizedPowerField.ID),
-            growable=definition_message is None), 
-        SegmentLapLeftRightBalanceField(
-            size=self.__get_field_size(definition_message, SegmentLapLeftRightBalanceField.ID),
-            growable=definition_message is None), 
-        SegmentLapSubSportField(
-            size=self.__get_field_size(definition_message, SegmentLapSubSportField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalWorkField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalWorkField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgAltitudeField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxAltitudeField.ID),
-            growable=definition_message is None), 
-        SegmentLapGpsAccuracyField(
-            size=self.__get_field_size(definition_message, SegmentLapGpsAccuracyField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgGradeField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgPosGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPosGradeField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgNegGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgNegGradeField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxPosGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPosGradeField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxNegGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxNegGradeField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgTemperatureField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgTemperatureField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxTemperatureField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxTemperatureField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalMovingTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalMovingTimeField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
-        SegmentLapTimeInHrZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInHrZoneField.ID),
-            growable=definition_message is None), 
-        SegmentLapTimeInSpeedZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInSpeedZoneField.ID),
-            growable=definition_message is None), 
-        SegmentLapTimeInCadenceZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInCadenceZoneField.ID),
-            growable=definition_message is None), 
-        SegmentLapTimeInPowerZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInPowerZoneField.ID),
-            growable=definition_message is None), 
-        SegmentLapRepetitionNumField(
-            size=self.__get_field_size(definition_message, SegmentLapRepetitionNumField.ID),
-            growable=definition_message is None), 
-        SegmentLapMinAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapMinAltitudeField.ID),
-            growable=definition_message is None), 
-        SegmentLapMinHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapMinHeartRateField.ID),
-            growable=definition_message is None), 
-        SegmentLapActiveTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapActiveTimeField.ID),
-            growable=definition_message is None), 
-        SegmentLapWorkoutStepIndexField(
-            size=self.__get_field_size(definition_message, SegmentLapWorkoutStepIndexField.ID),
-            growable=definition_message is None), 
-        SegmentLapSportEventField(
-            size=self.__get_field_size(definition_message, SegmentLapSportEventField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgLeftTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgRightTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgLeftPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPedalSmoothnessField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgRightPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPedalSmoothnessField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgCombinedPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCombinedPedalSmoothnessField.ID),
-            growable=definition_message is None), 
-        SegmentLapStatusField(
-            size=self.__get_field_size(definition_message, SegmentLapStatusField.ID),
-            growable=definition_message is None), 
-        SegmentLapUuidField(
-            size=self.__get_field_size(definition_message, SegmentLapUuidField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgFractionalCadenceField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxFractionalCadenceField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalFractionalCyclesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalCyclesField.ID),
-            growable=definition_message is None), 
-        SegmentLapFrontGearShiftCountField(
-            size=self.__get_field_size(definition_message, SegmentLapFrontGearShiftCountField.ID),
-            growable=definition_message is None), 
-        SegmentLapRearGearShiftCountField(
-            size=self.__get_field_size(definition_message, SegmentLapRearGearShiftCountField.ID),
-            growable=definition_message is None), 
-        SegmentLapTimeStandingField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeStandingField.ID),
-            growable=definition_message is None), 
-        SegmentLapStandCountField(
-            size=self.__get_field_size(definition_message, SegmentLapStandCountField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgLeftPcoField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPcoField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgRightPcoField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPcoField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgLeftPowerPhaseField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPowerPhaseField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgLeftPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPowerPhasePeakField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgRightPowerPhaseField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPowerPhaseField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgRightPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPowerPhasePeakField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgPowerPositionField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPowerPositionField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxPowerPositionField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPowerPositionField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgCadencePositionField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCadencePositionField.ID),
-            growable=definition_message is None), 
-        SegmentLapMaxCadencePositionField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxCadencePositionField.ID),
-            growable=definition_message is None), 
-        SegmentLapManufacturerField(
-            size=self.__get_field_size(definition_message, SegmentLapManufacturerField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalGritField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalGritField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalFlowField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFlowField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgGritField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgGritField.ID),
-            growable=definition_message is None), 
-        SegmentLapAvgFlowField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgFlowField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalFractionalAscentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalAscentField.ID),
-            growable=definition_message is None), 
-        SegmentLapTotalFractionalDescentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalDescentField.ID),
-            growable=definition_message is None)
-        ])
+                             MessageIndexField(
+                                 size=self.__get_field_size(definition_message, MessageIndexField.ID),
+                                 growable=definition_message is None),
+                             TimestampField(
+                                 size=self.__get_field_size(definition_message, TimestampField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapEventField(
+                                 size=self.__get_field_size(definition_message, SegmentLapEventField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapEventTypeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapEventTypeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapStartTimeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapStartTimeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapStartPositionLatField(
+                                 size=self.__get_field_size(definition_message, SegmentLapStartPositionLatField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapStartPositionLongField(
+                                 size=self.__get_field_size(definition_message, SegmentLapStartPositionLongField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapEndPositionLatField(
+                                 size=self.__get_field_size(definition_message, SegmentLapEndPositionLatField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapEndPositionLongField(
+                                 size=self.__get_field_size(definition_message, SegmentLapEndPositionLongField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalElapsedTimeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalElapsedTimeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalTimerTimeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalTimerTimeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalDistanceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalDistanceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalCyclesField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalCyclesField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalCaloriesField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalCaloriesField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalFatCaloriesField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalFatCaloriesField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgHeartRateField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgHeartRateField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxHeartRateField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxHeartRateField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgCadenceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgCadenceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxCadenceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxCadenceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgPowerField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgPowerField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxPowerField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxPowerField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalAscentField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalAscentField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalDescentField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalDescentField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapSportField(
+                                 size=self.__get_field_size(definition_message, SegmentLapSportField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapEventGroupField(
+                                 size=self.__get_field_size(definition_message, SegmentLapEventGroupField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapNecLatField(
+                                 size=self.__get_field_size(definition_message, SegmentLapNecLatField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapNecLongField(
+                                 size=self.__get_field_size(definition_message, SegmentLapNecLongField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapSwcLatField(
+                                 size=self.__get_field_size(definition_message, SegmentLapSwcLatField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapSwcLongField(
+                                 size=self.__get_field_size(definition_message, SegmentLapSwcLongField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapNameField(
+                                 size=self.__get_field_size(definition_message, SegmentLapNameField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapNormalizedPowerField(
+                                 size=self.__get_field_size(definition_message, SegmentLapNormalizedPowerField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapLeftRightBalanceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapLeftRightBalanceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapSubSportField(
+                                 size=self.__get_field_size(definition_message, SegmentLapSubSportField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalWorkField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalWorkField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgAltitudeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgAltitudeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxAltitudeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxAltitudeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapGpsAccuracyField(
+                                 size=self.__get_field_size(definition_message, SegmentLapGpsAccuracyField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgGradeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgGradeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgPosGradeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgPosGradeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgNegGradeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgNegGradeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxPosGradeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxPosGradeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxNegGradeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxNegGradeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgTemperatureField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgTemperatureField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxTemperatureField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxTemperatureField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalMovingTimeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalMovingTimeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgPosVerticalSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgPosVerticalSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgNegVerticalSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgNegVerticalSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxPosVerticalSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxPosVerticalSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxNegVerticalSpeedField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxNegVerticalSpeedField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTimeInHrZoneField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTimeInHrZoneField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTimeInSpeedZoneField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTimeInSpeedZoneField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTimeInCadenceZoneField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTimeInCadenceZoneField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTimeInPowerZoneField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTimeInPowerZoneField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapRepetitionNumField(
+                                 size=self.__get_field_size(definition_message, SegmentLapRepetitionNumField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMinAltitudeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMinAltitudeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMinHeartRateField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMinHeartRateField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapActiveTimeField(
+                                 size=self.__get_field_size(definition_message, SegmentLapActiveTimeField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapWorkoutStepIndexField(
+                                 size=self.__get_field_size(definition_message, SegmentLapWorkoutStepIndexField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapSportEventField(
+                                 size=self.__get_field_size(definition_message, SegmentLapSportEventField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgLeftTorqueEffectivenessField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgLeftTorqueEffectivenessField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgRightTorqueEffectivenessField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgRightTorqueEffectivenessField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgLeftPedalSmoothnessField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgLeftPedalSmoothnessField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgRightPedalSmoothnessField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgRightPedalSmoothnessField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgCombinedPedalSmoothnessField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgCombinedPedalSmoothnessField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapStatusField(
+                                 size=self.__get_field_size(definition_message, SegmentLapStatusField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapUuidField(
+                                 size=self.__get_field_size(definition_message, SegmentLapUuidField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgFractionalCadenceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgFractionalCadenceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxFractionalCadenceField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxFractionalCadenceField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalFractionalCyclesField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapTotalFractionalCyclesField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapFrontGearShiftCountField(
+                                 size=self.__get_field_size(definition_message, SegmentLapFrontGearShiftCountField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapRearGearShiftCountField(
+                                 size=self.__get_field_size(definition_message, SegmentLapRearGearShiftCountField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTimeStandingField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTimeStandingField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapStandCountField(
+                                 size=self.__get_field_size(definition_message, SegmentLapStandCountField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgLeftPcoField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgLeftPcoField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgRightPcoField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgRightPcoField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgLeftPowerPhaseField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgLeftPowerPhaseField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgLeftPowerPhasePeakField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgLeftPowerPhasePeakField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgRightPowerPhaseField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgRightPowerPhaseField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgRightPowerPhasePeakField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapAvgRightPowerPhasePeakField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgPowerPositionField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgPowerPositionField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxPowerPositionField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxPowerPositionField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgCadencePositionField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgCadencePositionField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapMaxCadencePositionField(
+                                 size=self.__get_field_size(definition_message, SegmentLapMaxCadencePositionField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapManufacturerField(
+                                 size=self.__get_field_size(definition_message, SegmentLapManufacturerField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalGritField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalGritField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalFlowField(
+                                 size=self.__get_field_size(definition_message, SegmentLapTotalFlowField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgGritField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgGritField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapAvgFlowField(
+                                 size=self.__get_field_size(definition_message, SegmentLapAvgFlowField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalFractionalAscentField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapTotalFractionalAscentField.ID),
+                                 growable=definition_message is None),
+                             SegmentLapTotalFractionalDescentField(
+                                 size=self.__get_field_size(definition_message,
+                                                            SegmentLapTotalFractionalDescentField.ID),
+                                 growable=definition_message is None)
+                         ])
 
         self.growable = self.definition_message is None
 
@@ -323,9 +333,6 @@ class SegmentLapMessage(DataMessage):
         message.read_from_bytes(bytes_buffer, offset)
         return message
 
-
-
-
     @property
     def message_index(self) -> Optional[int]:
         field = self.get_field(MessageIndexField.ID)
@@ -334,8 +341,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @message_index.setter
     def message_index(self, value: int):
@@ -348,8 +353,7 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def timestamp(self) -> Optional[int]:
@@ -359,7 +363,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -374,8 +377,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def event(self) -> Optional[Event]:
         field = self.get_field(SegmentLapEventField.ID)
@@ -384,8 +385,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @event.setter
     def event(self, value: Event):
@@ -398,8 +397,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def event_type(self) -> Optional[EventType]:
         field = self.get_field(SegmentLapEventTypeField.ID)
@@ -408,8 +405,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @event_type.setter
     def event_type(self, value: EventType):
@@ -422,8 +417,7 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
     def start_time(self) -> Optional[int]:
@@ -433,7 +427,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
@@ -448,8 +441,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def start_position_lat(self) -> Optional[float]:
         field = self.get_field(SegmentLapStartPositionLatField.ID)
@@ -458,8 +449,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @start_position_lat.setter
     def start_position_lat(self, value: float):
@@ -472,8 +461,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def start_position_long(self) -> Optional[float]:
         field = self.get_field(SegmentLapStartPositionLongField.ID)
@@ -482,8 +469,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @start_position_long.setter
     def start_position_long(self, value: float):
@@ -496,8 +481,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def end_position_lat(self) -> Optional[float]:
         field = self.get_field(SegmentLapEndPositionLatField.ID)
@@ -506,8 +489,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @end_position_lat.setter
     def end_position_lat(self, value: float):
@@ -520,8 +501,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def end_position_long(self) -> Optional[float]:
         field = self.get_field(SegmentLapEndPositionLongField.ID)
@@ -530,8 +509,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @end_position_long.setter
     def end_position_long(self, value: float):
@@ -544,8 +521,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalElapsedTimeField.ID)
@@ -554,8 +529,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_elapsed_time.setter
     def total_elapsed_time(self, value: float):
@@ -568,8 +541,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_timer_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalTimerTimeField.ID)
@@ -578,8 +549,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_timer_time.setter
     def total_timer_time(self, value: float):
@@ -592,8 +561,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_distance(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalDistanceField.ID)
@@ -602,8 +569,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_distance.setter
     def total_distance(self, value: float):
@@ -616,8 +581,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_cycles(self) -> Optional[int]:
         field = self.get_field(SegmentLapTotalCyclesField.ID)
@@ -626,8 +589,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_cycles.setter
     def total_cycles(self, value: int):
@@ -639,9 +600,6 @@ class SegmentLapMessage(DataMessage):
             else:
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
-
-    
-
 
     @property
     def total_strokes(self) -> Optional[int]:
@@ -674,8 +632,6 @@ class SegmentLapMessage(DataMessage):
         else:
             return None
 
-
-
     @total_calories.setter
     def total_calories(self, value: int):
         field = self.get_field(SegmentLapTotalCaloriesField.ID)
@@ -687,8 +643,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_fat_calories(self) -> Optional[int]:
         field = self.get_field(SegmentLapTotalFatCaloriesField.ID)
@@ -697,8 +651,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_fat_calories.setter
     def total_fat_calories(self, value: int):
@@ -711,8 +663,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgSpeedField.ID)
@@ -721,8 +671,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_speed.setter
     def avg_speed(self, value: float):
@@ -735,8 +683,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxSpeedField.ID)
@@ -745,8 +691,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_speed.setter
     def max_speed(self, value: float):
@@ -759,8 +703,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_heart_rate(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgHeartRateField.ID)
@@ -769,8 +711,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_heart_rate.setter
     def avg_heart_rate(self, value: int):
@@ -783,8 +723,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_heart_rate(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxHeartRateField.ID)
@@ -793,8 +731,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_heart_rate.setter
     def max_heart_rate(self, value: int):
@@ -807,8 +743,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_cadence(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgCadenceField.ID)
@@ -817,8 +751,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_cadence.setter
     def avg_cadence(self, value: int):
@@ -831,8 +763,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_cadence(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxCadenceField.ID)
@@ -841,8 +771,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_cadence.setter
     def max_cadence(self, value: int):
@@ -855,8 +783,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_power(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgPowerField.ID)
@@ -865,8 +791,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_power.setter
     def avg_power(self, value: int):
@@ -879,8 +803,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_power(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxPowerField.ID)
@@ -889,8 +811,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_power.setter
     def max_power(self, value: int):
@@ -903,8 +823,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_ascent(self) -> Optional[int]:
         field = self.get_field(SegmentLapTotalAscentField.ID)
@@ -913,8 +831,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_ascent.setter
     def total_ascent(self, value: int):
@@ -927,8 +843,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_descent(self) -> Optional[int]:
         field = self.get_field(SegmentLapTotalDescentField.ID)
@@ -937,8 +851,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_descent.setter
     def total_descent(self, value: int):
@@ -951,8 +863,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sport(self) -> Optional[Sport]:
         field = self.get_field(SegmentLapSportField.ID)
@@ -961,8 +871,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sport.setter
     def sport(self, value: Sport):
@@ -975,8 +883,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def event_group(self) -> Optional[int]:
         field = self.get_field(SegmentLapEventGroupField.ID)
@@ -985,8 +891,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @event_group.setter
     def event_group(self, value: int):
@@ -999,8 +903,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def nec_lat(self) -> Optional[float]:
         field = self.get_field(SegmentLapNecLatField.ID)
@@ -1009,8 +911,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @nec_lat.setter
     def nec_lat(self, value: float):
@@ -1023,8 +923,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def nec_long(self) -> Optional[float]:
         field = self.get_field(SegmentLapNecLongField.ID)
@@ -1033,8 +931,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @nec_long.setter
     def nec_long(self, value: float):
@@ -1047,8 +943,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def swc_lat(self) -> Optional[float]:
         field = self.get_field(SegmentLapSwcLatField.ID)
@@ -1057,8 +951,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @swc_lat.setter
     def swc_lat(self, value: float):
@@ -1071,8 +963,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def swc_long(self) -> Optional[float]:
         field = self.get_field(SegmentLapSwcLongField.ID)
@@ -1081,8 +971,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @swc_long.setter
     def swc_long(self, value: float):
@@ -1095,8 +983,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def segment_lap_name(self) -> Optional[str]:
         field = self.get_field(SegmentLapNameField.ID)
@@ -1105,8 +991,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @segment_lap_name.setter
     def segment_lap_name(self, value: str):
@@ -1119,8 +1003,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def normalized_power(self) -> Optional[int]:
         field = self.get_field(SegmentLapNormalizedPowerField.ID)
@@ -1129,8 +1011,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @normalized_power.setter
     def normalized_power(self, value: int):
@@ -1143,8 +1023,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def left_right_balance(self) -> Optional[int]:
         field = self.get_field(SegmentLapLeftRightBalanceField.ID)
@@ -1153,8 +1031,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @left_right_balance.setter
     def left_right_balance(self, value: int):
@@ -1167,8 +1043,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sub_sport(self) -> Optional[SubSport]:
         field = self.get_field(SegmentLapSubSportField.ID)
@@ -1177,8 +1051,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sub_sport.setter
     def sub_sport(self, value: SubSport):
@@ -1191,8 +1063,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_work(self) -> Optional[int]:
         field = self.get_field(SegmentLapTotalWorkField.ID)
@@ -1201,8 +1071,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_work.setter
     def total_work(self, value: int):
@@ -1215,8 +1083,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgAltitudeField.ID)
@@ -1225,8 +1091,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_altitude.setter
     def avg_altitude(self, value: float):
@@ -1239,8 +1103,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxAltitudeField.ID)
@@ -1249,8 +1111,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_altitude.setter
     def max_altitude(self, value: float):
@@ -1263,8 +1123,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def gps_accuracy(self) -> Optional[int]:
         field = self.get_field(SegmentLapGpsAccuracyField.ID)
@@ -1273,8 +1131,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @gps_accuracy.setter
     def gps_accuracy(self, value: int):
@@ -1287,8 +1143,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgGradeField.ID)
@@ -1297,8 +1151,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_grade.setter
     def avg_grade(self, value: float):
@@ -1311,8 +1163,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_pos_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgPosGradeField.ID)
@@ -1321,8 +1171,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_pos_grade.setter
     def avg_pos_grade(self, value: float):
@@ -1335,8 +1183,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_neg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgNegGradeField.ID)
@@ -1345,8 +1191,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_neg_grade.setter
     def avg_neg_grade(self, value: float):
@@ -1359,8 +1203,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_pos_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxPosGradeField.ID)
@@ -1369,8 +1211,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_pos_grade.setter
     def max_pos_grade(self, value: float):
@@ -1383,8 +1223,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_neg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxNegGradeField.ID)
@@ -1393,8 +1231,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_neg_grade.setter
     def max_neg_grade(self, value: float):
@@ -1407,8 +1243,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_temperature(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgTemperatureField.ID)
@@ -1417,8 +1251,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_temperature.setter
     def avg_temperature(self, value: int):
@@ -1431,8 +1263,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_temperature(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxTemperatureField.ID)
@@ -1441,8 +1271,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_temperature.setter
     def max_temperature(self, value: int):
@@ -1455,8 +1283,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_moving_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalMovingTimeField.ID)
@@ -1465,8 +1291,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_moving_time.setter
     def total_moving_time(self, value: float):
@@ -1479,8 +1303,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgPosVerticalSpeedField.ID)
@@ -1489,8 +1311,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_pos_vertical_speed.setter
     def avg_pos_vertical_speed(self, value: float):
@@ -1503,8 +1323,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgNegVerticalSpeedField.ID)
@@ -1513,8 +1331,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_neg_vertical_speed.setter
     def avg_neg_vertical_speed(self, value: float):
@@ -1527,8 +1343,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxPosVerticalSpeedField.ID)
@@ -1537,8 +1351,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_pos_vertical_speed.setter
     def max_pos_vertical_speed(self, value: float):
@@ -1551,8 +1363,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxNegVerticalSpeedField.ID)
@@ -1561,8 +1371,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_neg_vertical_speed.setter
     def max_neg_vertical_speed(self, value: float):
@@ -1575,8 +1383,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_in_hr_zone(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeInHrZoneField.ID)
@@ -1585,8 +1391,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_in_hr_zone.setter
     def time_in_hr_zone(self, value: float):
@@ -1599,8 +1403,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_in_speed_zone(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeInSpeedZoneField.ID)
@@ -1609,8 +1411,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_in_speed_zone.setter
     def time_in_speed_zone(self, value: float):
@@ -1623,8 +1423,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_in_cadence_zone(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeInCadenceZoneField.ID)
@@ -1633,8 +1431,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_in_cadence_zone.setter
     def time_in_cadence_zone(self, value: float):
@@ -1647,8 +1443,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_in_power_zone(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeInPowerZoneField.ID)
@@ -1657,8 +1451,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_in_power_zone.setter
     def time_in_power_zone(self, value: float):
@@ -1671,8 +1463,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def repetition_num(self) -> Optional[int]:
         field = self.get_field(SegmentLapRepetitionNumField.ID)
@@ -1681,8 +1471,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @repetition_num.setter
     def repetition_num(self, value: int):
@@ -1695,8 +1483,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def min_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapMinAltitudeField.ID)
@@ -1705,8 +1491,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @min_altitude.setter
     def min_altitude(self, value: float):
@@ -1719,8 +1503,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def min_heart_rate(self) -> Optional[int]:
         field = self.get_field(SegmentLapMinHeartRateField.ID)
@@ -1729,8 +1511,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @min_heart_rate.setter
     def min_heart_rate(self, value: int):
@@ -1743,8 +1523,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def active_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapActiveTimeField.ID)
@@ -1753,8 +1531,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @active_time.setter
     def active_time(self, value: float):
@@ -1767,8 +1543,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def workout_step_index(self) -> Optional[int]:
         field = self.get_field(SegmentLapWorkoutStepIndexField.ID)
@@ -1777,8 +1551,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @workout_step_index.setter
     def workout_step_index(self, value: int):
@@ -1791,8 +1563,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def sport_event(self) -> Optional[SportEvent]:
         field = self.get_field(SegmentLapSportEventField.ID)
@@ -1801,8 +1571,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @sport_event.setter
     def sport_event(self, value: SportEvent):
@@ -1815,8 +1583,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftTorqueEffectivenessField.ID)
@@ -1825,8 +1591,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_left_torque_effectiveness.setter
     def avg_left_torque_effectiveness(self, value: float):
@@ -1839,8 +1603,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightTorqueEffectivenessField.ID)
@@ -1849,8 +1611,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_right_torque_effectiveness.setter
     def avg_right_torque_effectiveness(self, value: float):
@@ -1863,8 +1623,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftPedalSmoothnessField.ID)
@@ -1873,8 +1631,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_left_pedal_smoothness.setter
     def avg_left_pedal_smoothness(self, value: float):
@@ -1887,8 +1643,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightPedalSmoothnessField.ID)
@@ -1897,8 +1651,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_right_pedal_smoothness.setter
     def avg_right_pedal_smoothness(self, value: float):
@@ -1911,8 +1663,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgCombinedPedalSmoothnessField.ID)
@@ -1921,8 +1671,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_combined_pedal_smoothness.setter
     def avg_combined_pedal_smoothness(self, value: float):
@@ -1935,8 +1683,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def status(self) -> Optional[SegmentLapStatus]:
         field = self.get_field(SegmentLapStatusField.ID)
@@ -1945,8 +1691,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @status.setter
     def status(self, value: SegmentLapStatus):
@@ -1959,8 +1703,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def uuid(self) -> Optional[str]:
         field = self.get_field(SegmentLapUuidField.ID)
@@ -1969,8 +1711,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @uuid.setter
     def uuid(self, value: str):
@@ -1983,8 +1723,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgFractionalCadenceField.ID)
@@ -1993,8 +1731,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_fractional_cadence.setter
     def avg_fractional_cadence(self, value: float):
@@ -2007,8 +1743,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxFractionalCadenceField.ID)
@@ -2017,8 +1751,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_fractional_cadence.setter
     def max_fractional_cadence(self, value: float):
@@ -2031,8 +1763,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_fractional_cycles(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalCyclesField.ID)
@@ -2041,8 +1771,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_fractional_cycles.setter
     def total_fractional_cycles(self, value: float):
@@ -2055,8 +1783,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def front_gear_shift_count(self) -> Optional[int]:
         field = self.get_field(SegmentLapFrontGearShiftCountField.ID)
@@ -2065,8 +1791,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @front_gear_shift_count.setter
     def front_gear_shift_count(self, value: int):
@@ -2079,8 +1803,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def rear_gear_shift_count(self) -> Optional[int]:
         field = self.get_field(SegmentLapRearGearShiftCountField.ID)
@@ -2089,8 +1811,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @rear_gear_shift_count.setter
     def rear_gear_shift_count(self, value: int):
@@ -2103,8 +1823,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def time_standing(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeStandingField.ID)
@@ -2113,8 +1831,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @time_standing.setter
     def time_standing(self, value: float):
@@ -2127,8 +1843,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def stand_count(self) -> Optional[int]:
         field = self.get_field(SegmentLapStandCountField.ID)
@@ -2137,8 +1851,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @stand_count.setter
     def stand_count(self, value: int):
@@ -2151,8 +1863,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_left_pco(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgLeftPcoField.ID)
@@ -2161,8 +1871,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_left_pco.setter
     def avg_left_pco(self, value: int):
@@ -2175,8 +1883,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_right_pco(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgRightPcoField.ID)
@@ -2185,8 +1891,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_right_pco.setter
     def avg_right_pco(self, value: int):
@@ -2199,8 +1903,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_left_power_phase(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftPowerPhaseField.ID)
@@ -2209,8 +1911,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_left_power_phase.setter
     def avg_left_power_phase(self, value: float):
@@ -2223,8 +1923,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_left_power_phase_peak(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftPowerPhasePeakField.ID)
@@ -2233,8 +1931,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_left_power_phase_peak.setter
     def avg_left_power_phase_peak(self, value: float):
@@ -2247,8 +1943,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_right_power_phase(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightPowerPhaseField.ID)
@@ -2257,8 +1951,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_right_power_phase.setter
     def avg_right_power_phase(self, value: float):
@@ -2271,8 +1963,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_right_power_phase_peak(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightPowerPhasePeakField.ID)
@@ -2281,8 +1971,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_right_power_phase_peak.setter
     def avg_right_power_phase_peak(self, value: float):
@@ -2295,8 +1983,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_power_position(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgPowerPositionField.ID)
@@ -2305,8 +1991,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_power_position.setter
     def avg_power_position(self, value: int):
@@ -2319,8 +2003,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_power_position(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxPowerPositionField.ID)
@@ -2329,8 +2011,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_power_position.setter
     def max_power_position(self, value: int):
@@ -2343,8 +2023,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_cadence_position(self) -> Optional[int]:
         field = self.get_field(SegmentLapAvgCadencePositionField.ID)
@@ -2353,8 +2031,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_cadence_position.setter
     def avg_cadence_position(self, value: int):
@@ -2367,8 +2043,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def max_cadence_position(self) -> Optional[int]:
         field = self.get_field(SegmentLapMaxCadencePositionField.ID)
@@ -2377,8 +2051,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @max_cadence_position.setter
     def max_cadence_position(self, value: int):
@@ -2391,8 +2063,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def manufacturer(self) -> Optional[int]:
         field = self.get_field(SegmentLapManufacturerField.ID)
@@ -2401,8 +2071,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @manufacturer.setter
     def manufacturer(self, value: int):
@@ -2415,8 +2083,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_grit(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalGritField.ID)
@@ -2425,8 +2091,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_grit.setter
     def total_grit(self, value: float):
@@ -2439,8 +2103,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_flow(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFlowField.ID)
@@ -2449,8 +2111,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_flow.setter
     def total_flow(self, value: float):
@@ -2463,8 +2123,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_grit(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgGritField.ID)
@@ -2473,8 +2131,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_grit.setter
     def avg_grit(self, value: float):
@@ -2487,8 +2143,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def avg_flow(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgFlowField.ID)
@@ -2497,8 +2151,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @avg_flow.setter
     def avg_flow(self, value: float):
@@ -2511,8 +2163,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_fractional_ascent(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalAscentField.ID)
@@ -2521,8 +2171,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_fractional_ascent.setter
     def total_fractional_ascent(self, value: float):
@@ -2535,8 +2183,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
     @property
     def total_fractional_descent(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalDescentField.ID)
@@ -2545,8 +2191,6 @@ class SegmentLapMessage(DataMessage):
             return field.get_value(sub_field=sub_field)
         else:
             return None
-
-
 
     @total_fractional_descent.setter
     def total_fractional_descent(self, value: float):
@@ -2559,11 +2203,6 @@ class SegmentLapMessage(DataMessage):
                 sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
 
-    
-
-
-
-
 
 class MessageIndexField(Field):
     ID = 254
@@ -2573,12 +2212,12 @@ class MessageIndexField(Field):
             name='message_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2590,14 +2229,14 @@ class TimestampField(Field):
             name='timestamp',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2609,12 +2248,12 @@ class SegmentLapEventField(Field):
             name='event',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2626,12 +2265,12 @@ class SegmentLapEventTypeField(Field):
             name='event_type',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2643,14 +2282,14 @@ class SegmentLapStartTimeField(Field):
             name='start_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = -631065600000,
-                 scale = 0.001,
-                         size = size,
-        units = 'ms',
-        type_name = 'date_time',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=-631065600000,
+            scale=0.001,
+            size=size,
+            units='ms',
+            type_name='date_time',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2662,14 +2301,14 @@ class SegmentLapStartPositionLatField(Field):
             name='start_position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2681,14 +2320,14 @@ class SegmentLapStartPositionLongField(Field):
             name='start_position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2700,14 +2339,14 @@ class SegmentLapEndPositionLatField(Field):
             name='end_position_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2719,14 +2358,14 @@ class SegmentLapEndPositionLongField(Field):
             name='end_position_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2738,14 +2377,14 @@ class SegmentLapTotalElapsedTimeField(Field):
             name='total_elapsed_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2757,14 +2396,14 @@ class SegmentLapTotalTimerTimeField(Field):
             name='total_timer_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2776,14 +2415,14 @@ class SegmentLapTotalDistanceField(Field):
             name='total_distance',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2795,23 +2434,23 @@ class SegmentLapTotalCyclesField(Field):
             name='total_cycles',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'cycles',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        SubField(
-            name='total_strokes',
-            base_type=BaseType.UINT32,
-        scale = 1,
-                offset = 0,
-        units = 'strokes',
-        reference_map = {
-        SegmentLapSportField.ID: [2]
-        })
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='cycles',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+                SubField(
+                    name='total_strokes',
+                    base_type=BaseType.UINT32,
+                    scale=1,
+                    offset=0,
+                    units='strokes',
+                    reference_map={
+                        SegmentLapSportField.ID: [2]
+                    })
+            ]
         )
 
 
@@ -2823,14 +2462,14 @@ class SegmentLapTotalCaloriesField(Field):
             name='total_calories',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'kcal',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='kcal',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2842,14 +2481,14 @@ class SegmentLapTotalFatCaloriesField(Field):
             name='total_fat_calories',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'kcal',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='kcal',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2861,14 +2500,14 @@ class SegmentLapAvgSpeedField(Field):
             name='avg_speed',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2880,14 +2519,14 @@ class SegmentLapMaxSpeedField(Field):
             name='max_speed',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2899,14 +2538,14 @@ class SegmentLapAvgHeartRateField(Field):
             name='avg_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'bpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='bpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2918,14 +2557,14 @@ class SegmentLapMaxHeartRateField(Field):
             name='max_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'bpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='bpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2937,14 +2576,14 @@ class SegmentLapAvgCadenceField(Field):
             name='avg_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2956,14 +2595,14 @@ class SegmentLapMaxCadenceField(Field):
             name='max_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2975,14 +2614,14 @@ class SegmentLapAvgPowerField(Field):
             name='avg_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'watts',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='watts',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -2994,14 +2633,14 @@ class SegmentLapMaxPowerField(Field):
             name='max_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'watts',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='watts',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3013,14 +2652,14 @@ class SegmentLapTotalAscentField(Field):
             name='total_ascent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3032,14 +2671,14 @@ class SegmentLapTotalDescentField(Field):
             name='total_descent',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3051,12 +2690,12 @@ class SegmentLapSportField(Field):
             name='sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3068,12 +2707,12 @@ class SegmentLapEventGroupField(Field):
             name='event_group',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3085,14 +2724,14 @@ class SegmentLapNecLatField(Field):
             name='nec_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3104,14 +2743,14 @@ class SegmentLapNecLongField(Field):
             name='nec_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3123,14 +2762,14 @@ class SegmentLapSwcLatField(Field):
             name='swc_lat',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3142,14 +2781,14 @@ class SegmentLapSwcLongField(Field):
             name='swc_long',
             field_id=self.ID,
             base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 11930464.711111112,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=11930464.711111112,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3161,12 +2800,12 @@ class SegmentLapNameField(Field):
             name='name',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3178,14 +2817,14 @@ class SegmentLapNormalizedPowerField(Field):
             name='normalized_power',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'watts',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='watts',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3197,12 +2836,12 @@ class SegmentLapLeftRightBalanceField(Field):
             name='left_right_balance',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3214,12 +2853,12 @@ class SegmentLapSubSportField(Field):
             name='sub_sport',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3231,14 +2870,14 @@ class SegmentLapTotalWorkField(Field):
             name='total_work',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'J',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='J',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3250,14 +2889,14 @@ class SegmentLapAvgAltitudeField(Field):
             name='avg_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 500,
-                 scale = 5,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=500,
+            scale=5,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3269,14 +2908,14 @@ class SegmentLapMaxAltitudeField(Field):
             name='max_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 500,
-                 scale = 5,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=500,
+            scale=5,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3288,14 +2927,14 @@ class SegmentLapGpsAccuracyField(Field):
             name='gps_accuracy',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3307,14 +2946,14 @@ class SegmentLapAvgGradeField(Field):
             name='avg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3326,14 +2965,14 @@ class SegmentLapAvgPosGradeField(Field):
             name='avg_pos_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3345,14 +2984,14 @@ class SegmentLapAvgNegGradeField(Field):
             name='avg_neg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3364,14 +3003,14 @@ class SegmentLapMaxPosGradeField(Field):
             name='max_pos_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3383,14 +3022,14 @@ class SegmentLapMaxNegGradeField(Field):
             name='max_neg_grade',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = '%',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='%',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3402,14 +3041,14 @@ class SegmentLapAvgTemperatureField(Field):
             name='avg_temperature',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'C',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='C',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3421,14 +3060,14 @@ class SegmentLapMaxTemperatureField(Field):
             name='max_temperature',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'C',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='C',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3440,14 +3079,14 @@ class SegmentLapTotalMovingTimeField(Field):
             name='total_moving_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3459,14 +3098,14 @@ class SegmentLapAvgPosVerticalSpeedField(Field):
             name='avg_pos_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3478,14 +3117,14 @@ class SegmentLapAvgNegVerticalSpeedField(Field):
             name='avg_neg_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3497,14 +3136,14 @@ class SegmentLapMaxPosVerticalSpeedField(Field):
             name='max_pos_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3516,14 +3155,14 @@ class SegmentLapMaxNegVerticalSpeedField(Field):
             name='max_neg_vertical_speed',
             field_id=self.ID,
             base_type=BaseType.SINT16,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 'm/s',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='m/s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3535,14 +3174,14 @@ class SegmentLapTimeInHrZoneField(Field):
             name='time_in_hr_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3554,14 +3193,14 @@ class SegmentLapTimeInSpeedZoneField(Field):
             name='time_in_speed_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3573,14 +3212,14 @@ class SegmentLapTimeInCadenceZoneField(Field):
             name='time_in_cadence_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3592,14 +3231,14 @@ class SegmentLapTimeInPowerZoneField(Field):
             name='time_in_power_zone',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3611,12 +3250,12 @@ class SegmentLapRepetitionNumField(Field):
             name='repetition_num',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3628,14 +3267,14 @@ class SegmentLapMinAltitudeField(Field):
             name='min_altitude',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 500,
-                 scale = 5,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=500,
+            scale=5,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3647,14 +3286,14 @@ class SegmentLapMinHeartRateField(Field):
             name='min_heart_rate',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'bpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='bpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3666,14 +3305,14 @@ class SegmentLapActiveTimeField(Field):
             name='active_time',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3685,12 +3324,12 @@ class SegmentLapWorkoutStepIndexField(Field):
             name='wkt_step_index',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3702,12 +3341,12 @@ class SegmentLapSportEventField(Field):
             name='sport_event',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3719,14 +3358,14 @@ class SegmentLapAvgLeftTorqueEffectivenessField(Field):
             name='avg_left_torque_effectiveness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 2,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=2,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3738,14 +3377,14 @@ class SegmentLapAvgRightTorqueEffectivenessField(Field):
             name='avg_right_torque_effectiveness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 2,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=2,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3757,14 +3396,14 @@ class SegmentLapAvgLeftPedalSmoothnessField(Field):
             name='avg_left_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 2,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=2,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3776,14 +3415,14 @@ class SegmentLapAvgRightPedalSmoothnessField(Field):
             name='avg_right_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 2,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=2,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3795,14 +3434,14 @@ class SegmentLapAvgCombinedPedalSmoothnessField(Field):
             name='avg_combined_pedal_smoothness',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 2,
-                         size = size,
-        units = 'percent',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=2,
+            size=size,
+            units='percent',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3814,12 +3453,12 @@ class SegmentLapStatusField(Field):
             name='status',
             field_id=self.ID,
             base_type=BaseType.ENUM,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3831,12 +3470,12 @@ class SegmentLapUuidField(Field):
             name='uuid',
             field_id=self.ID,
             base_type=BaseType.STRING,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3848,14 +3487,14 @@ class SegmentLapAvgFractionalCadenceField(Field):
             name='avg_fractional_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 128,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=128,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3867,14 +3506,14 @@ class SegmentLapMaxFractionalCadenceField(Field):
             name='max_fractional_cadence',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 128,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=128,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3886,14 +3525,14 @@ class SegmentLapTotalFractionalCyclesField(Field):
             name='total_fractional_cycles',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 128,
-                         size = size,
-        units = 'cycles',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=128,
+            size=size,
+            units='cycles',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3905,12 +3544,12 @@ class SegmentLapFrontGearShiftCountField(Field):
             name='front_gear_shift_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3922,12 +3561,12 @@ class SegmentLapRearGearShiftCountField(Field):
             name='rear_gear_shift_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3939,14 +3578,14 @@ class SegmentLapTimeStandingField(Field):
             name='time_standing',
             field_id=self.ID,
             base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1000,
-                         size = size,
-        units = 's',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1000,
+            size=size,
+            units='s',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3958,12 +3597,12 @@ class SegmentLapStandCountField(Field):
             name='stand_count',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3975,14 +3614,14 @@ class SegmentLapAvgLeftPcoField(Field):
             name='avg_left_pco',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'mm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='mm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -3994,14 +3633,14 @@ class SegmentLapAvgRightPcoField(Field):
             name='avg_right_pco',
             field_id=self.ID,
             base_type=BaseType.SINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'mm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='mm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4013,14 +3652,14 @@ class SegmentLapAvgLeftPowerPhaseField(Field):
             name='avg_left_power_phase',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 0.7111111,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=0.7111111,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4032,14 +3671,14 @@ class SegmentLapAvgLeftPowerPhasePeakField(Field):
             name='avg_left_power_phase_peak',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 0.7111111,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=0.7111111,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4051,14 +3690,14 @@ class SegmentLapAvgRightPowerPhaseField(Field):
             name='avg_right_power_phase',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 0.7111111,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=0.7111111,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4070,14 +3709,14 @@ class SegmentLapAvgRightPowerPhasePeakField(Field):
             name='avg_right_power_phase_peak',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 0.7111111,
-                         size = size,
-        units = 'degrees',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=0.7111111,
+            size=size,
+            units='degrees',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4089,14 +3728,14 @@ class SegmentLapAvgPowerPositionField(Field):
             name='avg_power_position',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'watts',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='watts',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4108,14 +3747,14 @@ class SegmentLapMaxPowerPositionField(Field):
             name='max_power_position',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'watts',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='watts',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4127,14 +3766,14 @@ class SegmentLapAvgCadencePositionField(Field):
             name='avg_cadence_position',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4146,14 +3785,14 @@ class SegmentLapMaxCadencePositionField(Field):
             name='max_cadence_position',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'rpm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='rpm',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4165,12 +3804,12 @@ class SegmentLapManufacturerField(Field):
             name='manufacturer',
             field_id=self.ID,
             base_type=BaseType.UINT16,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4182,14 +3821,14 @@ class SegmentLapTotalGritField(Field):
             name='total_grit',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'kGrit',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='kGrit',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4201,14 +3840,14 @@ class SegmentLapTotalFlowField(Field):
             name='total_flow',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'Flow',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='Flow',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4220,14 +3859,14 @@ class SegmentLapAvgGritField(Field):
             name='avg_grit',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'kGrit',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='kGrit',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4239,14 +3878,14 @@ class SegmentLapAvgFlowField(Field):
             name='avg_flow',
             field_id=self.ID,
             base_type=BaseType.FLOAT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'Flow',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=1,
+            size=size,
+            units='Flow',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4258,14 +3897,14 @@ class SegmentLapTotalFractionalAscentField(Field):
             name='total_fractional_ascent',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )
 
 
@@ -4277,12 +3916,12 @@ class SegmentLapTotalFractionalDescentField(Field):
             name='total_fractional_descent',
             field_id=self.ID,
             base_type=BaseType.UINT8,
-        offset = 0,
-                 scale = 100,
-                         size = size,
-        units = 'm',
-        type_name = '',
-        growable = growable,
-                   sub_fields = [
-        ]
+            offset=0,
+            scale=100,
+            size=size,
+            units='m',
+            type_name='',
+            growable=growable,
+            sub_fields=[
+            ]
         )

@@ -1,3 +1,6 @@
+from typing import Dict as dict
+from typing import List as list
+
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField

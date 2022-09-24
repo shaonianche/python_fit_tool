@@ -1,3 +1,5 @@
+from typing import List as list
+
 from fit_tool.base_type import BaseType
 from fit_tool.field import Field
 from fit_tool.field_component import FieldComponent

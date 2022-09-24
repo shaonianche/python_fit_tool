@@ -10,11 +10,11 @@ import argparse
 import logging
 import logging.config
 import os
-import sys
-
-# from pythonjsonlogger import jsonlogger
 
 from fit_tool.fit_file import FitFile
+
+
+# from pythonjsonlogger import jsonlogger
 
 
 def parse_args():

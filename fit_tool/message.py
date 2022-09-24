@@ -18,4 +18,3 @@ class Message:
 
     def to_row(self) -> list:
         raise Exception('Not implemented')
-

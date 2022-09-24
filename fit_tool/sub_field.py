@@ -1,3 +1,6 @@
+from typing import Dict as dict
+from typing import List as list
+
 from fit_tool.base_type import BaseType
 from fit_tool.field_component import FieldComponent
 
@@ -5,8 +8,8 @@ from fit_tool.field_component import FieldComponent
 class SubField:
 
     def __init__(self, name: str = 'unknown', base_type: BaseType = BaseType.ENUM, scale: float = 1.0,
-                 offset: float = 1.0, units: str = '', reference_map: dict[int, list[int]] = None
-                 , components=None):
+                 offset: float = 1.0, units: str = '', reference_map: dict[int, list[int]] = None,
+                 components=None):
         if components is None:
             components = []
         self.name = name

@@ -1,5 +1,6 @@
 import csv
 import struct
+from typing import List as list
 
 from fit_tool.base_type import BaseType
 from fit_tool.developer_field import DeveloperField

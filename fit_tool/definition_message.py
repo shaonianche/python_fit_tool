@@ -1,4 +1,6 @@
 import struct
+from typing import Dict as dict
+from typing import List as list
 from typing import Optional
 
 from fit_tool.developer_field import DeveloperField
@@ -54,7 +56,8 @@ class DefinitionMessage(Message):
     def add_field_definition(self, definition: FieldDefinition):
         self.field_definitions.append(definition)
 
-    def get_developer_field_definition(self, developer_data_index: int, field_id: int) -> Optional[DeveloperFieldDefinition]:
+    def get_developer_field_definition(self, developer_data_index: int, field_id: int) \
+            -> Optional[DeveloperFieldDefinition]:
         return next((x for x in self.developer_field_definitions if
                      x.developer_data_index == developer_data_index and x.field_id == field_id), None)
 

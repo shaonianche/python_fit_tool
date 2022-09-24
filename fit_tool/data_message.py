@@ -1,3 +1,4 @@
+from typing import List as list
 from typing import Optional
 
 from fit_tool.definition_message import DefinitionMessage
@@ -63,7 +64,8 @@ class DataMessage(Message):
                 field.size = 0
 
         for field in self.developer_fields:
-            field_definition = definition_message.get_developer_field_definition(field.developer_data_index, field.field_id)
+            field_definition = definition_message.get_developer_field_definition(field.developer_data_index,
+                                                                                 field.field_id)
             if field_definition:
                 field.size = field_definition.size
             else:

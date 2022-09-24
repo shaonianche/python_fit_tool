@@ -1,5 +1,7 @@
 import struct
 from enum import Enum
+from typing import Dict as dict
+from typing import List as list
 from typing import Optional
 
 from fit_tool.base_type import BaseType
@@ -282,7 +284,7 @@ class Field:
         if self.base_type == BaseType.STRING:
             calc_size = 0
             for value in self.encoded_values:
-                if value is not None:
+                if isinstance(value, str):
                     calc_size += len(value.encode('utf-8')) + 1
             return calc_size
         else:
@@ -376,7 +378,7 @@ class Field:
         for value in self.encoded_values:
             bytes_buffer += self.encoded_value_to_bytes(value, endian=endian)
 
-        # sometimes sub fields or strings can be less then the allocated field size,
+        # sometimes subfields or strings can be less than the allocated field size,
         # so we pad the buffer with 0's to meet the size requirement.
         bytes_buffer = bytes_buffer.ljust(self.size, b'\0')
 

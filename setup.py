@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='fit-tool',
-      version='0.9.9',
+      version='0.9.10',
       description='A library for reading and writing Garmin FIT files.',
       long_description=open('README.md', 'r').read(),
       long_description_content_type='text/markdown',

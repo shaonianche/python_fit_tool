@@ -102,13 +102,14 @@ def main():
     message = LapMessage()
     message.timestamp = timestamp
     message.start_time = start_timestamp
-    message.total_elapsed_time = elapsed_time
-    message.total_timer_time = elapsed_time
+    message.total_elapsed_time = elapsed_time/1000   # seconds
+    message.total_timer_time = elapsed_time/1000     # seconds
     message.start_position_lat = course_records[0].position_lat
     message.start_position_long = course_records[0].position_long
     message.end_position_lat = course_records[-1].position_lat
     message.endPositionLong = course_records[-1].position_long
     message.total_distance = course_records[-1].distance
+    builder.add(message)
 
     # Finally build the FIT file object and write it to a file
     fit_file = builder.build()

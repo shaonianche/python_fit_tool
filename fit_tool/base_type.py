@@ -89,6 +89,9 @@ class BaseType(Enum):
         else:
             return False
 
+    def is_valid(self, value) -> bool:
+        return self.min <= value <= self.max
+
     def invalid_raw_value(self) -> int:
         if self == BaseType.ENUM:
             return 0xff

@@ -90,6 +90,12 @@ class BaseType(Enum):
             return False
 
     def is_valid(self, value) -> bool:
+        if value is None:
+            return False
+
+        if self.min is None or self.max is None:
+            return True
+
         return self.min <= value <= self.max
 
     def invalid_raw_value(self) -> int:

@@ -46,6 +46,24 @@ class TestSdkFiles(unittest.TestCase):
             for row in rows:
                 csv_writer.writerow(row)
 
+    def test_activity_developer_data(self):
+        """Test decoding activity file.
+        """
+        path = os.path.join(os.path.dirname(__file__), 'data/sdk/activity_developerdata.fit')
+
+        with open(path, 'rb') as file_object:
+            bytes_buffer = file_object.read()
+            fit_file = FitFile.from_bytes(bytes_buffer)
+            # print(f'Profile version: {fit_file.header.profile_version}')
+            rows = fit_file.to_rows()
+
+        out_path = os.path.join(os.path.dirname(__file__), 'out/activity_developerdata..csv')
+        with open(out_path, 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',',
+                                    quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            for row in rows:
+                csv_writer.writerow(row)
+
     def test_activity_low_battery(self):
         """Test decoding activity low battery file.
         """

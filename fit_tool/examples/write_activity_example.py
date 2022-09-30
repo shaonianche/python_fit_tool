@@ -1,7 +1,7 @@
 import datetime
-import math
 
 import gpxpy
+import math
 from geopy.distance import geodesic
 
 from fit_tool.fit_file_builder import FitFileBuilder
@@ -24,8 +24,8 @@ def main():
     message.type = FileType.ACTIVITY
     message.manufacturer = Manufacturer.DEVELOPMENT.value
     message.product = 0
-    message.timeCreated = round(datetime.datetime.now().timestamp() * 1000)
-    message.serialNumber = 0x12345678
+    message.time_created = round(datetime.datetime.now().timestamp() * 1000)
+    message.serial_number = 0x12345678
     builder.add(message)
 
     # Timer Events are a best practice for FIT activity files
@@ -71,8 +71,8 @@ def main():
     message = LapMessage()
     message.timestamp = timestamp
     message.start_time = start_timestamp
-    message.total_elapsed_time = elapsed_time/1000  # seconds
-    message.total_timer_time = elapsed_time/1000    # seconds
+    message.total_elapsed_time = elapsed_time / 1000  # seconds
+    message.total_timer_time = elapsed_time / 1000  # seconds
     builder.add(message)
 
     # Finally build the FIT file object and write it to a file

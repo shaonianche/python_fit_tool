@@ -208,8 +208,10 @@ class Field:
             return
 
         if self.base_type != BaseType.STRING:
+
             if not self.base_type.is_valid(encoded_value):
-                raise Exception(f'Encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
+                raise Exception(
+                    f'Encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
 
         size_changed = False
         while index >= self.length:

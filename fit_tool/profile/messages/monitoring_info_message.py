@@ -111,64 +111,58 @@ class MonitoringInfoMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def activity_type(self) -> Optional[ActivityType]:
+    def activity_type(self) -> Optional[list[ActivityType]]:
         field = self.get_field(MonitoringInfoActivityTypeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @activity_type.setter
-    def activity_type(self, value: ActivityType):
+    def activity_type(self, value: list[ActivityType]):
         field = self.get_field(MonitoringInfoActivityTypeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def cycles_to_distance(self) -> Optional[float]:
+    def cycles_to_distance(self) -> Optional[list[float]]:
         field = self.get_field(MonitoringInfoCyclesToDistanceField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @cycles_to_distance.setter
-    def cycles_to_distance(self, value: float):
+    def cycles_to_distance(self, value: list[float]):
         field = self.get_field(MonitoringInfoCyclesToDistanceField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def cycles_to_calories(self) -> Optional[float]:
+    def cycles_to_calories(self) -> Optional[list[float]]:
         field = self.get_field(MonitoringInfoCyclesToCaloriesField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @cycles_to_calories.setter
-    def cycles_to_calories(self, value: float):
+    def cycles_to_calories(self, value: list[float]):
         field = self.get_field(MonitoringInfoCyclesToCaloriesField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def resting_metabolic_rate(self) -> Optional[int]:

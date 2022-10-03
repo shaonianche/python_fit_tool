@@ -1385,84 +1385,76 @@ class SegmentLapMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def time_in_hr_zone(self) -> Optional[float]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInHrZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: float):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInHrZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_speed_zone(self) -> Optional[float]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInSpeedZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: float):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInSpeedZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_cadence_zone(self) -> Optional[float]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInCadenceZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: float):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInCadenceZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_power_zone(self) -> Optional[float]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInPowerZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: float):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInPowerZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def repetition_num(self) -> Optional[int]:
@@ -1905,164 +1897,148 @@ class SegmentLapMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def avg_left_power_phase(self) -> Optional[float]:
+    def avg_left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgLeftPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_left_power_phase.setter
-    def avg_left_power_phase(self, value: float):
+    def avg_left_power_phase(self, value: list[float]):
         field = self.get_field(SegmentLapAvgLeftPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_left_power_phase_peak(self) -> Optional[float]:
+    def avg_left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_left_power_phase_peak.setter
-    def avg_left_power_phase_peak(self, value: float):
+    def avg_left_power_phase_peak(self, value: list[float]):
         field = self.get_field(SegmentLapAvgLeftPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_right_power_phase(self) -> Optional[float]:
+    def avg_right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgRightPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_right_power_phase.setter
-    def avg_right_power_phase(self, value: float):
+    def avg_right_power_phase(self, value: list[float]):
         field = self.get_field(SegmentLapAvgRightPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_right_power_phase_peak(self) -> Optional[float]:
+    def avg_right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgRightPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_right_power_phase_peak.setter
-    def avg_right_power_phase_peak(self, value: float):
+    def avg_right_power_phase_peak(self, value: list[float]):
         field = self.get_field(SegmentLapAvgRightPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_power_position(self) -> Optional[int]:
+    def avg_power_position(self) -> Optional[list[int]]:
         field = self.get_field(SegmentLapAvgPowerPositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_power_position.setter
-    def avg_power_position(self, value: int):
+    def avg_power_position(self, value: list[int]):
         field = self.get_field(SegmentLapAvgPowerPositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_power_position(self) -> Optional[int]:
+    def max_power_position(self) -> Optional[list[int]]:
         field = self.get_field(SegmentLapMaxPowerPositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_power_position.setter
-    def max_power_position(self, value: int):
+    def max_power_position(self, value: list[int]):
         field = self.get_field(SegmentLapMaxPowerPositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_cadence_position(self) -> Optional[int]:
+    def avg_cadence_position(self) -> Optional[list[int]]:
         field = self.get_field(SegmentLapAvgCadencePositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_cadence_position.setter
-    def avg_cadence_position(self, value: int):
+    def avg_cadence_position(self, value: list[int]):
         field = self.get_field(SegmentLapAvgCadencePositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_cadence_position(self) -> Optional[int]:
+    def max_cadence_position(self) -> Optional[list[int]]:
         field = self.get_field(SegmentLapMaxCadencePositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_cadence_position.setter
-    def max_cadence_position(self, value: int):
+    def max_cadence_position(self, value: list[int]):
         field = self.get_field(SegmentLapMaxCadencePositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def manufacturer(self) -> Optional[int]:

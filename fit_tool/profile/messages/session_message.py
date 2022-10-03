@@ -1802,84 +1802,76 @@ class SessionMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def time_in_hr_zone(self) -> Optional[float]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInHrZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: float):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInHrZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_speed_zone(self) -> Optional[float]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInSpeedZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: float):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInSpeedZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_cadence_zone(self) -> Optional[float]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInCadenceZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: float):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInCadenceZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_in_power_zone(self) -> Optional[float]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInPowerZoneField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: float):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInPowerZoneField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def avg_lap_time(self) -> Optional[float]:
@@ -2002,44 +1994,40 @@ class SessionMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def stroke_count(self) -> Optional[int]:
+    def stroke_count(self) -> Optional[list[int]]:
         field = self.get_field(SessionStrokeCountField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @stroke_count.setter
-    def stroke_count(self, value: int):
+    def stroke_count(self, value: list[int]):
         field = self.get_field(SessionStrokeCountField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def zone_count(self) -> Optional[int]:
+    def zone_count(self) -> Optional[list[int]]:
         field = self.get_field(SessionZoneCountField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @zone_count.setter
-    def zone_count(self, value: int):
+    def zone_count(self, value: list[int]):
         field = self.get_field(SessionZoneCountField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def max_ball_speed(self) -> Optional[float]:
@@ -2202,124 +2190,112 @@ class SessionMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def avg_total_hemoglobin_conc(self) -> Optional[float]:
+    def avg_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgTotalHemoglobinConcField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_total_hemoglobin_conc.setter
-    def avg_total_hemoglobin_conc(self, value: float):
+    def avg_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionAvgTotalHemoglobinConcField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def min_total_hemoglobin_conc(self) -> Optional[float]:
+    def min_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionMinTotalHemoglobinConcField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @min_total_hemoglobin_conc.setter
-    def min_total_hemoglobin_conc(self, value: float):
+    def min_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionMinTotalHemoglobinConcField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_total_hemoglobin_conc(self) -> Optional[float]:
+    def max_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionMaxTotalHemoglobinConcField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_total_hemoglobin_conc.setter
-    def max_total_hemoglobin_conc(self, value: float):
+    def max_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionMaxTotalHemoglobinConcField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_saturated_hemoglobin_percent(self) -> Optional[float]:
+    def avg_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_saturated_hemoglobin_percent.setter
-    def avg_saturated_hemoglobin_percent(self, value: float):
+    def avg_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionAvgSaturatedHemoglobinPercentField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def min_saturated_hemoglobin_percent(self) -> Optional[float]:
+    def min_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionMinSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @min_saturated_hemoglobin_percent.setter
-    def min_saturated_hemoglobin_percent(self, value: float):
+    def min_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionMinSaturatedHemoglobinPercentField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_saturated_hemoglobin_percent(self) -> Optional[float]:
+    def max_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionMaxSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_saturated_hemoglobin_percent.setter
-    def max_saturated_hemoglobin_percent(self, value: float):
+    def max_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionMaxSaturatedHemoglobinPercentField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def avg_left_torque_effectiveness(self) -> Optional[float]:
@@ -2522,164 +2498,148 @@ class SessionMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def avg_left_power_phase(self) -> Optional[float]:
+    def avg_left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgLeftPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_left_power_phase.setter
-    def avg_left_power_phase(self, value: float):
+    def avg_left_power_phase(self, value: list[float]):
         field = self.get_field(SessionAvgLeftPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_left_power_phase_peak(self) -> Optional[float]:
+    def avg_left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_left_power_phase_peak.setter
-    def avg_left_power_phase_peak(self, value: float):
+    def avg_left_power_phase_peak(self, value: list[float]):
         field = self.get_field(SessionAvgLeftPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_right_power_phase(self) -> Optional[float]:
+    def avg_right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgRightPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_right_power_phase.setter
-    def avg_right_power_phase(self, value: float):
+    def avg_right_power_phase(self, value: list[float]):
         field = self.get_field(SessionAvgRightPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_right_power_phase_peak(self) -> Optional[float]:
+    def avg_right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgRightPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_right_power_phase_peak.setter
-    def avg_right_power_phase_peak(self, value: float):
+    def avg_right_power_phase_peak(self, value: list[float]):
         field = self.get_field(SessionAvgRightPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_power_position(self) -> Optional[int]:
+    def avg_power_position(self) -> Optional[list[int]]:
         field = self.get_field(SessionAvgPowerPositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_power_position.setter
-    def avg_power_position(self, value: int):
+    def avg_power_position(self, value: list[int]):
         field = self.get_field(SessionAvgPowerPositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_power_position(self) -> Optional[int]:
+    def max_power_position(self) -> Optional[list[int]]:
         field = self.get_field(SessionMaxPowerPositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_power_position.setter
-    def max_power_position(self, value: int):
+    def max_power_position(self, value: list[int]):
         field = self.get_field(SessionMaxPowerPositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def avg_cadence_position(self) -> Optional[int]:
+    def avg_cadence_position(self) -> Optional[list[int]]:
         field = self.get_field(SessionAvgCadencePositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @avg_cadence_position.setter
-    def avg_cadence_position(self, value: int):
+    def avg_cadence_position(self, value: list[int]):
         field = self.get_field(SessionAvgCadencePositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def max_cadence_position(self) -> Optional[int]:
+    def max_cadence_position(self) -> Optional[list[int]]:
         field = self.get_field(SessionMaxCadencePositionField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @max_cadence_position.setter
-    def max_cadence_position(self, value: int):
+    def max_cadence_position(self, value: list[int]):
         field = self.get_field(SessionMaxCadencePositionField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def enhanced_avg_speed(self) -> Optional[float]:

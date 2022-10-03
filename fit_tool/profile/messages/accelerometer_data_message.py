@@ -134,204 +134,184 @@ class AccelerometerDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def sample_time_offset(self) -> Optional[int]:
+    def sample_time_offset(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataSampleTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @sample_time_offset.setter
-    def sample_time_offset(self, value: int):
+    def sample_time_offset(self, value: list[int]):
         field = self.get_field(AccelerometerDataSampleTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def accel_x(self) -> Optional[int]:
+    def accel_x(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataAccelXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @accel_x.setter
-    def accel_x(self, value: int):
+    def accel_x(self, value: list[int]):
         field = self.get_field(AccelerometerDataAccelXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def accel_y(self) -> Optional[int]:
+    def accel_y(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataAccelYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @accel_y.setter
-    def accel_y(self, value: int):
+    def accel_y(self, value: list[int]):
         field = self.get_field(AccelerometerDataAccelYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def accel_z(self) -> Optional[int]:
+    def accel_z(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataAccelZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @accel_z.setter
-    def accel_z(self, value: int):
+    def accel_z(self, value: list[int]):
         field = self.get_field(AccelerometerDataAccelZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_accel_x(self) -> Optional[float]:
+    def calibrated_accel_x(self) -> Optional[list[float]]:
         field = self.get_field(AccelerometerDataCalibratedAccelXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_accel_x.setter
-    def calibrated_accel_x(self, value: float):
+    def calibrated_accel_x(self, value: list[float]):
         field = self.get_field(AccelerometerDataCalibratedAccelXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_accel_y(self) -> Optional[float]:
+    def calibrated_accel_y(self) -> Optional[list[float]]:
         field = self.get_field(AccelerometerDataCalibratedAccelYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_accel_y.setter
-    def calibrated_accel_y(self, value: float):
+    def calibrated_accel_y(self, value: list[float]):
         field = self.get_field(AccelerometerDataCalibratedAccelYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_accel_z(self) -> Optional[float]:
+    def calibrated_accel_z(self) -> Optional[list[float]]:
         field = self.get_field(AccelerometerDataCalibratedAccelZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_accel_z.setter
-    def calibrated_accel_z(self, value: float):
+    def calibrated_accel_z(self, value: list[float]):
         field = self.get_field(AccelerometerDataCalibratedAccelZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def compressed_calibrated_accel_x(self) -> Optional[int]:
+    def compressed_calibrated_accel_x(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @compressed_calibrated_accel_x.setter
-    def compressed_calibrated_accel_x(self, value: int):
+    def compressed_calibrated_accel_x(self, value: list[int]):
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def compressed_calibrated_accel_y(self) -> Optional[int]:
+    def compressed_calibrated_accel_y(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @compressed_calibrated_accel_y.setter
-    def compressed_calibrated_accel_y(self, value: int):
+    def compressed_calibrated_accel_y(self, value: list[int]):
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def compressed_calibrated_accel_z(self) -> Optional[int]:
+    def compressed_calibrated_accel_z(self) -> Optional[list[int]]:
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @compressed_calibrated_accel_z.setter
-    def compressed_calibrated_accel_z(self, value: int):
+    def compressed_calibrated_accel_z(self, value: list[int]):
         field = self.get_field(AccelerometerDataCompressedCalibratedAccelZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

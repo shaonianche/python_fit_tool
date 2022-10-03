@@ -103,44 +103,40 @@ class BarometerDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def sample_time_offset(self) -> Optional[int]:
+    def sample_time_offset(self) -> Optional[list[int]]:
         field = self.get_field(BarometerDataSampleTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @sample_time_offset.setter
-    def sample_time_offset(self, value: int):
+    def sample_time_offset(self, value: list[int]):
         field = self.get_field(BarometerDataSampleTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def baro_pres(self) -> Optional[int]:
+    def baro_pres(self) -> Optional[list[int]]:
         field = self.get_field(BarometerDataBaroPresField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @baro_pres.setter
-    def baro_pres(self, value: int):
+    def baro_pres(self, value: list[int]):
         field = self.get_field(BarometerDataBaroPresField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

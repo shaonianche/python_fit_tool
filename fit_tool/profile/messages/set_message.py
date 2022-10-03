@@ -208,44 +208,40 @@ class SetMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def category(self) -> Optional[int]:
+    def category(self) -> Optional[list[int]]:
         field = self.get_field(SetCategoryField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @category.setter
-    def category(self, value: int):
+    def category(self, value: list[int]):
         field = self.get_field(SetCategoryField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def category_subtype(self) -> Optional[int]:
+    def category_subtype(self) -> Optional[list[int]]:
         field = self.get_field(SetCategorySubtypeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @category_subtype.setter
-    def category_subtype(self, value: int):
+    def category_subtype(self, value: list[int]):
         field = self.get_field(SetCategorySubtypeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def weight_display_unit(self) -> Optional[int]:

@@ -53,6 +53,7 @@ class FitFile:
                 developer_field = DeveloperField(developer_data_index=message.developer_data_index,
                                                  field_id=message.field_definition_number,
                                                  base_type=BaseType(message.fit_base_type_id),
+                                                 name=message.field_name,
                                                  scale=message.scale,
                                                  offset=message.offset,
                                                  units=message.units)

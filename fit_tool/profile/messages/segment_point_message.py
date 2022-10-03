@@ -165,24 +165,22 @@ class SegmentPointMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def leader_time(self) -> Optional[float]:
+    def leader_time(self) -> Optional[list[float]]:
         field = self.get_field(SegmentPointLeaderTimeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @leader_time.setter
-    def leader_time(self, value: float):
+    def leader_time(self, value: list[float]):
         field = self.get_field(SegmentPointLeaderTimeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class MessageIndexField(Field):

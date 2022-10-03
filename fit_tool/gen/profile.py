@@ -4,7 +4,7 @@ from openpyxl import load_workbook
 
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import FieldType, BaseType
-from fit_tool.field import Field
+from fit_tool.field import Field, ArrayType
 
 
 class Message:
@@ -27,6 +27,15 @@ class Message:
 
     def get_fields(self):
         return list(self.fields_by_id.values())
+
+
+def parse_array_field(value):
+    if value is None:
+        return None, None
+    if value == '[N]':
+        return ArrayType.VARIABLE, None
+
+    return ArrayType.FIXED, int(value[1:-1])
 
 
 class Profile:
@@ -172,7 +181,7 @@ class Profile:
                 field_id = row[1].value
                 field_name = row[2].value
                 field_type_name = row[3].value
-                # array = row[4].value
+                array_type, array_fixed_length = parse_array_field(row[4].value)
                 # components = row[5].value
                 scale = row[6].value if row[6].value is not None else 1
 
@@ -257,7 +266,9 @@ class Profile:
                                               offset=offset,
                                               units=units,
                                               ref_field_map=ref_field_map,
-                                              type_name=field_type_name
+                                              type_name=field_type_name,
+                                              array_type=array_type,
+                                              array_fixed_length=array_fixed_length
                                               )
 
                     # todo: hack for now, should add to class

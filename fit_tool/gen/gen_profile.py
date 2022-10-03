@@ -128,10 +128,10 @@ def subfield_name_to_property_name(field: Field, name: str) -> str:
     return name
 
 
-def get_type_name_from_field(field: Field, base_type: BaseType):
-    if base_type.name == 'STRING':
+def get_type_name_from_field(field: Field):
+    if field.base_type.name == 'STRING':
         return 'str'
-    elif 'FLOAT' in base_type.name or (field.scale and field.scale != 1):
+    elif 'FLOAT' in field.base_type.name or (field.scale and field.scale != 1):
         return 'float'
     else:
         return 'int'
@@ -140,15 +140,29 @@ def get_type_name_from_field(field: Field, base_type: BaseType):
 def get_field_property_type_name(profile: Profile, field: Field) -> str:
     if field.type_name:
         if 'bool' in field.type_name:
-            return 'bool'
+            type_name = 'bool'
         elif 'date_time' == field.type_name:
-            return 'int'
-        elif 'fit_base_type' in field.type_name or field.base_type != BaseType.ENUM:
-            return get_type_name_from_field(field, field.base_type)
+            type_name = 'int'
+        elif 'fit_base_type' in field.type_name:
+            type_name = 'int'
+
+        elif field.base_type == BaseType.ENUM:
+            type_name = profile.type_class_name_by_name[field.type_name]
         else:
-            return profile.type_class_name_by_name[field.type_name]
+            type_name = get_type_name_from_field(field)
     else:
-        return get_type_name_from_field(field, field.base_type)
+        type_name = get_type_name_from_field(field)
+
+    # handle arrays
+    if field.array_type is None:
+        return type_name
+    else:
+        if field.base_type.name == 'BYTE':
+            return 'bytes'
+        if type_name == 'str':
+            return 'str'
+        else:
+            return f'list[{type_name}]'
 
 
 def main():

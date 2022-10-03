@@ -119,144 +119,130 @@ class MagnetometerDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def sample_time_offset(self) -> Optional[int]:
+    def sample_time_offset(self) -> Optional[list[int]]:
         field = self.get_field(MagnetometerDataSampleTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @sample_time_offset.setter
-    def sample_time_offset(self, value: int):
+    def sample_time_offset(self, value: list[int]):
         field = self.get_field(MagnetometerDataSampleTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def mag_x(self) -> Optional[int]:
+    def mag_x(self) -> Optional[list[int]]:
         field = self.get_field(MagnetometerDataMagXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @mag_x.setter
-    def mag_x(self, value: int):
+    def mag_x(self, value: list[int]):
         field = self.get_field(MagnetometerDataMagXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def mag_y(self) -> Optional[int]:
+    def mag_y(self) -> Optional[list[int]]:
         field = self.get_field(MagnetometerDataMagYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @mag_y.setter
-    def mag_y(self, value: int):
+    def mag_y(self, value: list[int]):
         field = self.get_field(MagnetometerDataMagYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def mag_z(self) -> Optional[int]:
+    def mag_z(self) -> Optional[list[int]]:
         field = self.get_field(MagnetometerDataMagZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @mag_z.setter
-    def mag_z(self, value: int):
+    def mag_z(self, value: list[int]):
         field = self.get_field(MagnetometerDataMagZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_mag_x(self) -> Optional[float]:
+    def calibrated_mag_x(self) -> Optional[list[float]]:
         field = self.get_field(MagnetometerDataCalibratedMagXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_mag_x.setter
-    def calibrated_mag_x(self, value: float):
+    def calibrated_mag_x(self, value: list[float]):
         field = self.get_field(MagnetometerDataCalibratedMagXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_mag_y(self) -> Optional[float]:
+    def calibrated_mag_y(self) -> Optional[list[float]]:
         field = self.get_field(MagnetometerDataCalibratedMagYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_mag_y.setter
-    def calibrated_mag_y(self, value: float):
+    def calibrated_mag_y(self, value: list[float]):
         field = self.get_field(MagnetometerDataCalibratedMagYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_mag_z(self) -> Optional[float]:
+    def calibrated_mag_z(self) -> Optional[list[float]]:
         field = self.get_field(MagnetometerDataCalibratedMagZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_mag_z.setter
-    def calibrated_mag_z(self, value: float):
+    def calibrated_mag_z(self, value: list[float]):
         field = self.get_field(MagnetometerDataCalibratedMagZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

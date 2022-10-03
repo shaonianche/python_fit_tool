@@ -57,7 +57,7 @@ class TestSdkFiles(unittest.TestCase):
             # print(f'Profile version: {fit_file.header.profile_version}')
             rows = fit_file.to_rows()
 
-        out_path = os.path.join(os.path.dirname(__file__), 'out/activity_developerdata..csv')
+        out_path = os.path.join(os.path.dirname(__file__), 'out/activity_developerdata.csv')
         with open(out_path, 'w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=',',
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)

@@ -118,24 +118,22 @@ class ObdiiDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def time_offset(self) -> Optional[int]:
+    def time_offset(self) -> Optional[list[int]]:
         field = self.get_field(ObdiiDataTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_offset.setter
-    def time_offset(self, value: int):
+    def time_offset(self, value: list[int]):
         field = self.get_field(ObdiiDataTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def pid(self) -> Optional[int]:
@@ -158,64 +156,58 @@ class ObdiiDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def raw_data(self) -> Optional[int]:
+    def raw_data(self) -> Optional[bytes]:
         field = self.get_field(ObdiiDataRawDataField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @raw_data.setter
-    def raw_data(self, value: int):
+    def raw_data(self, value: bytes):
         field = self.get_field(ObdiiDataRawDataField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def pid_data_size(self) -> Optional[int]:
+    def pid_data_size(self) -> Optional[list[int]]:
         field = self.get_field(ObdiiDataPidDataSizeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @pid_data_size.setter
-    def pid_data_size(self, value: int):
+    def pid_data_size(self, value: list[int]):
         field = self.get_field(ObdiiDataPidDataSizeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def system_time(self) -> Optional[int]:
+    def system_time(self) -> Optional[list[int]]:
         field = self.get_field(ObdiiDataSystemTimeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @system_time.setter
-    def system_time(self, value: int):
+    def system_time(self, value: list[int]):
         field = self.get_field(ObdiiDataSystemTimeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 

@@ -167,64 +167,58 @@ class DeviceSettingsMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def time_offset(self) -> Optional[int]:
+    def time_offset(self) -> Optional[list[int]]:
         field = self.get_field(DeviceSettingsTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_offset.setter
-    def time_offset(self, value: int):
+    def time_offset(self, value: list[int]):
         field = self.get_field(DeviceSettingsTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_mode(self) -> Optional[TimeMode]:
+    def time_mode(self) -> Optional[list[TimeMode]]:
         field = self.get_field(DeviceSettingsTimeModeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_mode.setter
-    def time_mode(self, value: TimeMode):
+    def time_mode(self, value: list[TimeMode]):
         field = self.get_field(DeviceSettingsTimeModeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def time_zone_offset(self) -> Optional[float]:
+    def time_zone_offset(self) -> Optional[list[float]]:
         field = self.get_field(DeviceSettingsTimeZoneOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @time_zone_offset.setter
-    def time_zone_offset(self, value: float):
+    def time_zone_offset(self, value: list[float]):
         field = self.get_field(DeviceSettingsTimeZoneOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def backlight_mode(self) -> Optional[BacklightMode]:
@@ -291,24 +285,22 @@ class DeviceSettingsMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def pages_enabled(self) -> Optional[int]:
+    def pages_enabled(self) -> Optional[list[int]]:
         field = self.get_field(DeviceSettingsPagesEnabledField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @pages_enabled.setter
-    def pages_enabled(self, value: int):
+    def pages_enabled(self, value: list[int]):
         field = self.get_field(DeviceSettingsPagesEnabledField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def move_alert_enabled(self) -> Optional[bool]:
@@ -391,24 +383,22 @@ class DeviceSettingsMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def default_page(self) -> Optional[int]:
+    def default_page(self) -> Optional[list[int]]:
         field = self.get_field(DeviceSettingsDefaultPageField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @default_page.setter
-    def default_page(self, value: int):
+    def default_page(self, value: list[int]):
         field = self.get_field(DeviceSettingsDefaultPageField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def autosync_min_steps(self) -> Optional[int]:

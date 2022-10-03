@@ -78,11 +78,15 @@ class {{class_name}}(DataMessage):
 
         {%- else %}
         if field and field.is_valid():
+            {%- if field.base_type.name != 'STRING' and field.array_type %}
+            return field.get_values()
+            {%- else %}
             sub_field = field.get_valid_sub_field(self.fields)
             return field.get_value(sub_field=sub_field)
+            {%- endif %}
         else:
             return None
-{%- endif %}
+        {%- endif %}
 
 {% if field.type_.name == 'date_time' %}
     # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
@@ -96,10 +100,14 @@ class {{class_name}}(DataMessage):
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
+
                 {%- if field.type_ and field.type_.base_type.name == 'enum' %}
+                sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value.value, sub_field)
+                {%- elif field.base_type.name != 'STRING' and field.array_type %}
+                field.set_values(value)
                 {%- else %}
+                sub_field = field.get_valid_sub_field(self.fields)
                 field.set_value(0, value, sub_field)
                 {%- endif %}
 

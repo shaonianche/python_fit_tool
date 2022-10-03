@@ -118,144 +118,130 @@ class GyroscopeDataMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def sample_time_offset(self) -> Optional[int]:
+    def sample_time_offset(self) -> Optional[list[int]]:
         field = self.get_field(GyroscopeDataSampleTimeOffsetField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @sample_time_offset.setter
-    def sample_time_offset(self, value: int):
+    def sample_time_offset(self, value: list[int]):
         field = self.get_field(GyroscopeDataSampleTimeOffsetField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def gyro_x(self) -> Optional[int]:
+    def gyro_x(self) -> Optional[list[int]]:
         field = self.get_field(GyroscopeDataGyroXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @gyro_x.setter
-    def gyro_x(self, value: int):
+    def gyro_x(self, value: list[int]):
         field = self.get_field(GyroscopeDataGyroXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def gyro_y(self) -> Optional[int]:
+    def gyro_y(self) -> Optional[list[int]]:
         field = self.get_field(GyroscopeDataGyroYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @gyro_y.setter
-    def gyro_y(self, value: int):
+    def gyro_y(self, value: list[int]):
         field = self.get_field(GyroscopeDataGyroYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def gyro_z(self) -> Optional[int]:
+    def gyro_z(self) -> Optional[list[int]]:
         field = self.get_field(GyroscopeDataGyroZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @gyro_z.setter
-    def gyro_z(self, value: int):
+    def gyro_z(self, value: list[int]):
         field = self.get_field(GyroscopeDataGyroZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_gyro_x(self) -> Optional[float]:
+    def calibrated_gyro_x(self) -> Optional[list[float]]:
         field = self.get_field(GyroscopeDataCalibratedGyroXField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_gyro_x.setter
-    def calibrated_gyro_x(self, value: float):
+    def calibrated_gyro_x(self, value: list[float]):
         field = self.get_field(GyroscopeDataCalibratedGyroXField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_gyro_y(self) -> Optional[float]:
+    def calibrated_gyro_y(self) -> Optional[list[float]]:
         field = self.get_field(GyroscopeDataCalibratedGyroYField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_gyro_y.setter
-    def calibrated_gyro_y(self, value: float):
+    def calibrated_gyro_y(self, value: list[float]):
         field = self.get_field(GyroscopeDataCalibratedGyroYField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def calibrated_gyro_z(self) -> Optional[float]:
+    def calibrated_gyro_z(self) -> Optional[list[float]]:
         field = self.get_field(GyroscopeDataCalibratedGyroZField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @calibrated_gyro_z.setter
-    def calibrated_gyro_z(self, value: float):
+    def calibrated_gyro_z(self, value: list[float]):
         field = self.get_field(GyroscopeDataCalibratedGyroZField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

@@ -458,24 +458,22 @@ class RecordMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def compressed_speed_distance(self) -> Optional[int]:
+    def compressed_speed_distance(self) -> Optional[bytes]:
         field = self.get_field(RecordCompressedSpeedDistanceField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @compressed_speed_distance.setter
-    def compressed_speed_distance(self, value: int):
+    def compressed_speed_distance(self, value: bytes):
         field = self.get_field(RecordCompressedSpeedDistanceField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def grade(self) -> Optional[float]:
@@ -578,24 +576,22 @@ class RecordMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def speed_1s(self) -> Optional[float]:
+    def speed_1s(self) -> Optional[list[float]]:
         field = self.get_field(RecordSpeed1sField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @speed_1s.setter
-    def speed_1s(self, value: float):
+    def speed_1s(self, value: list[float]):
         field = self.get_field(RecordSpeed1sField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def cycles(self) -> Optional[int]:
@@ -1238,84 +1234,76 @@ class RecordMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def left_power_phase(self) -> Optional[float]:
+    def left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(RecordLeftPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @left_power_phase.setter
-    def left_power_phase(self, value: float):
+    def left_power_phase(self, value: list[float]):
         field = self.get_field(RecordLeftPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def left_power_phase_peak(self) -> Optional[float]:
+    def left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(RecordLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @left_power_phase_peak.setter
-    def left_power_phase_peak(self, value: float):
+    def left_power_phase_peak(self, value: list[float]):
         field = self.get_field(RecordLeftPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def right_power_phase(self) -> Optional[float]:
+    def right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(RecordRightPowerPhaseField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @right_power_phase.setter
-    def right_power_phase(self, value: float):
+    def right_power_phase(self, value: list[float]):
         field = self.get_field(RecordRightPowerPhaseField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def right_power_phase_peak(self) -> Optional[float]:
+    def right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(RecordRightPowerPhasePeakField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @right_power_phase_peak.setter
-    def right_power_phase_peak(self, value: float):
+    def right_power_phase_peak(self, value: list[float]):
         field = self.get_field(RecordRightPowerPhasePeakField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def enhanced_speed(self) -> Optional[float]:

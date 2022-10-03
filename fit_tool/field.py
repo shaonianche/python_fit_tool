@@ -11,14 +11,29 @@ from fit_tool.field_definition import FieldDefinition
 from fit_tool.sub_field import SubField
 
 
+class ArrayType(Enum):
+    FIXED = 0
+    VARIABLE = 1
+
+
 class Field:
     encoded_values = []
 
     def __init__(self, field_id: int = 0, name: str = '', base_type: BaseType = BaseType.ENUM,
                  offset: float = None,
-                 scale: float = None, units: str = '', is_accumulated: bool = False,
-                 is_expanded_field=False, sub_fields: list[SubField] = None, components: list[FieldComponent] = None,
-                 size: int = 0, growable: bool = False, type_name: str = '', ref_field_map: dict = None):
+                 scale: float = None,
+                 units: str = '',
+                 is_accumulated: bool = False,
+                 is_expanded_field=False,
+                 sub_fields: list[SubField] = None,
+                 components: list[FieldComponent] = None,
+                 size: int = 0,
+                 growable: bool = False,
+                 type_name: str = '',
+                 ref_field_map: dict = None,
+                 array_type: ArrayType = None,
+                 array_fixed_length: int = None):
+
         self.field_id = field_id
         self.name = name
         self.base_type = base_type
@@ -33,6 +48,8 @@ class Field:
         self.growable = growable
         self.type_name = type_name
         self.ref_field_map = ref_field_map
+        self.array_type = array_type
+        self.array_fixed_length = array_fixed_length
 
         self.encoded_values = [None for _ in range(Field.get_length_from_size(base_type, size))]
 
@@ -162,6 +179,14 @@ class Field:
         encoded_value = self.encoded_values[index]
         return self.decode_value(encoded_value, sub_field)
 
+    # Return values as a list
+    def get_values(self):
+        return [self.decode_value(encoded_value) for encoded_value in self.encoded_values]
+
+    def set_values(self, values):
+        for index, value in enumerate(values):
+            self.set_value(index, value)
+
     def decode_value(self, encoded_value, sub_field: SubField = None):
         if encoded_value is None or type(encoded_value) == str:
             return encoded_value
@@ -203,20 +228,20 @@ class Field:
         encoded_value = self.encode_value(value, sub_field)
         self.set_encoded_value(index, encoded_value)
 
-    def set_encoded_value(self, index: int, encoded_value):
+    def set_encoded_value(self, index: int, encoded_value, check_validity: bool = True):
         if index < 0:
             return
 
-        if self.base_type != BaseType.STRING:
-
+        if check_validity and self.base_type != BaseType.STRING:
             if not self.base_type.is_valid(encoded_value):
                 raise Exception(
-                    f'Encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
+                    f'{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
 
         size_changed = False
         while index >= self.length:
-            if self.base_type != BaseType.STRING and not self.growable:
+            if (self.base_type != BaseType.STRING or self.array_type is not None) and not self.growable:
                 raise Exception('Field is not growable')
+
             self.encoded_values.append(None)
             size_changed = True
 
@@ -261,7 +286,7 @@ class Field:
             raise Exception('Type cannot be string')
 
         encoded_value = self.get_encoded_value_from_bytes(bytes_buffer, endian=endian)
-        self.set_encoded_value(index, encoded_value)
+        self.set_encoded_value(index, encoded_value, check_validity=False)
 
     def read_strings_from_bytes(self, bytes_buffer: bytes):
         # The number of strings is dynamic and is determined by the number of null

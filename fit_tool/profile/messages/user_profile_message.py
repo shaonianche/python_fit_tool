@@ -559,24 +559,22 @@ class UserProfileMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def user_profile_global_id(self) -> Optional[int]:
+    def user_profile_global_id(self) -> Optional[bytes]:
         field = self.get_field(UserProfileGlobalIdField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @user_profile_global_id.setter
-    def user_profile_global_id(self, value: int):
+    def user_profile_global_id(self, value: bytes):
         field = self.get_field(UserProfileGlobalIdField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def wake_time(self) -> Optional[int]:

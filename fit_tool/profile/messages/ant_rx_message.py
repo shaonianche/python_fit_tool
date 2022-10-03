@@ -129,24 +129,22 @@ class AntRxMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def mesg_data(self) -> Optional[int]:
+    def mesg_data(self) -> Optional[bytes]:
         field = self.get_field(AntRxMesgDataField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @mesg_data.setter
-    def mesg_data(self, value: int):
+    def mesg_data(self, value: bytes):
         field = self.get_field(AntRxMesgDataField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def channel_number(self) -> Optional[int]:
@@ -169,24 +167,22 @@ class AntRxMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def data(self) -> Optional[int]:
+    def data(self) -> Optional[bytes]:
         field = self.get_field(AntRxDataField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @data.setter
-    def data(self, value: int):
+    def data(self, value: bytes):
         field = self.get_field(AntRxDataField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

@@ -64,44 +64,40 @@ class DeveloperDataIdMessage(DataMessage):
         return message
 
     @property
-    def developer_id(self) -> Optional[int]:
+    def developer_id(self) -> Optional[bytes]:
         field = self.get_field(DeveloperDataIdDeveloperIdField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @developer_id.setter
-    def developer_id(self, value: int):
+    def developer_id(self, value: bytes):
         field = self.get_field(DeveloperDataIdDeveloperIdField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def application_id(self) -> Optional[int]:
+    def application_id(self) -> Optional[bytes]:
         field = self.get_field(DeveloperDataIdApplicationIdField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @application_id.setter
-    def application_id(self, value: int):
+    def application_id(self, value: bytes):
         field = self.get_field(DeveloperDataIdApplicationIdField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def manufacturer_id(self) -> Optional[int]:

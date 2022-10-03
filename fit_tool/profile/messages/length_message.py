@@ -430,44 +430,40 @@ class LengthMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def stroke_count(self) -> Optional[int]:
+    def stroke_count(self) -> Optional[list[int]]:
         field = self.get_field(LengthStrokeCountField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @stroke_count.setter
-    def stroke_count(self, value: int):
+    def stroke_count(self, value: list[int]):
         field = self.get_field(LengthStrokeCountField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def zone_count(self) -> Optional[int]:
+    def zone_count(self) -> Optional[list[int]]:
         field = self.get_field(LengthZoneCountField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @zone_count.setter
-    def zone_count(self, value: int):
+    def zone_count(self, value: list[int]):
         field = self.get_field(LengthZoneCountField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class MessageIndexField(Field):

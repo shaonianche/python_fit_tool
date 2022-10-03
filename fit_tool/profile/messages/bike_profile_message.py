@@ -708,24 +708,22 @@ class BikeProfileMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def front_gear(self) -> Optional[int]:
+    def front_gear(self) -> Optional[list[int]]:
         field = self.get_field(BikeProfileFrontGearField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @front_gear.setter
-    def front_gear(self, value: int):
+    def front_gear(self, value: list[int]):
         field = self.get_field(BikeProfileFrontGearField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def rear_gear_num(self) -> Optional[int]:
@@ -748,24 +746,22 @@ class BikeProfileMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def rear_gear(self) -> Optional[int]:
+    def rear_gear(self) -> Optional[list[int]]:
         field = self.get_field(BikeProfileRearGearField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @rear_gear.setter
-    def rear_gear(self, value: int):
+    def rear_gear(self, value: list[int]):
         field = self.get_field(BikeProfileRearGearField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def shimano_di2_enabled(self) -> Optional[bool]:

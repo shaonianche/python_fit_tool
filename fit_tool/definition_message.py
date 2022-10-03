@@ -81,6 +81,19 @@ class DefinitionMessage(Message):
             values.append(field_definition.size)
             values.append('bytes')
 
+        for field_definition in self.developer_field_definitions:
+            field = self.get_developer_field_definition(field_definition.developer_data_index,
+                                                        field_definition.field_id)
+
+            if not field:
+                logger.warning(f'Field id:{field_definition.field_id} could not be found in message: {message.name}')
+                continue
+
+            values.append(f'[{field.developer_data_index},{field.field_id}]');
+            values.append(field.size)
+            ''
+            values.append('bytes')
+
         return values
 
     def to_bytes(self) -> bytes:

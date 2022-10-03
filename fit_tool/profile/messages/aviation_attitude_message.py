@@ -129,204 +129,184 @@ class AviationAttitudeMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def system_time(self) -> Optional[int]:
+    def system_time(self) -> Optional[list[int]]:
         field = self.get_field(AviationAttitudeSystemTimeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @system_time.setter
-    def system_time(self, value: int):
+    def system_time(self, value: list[int]):
         field = self.get_field(AviationAttitudeSystemTimeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def pitch(self) -> Optional[float]:
+    def pitch(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudePitchField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @pitch.setter
-    def pitch(self, value: float):
+    def pitch(self, value: list[float]):
         field = self.get_field(AviationAttitudePitchField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def roll(self) -> Optional[float]:
+    def roll(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeRollField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @roll.setter
-    def roll(self, value: float):
+    def roll(self, value: list[float]):
         field = self.get_field(AviationAttitudeRollField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def accel_lateral(self) -> Optional[float]:
+    def accel_lateral(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeAccelLateralField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @accel_lateral.setter
-    def accel_lateral(self, value: float):
+    def accel_lateral(self, value: list[float]):
         field = self.get_field(AviationAttitudeAccelLateralField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def accel_normal(self) -> Optional[float]:
+    def accel_normal(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeAccelNormalField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @accel_normal.setter
-    def accel_normal(self, value: float):
+    def accel_normal(self, value: list[float]):
         field = self.get_field(AviationAttitudeAccelNormalField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def turn_rate(self) -> Optional[float]:
+    def turn_rate(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeTurnRateField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @turn_rate.setter
-    def turn_rate(self, value: float):
+    def turn_rate(self, value: list[float]):
         field = self.get_field(AviationAttitudeTurnRateField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def stage(self) -> Optional[AttitudeStage]:
+    def stage(self) -> Optional[list[AttitudeStage]]:
         field = self.get_field(AviationAttitudeStageField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @stage.setter
-    def stage(self, value: AttitudeStage):
+    def stage(self, value: list[AttitudeStage]):
         field = self.get_field(AviationAttitudeStageField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def attitude_stage_complete(self) -> Optional[int]:
+    def attitude_stage_complete(self) -> Optional[list[int]]:
         field = self.get_field(AviationAttitudeAttitudeStageCompleteField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @attitude_stage_complete.setter
-    def attitude_stage_complete(self, value: int):
+    def attitude_stage_complete(self, value: list[int]):
         field = self.get_field(AviationAttitudeAttitudeStageCompleteField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def track(self) -> Optional[float]:
+    def track(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeTrackField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @track.setter
-    def track(self, value: float):
+    def track(self, value: list[float]):
         field = self.get_field(AviationAttitudeTrackField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def validity(self) -> Optional[int]:
+    def validity(self) -> Optional[list[int]]:
         field = self.get_field(AviationAttitudeValidityField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @validity.setter
-    def validity(self, value: int):
+    def validity(self, value: list[int]):
         field = self.get_field(AviationAttitudeValidityField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

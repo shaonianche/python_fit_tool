@@ -129,64 +129,58 @@ class HrMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def filtered_bpm(self) -> Optional[int]:
+    def filtered_bpm(self) -> Optional[list[int]]:
         field = self.get_field(HrFilteredBpmField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @filtered_bpm.setter
-    def filtered_bpm(self, value: int):
+    def filtered_bpm(self, value: list[int]):
         field = self.get_field(HrFilteredBpmField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def event_timestamp(self) -> Optional[float]:
+    def event_timestamp(self) -> Optional[list[float]]:
         field = self.get_field(HrEventTimestampField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @event_timestamp.setter
-    def event_timestamp(self, value: float):
+    def event_timestamp(self, value: list[float]):
         field = self.get_field(HrEventTimestampField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def event_timestamp_12(self) -> Optional[int]:
+    def event_timestamp_12(self) -> Optional[bytes]:
         field = self.get_field(HrEventTimestamp12Field.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @event_timestamp_12.setter
-    def event_timestamp_12(self, value: int):
+    def event_timestamp_12(self, value: bytes):
         field = self.get_field(HrEventTimestamp12Field.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

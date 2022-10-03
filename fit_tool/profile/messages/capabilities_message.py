@@ -60,44 +60,40 @@ class CapabilitiesMessage(DataMessage):
         return message
 
     @property
-    def languages(self) -> Optional[int]:
+    def languages(self) -> Optional[list[int]]:
         field = self.get_field(CapabilitiesLanguagesField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @languages.setter
-    def languages(self, value: int):
+    def languages(self, value: list[int]):
         field = self.get_field(CapabilitiesLanguagesField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def sports(self) -> Optional[int]:
+    def sports(self) -> Optional[list[int]]:
         field = self.get_field(CapabilitiesSportsField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @sports.setter
-    def sports(self, value: int):
+    def sports(self, value: list[int]):
         field = self.get_field(CapabilitiesSportsField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def workouts_supported(self) -> Optional[int]:

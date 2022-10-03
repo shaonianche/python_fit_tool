@@ -224,44 +224,40 @@ class ThreeDSensorCalibrationMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def offset_cal(self) -> Optional[int]:
+    def offset_cal(self) -> Optional[list[int]]:
         field = self.get_field(ThreeDSensorCalibrationOffsetCalField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @offset_cal.setter
-    def offset_cal(self, value: int):
+    def offset_cal(self, value: list[int]):
         field = self.get_field(ThreeDSensorCalibrationOffsetCalField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def orientation_matrix(self) -> Optional[float]:
+    def orientation_matrix(self) -> Optional[list[float]]:
         field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @orientation_matrix.setter
-    def orientation_matrix(self, value: float):
+    def orientation_matrix(self, value: list[float]):
         field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
 
 class TimestampField(Field):

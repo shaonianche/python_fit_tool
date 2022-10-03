@@ -158,64 +158,58 @@ class SegmentFileMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def leader_type(self) -> Optional[SegmentLeaderboardType]:
+    def leader_type(self) -> Optional[list[SegmentLeaderboardType]]:
         field = self.get_field(SegmentFileLeaderTypeField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @leader_type.setter
-    def leader_type(self, value: SegmentLeaderboardType):
+    def leader_type(self, value: list[SegmentLeaderboardType]):
         field = self.get_field(SegmentFileLeaderTypeField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def leader_group_primary_key(self) -> Optional[int]:
+    def leader_group_primary_key(self) -> Optional[list[int]]:
         field = self.get_field(SegmentFileLeaderGroupPrimaryKeyField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @leader_group_primary_key.setter
-    def leader_group_primary_key(self, value: int):
+    def leader_group_primary_key(self, value: list[int]):
         field = self.get_field(SegmentFileLeaderGroupPrimaryKeyField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
-    def leader_activity_id(self) -> Optional[int]:
+    def leader_activity_id(self) -> Optional[list[int]]:
         field = self.get_field(SegmentFileLeaderActivityIdField.ID)
         if field and field.is_valid():
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
+            return field.get_values()
         else:
             return None
 
     @leader_activity_id.setter
-    def leader_activity_id(self, value: int):
+    def leader_activity_id(self, value: list[int]):
         field = self.get_field(SegmentFileLeaderActivityIdField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
+                field.set_values(value)
 
     @property
     def leader_activity_id_string(self) -> Optional[str]:

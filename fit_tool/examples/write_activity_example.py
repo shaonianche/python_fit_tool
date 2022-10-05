@@ -7,12 +7,18 @@ from geopy.distance import geodesic
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
-from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.profile_type import FileType, Manufacturer, Event, EventType
 
 
 def main():
+    """This example shows how to encode an activity into the FIT format and write it to a file. For simplicity, this
+    example uses the FitFileBuilder to construct the FIT file, however in practice you might want to encode and
+    write record messages to the file immediately for robustness and better memory usage. An example of how to do this
+    is in the unit tests.
+    """
+    now_timestamp_millis = round(datetime.datetime(2022, 5, 10, 5, 5, 5).timestamp()) * 1000
+
     # Set auto_define to true, so that the builder creates the required Definition Messages for us.
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
@@ -22,14 +28,18 @@ def main():
 
     message = FileIdMessage()
     message.type = FileType.ACTIVITY
-    message.manufacturer = Manufacturer.DEVELOPMENT.value
+    message.manufacturer = Manufacturer.STAGES_CYCLING.value
     message.product = 0
-    message.time_created = round(datetime.datetime.now().timestamp() * 1000)
+    message.time_created = now_timestamp_millis
     message.serial_number = 0x12345678
     builder.add(message)
 
-    # Timer Events are a best practice for FIT activity files
-    start_timestamp = round(datetime.datetime.now().timestamp() * 1000)
+    # It is a best practice to include timer start and stop events in all Activity files. A timer start event
+    # should occur before the first Record message in the file, and a timer stop event should occur after the
+    # last Record message in the file when the activity recording is complete. Timer stop and start events
+    # should be used anytime the activity recording has been paused and resumed. Record messages should not be
+    # encoded to the file when the timer is paused.
+    start_timestamp = now_timestamp_millis
     message = EventMessage()
     message.event = Event.TIMER
     message.event_type = EventType.START
@@ -66,13 +76,10 @@ def main():
 
     builder.add_all(records)
 
-    # Every FIT course file MUST contain a Lap message
-    elapsed_time = timestamp - start_timestamp
-    message = LapMessage()
+    message = EventMessage()
+    message.event = Event.TIMER
+    message.event_type = EventType.STOP
     message.timestamp = timestamp
-    message.start_time = start_timestamp
-    message.total_elapsed_time = elapsed_time / 1000  # seconds
-    message.total_timer_time = elapsed_time / 1000  # seconds
     builder.add(message)
 
     # Finally build the FIT file object and write it to a file

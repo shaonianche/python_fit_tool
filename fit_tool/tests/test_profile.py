@@ -1,16 +1,9 @@
-# nosetests --nocapture  tests/test_demo.py
+from fit_tool.gen.profile import Profile
 
 
-import unittest
+def test_profile():
+    profile = Profile.get_default_profile()
 
-from fit_tool.fit import Profile
-
-
-class TestFitFile(unittest.TestCase):
-
-    def test_profile(self):
-        profile = Profile.get_default_profile();
-
-        for type_name in profile.types_by_name:
-            profile_type = profile.types_by_name[type_name]
-            print(f'{type_name}', profile_type)
+    for type_name in profile.types_by_name:
+        profile_type = profile.types_by_name[type_name]
+        print(f"{type_name}", profile_type)

@@ -1,61 +1,58 @@
-# nosetests --nocapture  tests/test_fit_file_header.py
-
-import unittest
-
-from fit_tool.fit_file_header import ProtocolVersion, ProfileVersion, FitFileHeader
+from fit_tool.fit_file_header import FitFileHeader, ProfileVersion, ProtocolVersion
 
 
-class TestFitFileHeader(unittest.TestCase):
+def test_protocol_version():
+    protocol_version = ProtocolVersion(2, 3)
+    assert "2.3" == str(protocol_version)
 
-    def shortDescription(self):
-        return None
+    bytes1 = protocol_version.to_bytes()
 
-    def test_protocol_version(self):
-        protocol_version = ProtocolVersion(2, 3)
-        self.assertEqual('2.3', str(protocol_version))
+    pv2 = ProtocolVersion.from_bytes(bytes1)
+    bytes2 = pv2.to_bytes()
 
-        bytes1 = protocol_version.to_bytes()
+    assert bytes1 == bytes2
 
-        pv2 = ProtocolVersion.from_bytes(bytes1)
-        bytes2 = pv2.to_bytes()
 
-        self.assertEqual(bytes1, bytes2)
+def test_profile_version():
+    profile_version = ProfileVersion(21, 60)
+    assert "21.60" == str(profile_version)
 
-    def test_profile_version(self):
-        profile_version = ProfileVersion(21, 60)
-        self.assertEqual('21.60', str(profile_version))
+    bytes1 = profile_version.to_bytes()
 
-        bytes1 = profile_version.to_bytes()
+    pv2 = ProfileVersion.from_bytes(bytes1)
+    bytes2 = pv2.to_bytes()
 
-        pv2 = ProfileVersion.from_bytes(bytes1)
-        bytes2 = pv2.to_bytes()
+    assert bytes1 == bytes2
 
-        self.assertEqual(bytes1, bytes2)
 
-    def test_generate_crc(self):
-        protocol_version = ProtocolVersion(2, 3)
-        profile_version = ProfileVersion(21, 60)
+def test_generate_crc():
+    protocol_version = ProtocolVersion(2, 3)
+    profile_version = ProfileVersion(21, 60)
 
-        FitFileHeader.generate_crc(protocol_version, profile_version, 6552343)
+    FitFileHeader.generate_crc(protocol_version, profile_version, 6552343)
 
-    def test_conversion_without_crc(self):
-        header1 = FitFileHeader(protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60),
-                                records_size=4294967295)
-        bytes1 = header1.to_bytes()
-        self.assertEqual(12, len(bytes1))
 
-        header2 = FitFileHeader.from_bytes(bytes1)
-        bytes2 = header2.to_bytes()
+def test_conversion_without_crc():
+    header1 = FitFileHeader(
+        protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60), records_size=4294967295
+    )
+    bytes1 = header1.to_bytes()
+    assert 12 == len(bytes1)
 
-        self.assertEqual(bytes1, bytes2)
+    header2 = FitFileHeader.from_bytes(bytes1)
+    bytes2 = header2.to_bytes()
 
-    def test_conversion_with_crc(self):
-        header1 = FitFileHeader(protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60),
-                                records_size=4294967295, crc=500)
-        bytes1 = header1.to_bytes()
-        self.assertEqual(14, len(bytes1))
+    assert bytes1 == bytes2
 
-        header2 = FitFileHeader.from_bytes(bytes1)
-        bytes2 = header2.to_bytes()
 
-        self.assertEqual(bytes1, bytes2)
+def test_conversion_with_crc():
+    header1 = FitFileHeader(
+        protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60), records_size=4294967295, crc=500
+    )
+    bytes1 = header1.to_bytes()
+    assert 14 == len(bytes1)
+
+    header2 = FitFileHeader.from_bytes(bytes1)
+    bytes2 = header2.to_bytes()
+
+    assert bytes1 == bytes2

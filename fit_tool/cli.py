@@ -1,9 +1,8 @@
-#!/usr/bin/env python
-
 """
 Copyright (c) 2017 Stages Cycling. All rights reserved.
 
 """
+
 from __future__ import print_function
 
 import argparse
@@ -11,7 +10,7 @@ import logging
 import logging.config
 import os
 
-from fit_tool.fit_file import FitFile
+from .fit_file import FitFile
 
 
 # from pythonjsonlogger import jsonlogger
@@ -22,18 +21,24 @@ def parse_args():
     Parse command line arguments.
     """
 
-    parser = argparse.ArgumentParser(description="""
+    parser = argparse.ArgumentParser(
+        description="""
 Tool for managing FIT files.
 
-""")
-    parser.add_argument('fitfile', metavar='FILE', type=argparse.FileType('r'),
-                        help='FIT file to process')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='specify verbose output')
+"""
+    )
+    parser.add_argument(
+        "fitfile",
+        metavar="FILE",
+        type=argparse.FileType("r"),
+        help="FIT file to process",
+    )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="specify verbose output"
+    )
     parser.add_argument("-o", "--output", help="Output filename.")
     parser.add_argument("-l", "--log", help="Log filename.")
-    parser.add_argument(
-        "-t", "--type", help="Output format type. Options: csv, fit.")
+    parser.add_argument("-t", "--type", help="Output format type. Options: csv, fit.")
 
     # parser.add_argument("--validate", action='store_true',
     #                     help="Validate file by reading and writing simultaneously.")
@@ -52,7 +57,7 @@ def main():
     """
     args = parse_args()
 
-    logger = logging.getLogger('fit_tool')
+    logger = logging.getLogger("fit_tool")
     logger.handlers = []
     logger.addHandler(logging.NullHandler())
     logger.propagate = False
@@ -70,7 +75,7 @@ def main():
         logger.addHandler(handler)
 
     logger.setLevel(logging.DEBUG)
-    logger.info('Loading fit file {}...'.format(args.fitfile.name))
+    logger.info("Loading fit file {}...".format(args.fitfile.name))
     fit_filename = args.fitfile.name
 
     # if args.validate:
@@ -88,24 +93,24 @@ def main():
     if args.type:
         format_type = args.type
     elif args.output:
-        basename_noext, out_ext = os.path.splitext(
-            os.path.basename(args.output))
+        basename_noext, out_ext = os.path.splitext(os.path.basename(args.output))
         format_type = out_ext
     else:
-        format_type = 'csv'
+        format_type = "csv"
 
     basename_noext, out_ext = os.path.splitext(os.path.basename(fit_filename))
-    output_filename = args.output if args.output else basename_noext + '.' + format_type
+    output_filename = args.output if args.output else basename_noext + "." + format_type
 
-    logger.info('Exporting fit file to {} as format {}...'.format(
-        output_filename, format_type))
+    logger.info(
+        "Exporting fit file to {} as format {}...".format(output_filename, format_type)
+    )
 
-    if format_type == 'csv':
+    if format_type == "csv":
         # fit_file.to_csv(output_filename, include=args.include,
         #                exclude=args.exclude)
         fit_file.to_csv(output_filename)
 
-    elif format_type == 'fit':
+    elif format_type == "fit":
         fit_file.to_file(output_filename)
         # fit_file.to_file(output_filename, include=args.include,
         #                 exclude=args.exclude)

@@ -22,3 +22,4 @@ fit_tool/tests/out
 *.sublime-project
 *.sublime-workspace
 .idea/
+.vscode/

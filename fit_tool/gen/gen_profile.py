@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 from pathlib import Path
 
 import inflection
@@ -10,7 +11,7 @@ from fit_tool.base_type import BaseType
 from fit_tool.field import Field
 from fit_tool.gen.profile import Message, Profile
 
-DEFAULT_BUILD_PATH = "../../build"
+DEFAULT_BUILD_PATH = "fit_tool"
 
 
 def parse_args():
@@ -172,19 +173,11 @@ def main():
     profile_path = os.path.join(build_path, "profile")
     messages_path = os.path.join(profile_path, "messages")
 
-    messages_dir = Path(messages_path)
-    if messages_dir.exists():
-        for p in messages_dir.glob("*.py"):
-            p.unlink()
-        messages_dir.rmdir()
-
+    # Clean and recreate the profile and messages directories
     profile_dir = Path(profile_path)
     if profile_dir.exists():
-        for p in profile_dir.glob("*.py"):
-            p.unlink()
-        profile_dir.rmdir()
+        shutil.rmtree(profile_dir)
 
-    Path(profile_path).mkdir(parents=True, exist_ok=True)
     Path(messages_path).mkdir(parents=True, exist_ok=True)
 
     profile = Profile.get_default_profile()
@@ -223,9 +216,8 @@ def main():
         profile_type = profile.types_by_name[k]
         profile_type.values_by_name = {convert_value_name(k): v for k, v in profile_type.values_by_name.items()}
 
-    script_dir = os.path.dirname(__file__)
     env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.join(script_dir, "..")),
+        loader=jinja2.FileSystemLoader(Path(__file__).parent.parent),
     )
 
     #

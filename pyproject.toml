@@ -65,4 +65,3 @@ extend-ignore = ["B018", "B019", "RUF018"]
 max-complexity = 10
 
 [tool.setuptools_scm]
-tag_regex = "^(?:v|version/)?(?P<version>.*)$"

@@ -66,11 +66,24 @@ jobs:
           uv pip install -e .[dev]
         shell: bash
 
-      - name: Create test output directory
+      - name: Create test output directory (Unix)
+        if: runner.os != 'Windows'
         run: mkdir -p fit_tool/tests/out
 
-      - name: Test with pytest
+      - name: Create test output directory (Windows)
+        if: runner.os == 'Windows'
+        run: New-Item -ItemType Directory -Force -Path fit_tool/tests/out
+
+      - name: Test with pytest (Unix)
+        if: runner.os != 'Windows'
         run: |
           source .venv/bin/activate
           pytest
         shell: bash
+
+      - name: Test with pytest (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          .venv\Scripts\activate
+          pytest
+        shell: pwsh

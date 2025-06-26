@@ -20,6 +20,8 @@ jobs:
 
     steps:
       - uses: 'actions/checkout@v4'
+        with:
+          fetch-depth: 0
 
       - uses: 'actions/setup-python@v5'
         with:
@@ -35,8 +37,15 @@ jobs:
             echo 'PRERELEASE=true' >> $GITHUB_OUTPUT
           fi
 
-      - name: 'Build artifacts'
+      - name: 'Build release artifacts'
+        if: steps.check_version.outputs.PRERELEASE == 'false'
         run: 'pipx run build'
+
+      - name: 'Build prerelease artifacts'
+        if: steps.check_version.outputs.PRERELEASE == 'true'
+        run: 'pipx run build'
+        env:
+          SETUPTOOLS_SCM_ADD_LOCAL: '1'
 
       - name: 'Upload artifacts'
         uses: 'actions/upload-artifact@v4'
@@ -55,10 +64,16 @@ jobs:
         if: steps.check_version.outputs.PRERELEASE == 'false'
         uses: 'pypa/gh-action-pypi-publish@release/v1'
 
+      - name: 'Get previous tag'
+        id: 'previoustag'
+        run: echo "tag=$(git describe --tags --abbrev=0 $(git rev-list --tags --skip=1 --max-count=1))" >> "$GITHUB_OUTPUT"
+
       - name: 'Build Changelog'
         id: 'build_changelog'
         uses: 'mikepenz/release-changelog-builder-action@v5'
         with:
+          fromTag: ${{ steps.previoustag.outputs.tag }}
+          toTag: ${{ github.ref_name }}
           configurationJson: |
             {
               'categories': [

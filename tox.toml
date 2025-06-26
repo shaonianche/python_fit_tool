@@ -6,13 +6,8 @@ env_list = ["py39", "py310", "py311", "py312", "py313", "linting"]
 package = "wheel"
 wheel_build_env = ".pkg"
 extras = ["dev"]
-commands = [
-    ["pytest"]
-]
+commands = [["pytest", "--cov=fit_tool", "--cov-report=term-missing"]]
 
 [env.linting]
 deps = ["ruff"]
-commands = [
-    ["ruff", "check", "."],
-    ["ruff", "format", "--check", "."]
-]
+commands = [["ruff", "check", "."], ["ruff", "format", "--check", "."]]

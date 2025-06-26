@@ -46,21 +46,63 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: fit-tool-wheel
+          name: fit-tool-ng-wheel
           path: dist/*.whl
           if-no-files-found: error
           retention-days: 15
 
       - name: Test Build
         run: |
-          uv pip install "fit-tool @ file://$(ls ${GITHUB_WORKSPACE}/dist/*.whl)"
+          uv pip install "fit-tool-ng @ file://$(ls ${GITHUB_WORKSPACE}/dist/*.whl)"
           fittool --help
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          configurationJson: |
+            {
+              "categories": [
+                {
+                  "title": "### Features",
+                  "labels": ["feature", "feat"]
+                },
+                {
+                  "title": "### Bug Fixes",
+                  "labels": ["fix", "bug"]
+                },
+                {
+                  "title": "### Documentation",
+                  "labels": ["docs", "documentation"]
+                },
+                {
+                  "title": "### Refactoring",
+                  "labels": ["refactor"]
+                },
+                {
+                  "title": "### Tests",
+                  "labels": ["test", "tests"]
+                },
+                {
+                  "title": "### Dependencies",
+                  "labels": ["dependencies", "deps"]
+                },
+                {
+                  "title": "### Chores",
+                  "labels": ["chore"]
+                }
+              ],
+              "template": "##{{CHANGELOG}}",
+              "pr_template": "- ##{{TITLE}} (#{{NUMBER}})"
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          body: ${{ steps.build_changelog.outputs.changelog }}
           prerelease: ${{ steps.check_version.outputs.PRERELEASE }}
-          generate_release_notes: true

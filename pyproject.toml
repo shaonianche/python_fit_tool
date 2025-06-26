@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "fit-tool-ng"
-version = "0.9.13"
+dynamic = ["version"]
 description = "A library for reading and writing Garmin FIT files."
 readme = "README.md"
 authors = [
@@ -63,3 +63,5 @@ extend-ignore = ["B018", "B019", "RUF018"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
+
+[tool.setuptools_scm]

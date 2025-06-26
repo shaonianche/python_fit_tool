@@ -223,8 +223,9 @@ def main():
         profile_type = profile.types_by_name[k]
         profile_type.values_by_name = {convert_value_name(k): v for k, v in profile_type.values_by_name.items()}
 
+    script_dir = os.path.dirname(__file__)
     env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(".."),
+        loader=jinja2.FileSystemLoader(os.path.join(script_dir, "..")),
     )
 
     #

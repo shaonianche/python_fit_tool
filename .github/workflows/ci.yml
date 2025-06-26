@@ -32,10 +32,13 @@ jobs:
         uses: astral-sh/setup-uv@v1
         with:
           uv-version: latest
-      - name: Install dependencies
-        run: uv pip install ruff
-      - name: Lint with ruff
-        run: ruff check .
+      - name: Install and run ruff
+        run: |
+          uv venv
+          uv pip install ruff
+          source .venv/bin/activate
+          ruff check .
+        shell: bash
 
   test:
     runs-on: ${{ matrix.os }}

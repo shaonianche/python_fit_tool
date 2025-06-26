@@ -1,0 +1,18 @@
+min_version = "4.0"
+isolated_build = true
+env_list = ["py39", "py310", "py311", "py312", "py313", "linting"]
+
+[env_run_base]
+package = "wheel"
+wheel_build_env = ".pkg"
+extras = ["dev"]
+commands = [
+    ["pytest"]
+]
+
+[env.linting]
+deps = ["ruff"]
+commands = [
+    ["ruff", "check", "."],
+    ["ruff", "format", "--check", "."]
+]

@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fit-tool"
+name = "fit-tool-ng"
 version = "0.9.13"
 description = "A library for reading and writing Garmin FIT files."
 readme = "README.md"

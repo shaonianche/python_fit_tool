@@ -1,10 +1,7 @@
-import unittest
-
 from fit_tool.utils.crc import crc16
 
 
-class TestCRC(unittest.TestCase):
-    def test_crc16(self):
-        data = '123456789'.encode('utf-8')
-        result = crc16(data)
-        self.assertEqual(result, 0xBB3D)
+def test_crc16():
+    data = b"123456789"
+    result = crc16(data)
+    assert result == 0xBB3D

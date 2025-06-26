@@ -66,6 +66,9 @@ jobs:
           uv pip install -e .[dev]
         shell: bash
 
+      - name: Create test output directory
+        run: mkdir -p fit_tool/tests/out
+
       - name: Test with pytest
         run: |
           source .venv/bin/activate

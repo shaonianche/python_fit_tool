@@ -3,7 +3,8 @@ name: 'Release'
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
+      - 'version/**'
 
 defaults:
   run:
@@ -31,10 +32,13 @@ jobs:
       - name: 'Check prerelease'
         id: 'check_version'
         run: |
-          if [[ '${{ github.ref }}' =~ ^refs/tags/[0-9.]+$ ]]; then
-            echo 'PRERELEASE=false' >> $GITHUB_OUTPUT
-          else
+          TAG_NAME='${{ github.ref_name }}'
+          VERSION_PART='${TAG_NAME#v}'
+          VERSION_PART='${VERSION_PART#version/}'
+          if [[ '$VERSION_PART' =~ [a-zA-Z] ]]; then
             echo 'PRERELEASE=true' >> $GITHUB_OUTPUT
+          else
+            echo 'PRERELEASE=false' >> $GITHUB_OUTPUT
           fi
 
       - name: 'Build release artifacts'

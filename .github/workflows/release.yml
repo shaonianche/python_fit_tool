@@ -32,7 +32,7 @@ jobs:
           if [[ "${{ github.ref }}" =~ ^refs/tags/[0-9.]+$ ]]; then
             echo "PRERELEASE=false" >> $GITHUB_OUTPUT
           else
-            echo "PREREERELEASE=true" >> $GITHUB_OUTPUT
+            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup uv
@@ -57,6 +57,7 @@ jobs:
           fittool --help
 
       - name: Publish package distributions to PyPI
+        if: steps.check_version.outputs.PRERELEASE == 'false'
         uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Build Changelog

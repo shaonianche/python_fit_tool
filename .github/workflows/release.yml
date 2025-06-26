@@ -32,10 +32,10 @@ jobs:
       - name: 'Check prerelease'
         id: 'check_version'
         run: |
-          TAG_NAME='${{ github.ref_name }}'
-          VERSION_PART='${TAG_NAME#v}'
-          VERSION_PART='${VERSION_PART#version/}'
-          if [[ '$VERSION_PART' =~ [a-zA-Z] ]]; then
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION_PART="${TAG_NAME#v}"
+          VERSION_PART="${VERSION_PART#version/}"
+          if [[ "$VERSION_PART" =~ [a-zA-Z] ]]; then
             echo 'PRERELEASE=true' >> $GITHUB_OUTPUT
           else
             echo 'PRERELEASE=false' >> $GITHUB_OUTPUT
@@ -80,38 +80,39 @@ jobs:
           toTag: ${{ github.ref_name }}
           configurationJson: |
             {
-              'categories': [
+              "categories": [
                 {
-                  'title': '### Features',
-                  'labels': ['feature', 'feat']
+                  "title": "### Features",
+                  "labels": ["feature", "feat"]
                 },
                 {
-                  'title': '### Bug Fixes',
-                  'labels': ['fix', 'bug']
+                  "title": "### Bug Fixes",
+                  "labels": ["fix", "bug"]
                 },
                 {
-                  'title': '### Documentation',
-                  'labels': ['docs', 'documentation']
+                  "title": "### Documentation",
+                  "labels": ["docs", "documentation"]
                 },
                 {
-                  'title': '### Refactoring',
-                  'labels': ['refactor']
+                  "title": "### Refactoring",
+                  "labels": ["refactor"]
                 },
                 {
-                  'title': '### Tests',
-                  'labels': ['test', 'tests']
+                  "title": "### Tests",
+                  "labels": ["test", "tests"]
                 },
                 {
-                  'title': '### Dependencies',
-                  'labels': ['dependencies', 'deps']
+                  "title": "### Dependencies",
+                  "labels": ["dependencies", "deps"]
                 },
                 {
-                  'title': '### Chores',
-                  'labels': ['chore']
+                  "title": "### Chores",
+                  "labels": ["chore"]
                 }
               ],
-              'template': '##{{CHANGELOG}}',
-              'pr_template': '- ##{{TITLE}} (#{{NUMBER}})'
+              "uncategorized_title": "### Uncategorized",
+              "template": "##{{CHANGELOG}}",
+              "pr_template": "- {{TITLE}} (#{{NUMBER}}) by @{{AUTHOR}}"
             }
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
@@ -121,3 +122,4 @@ jobs:
         with:
           body: '${{ steps.build_changelog.outputs.changelog }}'
           prerelease: '${{ steps.check_version.outputs.PRERELEASE }}'
+          files: 'dist/*'

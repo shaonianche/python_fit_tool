@@ -1,3 +1,5 @@
+> **Note:** This is a fork of [https://bitbucket.org/stagescycling/python_fit_tool.git](https://bitbucket.org/stagescycling/python_fit_tool.git).
+
 A library for reading and writing Garmin FIT files.
 
 ## Background
@@ -11,7 +13,7 @@ Installation
 
 ```
 python3 -m pip install --upgrade pip
-python3 -m pip install --upgrade fit_tool
+python3 -m pip install --upgrade fit-tool
 ```
 
 Command line interface

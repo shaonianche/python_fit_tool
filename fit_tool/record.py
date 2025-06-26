@@ -1,5 +1,4 @@
-from typing import Dict as dict
-from typing import List as list
+from __future__ import annotations
 
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
@@ -9,23 +8,29 @@ from fit_tool.message import Message
 
 class RecordHeader:
     """The record header indicates whether the record content contains a definition message, a normal data message or a
-     compressed timestamp data message. The record header also has a Local Message Type field that references the local
-     message in the data record to its global FIT message."""
+    compressed timestamp data message. The record header also has a Local Message Type field that references the local
+    message in the data record to its global FIT message."""
 
     HEADER_SIZE = 1
     IS_TIME_COMPRESSED_BIT_MASK = 0x80  # bits 7
     IS_DEFINITION_BIT_MASK = 0x40  # bits 6
     HAS_DEVELOPER_FIELDS_BIT_MASK = 0x20  # bits 5
 
-    NORMAL_LOCAL_ID_BIT_MASK = 0x0f  # bits 0-3
+    NORMAL_LOCAL_ID_BIT_MASK = 0x0F  # bits 0-3
     TIME_COMPRESSED_LOCAL_ID_BIT_MASK = 0x60  # bits 5-6 (0b0110 0000)
-    TIME_OFFSET_BIT_MASK = 0x1f  # bits 0-4 (0b0001 1111)
+    TIME_OFFSET_BIT_MASK = 0x1F  # bits 0-4 (0b0001 1111)
 
     MAX_NORMAL_LOCAL_ID = 15
     MAX_TIME_COMPRESSED_LOCAL_ID = 3
 
-    def __init__(self, is_time_compressed: bool = False, is_definition: bool = True, has_developer_fields: bool = False,
-                 local_id: int = 0, time_offset_seconds: int = 0):
+    def __init__(
+        self,
+        is_time_compressed: bool = False,
+        is_definition: bool = True,
+        has_developer_fields: bool = False,
+        local_id: int = 0,
+        time_offset_seconds: int = 0,
+    ):
         # time compressed if true, otherwise normal header
         self.is_time_compressed = is_time_compressed
 
@@ -45,12 +50,9 @@ class RecordHeader:
 
     @classmethod
     def from_message(cls, message: Message):
-
         if isinstance(message, DefinitionMessage):
             has_developer_fields = message.has_developer_fields()
-            return cls(
-                has_developer_fields=has_developer_fields,
-                local_id=message.local_id)
+            return cls(has_developer_fields=has_developer_fields, local_id=message.local_id)
         else:
             return cls(is_definition=False, local_id=message.local_id)
 
@@ -72,7 +74,6 @@ class RecordHeader:
             return cls(is_definition=is_definition, has_developer_fields=has_developer_fields, local_id=local_id)
 
     def to_bytes(self):
-
         byte = 0x00
 
         if self.is_time_compressed:
@@ -86,20 +87,19 @@ class RecordHeader:
                 if self.has_developer_fields:
                     byte |= RecordHeader.HAS_DEVELOPER_FIELDS_BIT_MASK
 
-            byte |= (self.local_id & RecordHeader.NORMAL_LOCAL_ID_BIT_MASK)
+            byte |= self.local_id & RecordHeader.NORMAL_LOCAL_ID_BIT_MASK
 
-        return byte.to_bytes(1, 'little')
+        return byte.to_bytes(1, "little")
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     def to_row(self) -> []:
-        header_string = 'Definition' if self.is_definition else 'Data'
+        header_string = "Definition" if self.is_definition else "Data"
         return [header_string, self.local_id]
 
 
 class Record:
-
     def __init__(self, header: RecordHeader, message: Message):
         self.header = header
         self.message = message
@@ -122,19 +122,25 @@ class Record:
         return cls(header, message)
 
     @classmethod
-    def from_bytes(cls, definition_messages: dict[int, DefinitionMessage], bytes_buffer: bytes, offset: int = 0,
-                   developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = None):
+    def from_bytes(
+        cls,
+        definition_messages: dict[int, DefinitionMessage],
+        bytes_buffer: bytes,
+        offset: int = 0,
+        developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] | None = None,
+    ):
         header = RecordHeader.from_bytes(bytes_buffer, offset=offset)
         offset += header.size
 
         if header.is_definition:
-            message = DefinitionMessage.from_bytes(bytes_buffer, offset=offset,
-                                                   has_developer_fields=header.has_developer_fields)
+            message = DefinitionMessage.from_bytes(
+                bytes_buffer, offset=offset, has_developer_fields=header.has_developer_fields
+            )
         else:
             definition_message = definition_messages[header.local_id]
 
             if not definition_message:
-                raise Exception(f'DefinitionMessage not defined for local_id: {header.local_id}')
+                raise Exception(f"DefinitionMessage not defined for local_id: {header.local_id}")
 
             if developer_fields_by_data_index:
                 developer_fields = definition_message.get_developer_fields(developer_fields_by_data_index)

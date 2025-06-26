@@ -1,8 +1,8 @@
+from __future__ import annotations
+
 import struct
 from enum import Enum
-from typing import Dict as dict
-from typing import List as list
-from typing import Optional
+from typing import ClassVar
 
 from fit_tool.base_type import BaseType
 from fit_tool.endian import Endian
@@ -17,23 +17,27 @@ class ArrayType(Enum):
 
 
 class Field:
-    encoded_values = []
+    encoded_values: ClassVar[list] = []
 
-    def __init__(self, field_id: int = 0, name: str = '', base_type: BaseType = BaseType.ENUM,
-                 offset: float = None,
-                 scale: float = None,
-                 units: str = '',
-                 is_accumulated: bool = False,
-                 is_expanded_field=False,
-                 sub_fields: list[SubField] = None,
-                 components: list[FieldComponent] = None,
-                 size: int = 0,
-                 growable: bool = False,
-                 type_name: str = '',
-                 ref_field_map: dict = None,
-                 array_type: ArrayType = None,
-                 array_fixed_length: int = None):
-
+    def __init__(
+        self,
+        field_id: int = 0,
+        name: str = "",
+        base_type: BaseType = BaseType.ENUM,
+        offset: float | None = None,
+        scale: float | None = None,
+        units: str = "",
+        is_accumulated: bool = False,
+        is_expanded_field=False,
+        sub_fields: list[SubField] | None = None,
+        components: list[FieldComponent] | None = None,
+        size: int = 0,
+        growable: bool = False,
+        type_name: str = "",
+        ref_field_map: dict | None = None,
+        array_type: ArrayType | None = None,
+        array_fixed_length: int | None = None,
+    ):
         self.field_id = field_id
         self.name = name
         self.base_type = base_type
@@ -55,25 +59,44 @@ class Field:
 
     @classmethod
     def from_field(cls, other):
-        field = Field(field_id=other.field_id, name=other.name, base_type=other.base_type, offset=other.offset,
-                      scale=other.scale, units=other.units, is_accumulated=other.is_accumulated,
-                      is_expanded_field=other.is_expanded_field, sub_fields=other.sub_fields,
-                      components=other.components,
-                      size=other.size, growable=other.growable, type_name=other.type_name)
+        field = Field(
+            field_id=other.field_id,
+            name=other.name,
+            base_type=other.base_type,
+            offset=other.offset,
+            scale=other.scale,
+            units=other.units,
+            is_accumulated=other.is_accumulated,
+            is_expanded_field=other.is_expanded_field,
+            sub_fields=other.sub_fields,
+            components=other.components,
+            size=other.size,
+            growable=other.growable,
+            type_name=other.type_name,
+        )
         field.encoded_values = other.encoded_values
         return field
 
     @classmethod
     def from_field_definition(cls, definition: FieldDefinition):
-        field = Field(field_id=definition.field_id, name='field', base_type=definition.base_type,
-                      units='', is_accumulated=False, is_expanded_field=False, size=definition.size, growable=False,
-                      sub_fields=[], components=[],
-                      type_name='')
+        field = Field(
+            field_id=definition.field_id,
+            name="field",
+            base_type=definition.base_type,
+            units="",
+            is_accumulated=False,
+            is_expanded_field=False,
+            size=definition.size,
+            growable=False,
+            sub_fields=[],
+            components=[],
+            type_name="",
+        )
         field.encoded_values = [None for _ in range(Field.get_length_from_size(definition.base_type, definition.size))]
 
         return field
 
-    def get_sub_field(self, name: str = None, index: int = None) -> Optional[SubField]:
+    def get_sub_field(self, name: str | None = None, index: int | None = None) -> SubField | None:
         if index is not None and 0 <= index < len(self.sub_fields):
             return self.sub_fields[index]
 
@@ -84,7 +107,12 @@ class Field:
 
         return None
 
-    def get_name(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> str:
+    def get_name(
+        self,
+        sub_field: SubField | None = None,
+        sub_field_name: str | None = None,
+        sub_field_index: int | None = None,
+    ) -> str:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -99,7 +127,12 @@ class Field:
         else:
             return self.name
 
-    def get_units(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> str:
+    def get_units(
+        self,
+        sub_field: SubField | None = None,
+        sub_field_name: str | None = None,
+        sub_field_index: int | None = None,
+    ) -> str:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -114,8 +147,12 @@ class Field:
         else:
             return self.units
 
-    def get_base_type(self, sub_field: SubField = None, sub_field_name: str = None,
-                      sub_field_index: int = None) -> BaseType:
+    def get_base_type(
+        self,
+        sub_field: SubField | None = None,
+        sub_field_name: str | None = None,
+        sub_field_index: int | None = None,
+    ) -> BaseType:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -130,8 +167,12 @@ class Field:
         else:
             return self.base_type
 
-    def get_offset(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
-            Optional[float]:
+    def get_offset(
+        self,
+        sub_field: SubField | None = None,
+        sub_field_name: str | None = None,
+        sub_field_index: int | None = None,
+    ) -> float | None:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -146,8 +187,12 @@ class Field:
         else:
             return self.offset
 
-    def get_scale(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
-            Optional[float]:
+    def get_scale(
+        self,
+        sub_field: SubField | None = None,
+        sub_field_name: str | None = None,
+        sub_field_index: int | None = None,
+    ) -> float | None:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -172,7 +217,7 @@ class Field:
     def is_not_valid(self) -> bool:
         return not self.is_valid()
 
-    def get_value(self, index: int = 0, sub_field: SubField = None):
+    def get_value(self, index: int = 0, sub_field: SubField | None = None):
         if index < 0 or index >= len(self.encoded_values):
             return None
 
@@ -187,8 +232,8 @@ class Field:
         for index, value in enumerate(values):
             self.set_value(index, value)
 
-    def decode_value(self, encoded_value, sub_field: SubField = None):
-        if encoded_value is None or type(encoded_value) == str:
+    def decode_value(self, encoded_value, sub_field: SubField | None = None):
+        if encoded_value is None or isinstance(encoded_value, str):
             return encoded_value
 
         scale = self.get_scale(sub_field=sub_field)
@@ -202,7 +247,7 @@ class Field:
             offset = offset if offset is not None else 0.0
 
             value = self.un_scale_offset_value(encoded_value, scale, offset)
-            if self.type_name == 'date_time':
+            if self.type_name == "date_time":
                 value = round(value)
 
         return value
@@ -224,7 +269,7 @@ class Field:
     def length(self) -> int:
         return len(self.encoded_values)
 
-    def set_value(self, index: int, value, sub_field: SubField = None):
+    def set_value(self, index: int, value, sub_field: SubField | None = None):
         encoded_value = self.encode_value(value, sub_field)
         self.set_encoded_value(index, encoded_value)
 
@@ -235,12 +280,13 @@ class Field:
         if check_validity and self.base_type != BaseType.STRING:
             if not self.base_type.is_valid(encoded_value):
                 raise Exception(
-                    f'{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
+                    f"{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]"
+                )
 
         size_changed = False
         while index >= self.length:
             if (self.base_type != BaseType.STRING or self.array_type is not None) and not self.growable:
-                raise Exception('Field is not growable')
+                raise Exception("Field is not growable")
 
             self.encoded_values.append(None)
             size_changed = True
@@ -251,10 +297,10 @@ class Field:
             new_size = self.calculate_size()
             if new_size > self.size:
                 if not self.growable:
-                    raise Exception('Size exceeds fixed field size of $size bytes. Consider making field growable.')
+                    raise Exception("Size exceeds fixed field size of $size bytes. Consider making field growable.")
                 self.size = new_size
 
-    def encode_value(self, value, sub_field: SubField = None):
+    def encode_value(self, value, sub_field: SubField | None = None):
         if isinstance(value, str):
             return value
 
@@ -277,13 +323,13 @@ class Field:
         else:
             start = 0
             for index in range(len(self.encoded_values)):
-                value_bytes = bytes_buffer[start:(start + self.base_type.size)]
+                value_bytes = bytes_buffer[start : (start + self.base_type.size)]
                 self.read_from_bytes(value_bytes, index, endian=endian)
                 start += self.base_type.size
 
     def read_from_bytes(self, bytes_buffer: bytes, index: int, endian: Endian = Endian.LITTLE):
         if self.base_type == BaseType.STRING:
-            raise Exception('Type cannot be string')
+            raise Exception("Type cannot be string")
 
         encoded_value = self.get_encoded_value_from_bytes(bytes_buffer, endian=endian)
         self.set_encoded_value(index, encoded_value, check_validity=False)
@@ -292,8 +338,8 @@ class Field:
         # The number of strings is dynamic and is determined by the number of null
         # terminations in the string container
 
-        string_container = bytes_buffer.decode('utf-8')
-        strings = string_container.split('\u0000')
+        string_container = bytes_buffer.decode("utf-8")
+        strings = string_container.split("\u0000")
         strings = strings[:-1]
         strings = [x for x in strings if x]
         self.encoded_values = []
@@ -307,7 +353,7 @@ class Field:
             length = size // base_type.size
 
             if length * base_type.size != size:
-                raise Exception('Size is not a multiple of type: size: $size, type: $type')
+                raise Exception("Size is not a multiple of type: size: $size, type: $type")
 
             return length
 
@@ -316,48 +362,48 @@ class Field:
             calc_size = 0
             for value in self.encoded_values:
                 if isinstance(value, str):
-                    calc_size += len(value.encode('utf-8')) + 1
+                    calc_size += len(value.encode("utf-8")) + 1
             return calc_size
         else:
             return self.length * self.base_type.size
 
     def get_encoded_value_from_bytes(self, bytes_buffer: bytes, offset: int = 0, endian: Endian = Endian.LITTLE):
-        endian_symbol = '<' if endian == Endian.LITTLE else '>'
+        endian_symbol = "<" if endian == Endian.LITTLE else ">"
 
         if self.base_type in {BaseType.ENUM, BaseType.UINT8, BaseType.UINT8Z, BaseType.BYTE}:
-            value, = struct.unpack_from(f'{endian_symbol}B', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}B", bytes_buffer, offset)
 
         elif self.base_type == BaseType.SINT8:
-            value, = struct.unpack_from(f'{endian_symbol}b', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}b", bytes_buffer, offset)
 
         elif self.base_type == BaseType.SINT16:
-            value, = struct.unpack_from(f'{endian_symbol}h', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}h", bytes_buffer, offset)
 
         elif self.base_type in {BaseType.UINT16, BaseType.UINT16Z}:
-            value, = struct.unpack_from(f'{endian_symbol}H', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}H", bytes_buffer, offset)
 
         elif self.base_type == BaseType.SINT32:
-            value, = struct.unpack_from(f'{endian_symbol}i', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}i", bytes_buffer, offset)
 
         elif self.base_type in {BaseType.UINT32, BaseType.UINT32Z}:
-            value, = struct.unpack_from(f'{endian_symbol}I', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}I", bytes_buffer, offset)
 
         elif self.base_type == BaseType.SINT64:
-            value, = struct.unpack_from(f'{endian_symbol}q', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}q", bytes_buffer, offset)
 
         elif self.base_type in {BaseType.UINT64, BaseType.UINT64Z}:
-            value, = struct.unpack_from(f'{endian_symbol}Q', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}Q", bytes_buffer, offset)
 
         elif self.base_type == BaseType.FLOAT32:
-            value, = struct.unpack_from(f'{endian_symbol}f', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}f", bytes_buffer, offset)
 
         elif self.base_type == BaseType.FLOAT64:
-            value, = struct.unpack_from(f'{endian_symbol}d', bytes_buffer, offset)
+            (value,) = struct.unpack_from(f"{endian_symbol}d", bytes_buffer, offset)
 
         elif self.base_type == BaseType.STRING:
             length = len(bytes_buffer) - 1 - offset
-            value, = struct.unpack_from(f'{length}s', bytes_buffer, offset)
-            value = value.decode('utf-8')
+            (value,) = struct.unpack_from(f"{length}s", bytes_buffer, offset)
+            value = value.decode("utf-8")
         else:
             value = None
 
@@ -365,57 +411,57 @@ class Field:
 
     def encoded_value_to_bytes(self, encoded_value, endian: Endian = Endian.LITTLE) -> bytes:
         if encoded_value is None:
-            raise Exception('Value cannot be None')
+            raise Exception("Value cannot be None")
 
         if self.base_type == BaseType.STRING:
-            return encoded_value.encode('utf-8') + b'\0'
+            return encoded_value.encode("utf-8") + b"\0"
 
-        endian_symbol = '<' if endian == Endian.LITTLE else '>'
-        bytes_buffer = bytearray(b'\0' * self.base_type.size)
+        endian_symbol = "<" if endian == Endian.LITTLE else ">"
+        bytes_buffer = bytearray(b"\0" * self.base_type.size)
         if self.base_type in {BaseType.ENUM, BaseType.UINT8, BaseType.UINT8Z, BaseType.BYTE}:
-            struct.pack_into('B', bytes_buffer, 0, encoded_value)
+            struct.pack_into("B", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.SINT8:
-            struct.pack_into('b', bytes_buffer, 0, encoded_value)
+            struct.pack_into("b", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.SINT16:
-            struct.pack_into(f'{endian_symbol}h', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}h", bytes_buffer, 0, encoded_value)
 
         elif self.base_type in {BaseType.UINT16, BaseType.UINT16Z}:
-            struct.pack_into(f'{endian_symbol}H', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}H", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.SINT32:
-            struct.pack_into(f'{endian_symbol}i', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}i", bytes_buffer, 0, encoded_value)
 
         elif self.base_type in {BaseType.UINT32, BaseType.UINT32Z}:
-            struct.pack_into(f'{endian_symbol}I', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}I", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.SINT64:
-            struct.pack_into(f'{endian_symbol}q', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}q", bytes_buffer, 0, encoded_value)
 
         elif self.base_type in {BaseType.UINT64, BaseType.UINT64Z}:
-            struct.pack_into(f'{endian_symbol}Q', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}Q", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.FLOAT32:
-            struct.pack_into(f'{endian_symbol}f', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}f", bytes_buffer, 0, encoded_value)
 
         elif self.base_type == BaseType.FLOAT64:
-            struct.pack_into(f'{endian_symbol}d', bytes_buffer, 0, encoded_value)
+            struct.pack_into(f"{endian_symbol}d", bytes_buffer, 0, encoded_value)
 
         return bytes_buffer
 
     def to_bytes(self, endian: Endian = Endian.LITTLE) -> bytes:
-        bytes_buffer = b''
+        bytes_buffer = b""
         for value in self.encoded_values:
             bytes_buffer += self.encoded_value_to_bytes(value, endian=endian)
 
         # sometimes subfields or strings can be less than the allocated field size,
         # so we pad the buffer with 0's to meet the size requirement.
-        bytes_buffer = bytes_buffer.ljust(self.size, b'\0')
+        bytes_buffer = bytes_buffer.ljust(self.size, b"\0")
 
         return bytes_buffer
 
-    def get_valid_sub_field(self, fields: list) -> Optional[SubField]:
+    def get_valid_sub_field(self, fields: list) -> SubField | None:
         if not self.sub_fields:
             return None
 
@@ -425,7 +471,7 @@ class Field:
 
         return None
 
-    def to_row(self, sub_field: SubField = None) -> list:
+    def to_row(self, sub_field: SubField | None = None) -> list:
         row = []
         values = []
 
@@ -437,7 +483,7 @@ class Field:
         if len(values) == 1:
             row.append(values[0])
         else:
-            values_str = '[' + ','.join([str(v) for v in values]) + ']'
+            values_str = "[" + ",".join([str(v) for v in values]) + "]"
             row.append(values_str)
 
         row.append(sub_field.units if sub_field else self.units)

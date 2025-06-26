@@ -10,7 +10,7 @@ from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer, Sport, Event, EventType, CoursePoint
+from fit_tool.profile.profile_type import CoursePoint, Event, EventType, FileType, Manufacturer, Sport
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open('../tests/data/old_stage_left_hand_lee.gpx', 'r')
+    gpx_file = open("../tests/data/old_stage_left_hand_lee.gpx")
     gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()
@@ -31,7 +31,7 @@ def main():
 
     # Every FIT course file MUST contain a Course message
     message = CourseMessage()
-    message.courseName = 'old stage'
+    message.courseName = "old stage"
     message.sport = Sport.CYCLING
     builder.add(message)
 
@@ -79,7 +79,7 @@ def main():
     message.position_lat = course_records[0].position_lat
     message.position_long = course_records[0].position_long
     message.type = CoursePoint.SEGMENT_START
-    message.course_point_name = 'start'
+    message.course_point_name = "start"
     builder.add(message)
 
     message = CoursePointMessage()
@@ -87,7 +87,7 @@ def main():
     message.position_lat = course_records[-1].position_lat
     message.position_long = course_records[-1].position_long
     message.type = CoursePoint.SEGMENT_END
-    message.course_point_name = 'end'
+    message.course_point_name = "end"
     builder.add(message)
 
     # stop event
@@ -102,8 +102,8 @@ def main():
     message = LapMessage()
     message.timestamp = timestamp
     message.start_time = start_timestamp
-    message.total_elapsed_time = elapsed_time/1000   # seconds
-    message.total_timer_time = elapsed_time/1000     # seconds
+    message.total_elapsed_time = elapsed_time / 1000  # seconds
+    message.total_timer_time = elapsed_time / 1000  # seconds
     message.start_position_lat = course_records[0].position_lat
     message.start_position_long = course_records[0].position_long
     message.end_position_lat = course_records[-1].position_lat
@@ -114,9 +114,9 @@ def main():
     # Finally build the FIT file object and write it to a file
     fit_file = builder.build()
 
-    out_path = '../tests/out/old_stage_course.fit'
+    out_path = "../tests/out/old_stage_course.fit"
     fit_file.to_file(out_path)
-    csv_path = '../tests/out/old_stage_course.csv'
+    csv_path = "../tests/out/old_stage_course.csv"
     fit_file.to_csv(csv_path)
 
 

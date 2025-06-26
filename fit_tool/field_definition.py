@@ -4,7 +4,7 @@ from fit_tool.base_type import BaseType
 
 
 class FieldDefinition:
-    PACK_FORMAT = 'BBB'
+    PACK_FORMAT = "BBB"
 
     def __init__(self, field_id: int, size: int, base_type: BaseType):
         self.field_id = field_id
@@ -12,8 +12,7 @@ class FieldDefinition:
         self.base_type = base_type
 
     def to_bytes(self):
-        return struct.pack(self.PACK_FORMAT, self.field_id, self.size,
-                           self.base_type.value)
+        return struct.pack(self.PACK_FORMAT, self.field_id, self.size, self.base_type.value)
 
     @classmethod
     def from_bytes(cls, bytes_buffer, offset=0):

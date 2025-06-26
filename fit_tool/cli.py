@@ -3,15 +3,12 @@ Copyright (c) 2017 Stages Cycling. All rights reserved.
 
 """
 
-from __future__ import print_function
-
 import argparse
 import logging
 import logging.config
 import os
 
 from .fit_file import FitFile
-
 
 # from pythonjsonlogger import jsonlogger
 
@@ -33,9 +30,7 @@ Tool for managing FIT files.
         type=argparse.FileType("r"),
         help="FIT file to process",
     )
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="specify verbose output"
-    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="specify verbose output")
     parser.add_argument("-o", "--output", help="Output filename.")
     parser.add_argument("-l", "--log", help="Log filename.")
     parser.add_argument("-t", "--type", help="Output format type. Options: csv, fit.")
@@ -75,7 +70,7 @@ def main():
         logger.addHandler(handler)
 
     logger.setLevel(logging.DEBUG)
-    logger.info("Loading fit file {}...".format(args.fitfile.name))
+    logger.info(f"Loading fit file {args.fitfile.name}...")
     fit_filename = args.fitfile.name
 
     # if args.validate:
@@ -101,9 +96,7 @@ def main():
     basename_noext, out_ext = os.path.splitext(os.path.basename(fit_filename))
     output_filename = args.output if args.output else basename_noext + "." + format_type
 
-    logger.info(
-        "Exporting fit file to {} as format {}...".format(output_filename, format_type)
-    )
+    logger.info(f"Exporting fit file to {output_filename} as format {format_type}...")
 
     if format_type == "csv":
         # fit_file.to_csv(output_filename, include=args.include,

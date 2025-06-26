@@ -1,4 +1,4 @@
-from typing import List as list
+from __future__ import annotations
 
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
@@ -24,7 +24,6 @@ def calc_crc(header: FitFileHeader, records: [Record]):
 
 
 class FitFileBuilder:
-
     def __init__(self, auto_define: bool = True, min_string_size: int = 0):
         self.auto_define = auto_define
         self.min_string_size = min_string_size
@@ -41,7 +40,7 @@ class FitFileBuilder:
                     self.definition_map[message.local_id] = new_definition
                     self.records.append(Record.from_message(new_definition))
                 else:
-                    raise Exception(f'Message has not been defined: ${message.name} local_id: ${message.local_id}')
+                    raise Exception(f"Message has not been defined: ${message.name} local_id: ${message.local_id}")
             else:
                 new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
                 if not stored_definition.supports(new_definition):
@@ -50,7 +49,8 @@ class FitFileBuilder:
                         self.records.append(Record.from_message(new_definition))
                     else:
                         raise Exception(
-                            f'The definition does not support this message. record:{len(self.records) + 1} name:{message.name} local_id:{message.local_id}')
+                            f"The definition does not support this message. record:{len(self.records) + 1} name:{message.name} local_id:{message.local_id}"
+                        )
 
             if message.definition_message is None:
                 message.set_definition_message(self.definition_map[message.local_id])

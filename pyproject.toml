@@ -65,3 +65,11 @@ extend-ignore = ["B018", "B019", "RUF018"]
 max-complexity = 10
 
 [tool.setuptools_scm]
+
+[tool.coverage.run]
+source = ["fit_tool"]
+omit = ["fit_tool/profile/*", "fit_tool/gen/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from enum import Enum, unique
-from typing import Optional
 
 
 @unique
@@ -62,8 +63,19 @@ class BaseType(Enum):
             return 0
 
     def is_integer(self) -> bool:
-        if self in [BaseType.SINT8, BaseType.UINT8, BaseType.SINT16, BaseType.UINT16, BaseType.UINT16Z, BaseType.SINT32,
-                    BaseType.UINT32, BaseType.UINT32Z, BaseType.SINT64, BaseType.UINT64, BaseType.UINT64Z]:
+        if self in [
+            BaseType.SINT8,
+            BaseType.UINT8,
+            BaseType.SINT16,
+            BaseType.UINT16,
+            BaseType.UINT16Z,
+            BaseType.SINT32,
+            BaseType.UINT32,
+            BaseType.UINT32Z,
+            BaseType.SINT64,
+            BaseType.UINT64,
+            BaseType.UINT64Z,
+        ]:
             return True
         else:
             return False
@@ -100,25 +112,25 @@ class BaseType(Enum):
 
     def invalid_raw_value(self) -> int:
         if self == BaseType.ENUM:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT8:
-            return 0x7f
+            return 0x7F
         elif self == BaseType.UINT8:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT16:
-            return 0x7fff
+            return 0x7FFF
         elif self == BaseType.UINT16:
-            return 0xffff
+            return 0xFFFF
         elif self == BaseType.SINT32:
-            return 0x7fffffff
+            return 0x7FFFFFFF
         elif self == BaseType.UINT32:
-            return 0xffffffff
+            return 0xFFFFFFFF
         elif self == BaseType.STRING:
             return 0x00
         elif self == BaseType.FLOAT32:
-            return 0xffffffff
+            return 0xFFFFFFFF
         elif self == BaseType.FLOAT64:
-            return 0xffffffffffffffff
+            return 0xFFFFFFFFFFFFFFFF
         elif self == BaseType.UINT8Z:
             return 0x00
         elif self == BaseType.UINT16Z:
@@ -126,32 +138,32 @@ class BaseType(Enum):
         elif self == BaseType.UINT32Z:
             return 0x00000000
         elif self == BaseType.BYTE:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT64:
-            return 0x7fffffffffffffff
+            return 0x7FFFFFFFFFFFFFFF
         elif self == BaseType.UINT64:
-            return 0xffffffffffffffff
+            return 0xFFFFFFFFFFFFFFFF
         elif self == BaseType.UINT64Z:
             return 0x0000000000000000
         else:
             return 0
 
     @property
-    def max(self) -> Optional[int]:
+    def max(self) -> int | None:
         if self == BaseType.ENUM:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT8:
-            return 0x7f
+            return 0x7F
         elif self == BaseType.UINT8:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT16:
-            return 0x7fff
+            return 0x7FFF
         elif self == BaseType.UINT16:
-            return 0xffff
+            return 0xFFFF
         elif self == BaseType.SINT32:
-            return 0x7fffffff
+            return 0x7FFFFFFF
         elif self == BaseType.UINT32:
-            return 0xffffffff
+            return 0xFFFFFFFF
         elif self == BaseType.STRING:
             return None
         elif self == BaseType.FLOAT32:
@@ -159,24 +171,24 @@ class BaseType(Enum):
         elif self == BaseType.FLOAT64:
             return None
         elif self == BaseType.UINT8Z:
-            return 0xff
+            return 0xFF
         elif self == BaseType.UINT16Z:
-            return 0xffff
+            return 0xFFFF
         elif self == BaseType.UINT32Z:
-            return 0xffffffff
+            return 0xFFFFFFFF
         elif self == BaseType.BYTE:
-            return 0xff
+            return 0xFF
         elif self == BaseType.SINT64:
-            return 0x7fffffffffffffff
+            return 0x7FFFFFFFFFFFFFFF
         elif self == BaseType.UINT64:
-            return 0xffffffffffffffff
+            return 0xFFFFFFFFFFFFFFFF
         elif self == BaseType.UINT64Z:
-            return 0xffffffffffffffff
+            return 0xFFFFFFFFFFFFFFFF
         else:
             return 0
 
     @property
-    def min(self) -> Optional[int]:
+    def min(self) -> int | None:
         if self == BaseType.ENUM:
             return 0x00
         elif self == BaseType.SINT8:
@@ -216,46 +228,45 @@ class BaseType(Enum):
 
     @classmethod
     def from_name(cls, name: str):
-        if name == 'enum':
+        if name == "enum":
             return cls.ENUM
-        elif name == 'sint8':
+        elif name == "sint8":
             return cls.SINT8
-        elif name == 'uint8':
+        elif name == "uint8":
             return BaseType.UINT8
-        elif name == 'sint16':
+        elif name == "sint16":
             return BaseType.SINT16
-        elif name == 'uint16':
+        elif name == "uint16":
             return BaseType.UINT16
-        elif name == 'sint32':
+        elif name == "sint32":
             return BaseType.SINT32
-        elif name == 'uint32':
+        elif name == "uint32":
             return BaseType.UINT32
-        elif name == 'string':
+        elif name == "string":
             return BaseType.STRING
-        elif name == 'float32':
+        elif name == "float32":
             return BaseType.FLOAT32
-        elif name == 'float64':
+        elif name == "float64":
             return BaseType.FLOAT64
-        elif name == 'uint8z':
+        elif name == "uint8z":
             return BaseType.UINT8Z
-        elif name == 'uint16z':
+        elif name == "uint16z":
             return BaseType.UINT16Z
-        elif name == 'uint32z':
+        elif name == "uint32z":
             return BaseType.UINT32Z
-        elif name == 'byte':
+        elif name == "byte":
             return BaseType.BYTE
-        elif name == 'sint64':
+        elif name == "sint64":
             return BaseType.SINT64
-        elif name == 'uint64':
+        elif name == "uint64":
             return BaseType.UINT64
-        elif name == 'uint64z':
+        elif name == "uint64z":
             return BaseType.UINT64Z
         else:
             return None
 
 
 class FieldType:
-
     def __init__(self, name: str, base_type: BaseType):
         self.name = name
         self.base_type = base_type

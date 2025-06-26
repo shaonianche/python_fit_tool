@@ -3,12 +3,11 @@ import os.path
 from openpyxl import load_workbook
 
 from fit_tool import SDK_VERSION
-from fit_tool.base_type import FieldType, BaseType
-from fit_tool.field import Field, ArrayType
+from fit_tool.base_type import BaseType, FieldType
+from fit_tool.field import ArrayType, Field
 
 
 class Message:
-
     def __init__(self, id_, name):
         self.id = id_
         self.name = name
@@ -32,14 +31,13 @@ class Message:
 def parse_array_field(value):
     if value is None:
         return None, None
-    if value == '[N]':
+    if value == "[N]":
         return ArrayType.VARIABLE, None
 
     return ArrayType.FIXED, int(value[1:-1])
 
 
 class Profile:
-
     def __init__(self):
         self.messages_by_id = {}
         self.messages_by_name = {}
@@ -53,11 +51,10 @@ class Profile:
         return self.messages_by_id.get(id_)
 
     def get_type_by_name(self, name):
-
         # Next check if it is derived type
         type_ = self.types_by_name.get(name)
         if not type_:
-            raise Exception('Type: {} not found in profile.'.format(name))
+            raise Exception(f"Type: {name} not found in profile.")
         return type_
 
     def add_message(self, message):
@@ -106,9 +103,8 @@ class Profile:
 
     @classmethod
     def get_default_profile(cls):
-
-        xlsx_filename = os.path.join(os.path.dirname(__file__), f'Profile_{SDK_VERSION}.xlsx')
-        print(f'Loading profile from {xlsx_filename}...')
+        xlsx_filename = os.path.join(os.path.dirname(__file__), f"Profile_{SDK_VERSION}.xlsx")
+        print(f"Loading profile from {xlsx_filename}...")
         profile = Profile.load(xlsx_filename)
 
         return profile
@@ -121,7 +117,7 @@ class Profile:
         #
         # Parse the Types worksheet
         #
-        ws = wb['Types']
+        ws = wb["Types"]
         current_type = None
         for index, row in enumerate(ws.rows):
             if index == 0:
@@ -139,8 +135,7 @@ class Profile:
                 type_base_type = BaseType.from_name(type_base_type_name)
                 if not type_base_type:
                     # TODO: add proper logging
-                    print(
-                        'Warning: Unknown base_type {}'.format(type_base_type))
+                    print(f"Warning: Unknown base_type {type_base_type}")
                     continue
                 current_type = FieldType(type_name, type_base_type)
                 profile.add_type(current_type)
@@ -153,12 +148,12 @@ class Profile:
                         value = int(value, 0)
                     current_type.add_value(name, value)
 
-        profile.add_type(FieldType('bool', BaseType.from_name('uint8')))
+        profile.add_type(FieldType("bool", BaseType.from_name("uint8")))
 
         #
         # Parse the Messages worksheet
         #
-        ws = wb['Messages']
+        ws = wb["Messages"]
         current_message = None
         for index, row in enumerate(ws.rows):
             if index == 0:
@@ -172,8 +167,7 @@ class Profile:
             if message_name:
                 # We are on a new message. Create it and start adding values to
                 # it.
-                message_id = profile.get_type_by_name(
-                    'mesg_num').values_by_name[message_name]
+                message_id = profile.get_type_by_name("mesg_num").values_by_name[message_name]
 
                 current_message = Message(message_id, message_name)
                 profile.add_message(current_message)
@@ -192,14 +186,14 @@ class Profile:
                 offset = row[7].value if row[7].value is not None else 0
                 units = row[8].value
                 if units:
-                    units = units.replace('\n', '')
+                    units = units.replace("\n", "")
 
-                if units == 'semicircles':
-                    units = 'degrees'
+                if units == "semicircles":
+                    units = "degrees"
                     scale = 2147483648 / 180.0
 
-                if field_type_name == 'date_time':
-                    units = 'ms'
+                if field_type_name == "date_time":
+                    units = "ms"
                     scale = 1.0 / 1000.0
                     offset = -631065600000
 
@@ -210,38 +204,35 @@ class Profile:
 
                 ref_field_names = []
                 if raw_ref_field_names:
-                    ref_field_names = [name.strip()
-                                       for name in raw_ref_field_names.split(',')]
+                    ref_field_names = [name.strip() for name in raw_ref_field_names.split(",")]
 
                 ref_field_values = []
                 if raw_ref_field_values:
-                    ref_field_values = [value.strip()
-                                        for value in raw_ref_field_values.split(',')]
+                    ref_field_values = [value.strip() for value in raw_ref_field_values.split(",")]
 
-                if field_name == 'custom_target_power_high' or field_name == 'custom_target_power_low':
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('power_3s')
+                if field_name == "custom_target_power_high" or field_name == "custom_target_power_low":
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("power_3s")
 
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('power_10s')
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("power_10s")
 
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('power_30s')
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("power_30s")
 
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('power_lap')
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("power_lap")
 
-                if field_name == 'custom_target_heart_rate_high' or field_name == 'custom_target_heart_rate_low':
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('heart_rate_lap')
+                if field_name == "custom_target_heart_rate_high" or field_name == "custom_target_heart_rate_low":
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("heart_rate_lap")
 
-                if field_name == 'custom_target_speed_high' or field_name == 'custom_target_speed_low':
-                    ref_field_names.append('target_type')
-                    ref_field_values.append('speed_lap')
+                if field_name == "custom_target_speed_high" or field_name == "custom_target_speed_low":
+                    ref_field_names.append("target_type")
+                    ref_field_values.append("speed_lap")
 
                 # comment = row[13].value
                 if field_id is not None or field_name is not None:
-
                     # First check if it is a base type
                     base_type_ = BaseType.from_name(field_type_name)
 
@@ -259,17 +250,18 @@ class Profile:
                         else:
                             ref_field_map[ref_name] = [ref_field_values[ref_index]]
 
-                    field_or_subfield = Field(field_id=field_id,
-                                              name=field_name,
-                                              base_type=base_type_,
-                                              scale=scale,
-                                              offset=offset,
-                                              units=units,
-                                              ref_field_map=ref_field_map,
-                                              type_name=field_type_name,
-                                              array_type=array_type,
-                                              array_fixed_length=array_fixed_length
-                                              )
+                    field_or_subfield = Field(
+                        field_id=field_id,
+                        name=field_name,
+                        base_type=base_type_,
+                        scale=scale,
+                        offset=offset,
+                        units=units,
+                        ref_field_map=ref_field_map,
+                        type_name=field_type_name,
+                        array_type=array_type,
+                        array_fixed_length=array_fixed_length,
+                    )
 
                     # todo: hack for now, should add to class
                     field_or_subfield.type_ = type_

@@ -5,7 +5,7 @@ from fit_tool.developer_field import DeveloperField
 
 
 class DeveloperFieldDefinition:
-    PACK_FORMAT = 'BBB'
+    PACK_FORMAT = "BBB"
 
     def __init__(self, field_id: int, size: int, developer_data_index: int):
         self.field_id = field_id
@@ -13,8 +13,7 @@ class DeveloperFieldDefinition:
         self.developer_data_index = developer_data_index
 
     def to_bytes(self):
-        return struct.pack(self.PACK_FORMAT, self.field_id, self.size,
-                           self.developer_data_index)
+        return struct.pack(self.PACK_FORMAT, self.field_id, self.size, self.developer_data_index)
 
     @classmethod
     def from_bytes(cls, bytes_buffer, offset=0):

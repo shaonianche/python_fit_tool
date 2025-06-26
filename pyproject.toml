@@ -35,7 +35,7 @@ testpaths = ["fit_tool/tests"]
 [tool.ruff]
 line-length = 120
 target-version = "py38"
-src = ["src"]
+exclude = ["fit_tool/profile"]
 
 [project.urls]
 Homepage = "https://bitbucket.org/stagescycling/python_fit_tool.git"

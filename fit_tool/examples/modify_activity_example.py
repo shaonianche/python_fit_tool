@@ -1,15 +1,15 @@
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
-from fit_tool.profile.messages.record_message import RecordMessage, RecordHeartRateField, RecordPowerField
+from fit_tool.profile.messages.record_message import RecordHeartRateField, RecordMessage, RecordPowerField
 
 
 def main():
     """The following program reads all the bytes from a FIT formatted file and then
-        decodes these bytes to create a FIT file object. We then build a modified FIT file
-        based on a variety of criteria (see comments below). Finally we output
-        the modified data to a new FIT file.
+    decodes these bytes to create a FIT file object. We then build a modified FIT file
+    based on a variety of criteria (see comments below). Finally we output
+    the modified data to a new FIT file.
     """
-    path = '../tests/data/sdk/Activity.fit'
+    path = "../tests/data/sdk/Activity.fit"
     fit_file = FitFile.from_file(path)
 
     builder = FitFileBuilder(auto_define=False)
@@ -34,9 +34,7 @@ def main():
             builder.add(message)
 
     modified_file = builder.build()
-    modified_file.to_file('../tests/out/modified_activity.fit')
-
-    fit_file2 = FitFile.from_file('../tests/out/modified_activity.fit')
+    modified_file.to_file("../tests/out/modified_activity.fit")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-      - 'version/**'
 
 defaults:
   run:
@@ -32,10 +31,7 @@ jobs:
       - name: 'Check prerelease'
         id: 'check_version'
         run: |
-          TAG_NAME="${{ github.ref_name }}"
-          VERSION_PART="${TAG_NAME#v}"
-          VERSION_PART="${VERSION_PART#version/}"
-          if [[ "$VERSION_PART" =~ [a-zA-Z] ]]; then
+          if [[ "${{ github.ref_name#v }}" =~ [a-zA-Z] ]]; then
             echo 'PRERELEASE=true' >> $GITHUB_OUTPUT
           else
             echo 'PRERELEASE=false' >> $GITHUB_OUTPUT
@@ -68,15 +64,10 @@ jobs:
         if: steps.check_version.outputs.PRERELEASE == 'false'
         uses: 'pypa/gh-action-pypi-publish@release/v1'
 
-      - name: 'Get previous tag'
-        id: 'previoustag'
-        run: echo "tag=$(git describe --tags --abbrev=0 $(git rev-list --tags --skip=1 --max-count=1))" >> "$GITHUB_OUTPUT"
-
       - name: 'Build Changelog'
         id: 'build_changelog'
         uses: 'mikepenz/release-changelog-builder-action@v5'
         with:
-          fromTag: ${{ steps.previoustag.outputs.tag }}
           toTag: ${{ github.ref_name }}
           configurationJson: |
             {

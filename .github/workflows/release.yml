@@ -41,7 +41,7 @@ jobs:
           uv-version: latest
 
       - name: Build artifacts
-        run: uv pip build
+        run: pipx run build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -53,7 +53,7 @@ jobs:
 
       - name: Test Build
         run: |
-          uv pip install "fit-tool-ng @ file://$(ls ${GITHUB_WORKSPACE}/dist/*.whl)"
+          python -m pip install "fit-tool-ng @ file://$(ls ${GITHUB_WORKSPACE}/dist/*.whl)"
           fittool --help
 
       - name: Publish package distributions to PyPI

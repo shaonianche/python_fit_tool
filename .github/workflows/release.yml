@@ -41,7 +41,7 @@ jobs:
           uv-version: latest
 
       - name: Build artifacts
-        run: uv build
+        run: uv pip build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

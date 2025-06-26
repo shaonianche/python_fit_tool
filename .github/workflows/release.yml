@@ -1,109 +1,104 @@
-name: Release
+name: 'Release'
 
 on:
   push:
     tags:
-      - "*"
+      - '*'
 
 defaults:
   run:
     # make sure to work on Windows
-    shell: bash
+    shell: 'bash'
 
 jobs:
   release-pypi:
-    name: release-pypi
-    runs-on: ubuntu-latest
+    name: 'release-pypi'
+    runs-on: 'ubuntu-latest'
     permissions:
-      id-token: write
-      contents: write
+      id-token: 'write'
+      contents: 'write'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: 'actions/checkout@v4'
 
-      - uses: actions/setup-python@v5
+      - uses: 'actions/setup-python@v5'
         with:
-          python-version: "3.11"
-          cache: pip
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Check prerelease
-        id: check_version
+      - name: 'Check prerelease'
+        id: 'check_version'
         run: |
-          if [[ "${{ github.ref }}" =~ ^refs/tags/[0-9.]+$ ]]; then
-            echo "PRERELEASE=false" >> $GITHUB_OUTPUT
+          if [[ '${{ github.ref }}' =~ ^refs/tags/[0-9.]+$ ]]; then
+            echo 'PRERELEASE=false' >> $GITHUB_OUTPUT
           else
-            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
+            echo 'PRERELEASE=true' >> $GITHUB_OUTPUT
           fi
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v1
-        with:
-          uv-version: latest
+      - name: 'Build artifacts'
+        run: 'pipx run build'
 
-      - name: Build artifacts
-        run: pipx run build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: 'Upload artifacts'
+        uses: 'actions/upload-artifact@v4'
         with:
-          name: fit-tool-ng-wheel
-          path: dist/*.whl
-          if-no-files-found: error
+          name: 'fit-tool-ng-wheel'
+          path: 'dist/*.whl'
+          if-no-files-found: 'error'
           retention-days: 15
 
-      - name: Test Build
+      - name: 'Test Build'
         run: |
           python -m pip install "fit-tool-ng @ file://$(ls ${GITHUB_WORKSPACE}/dist/*.whl)"
           fittool --help
 
-      - name: Publish package distributions to PyPI
+      - name: 'Publish package distributions to PyPI'
         if: steps.check_version.outputs.PRERELEASE == 'false'
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: 'pypa/gh-action-pypi-publish@release/v1'
 
-      - name: Build Changelog
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v5
+      - name: 'Build Changelog'
+        id: 'build_changelog'
+        uses: 'mikepenz/release-changelog-builder-action@v5'
         with:
           configurationJson: |
             {
-              "categories": [
+              'categories': [
                 {
-                  "title": "### Features",
-                  "labels": ["feature", "feat"]
+                  'title': '### Features',
+                  'labels': ['feature', 'feat']
                 },
                 {
-                  "title": "### Bug Fixes",
-                  "labels": ["fix", "bug"]
+                  'title': '### Bug Fixes',
+                  'labels': ['fix', 'bug']
                 },
                 {
-                  "title": "### Documentation",
-                  "labels": ["docs", "documentation"]
+                  'title': '### Documentation',
+                  'labels': ['docs', 'documentation']
                 },
                 {
-                  "title": "### Refactoring",
-                  "labels": ["refactor"]
+                  'title': '### Refactoring',
+                  'labels': ['refactor']
                 },
                 {
-                  "title": "### Tests",
-                  "labels": ["test", "tests"]
+                  'title': '### Tests',
+                  'labels': ['test', 'tests']
                 },
                 {
-                  "title": "### Dependencies",
-                  "labels": ["dependencies", "deps"]
+                  'title': '### Dependencies',
+                  'labels': ['dependencies', 'deps']
                 },
                 {
-                  "title": "### Chores",
-                  "labels": ["chore"]
+                  'title': '### Chores',
+                  'labels': ['chore']
                 }
               ],
-              "template": "##{{CHANGELOG}}",
-              "pr_template": "- ##{{TITLE}} (#{{NUMBER}})"
+              'template': '##{{CHANGELOG}}',
+              'pr_template': '- ##{{TITLE}} (#{{NUMBER}})'
             }
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: 'Create Release'
+        uses: 'softprops/action-gh-release@v1'
         with:
-          body: ${{ steps.build_changelog.outputs.changelog }}
-          prerelease: ${{ steps.check_version.outputs.PRERELEASE }}
+          body: '${{ steps.build_changelog.outputs.changelog }}'
+          prerelease: '${{ steps.check_version.outputs.PRERELEASE }}'

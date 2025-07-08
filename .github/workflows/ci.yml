@@ -92,7 +92,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pdm.lock') }}
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
       
       - name: Install uv
         uses: astral-sh/setup-uv@v6
@@ -102,7 +102,7 @@ jobs:
       - name: Create venv and install dependencies
         run: |
           uv venv
-          uv pip install -e .[dev]
+          uv sync
         shell: bash
 
       - name: Create test output directory (Unix)
@@ -116,15 +116,13 @@ jobs:
       - name: Test with pytest (Unix)
         if: runner.os != 'Windows'
         run: |
-          source .venv/bin/activate
-          pytest --cov=fit_tool --cov-report=xml
+          uv run pytest --cov=fit_tool --cov-report=xml
         shell: bash
 
       - name: Test with pytest (Windows)
         if: runner.os == 'Windows'
         run: |
-          .venv\Scripts\activate
-          pytest --cov=fit_tool --cov-report=xml
+          uv run pytest --cov=fit_tool --cov-report=xml
         shell: pwsh
 
       - name: Upload coverage to Codecov

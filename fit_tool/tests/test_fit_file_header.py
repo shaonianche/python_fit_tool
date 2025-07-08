@@ -2,8 +2,8 @@ from fit_tool.fit_file_header import FitFileHeader, ProfileVersion, ProtocolVers
 
 
 def test_protocol_version():
-    protocol_version = ProtocolVersion(2, 3)
-    assert "2.3" == str(protocol_version)
+    protocol_version = ProtocolVersion(2, 4)
+    assert "2.4" == str(protocol_version)
 
     bytes1 = protocol_version.to_bytes()
 
@@ -14,8 +14,8 @@ def test_protocol_version():
 
 
 def test_profile_version():
-    profile_version = ProfileVersion(21, 60)
-    assert "21.60" == str(profile_version)
+    profile_version = ProfileVersion(21, 171)
+    assert "21.171" == str(profile_version)
 
     bytes1 = profile_version.to_bytes()
 
@@ -26,15 +26,17 @@ def test_profile_version():
 
 
 def test_generate_crc():
-    protocol_version = ProtocolVersion(2, 3)
-    profile_version = ProfileVersion(21, 60)
+    protocol_version = ProtocolVersion(2, 4)
+    profile_version = ProfileVersion(21, 171)
 
     FitFileHeader.generate_crc(protocol_version, profile_version, 6552343)
 
 
 def test_conversion_without_crc():
     header1 = FitFileHeader(
-        protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60), records_size=4294967295
+        protocol_version=ProtocolVersion(2, 4),
+        profile_version=ProfileVersion(21, 171),
+        records_size=4294967295,
     )
     bytes1 = header1.to_bytes()
     assert 12 == len(bytes1)
@@ -47,7 +49,10 @@ def test_conversion_without_crc():
 
 def test_conversion_with_crc():
     header1 = FitFileHeader(
-        protocol_version=ProtocolVersion(2, 3), profile_version=ProfileVersion(21, 60), records_size=4294967295, crc=500
+        protocol_version=ProtocolVersion(2, 4),
+        profile_version=ProfileVersion(21, 171),
+        records_size=4294967295,
+        crc=500,
     )
     bytes1 = header1.to_bytes()
     assert 14 == len(bytes1)

@@ -49,8 +49,8 @@ class ProfileVersion:
         return f"{self.major}.{self.minor}"
 
 
-DEFAULT_PROTOCOL_VERSION = ProtocolVersion(2, 3)
-DEFAULT_PROFILE_VERSION = ProfileVersion(21, 60)
+DEFAULT_PROTOCOL_VERSION = ProtocolVersion(2, 4)
+DEFAULT_PROFILE_VERSION = ProfileVersion(21, 171)
 
 
 class FitFileHeader:
@@ -134,5 +134,8 @@ class FitFileHeader:
             (crc,) = struct.unpack("<H", bytes_buffer[offset : offset + 2])
 
         return cls(
-            protocol_version=protocol_version, profile_version=profile_version, records_size=records_size, crc=crc
+            protocol_version=protocol_version,
+            profile_version=profile_version,
+            records_size=records_size,
+            crc=crc,
         )

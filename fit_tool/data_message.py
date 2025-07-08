@@ -100,11 +100,13 @@ class DataMessage(Message):
 
     def get_developer_field(self, developer_data_index: int, field_id: int) -> DeveloperField | None:
         return next(
-            iter([
-                x
-                for x in self.developer_fields
-                if x.developer_data_index == developer_data_index and x.field_id == field_id
-            ])
+            iter(
+                [
+                    x
+                    for x in self.developer_fields
+                    if x.developer_data_index == developer_data_index and x.field_id == field_id
+                ]
+            )
         )
 
     def get_developer_field_by_name(self, name: str) -> DeveloperField | None:

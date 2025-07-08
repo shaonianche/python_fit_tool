@@ -65,10 +65,10 @@ def main():
 
     fit_file = builder.build()
 
-    fit_file.to_file("../tests/out/tempo_bike_workout.fit")
+    fit_file.to_file("fit_tool/tests/out/tempo_bike_workout.fit")
 
-    fit_file2 = FitFile.from_file("../tests/out/tempo_bike_workout.fit")
-    fit_file2.to_csv("../tests/out/tempo_bike_workout.csv")
+    fit_file2 = FitFile.from_file("fit_tool/tests/out/tempo_bike_workout.fit")
+    fit_file2.to_csv("fit_tool/tests/out/tempo_bike_workout.csv")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,14 @@ from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.profile_type import CoursePoint, Event, EventType, FileType, Manufacturer, Sport
+from fit_tool.profile.profile_type import (
+    CoursePoint,
+    Event,
+    EventType,
+    FileType,
+    Manufacturer,
+    Sport,
+)
 
 
 def main():
@@ -18,7 +25,7 @@ def main():
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open("../tests/data/old_stage_left_hand_lee.gpx")
+    gpx_file = open("fit_tool/tests/data/old_stage_left_hand_lee.gpx")
     gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()
@@ -114,9 +121,9 @@ def main():
     # Finally build the FIT file object and write it to a file
     fit_file = builder.build()
 
-    out_path = "../tests/out/old_stage_course.fit"
+    out_path = "fit_tool/tests/out/old_stage_course.fit"
     fit_file.to_file(out_path)
-    csv_path = "../tests/out/old_stage_course.csv"
+    csv_path = "fit_tool/tests/out/old_stage_course.csv"
     fit_file.to_csv(csv_path)
 
 

@@ -1,5 +1,6 @@
 import datetime
 import math
+import os
 
 import gpxpy
 from geopy.distance import geodesic
@@ -17,13 +18,20 @@ def main():
     write record messages to the file immediately for robustness and better memory usage. An example of how to do this
     is in the unit tests.
     """
-    now_timestamp_millis = round(datetime.datetime(2022, 5, 10, 5, 5, 5).timestamp()) * 1000
+    now_timestamp_millis = (
+        round(datetime.datetime(2022, 5, 10, 5, 5, 5).timestamp()) * 1000
+    )
 
     # Set auto_define to true, so that the builder creates the required Definition Messages for us.
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open("../tests/data/old_stage_left_hand_lee.gpx")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(script_dir, "../.."))
+    gpx_path = os.path.join(
+        project_root, "fit_tool/tests/data/old_stage_left_hand_lee.gpx"
+    )
+    gpx_file = open(gpx_path)
     gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()
@@ -85,9 +93,9 @@ def main():
     # Finally build the FIT file object and write it to a file
     fit_file = builder.build()
 
-    out_path = "../tests/out/old_stage_activity.fit"
+    out_path = "fit_tool/tests/out/old_stage_activity.fit"
     fit_file.to_file(out_path)
-    csv_path = "../tests/out/old_stage_activity.csv"
+    csv_path = "fit_tool/tests/out/old_stage_activity.csv"
     fit_file.to_csv(csv_path)
 
 

@@ -25,8 +25,8 @@ def main():
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open("fit_tool/tests/data/old_stage_left_hand_lee.gpx")
-    gpx = gpxpy.parse(gpx_file)
+    with open("fit_tool/tests/data/old_stage_left_hand_lee.gpx") as gpx_file:
+        gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()
     message.type = FileType.COURSE

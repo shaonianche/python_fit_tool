@@ -31,8 +31,8 @@ def main():
     gpx_path = os.path.join(
         project_root, "fit_tool/tests/data/old_stage_left_hand_lee.gpx"
     )
-    gpx_file = open(gpx_path)
-    gpx = gpxpy.parse(gpx_file)
+    with open(gpx_path) as gpx_file:
+        gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()
     message.type = FileType.ACTIVITY

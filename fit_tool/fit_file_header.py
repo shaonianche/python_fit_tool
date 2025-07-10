@@ -126,7 +126,7 @@ class FitFileHeader:
         (size,) = struct.unpack("B", bytes_buffer[0:1])
         if size != len(bytes_buffer):
             raise Exception(
-                f"Size {size} does not match bytes length: ${len(bytes_buffer)}"
+                f"Size {size} does not match bytes length: {len(bytes_buffer)}"
             )
         offset += 1
 

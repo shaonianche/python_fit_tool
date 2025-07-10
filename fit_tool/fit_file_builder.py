@@ -42,8 +42,8 @@ class FitFileBuilder:
                     self.definition_map[message.local_id] = new_definition
                     self.records.append(Record.from_message(new_definition))
                 else:
-                    raise Exception(
-                        f"Message has not been defined: ${message.name} local_id: ${message.local_id}"
+                    raise ValueError(
+                        f"Message has not been defined: {message.name} local_id: {message.local_id}"
                     )
             else:
                 new_definition = DefinitionMessage.from_data_message(

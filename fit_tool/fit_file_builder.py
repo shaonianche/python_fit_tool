@@ -36,13 +36,19 @@ class FitFileBuilder:
 
             if stored_definition is None:
                 if self.auto_define:
-                    new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
+                    new_definition = DefinitionMessage.from_data_message(
+                        message, min_string_size=self.min_string_size
+                    )
                     self.definition_map[message.local_id] = new_definition
                     self.records.append(Record.from_message(new_definition))
                 else:
-                    raise Exception(f"Message has not been defined: ${message.name} local_id: ${message.local_id}")
+                    raise Exception(
+                        f"Message has not been defined: ${message.name} local_id: ${message.local_id}"
+                    )
             else:
-                new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
+                new_definition = DefinitionMessage.from_data_message(
+                    message, min_string_size=self.min_string_size
+                )
                 if not stored_definition.supports(new_definition):
                     if self.auto_define:
                         self.definition_map[new_definition.local_id] = new_definition
@@ -66,7 +72,7 @@ class FitFileBuilder:
 
     def build(self) -> FitFile:
         records_size = calc_records_size(self.records)
-        header = FitFileHeader(records_size=records_size)
+        header = FitFileHeader(records_size=records_size, gen_crc=True)
 
         crc = calc_crc(header, self.records)
         return FitFile(header, self.records, crc)

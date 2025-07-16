@@ -22,7 +22,7 @@ class DefinitionMessage(Message):
         super().__init__(
             local_id=local_id,
             global_id=global_id,
-            size=DefinitionMessage.calculate_size(field_definitions, developer_field_definitions),
+            size=DefinitionMessage.calculate_size(field_definitions or [], developer_field_definitions or []),
             endian=endian,
         )
 

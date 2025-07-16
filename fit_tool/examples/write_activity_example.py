@@ -2,8 +2,8 @@ import datetime
 import math
 import os
 
-import gpxpy
 from geopy.distance import geodesic
+import gpxpy
 
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.event_message import EventMessage
@@ -18,9 +18,7 @@ def main():
     write record messages to the file immediately for robustness and better memory usage. An example of how to do this
     is in the unit tests.
     """
-    now_timestamp_millis = (
-        round(datetime.datetime(2022, 5, 10, 5, 5, 5).timestamp()) * 1000
-    )
+    now_timestamp_millis = round(datetime.datetime(2022, 5, 10, 5, 5, 5).timestamp()) * 1000
 
     # Set auto_define to true, so that the builder creates the required Definition Messages for us.
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
@@ -28,9 +26,7 @@ def main():
     # Read position data from a GPX file
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(script_dir, "../.."))
-    gpx_path = os.path.join(
-        project_root, "fit_tool/tests/data/old_stage_left_hand_lee.gpx"
-    )
+    gpx_path = os.path.join(project_root, "fit_tool/tests/data/old_stage_left_hand_lee.gpx")
     with open(gpx_path) as gpx_file:
         gpx = gpxpy.parse(gpx_file)
 

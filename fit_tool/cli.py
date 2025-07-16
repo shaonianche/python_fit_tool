@@ -5,7 +5,6 @@ Copyright (c) 2017 Stages Cycling. All rights reserved.
 
 import argparse
 import logging
-import logging.config
 import os
 
 from .fit_file import FitFile

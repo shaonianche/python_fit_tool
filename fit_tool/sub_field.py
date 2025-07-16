@@ -27,7 +27,7 @@ class SubField:
         self.components = components or []
 
     def add_component(self, component: FieldComponent):
-        self.components.add(component)
+        self.components.append(component)
 
     def is_valid(self, fields: list) -> bool:
         for field_id in self.reference_map:

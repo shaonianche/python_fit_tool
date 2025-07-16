@@ -1,3 +1,5 @@
+from fit_tool.data_message import DataMessage
+from fit_tool.definition_message import DefinitionMessage
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.record_message import (
@@ -24,14 +26,15 @@ def main():
 
         if message.global_id == RecordMessage.ID:
             # Remove the heart rate field from all record definition and data messages
-            message.remove_field(RecordHeartRateField.ID)
+            if isinstance(message, (DataMessage, DefinitionMessage)):
+                message.remove_field(RecordHeartRateField.ID)
 
             if isinstance(message, RecordMessage):
                 # remove records where the power is too high
                 power_field = message.get_field(RecordPowerField.ID)
                 if power_field and power_field.is_valid():
                     power = power_field.get_value()
-                    if power > 800:
+                    if isinstance(power, (int, float)) and power > 800:
                         include_record = False
 
         if include_record:

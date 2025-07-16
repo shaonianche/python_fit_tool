@@ -69,6 +69,10 @@ extend-select = [
 ]
 extend-ignore = ["B018", "B019", "RUF018"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["fit_tool"]
+force-sort-within-sections = true
+
 [tool.ruff.lint.mccabe]
 max-complexity = 10
 

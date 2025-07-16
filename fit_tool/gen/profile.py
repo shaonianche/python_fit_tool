@@ -5,6 +5,8 @@ from openpyxl import load_workbook
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType, FieldType
 from fit_tool.field import ArrayType, Field
+from fit_tool.sub_field import SubField
+from fit_tool.utils.logging import logger
 
 
 class Message:
@@ -35,6 +37,30 @@ def parse_array_field(value):
         return ArrayType.VARIABLE, None
 
     return ArrayType.FIXED, int(value[1:-1])
+
+
+def safe_int(value):
+    if value is None:
+        return 0
+    if hasattr(value, "value"):
+        return int(value.value)
+    return int(value)
+
+
+def safe_str(value):
+    if value is None:
+        return ""
+    if hasattr(value, "value"):
+        return str(value.value)
+    return str(value)
+
+
+def safe_float(value):
+    if value is None:
+        return None
+    if hasattr(value, "value"):
+        return float(value.value) if value.value is not None else None
+    return float(value)
 
 
 class Profile:
@@ -104,7 +130,7 @@ class Profile:
     @classmethod
     def get_default_profile(cls):
         xlsx_filename = os.path.join(os.path.dirname(__file__), f"Profile_{SDK_VERSION}.xlsx")
-        print(f"Loading profile from {xlsx_filename}...")
+        logger.info(f"Loading profile from {xlsx_filename}...")
         profile = Profile.load(xlsx_filename)
 
         return profile
@@ -132,10 +158,14 @@ class Profile:
             if type_name:
                 # We are on a new type. Create it and start adding values to
                 # it.
+                if not isinstance(type_base_type_name, str):
+                    continue
                 type_base_type = BaseType.from_name(type_base_type_name)
                 if not type_base_type:
                     # TODO: add proper logging
-                    print(f"Warning: Unknown base_type {type_base_type}")
+                    logger.info(f"Warning: Unknown base_type {type_base_type}")
+                    continue
+                if not isinstance(type_name, str):
                     continue
                 current_type = FieldType(type_name, type_base_type)
                 profile.add_type(current_type)
@@ -146,9 +176,12 @@ class Profile:
                     value = row[3].value
                     if isinstance(value, str):
                         value = int(value, 0)
-                    current_type.add_value(name, value)
+                    if current_type is not None:
+                        current_type.add_value(name, value)
 
-        profile.add_type(FieldType("bool", BaseType.from_name("uint8")))
+        base_type = BaseType.from_name("uint8")
+        if base_type is not None:
+            profile.add_type(FieldType("bool", base_type))
 
         #
         # Parse the Messages worksheet
@@ -185,7 +218,7 @@ class Profile:
 
                 offset = row[7].value if row[7].value is not None else 0
                 units = row[8].value
-                if units:
+                if isinstance(units, str):
                     units = units.replace("\n", "")
 
                 if units == "semicircles":
@@ -203,11 +236,11 @@ class Profile:
                 raw_ref_field_values = row[12].value
 
                 ref_field_names = []
-                if raw_ref_field_names:
+                if isinstance(raw_ref_field_names, str):
                     ref_field_names = [name.strip() for name in raw_ref_field_names.split(",")]
 
                 ref_field_values = []
-                if raw_ref_field_values:
+                if isinstance(raw_ref_field_values, str):
                     ref_field_values = [value.strip() for value in raw_ref_field_values.split(",")]
 
                 if field_name == "custom_target_power_high" or field_name == "custom_target_power_low":
@@ -234,6 +267,8 @@ class Profile:
                 # comment = row[13].value
                 if field_id is not None or field_name is not None:
                     # First check if it is a base type
+                    if not isinstance(field_type_name, str):
+                        continue
                     base_type_ = BaseType.from_name(field_type_name)
 
                     # if not see if it is a derived type in the profile
@@ -250,29 +285,33 @@ class Profile:
                         else:
                             ref_field_map[ref_name] = [ref_field_values[ref_index]]
 
-                    field_or_subfield = Field(
-                        field_id=field_id,
-                        name=field_name,
-                        base_type=base_type_,
-                        scale=scale,
-                        offset=offset,
-                        units=units,
-                        ref_field_map=ref_field_map,
-                        type_name=field_type_name,
-                        array_type=array_type,
-                        array_fixed_length=array_fixed_length,
-                    )
-
-                    # todo: hack for now, should add to class
-                    field_or_subfield.type_ = type_
-
                     is_field = field_id is not None
 
                     if is_field:
-                        field = field_or_subfield
-                        current_message.add_field(field)
+                        field = Field(
+                            field_id=safe_int(field_id),
+                            name=safe_str(field_name),
+                            base_type=base_type_,
+                            scale=safe_float(scale),
+                            offset=safe_float(offset),
+                            units=safe_str(units),
+                            ref_field_map=ref_field_map,
+                            type_name=field_type_name,
+                            array_type=array_type,
+                            array_fixed_length=array_fixed_length,
+                            type_=type_,
+                        )
+                        if current_message is not None:
+                            current_message.add_field(field)
                     else:
-                        subfield = field_or_subfield
+                        subfield = SubField(
+                            name=safe_str(field_name),
+                            base_type=base_type_,
+                            scale=safe_float(scale) or 1.0,
+                            offset=safe_float(offset) or 0.0,
+                            units=safe_str(units),
+                            reference_map=ref_field_map,
+                        )
                         field.sub_fields.append(subfield)
 
         cls._resolve_subfield_references(profile)
@@ -286,9 +325,9 @@ class Profile:
         for _, message in profile.messages_by_id.items():
             for _, field in message.fields_by_id.items():
                 for subfield in field.sub_fields:
-                    if subfield.ref_field_map:
+                    if subfield.reference_map:
                         resolved_map = {}
-                        for key, values in subfield.ref_field_map.items():
+                        for key, values in subfield.reference_map.items():
                             field = message.get_field_by_name(key)
                             resolved_values = []
                             for item in values:
@@ -296,10 +335,12 @@ class Profile:
                                 resolved_values.append(resolved_value)
                             resolved_map[key] = resolved_values
 
-                        subfield.ref_field_map = resolved_map
+                        subfield.reference_map = resolved_map
 
     def create_field(self, msg_name, field_name, value, length=1):
         msg = self.get_message_by_name(msg_name)
+        if msg is None:
+            raise ValueError(f"Message '{msg_name}' not found in profile.")
         clz = msg.get_field_by_name(field_name)
         clz.length = length
         field = clz(value=value)
@@ -307,4 +348,6 @@ class Profile:
 
     def create_field_definition(self, msg_name, field_name, length=1):
         msg = self.get_message_by_name(msg_name)
+        if msg is None:
+            raise ValueError(f"Message '{msg_name}' not found in profile.")
         return msg.get_field_by_name(field_name).to_field_definition(length=length)

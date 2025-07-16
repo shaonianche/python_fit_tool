@@ -94,7 +94,7 @@ class RecordHeader:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
-    def to_row(self) -> []:
+    def to_row(self) -> list:
         header_string = "Definition" if self.is_definition else "Data"
         return [header_string, self.local_id]
 
@@ -159,7 +159,7 @@ class Record:
         row.extend(self.message.to_row())
         return row
 
-    def defined_size(self, definition_message: DefinitionMessage = None) -> int:
+    def defined_size(self, definition_message: DefinitionMessage | None = None) -> int:
         if self.header.is_definition:
             return self.size
         elif definition_message:

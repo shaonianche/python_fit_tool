@@ -1,7 +1,7 @@
 import datetime
 
-import gpxpy
 from geopy.distance import geodesic
+import gpxpy
 
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.course_message import CourseMessage
@@ -32,13 +32,13 @@ def main():
     message.type = FileType.COURSE
     message.manufacturer = Manufacturer.DEVELOPMENT.value
     message.product = 0
-    message.timeCreated = round(datetime.datetime.now().timestamp() * 1000)
-    message.serialNumber = 0x12345678
+    message.time_created = round(datetime.datetime.now().timestamp() * 1000)
+    message.serial_number = 0x12345678
     builder.add(message)
 
     # Every FIT course file MUST contain a Course message
     message = CourseMessage()
-    message.courseName = "old stage"
+    message.course_name = "old stage"
     message.sport = Sport.CYCLING
     builder.add(message)
 
@@ -100,7 +100,7 @@ def main():
     # stop event
     message = EventMessage()
     message.event = Event.TIMER
-    message.eventType = EventType.STOP_ALL
+    message.event_type = EventType.STOP_ALL
     message.timestamp = timestamp
     builder.add(message)
 
@@ -114,7 +114,7 @@ def main():
     message.start_position_lat = course_records[0].position_lat
     message.start_position_long = course_records[0].position_long
     message.end_position_lat = course_records[-1].position_lat
-    message.endPositionLong = course_records[-1].position_long
+    message.end_position_long = course_records[-1].position_long
     message.total_distance = course_records[-1].distance
     builder.add(message)
 

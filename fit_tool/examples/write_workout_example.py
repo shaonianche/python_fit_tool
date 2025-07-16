@@ -46,13 +46,13 @@ def main():
     step.workout_step_name = "Cool Down Until Lap Button Pressed"
     step.intensity = Intensity.COOLDOWN
     step.duration_type = WorkoutStepDuration.OPEN
-    step.durationValue = 0
+    step.duration_value = 0
     step.target_type = WorkoutStepTarget.OPEN
     step.target_value = 0
     workout_steps.append(step)
 
     workout_message = WorkoutMessage()
-    workout_message.workoutName = "Tempo Bike"
+    workout_message.workout_name = "Tempo Bike"
     workout_message.sport = Sport.CYCLING
     workout_message.num_valid_steps = len(workout_steps)
 

@@ -61,13 +61,13 @@ class FitFile:
             elif isinstance(record.message, FieldDescriptionMessage):
                 message = record.message
                 developer_field = DeveloperField(
-                    developer_data_index=message.developer_data_index,
-                    field_id=message.field_definition_number,
+                    developer_data_index=message.developer_data_index or 0,
+                    field_id=message.field_definition_number or 0,
                     base_type=BaseType(message.fit_base_type_id),
-                    name=message.field_name,
+                    name=message.field_name or "",
                     scale=message.scale,
                     offset=message.offset,
-                    units=message.units,
+                    units=message.units or "",
                 )
                 if developer_field.developer_data_index not in developer_fields_by_data_index:
                     developer_fields_by_data_index[developer_field.developer_data_index] = {}
@@ -130,7 +130,7 @@ class FitFile:
             if check_crc:
                 raise Exception(message)
             else:
-                logger.warn(message)
+                logger.warning(message)
 
         buffer = struct.pack("<H", self.crc)
         bytes_buffer.extend(buffer)

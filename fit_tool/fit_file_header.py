@@ -71,12 +71,8 @@ class FitFileHeader:
         gen_crc: bool = False,
     ):
         self.records_size = records_size
-        self.protocol_version = (
-            protocol_version if protocol_version else DEFAULT_PROTOCOL_VERSION
-        )
-        self.profile_version = (
-            profile_version if profile_version else DEFAULT_PROFILE_VERSION
-        )
+        self.protocol_version = protocol_version if protocol_version else DEFAULT_PROTOCOL_VERSION
+        self.profile_version = profile_version if profile_version else DEFAULT_PROFILE_VERSION
 
         # crc16 of header bytes 0-11
         #
@@ -85,9 +81,7 @@ class FitFileHeader:
         if crc is not None:
             self.crc = crc
         elif gen_crc:
-            self.crc = FitFileHeader.generate_crc(
-                self.protocol_version, self.profile_version, self.records_size
-            )
+            self.crc = FitFileHeader.generate_crc(self.protocol_version, self.profile_version, self.records_size)
         else:
             self.crc = None
 
@@ -125,9 +119,7 @@ class FitFileHeader:
         offset = 0
         (size,) = struct.unpack("B", bytes_buffer[0:1])
         if size != len(bytes_buffer):
-            raise Exception(
-                f"Size {size} does not match bytes length: {len(bytes_buffer)}"
-            )
+            raise Exception(f"Size {size} does not match bytes length: {len(bytes_buffer)}")
         offset += 1
 
         protocol_version = ProtocolVersion.from_bytes(bytes_buffer[offset : offset + 1])

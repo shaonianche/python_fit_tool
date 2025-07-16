@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import struct
 from enum import Enum
-from typing import ClassVar
+import struct
 
 from fit_tool.base_type import BaseType
 from fit_tool.endian import Endian
@@ -17,8 +16,6 @@ class ArrayType(Enum):
 
 
 class Field:
-    encoded_values: ClassVar[list] = []
-
     def __init__(
         self,
         field_id: int = 0,
@@ -37,6 +34,7 @@ class Field:
         ref_field_map: dict | None = None,
         array_type: ArrayType | None = None,
         array_fixed_length: int | None = None,
+        type_=None,
     ):
         self.field_id = field_id
         self.name = name
@@ -54,6 +52,7 @@ class Field:
         self.ref_field_map = ref_field_map
         self.array_type = array_type
         self.array_fixed_length = array_fixed_length
+        self.type_ = None
 
         self.encoded_values = [None for _ in range(Field.get_length_from_size(base_type, size))]
 
@@ -314,6 +313,8 @@ class Field:
             elif (scale is None or scale == 1.0) and (offset is None or offset == 0.0):
                 encoded_value = int(value)
             else:
+                scale = scale if scale is not None else 1.0
+                offset = offset if offset is not None else 0.0
                 encoded_value = self.scale_offset_value(value, scale, offset)
         return encoded_value
 
@@ -448,7 +449,7 @@ class Field:
         elif self.base_type == BaseType.FLOAT64:
             struct.pack_into(f"{endian_symbol}d", bytes_buffer, 0, encoded_value)
 
-        return bytes_buffer
+        return bytes(bytes_buffer)
 
     def to_bytes(self, endian: Endian = Endian.LITTLE) -> bytes:
         bytes_buffer = b""

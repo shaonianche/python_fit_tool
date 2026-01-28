@@ -3,30 +3,27 @@ from fit_tool.base_type import BaseType, FieldType
 
 
 class TestBaseTypeSize:
-    def test_size_1_byte_types(self):
-        assert BaseType.ENUM.size == 1
-        assert BaseType.SINT8.size == 1
-        assert BaseType.UINT8.size == 1
-        assert BaseType.STRING.size == 1
-        assert BaseType.UINT8Z.size == 1
-        assert BaseType.BYTE.size == 1
-
-    def test_size_2_byte_types(self):
-        assert BaseType.SINT16.size == 2
-        assert BaseType.UINT16.size == 2
-        assert BaseType.UINT16Z.size == 2
-
-    def test_size_4_byte_types(self):
-        assert BaseType.SINT32.size == 4
-        assert BaseType.UINT32.size == 4
-        assert BaseType.FLOAT32.size == 4
-        assert BaseType.UINT32Z.size == 4
-
-    def test_size_8_byte_types(self):
-        assert BaseType.FLOAT64.size == 8
-        assert BaseType.SINT64.size == 8
-        assert BaseType.UINT64.size == 8
-        assert BaseType.UINT64Z.size == 8
+    @pytest.mark.parametrize("base_type, expected_size", [
+        (BaseType.ENUM, 1),
+        (BaseType.SINT8, 1),
+        (BaseType.UINT8, 1),
+        (BaseType.STRING, 1),
+        (BaseType.UINT8Z, 1),
+        (BaseType.BYTE, 1),
+        (BaseType.SINT16, 2),
+        (BaseType.UINT16, 2),
+        (BaseType.UINT16Z, 2),
+        (BaseType.SINT32, 4),
+        (BaseType.UINT32, 4),
+        (BaseType.FLOAT32, 4),
+        (BaseType.UINT32Z, 4),
+        (BaseType.FLOAT64, 8),
+        (BaseType.SINT64, 8),
+        (BaseType.UINT64, 8),
+        (BaseType.UINT64Z, 8),
+    ])
+    def test_size(self, base_type, expected_size):
+        assert base_type.size == expected_size
 
 
 class TestBaseTypeIsInteger:
@@ -160,33 +157,49 @@ class TestBaseTypeInvalidRawValue:
 
 
 class TestBaseTypeMinMax:
-    def test_max_values(self):
-        assert BaseType.ENUM.max == 0xff
-        assert BaseType.SINT8.max == 0x7f
-        assert BaseType.UINT8.max == 0xff
-        assert BaseType.SINT16.max == 0x7fff
-        assert BaseType.UINT16.max == 0xffff
-        assert BaseType.SINT32.max == 0x7fffffff
-        assert BaseType.UINT32.max == 0xffffffff
-        assert BaseType.STRING.max is None
-        assert BaseType.FLOAT32.max is None
-        assert BaseType.FLOAT64.max is None
-        assert BaseType.SINT64.max == 0x7fffffffffffffff
-        assert BaseType.UINT64.max == 0xffffffffffffffff
+    @pytest.mark.parametrize("base_type, expected_max", [
+        (BaseType.ENUM, 0xff),
+        (BaseType.SINT8, 0x7f),
+        (BaseType.UINT8, 0xff),
+        (BaseType.SINT16, 0x7fff),
+        (BaseType.UINT16, 0xffff),
+        (BaseType.SINT32, 0x7fffffff),
+        (BaseType.UINT32, 0xffffffff),
+        (BaseType.STRING, None),
+        (BaseType.FLOAT32, None),
+        (BaseType.FLOAT64, None),
+        (BaseType.UINT8Z, 0xff),
+        (BaseType.UINT16Z, 0xffff),
+        (BaseType.UINT32Z, 0xffffffff),
+        (BaseType.BYTE, 0xff),
+        (BaseType.SINT64, 0x7fffffffffffffff),
+        (BaseType.UINT64, 0xffffffffffffffff),
+        (BaseType.UINT64Z, 0xffffffffffffffff),
+    ])
+    def test_max_values(self, base_type, expected_max):
+        assert base_type.max == expected_max
 
-    def test_min_values(self):
-        assert BaseType.ENUM.min == 0x00
-        assert BaseType.SINT8.min == -0x80
-        assert BaseType.UINT8.min == 0x00
-        assert BaseType.SINT16.min == -0x8000
-        assert BaseType.UINT16.min == 0x0000
-        assert BaseType.SINT32.min == -0x80000000
-        assert BaseType.UINT32.min == 0x00000000
-        assert BaseType.STRING.min is None
-        assert BaseType.FLOAT32.min is None
-        assert BaseType.FLOAT64.min is None
-        assert BaseType.SINT64.min == -0x8000000000000000
-        assert BaseType.UINT64.min == 0x0000000000000000
+    @pytest.mark.parametrize("base_type, expected_min", [
+        (BaseType.ENUM, 0x00),
+        (BaseType.SINT8, -0x80),
+        (BaseType.UINT8, 0x00),
+        (BaseType.SINT16, -0x8000),
+        (BaseType.UINT16, 0x0000),
+        (BaseType.SINT32, -0x80000000),
+        (BaseType.UINT32, 0x00000000),
+        (BaseType.STRING, None),
+        (BaseType.FLOAT32, None),
+        (BaseType.FLOAT64, None),
+        (BaseType.UINT8Z, 0x00),
+        (BaseType.UINT16Z, 0x0000),
+        (BaseType.UINT32Z, 0x00000000),
+        (BaseType.BYTE, 0x00),
+        (BaseType.SINT64, -0x8000000000000000),
+        (BaseType.UINT64, 0x0000000000000000),
+        (BaseType.UINT64Z, 0x0000000000000000),
+    ])
+    def test_min_values(self, base_type, expected_min):
+        assert base_type.min == expected_min
 
 
 class TestBaseTypeFromName:

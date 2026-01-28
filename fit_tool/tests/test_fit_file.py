@@ -32,7 +32,7 @@ class TestFitFile(unittest.TestCase):
 
         print(f'{bytes1}')
         print(f'{bytes2}')
-        self.assertEquals(bytes2, bytes1)
+        self.assertEqual(bytes2, bytes1)
 
     def test_builder_with_auto_define(self):
         mesg1 = WorkoutStepMessage(local_id=0)
@@ -49,4 +49,4 @@ class TestFitFile(unittest.TestCase):
 
         fit_file = builder.build()
 
-        self.assertEquals(len(fit_file.records), 3)
+        self.assertEqual(len(fit_file.records), 3)

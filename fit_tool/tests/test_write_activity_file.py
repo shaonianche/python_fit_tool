@@ -1,6 +1,9 @@
 import datetime
+import os
 import struct
 import unittest
+
+TEST_DIR = os.path.dirname(__file__)
 
 from fit_tool.base_type import BaseType
 from fit_tool.definition_message import DefinitionMessage
@@ -47,7 +50,7 @@ class TestWriteActivityFile(unittest.TestCase):
             records_size += len(buffer_)
             records_crc = crc16(buffer_, crc=records_crc)
 
-        out_path = '../tests/out/activity_iterative.fit'
+        out_path = os.path.join(TEST_DIR, 'out', 'activity_iterative.fit')
         with open(out_path, 'wb') as file_object:
             # Create a placeholder 14 byte header (includes a crc). We overwrite these bytes after all the records
             # have been written.
@@ -171,10 +174,10 @@ class TestWriteActivityFile(unittest.TestCase):
         # Finally build the FIT file object and write it to a file
         fit_file = builder.build()
 
-        out_path = '../tests/out/activity_with_developer_data.fit'
+        out_path = os.path.join(TEST_DIR, 'out', 'activity_with_developer_data.fit')
 
         fit_file.to_file(out_path)
-        csv_path = '../tests/out/activity_with_developer_data.csv'
+        csv_path = os.path.join(TEST_DIR, 'out', 'activity_with_developer_data.csv')
         fit_file.to_csv(csv_path)
 
         # read back the file

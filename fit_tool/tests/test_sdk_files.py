@@ -3,6 +3,10 @@ import csv
 import os
 import unittest
 
+TEST_DIR = os.path.dirname(__file__)
+OUT_DIR = os.path.join(TEST_DIR, 'out')
+os.makedirs(OUT_DIR, exist_ok=True)
+
 from fit_tool.fit_file import FitFile
 
 

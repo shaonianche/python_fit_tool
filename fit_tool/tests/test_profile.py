@@ -3,7 +3,7 @@
 
 import unittest
 
-from fit_tool.fit import Profile
+from fit_tool.gen.profile import Profile
 
 
 class TestFitFile(unittest.TestCase):

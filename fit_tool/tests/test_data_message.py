@@ -15,7 +15,7 @@ class TestDataMessage(unittest.TestCase):
     def test_data_message_conversions(self):
         dm1 = WorkoutStepMessage()
         dm1.workout_step_name = 'test'
-        self.assertEquals('test', dm1.workout_step_name)
+        self.assertEqual('test', dm1.workout_step_name)
 
         bytes1 = dm1.to_bytes()
 
@@ -24,7 +24,7 @@ class TestDataMessage(unittest.TestCase):
         dm2.read_from_bytes(bytes1)
         bytes2 = dm2.to_bytes()
 
-        self.assertEquals('test', dm2.workout_step_name)
+        self.assertEqual('test', dm2.workout_step_name)
 
         self.assertEqual(bytes2, bytes1)
 

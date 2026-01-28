@@ -60,7 +60,7 @@ dev = [
 
 [tool.coverage.run]
 source = ["fit_tool"]
-omit = ["fit_tool/tests/*", "fit_tool/examples/*"]
+omit = ["fit_tool/tests/**/*", "fit_tool/examples/**/*"]
 
 [tool.coverage.report]
 exclude_lines = [

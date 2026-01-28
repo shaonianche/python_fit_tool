@@ -176,7 +176,7 @@ class DataMessage(Message):
         return row
 
     def to_bytes(self) -> bytes:
-        bytes_buffer = b''
+        parts = []
 
         if self.definition_message:
             for field_definition in self.definition_message.field_definitions:
@@ -186,7 +186,7 @@ class DataMessage(Message):
                     continue
 
                 if field.is_valid():
-                    bytes_buffer += field.to_bytes(endian=self.endian)
+                    parts.append(field.to_bytes(endian=self.endian))
                 else:
                     raise Exception(f'Field for id: {field_definition.field_id} is not valid.')
 
@@ -198,17 +198,17 @@ class DataMessage(Message):
                         f'Developer field for id: {field_definition.developer_data_index}:{field_definition.field_id} not found.')
 
                 if field.is_valid():
-                    bytes_buffer += field.to_bytes(endian=self.endian)
+                    parts.append(field.to_bytes(endian=self.endian))
                 else:
                     raise Exception(f'Developer Field for id: {field_definition.field_id} is not valid.')
 
         else:
             for field in self.fields:
                 if field.is_valid():
-                    bytes_buffer += field.to_bytes(endian=self.endian)
+                    parts.append(field.to_bytes(endian=self.endian))
 
             for field in self.developer_fields:
                 if field.is_valid():
-                    bytes_buffer += field.to_bytes(endian=self.endian)
+                    parts.append(field.to_bytes(endian=self.endian))
 
-        return bytes_buffer
+        return b''.join(parts)

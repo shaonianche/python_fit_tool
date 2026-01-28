@@ -41,3 +41,6 @@ fittool = "fit_tool.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["fit_tool*"]
+
+[tool.setuptools]
+zip-safe = false

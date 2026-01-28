@@ -4,6 +4,8 @@ import struct
 import unittest
 
 TEST_DIR = os.path.dirname(__file__)
+OUT_DIR = os.path.join(TEST_DIR, 'out')
+os.makedirs(OUT_DIR, exist_ok=True)
 
 from fit_tool.base_type import BaseType
 from fit_tool.definition_message import DefinitionMessage

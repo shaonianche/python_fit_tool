@@ -4,7 +4,7 @@ from typing import Dict as dict
 from typing import List as list
 from typing import Optional
 
-from fit_tool.base_type import BaseType
+from fit_tool.base_type import BaseType, FieldType
 from fit_tool.endian import Endian
 from fit_tool.field_component import FieldComponent
 from fit_tool.field_definition import FieldDefinition
@@ -32,7 +32,8 @@ class Field:
                  type_name: str = '',
                  ref_field_map: dict = None,
                  array_type: ArrayType = None,
-                 array_fixed_length: int = None):
+                 array_fixed_length: int = None,
+                 field_type: FieldType = None):
 
         self.field_id = field_id
         self.name = name
@@ -50,6 +51,7 @@ class Field:
         self.ref_field_map = ref_field_map
         self.array_type = array_type
         self.array_fixed_length = array_fixed_length
+        self.type_ = field_type
 
         self.encoded_values = [None for _ in range(Field.get_length_from_size(base_type, size))]
 
@@ -59,7 +61,8 @@ class Field:
                       scale=other.scale, units=other.units, is_accumulated=other.is_accumulated,
                       is_expanded_field=other.is_expanded_field, sub_fields=other.sub_fields,
                       components=other.components,
-                      size=other.size, growable=other.growable, type_name=other.type_name)
+                      size=other.size, growable=other.growable, type_name=other.type_name,
+                      field_type=getattr(other, 'type_', None))
         field.encoded_values = other.encoded_values
         return field
 

@@ -29,7 +29,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = [
-    "nose",
+    "pytest>=7.0",
 ]
 
 [project.urls]
@@ -44,3 +44,12 @@ include = ["fit_tool*"]
 
 [tool.setuptools]
 zip-safe = false
+
+[tool.pytest.ini_options]
+testpaths = ["fit_tool/tests"]
+python_files = ["test_*.py"]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0",
+]

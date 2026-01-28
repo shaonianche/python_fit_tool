@@ -114,16 +114,14 @@ class DefinitionMessage(Message):
         bytes_buffer.append(len(self.field_definitions))
 
         # field definitions
-        for fd in self.field_definitions:
-            bytes_buffer += fd.to_bytes()
+        bytes_buffer += b''.join(fd.to_bytes() for fd in self.field_definitions)
 
         # developer field definitions
         if self.developer_field_definitions:
             bytes_buffer.append(len(self.developer_field_definitions))
 
             # developer field definitions
-            for fd in self.developer_field_definitions:
-                bytes_buffer += fd.to_bytes()
+            bytes_buffer += b''.join(fd.to_bytes() for fd in self.developer_field_definitions)
 
         return bytes(bytes_buffer)
 

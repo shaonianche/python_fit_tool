@@ -29,11 +29,19 @@ jobs:
         run: uv build
 
       - name: Run tests with coverage
-        run: uv run pytest --cov=fit_tool --cov-report=xml --cov-report=term
+        run: uv run pytest --cov=fit_tool --cov-report=xml --cov-report=term --junitxml=junit.xml
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           fail_ci_if_error: false
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() && matrix.python-version == '3.12' }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./junit.xml

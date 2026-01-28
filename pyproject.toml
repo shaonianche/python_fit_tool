@@ -27,6 +27,11 @@ dependencies = [
     "bitstruct>=8.11.1",
 ]
 
+[project.optional-dependencies]
+test = [
+    "nose",
+]
+
 [project.urls]
 Homepage = "https://github.com/shaonianche/python_fit_tool"
 Repository = "https://github.com/shaonianche/python_fit_tool.git"

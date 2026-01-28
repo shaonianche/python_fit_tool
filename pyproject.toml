@@ -32,6 +32,7 @@ dependencies = [
 [project.optional-dependencies]
 test = [
     "pytest>=7.0",
+    "pytest-cov>=4.0",
 ]
 
 [project.urls]
@@ -54,4 +55,15 @@ python_files = ["test_*.py"]
 [dependency-groups]
 dev = [
     "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.coverage.run]
+source = ["fit_tool"]
+omit = ["fit_tool/tests/**/*", "fit_tool/examples/**/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
 ]

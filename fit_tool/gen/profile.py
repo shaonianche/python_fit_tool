@@ -268,11 +268,9 @@ class Profile:
                                               ref_field_map=ref_field_map,
                                               type_name=field_type_name,
                                               array_type=array_type,
-                                              array_fixed_length=array_fixed_length
+                                              array_fixed_length=array_fixed_length,
+                                              type_=type_
                                               )
-
-                    # todo: hack for now, should add to class
-                    field_or_subfield.type_ = type_
 
                     is_field = field_id is not None
 

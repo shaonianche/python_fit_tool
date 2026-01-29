@@ -170,34 +170,35 @@ class {{message.field_class_name_by_name[field_name]}}(Field):
             name='{{field_name}}',
             field_id=self.ID,
             base_type=BaseType.{{field.base_type.name | upper}},
-        offset = {{field.offset}},
-                 scale = {{field.scale}},
-                         size = size,
-                                {%- if field.units %}
-        units = '{{field.units}}',
-                {%- endif %}
-        {%- if field.units %}
-        type_name = '{{field.type_.name}}',
+            offset={{field.offset}},
+            scale={{field.scale}},
+            size=size,
+            {%- if field.units %}
+            units='{{field.units}}',
+            {%- endif %}
+            {%- if field.units %}
+            type_name='{{field.type_.name}}',
+            {%- endif %}
+            growable=growable,
+            sub_fields=[
+                {%- for sub_field in field.sub_fields %}
+                SubField(
+                    name='{{sub_field.name}}',
+                    base_type=BaseType.{{sub_field.base_type.name | upper}},
+                    scale={{sub_field.scale}},
+                    offset={{sub_field.offset}},
+                    {%- if sub_field.units %}
+                    units='{{sub_field.units }}',
                     {%- endif %}
-        growable = growable,
-                   sub_fields = [
-            {%- for sub_field in field.sub_fields %}
-        SubField(
-            name='{{sub_field.name}}',
-            base_type=BaseType.{{sub_field.base_type.name | upper}},
-        scale = {{sub_field.scale}},
-                offset = {{sub_field.offset}},
-                         {%- if sub_field.units %}
-        units = '{{sub_field.units }}',
-                {%- endif %}
-        reference_map = {
-            {%- for reference_name in sub_field.ref_field_map.keys() %}
-        {{message.field_class_name_by_name[reference_name]}}.ID: {{sub_field.ref_field_map[reference_name]}}
-        {%- if not loop.last %}, {% endif %}
-        {%- endfor %}
-        }){%- if not loop.last %}, {% endif %}
-        {%- endfor %}
-        ]
+                    reference_map={
+                        {%- for reference_name in sub_field.ref_field_map.keys() %}
+                        {{message.field_class_name_by_name[reference_name]}}.ID: {{sub_field.ref_field_map[reference_name]}}
+                        {%- if not loop.last %}, {% endif %}
+                        {%- endfor %}
+                    }
+                ){%- if not loop.last %}, {% endif %}
+                {%- endfor %}
+            ]
         )
 
     {%- endfor %}

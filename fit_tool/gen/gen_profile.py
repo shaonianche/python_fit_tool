@@ -10,7 +10,8 @@ from fit_tool.base_type import BaseType
 from fit_tool.field import Field
 from fit_tool.gen.profile import Profile, Message
 
-DEFAULT_BUILD_PATH = '../../build'
+# DEFAULT_BUILD_PATH = '../../build'
+DEFAULT_BUILD_PATH = Path(__file__).parent.parent
 
 
 def parse_args():
@@ -57,17 +58,12 @@ def convert_type_name2(name: str) -> str:
     return name.upper()
 
 
-RESERVED_WORDS = ['new', 'switch', 'enum']
-
-
 def convert_value_name(name: str) -> str:
     if name[0].isdigit():
         name = 'n' + name
     # name = inflection.camelize(name, uppercase_first_letter=False)
     name = inflection.underscore(name).upper()
 
-    if name in RESERVED_WORDS:
-        name = name + '_'
     return name
 
 
@@ -90,7 +86,10 @@ def field_name_to_class_name(message: Message, field: Field, name: str) -> str:
     return name
 
 
-RESERVED_PROPERTY_NAMES = {'name', 'local_id', 'global_id'}
+RESERVED_PROPERTY_NAMES = {'name', 'local_id', 'global_id', 'def', 'class', 'return', 'yield', 'import', 'from', 'as',
+                           'global', 'nonlocal', 'assert', 'if', 'elif', 'else', 'while', 'for', 'try', 'except',
+                           'finally', 'raise', 'with', 'pass', 'break', 'continue', 'del', 'lambda', 'is', 'in', 'and',
+                           'or', 'not', 'async', 'await'}
 
 
 def field_name_to_property_name(message: Message, name: str) -> str:
@@ -167,23 +166,23 @@ def get_field_property_type_name(profile: Profile, field: Field) -> str:
 
 def main():
     build_path = DEFAULT_BUILD_PATH
-    profile_path = os.path.join(build_path, 'profile')
-    messages_path = os.path.join(profile_path, 'messages')
+    profile_path = build_path / 'profile'
+    messages_path = profile_path / 'messages'
 
-    messages_dir = Path(messages_path)
+    messages_dir = messages_path
     if messages_dir.exists():
         for p in messages_dir.glob('*.py'):
             p.unlink()
         messages_dir.rmdir()
 
-    profile_dir = Path(profile_path)
+    profile_dir = profile_path
     if profile_dir.exists():
         for p in profile_dir.glob('*.py'):
             p.unlink()
         profile_dir.rmdir()
 
-    Path(profile_path).mkdir(parents=True, exist_ok=True)
-    Path(messages_path).mkdir(parents=True, exist_ok=True)
+    profile_path.mkdir(parents=True, exist_ok=True)
+    messages_path.mkdir(parents=True, exist_ok=True)
 
     profile = Profile.get_default_profile()
 
@@ -217,24 +216,25 @@ def main():
         profile_type = profile.types_by_name[k]
         profile_type.values_by_name = {convert_value_name(k): v for k, v in profile_type.values_by_name.items()}
 
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader('..'), )
+    base_dir = Path(__file__).parent
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(base_dir / 'templates'), )
 
     #
     # Gen profile_type.py
     #
-    template = env.get_template('gen/templates/template_profile_type.jinja')
+    template = env.get_template('template_profile_type.jinja')
     rendering = template.render(profile=profile, profile_types=profile_types,
                                 sdk_version=SDK_VERSION)
-    filename = os.path.join(profile_path, 'profile_type.py')
+    filename = profile_path / 'profile_type.py'
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 
     for name, message in profile.messages_by_name.items():
-        template = env.get_template('gen/templates/template_message.jinja')
+        template = env.get_template('template_message.jinja')
         rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
                                     class_name=inflection.camelize(message.name + '_message'),
                                     message=message)
-        filename = os.path.join(messages_path, f"{inflection.underscore(message.name + '_message')}.py")
+        filename = messages_path / f"{inflection.underscore(message.name + '_message')}.py"
         with (open(filename, 'w')) as file_out:
             file_out.write(rendering)
 
@@ -243,18 +243,18 @@ def main():
     message_class_names = [inflection.camelize(message_name + '_message') for message_name in
                            profile.messages_by_name.keys()]
 
-    template = env.get_template('gen/templates/template_message_factory.jinja')
+    template = env.get_template('template_message_factory.jinja')
 
     message_names = zip(message_class_names, message_file_names)
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
                                 message_names=message_names, message_class_names=message_class_names)
-    filename = os.path.join(messages_path, f"message_factory.py")
+    filename = messages_path / f"message_factory.py"
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 
-    template = env.get_template('gen/templates/template_common_fields.jinja')
+    template = env.get_template('template_common_fields.jinja')
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION)
-    filename = os.path.join(messages_path, f"common_fields.py")
+    filename = messages_path / f"common_fields.py"
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 

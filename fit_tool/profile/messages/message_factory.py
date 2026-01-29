@@ -2,99 +2,99 @@
 #
 # Profile: 21.60
 from typing import List as list
-
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.generic_message import GenericMessage
-from fit_tool.profile.messages.accelerometer_data_message import AccelerometerDataMessage
-from fit_tool.profile.messages.activity_message import ActivityMessage
-from fit_tool.profile.messages.ant_channel_id_message import AntChannelIdMessage
-from fit_tool.profile.messages.ant_rx_message import AntRxMessage
-from fit_tool.profile.messages.ant_tx_message import AntTxMessage
-from fit_tool.profile.messages.aviation_attitude_message import AviationAttitudeMessage
-from fit_tool.profile.messages.barometer_data_message import BarometerDataMessage
-from fit_tool.profile.messages.bike_profile_message import BikeProfileMessage
-from fit_tool.profile.messages.blood_pressure_message import BloodPressureMessage
-from fit_tool.profile.messages.cadence_zone_message import CadenceZoneMessage
-from fit_tool.profile.messages.camera_event_message import CameraEventMessage
+
+
+from fit_tool.profile.messages.file_id_message import FileIdMessage
+from fit_tool.profile.messages.file_creator_message import FileCreatorMessage
+from fit_tool.profile.messages.timestamp_correlation_message import TimestampCorrelationMessage
+from fit_tool.profile.messages.software_message import SoftwareMessage
+from fit_tool.profile.messages.slave_device_message import SlaveDeviceMessage
 from fit_tool.profile.messages.capabilities_message import CapabilitiesMessage
-from fit_tool.profile.messages.climb_pro_message import ClimbProMessage
-from fit_tool.profile.messages.connectivity_message import ConnectivityMessage
-from fit_tool.profile.messages.course_message import CourseMessage
-from fit_tool.profile.messages.course_point_message import CoursePointMessage
-from fit_tool.profile.messages.developer_data_id_message import DeveloperDataIdMessage
-from fit_tool.profile.messages.device_info_message import DeviceInfoMessage
+from fit_tool.profile.messages.file_capabilities_message import FileCapabilitiesMessage
+from fit_tool.profile.messages.mesg_capabilities_message import MesgCapabilitiesMessage
+from fit_tool.profile.messages.field_capabilities_message import FieldCapabilitiesMessage
 from fit_tool.profile.messages.device_settings_message import DeviceSettingsMessage
+from fit_tool.profile.messages.user_profile_message import UserProfileMessage
+from fit_tool.profile.messages.hrm_profile_message import HrmProfileMessage
+from fit_tool.profile.messages.sdm_profile_message import SdmProfileMessage
+from fit_tool.profile.messages.bike_profile_message import BikeProfileMessage
+from fit_tool.profile.messages.connectivity_message import ConnectivityMessage
+from fit_tool.profile.messages.watchface_settings_message import WatchfaceSettingsMessage
+from fit_tool.profile.messages.ohr_settings_message import OhrSettingsMessage
+from fit_tool.profile.messages.zones_target_message import ZonesTargetMessage
+from fit_tool.profile.messages.sport_message import SportMessage
+from fit_tool.profile.messages.hr_zone_message import HrZoneMessage
+from fit_tool.profile.messages.speed_zone_message import SpeedZoneMessage
+from fit_tool.profile.messages.cadence_zone_message import CadenceZoneMessage
+from fit_tool.profile.messages.power_zone_message import PowerZoneMessage
+from fit_tool.profile.messages.met_zone_message import MetZoneMessage
+from fit_tool.profile.messages.dive_settings_message import DiveSettingsMessage
 from fit_tool.profile.messages.dive_alarm_message import DiveAlarmMessage
 from fit_tool.profile.messages.dive_gas_message import DiveGasMessage
-from fit_tool.profile.messages.dive_settings_message import DiveSettingsMessage
-from fit_tool.profile.messages.dive_summary_message import DiveSummaryMessage
-from fit_tool.profile.messages.event_message import EventMessage
-from fit_tool.profile.messages.exd_data_concept_configuration_message import ExdDataConceptConfigurationMessage
-from fit_tool.profile.messages.exd_data_field_configuration_message import ExdDataFieldConfigurationMessage
-from fit_tool.profile.messages.exd_screen_configuration_message import ExdScreenConfigurationMessage
-from fit_tool.profile.messages.exercise_title_message import ExerciseTitleMessage
-from fit_tool.profile.messages.field_capabilities_message import FieldCapabilitiesMessage
-from fit_tool.profile.messages.field_description_message import FieldDescriptionMessage
-from fit_tool.profile.messages.file_capabilities_message import FileCapabilitiesMessage
-from fit_tool.profile.messages.file_creator_message import FileCreatorMessage
-from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.goal_message import GoalMessage
-from fit_tool.profile.messages.gps_metadata_message import GpsMetadataMessage
-from fit_tool.profile.messages.gyroscope_data_message import GyroscopeDataMessage
-from fit_tool.profile.messages.hr_message import HrMessage
-from fit_tool.profile.messages.hr_zone_message import HrZoneMessage
-from fit_tool.profile.messages.hrm_profile_message import HrmProfileMessage
-from fit_tool.profile.messages.hrv_message import HrvMessage
-from fit_tool.profile.messages.jump_message import JumpMessage
+from fit_tool.profile.messages.activity_message import ActivityMessage
+from fit_tool.profile.messages.session_message import SessionMessage
 from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.length_message import LengthMessage
-from fit_tool.profile.messages.magnetometer_data_message import MagnetometerDataMessage
-from fit_tool.profile.messages.memo_glob_message import MemoGlobMessage
-from fit_tool.profile.messages.mesg_capabilities_message import MesgCapabilitiesMessage
-from fit_tool.profile.messages.met_zone_message import MetZoneMessage
-from fit_tool.profile.messages.monitoring_info_message import MonitoringInfoMessage
-from fit_tool.profile.messages.monitoring_message import MonitoringMessage
-from fit_tool.profile.messages.nmea_sentence_message import NmeaSentenceMessage
-from fit_tool.profile.messages.obdii_data_message import ObdiiDataMessage
-from fit_tool.profile.messages.ohr_settings_message import OhrSettingsMessage
-from fit_tool.profile.messages.one_d_sensor_calibration_message import OneDSensorCalibrationMessage
-from fit_tool.profile.messages.power_zone_message import PowerZoneMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.messages.schedule_message import ScheduleMessage
-from fit_tool.profile.messages.sdm_profile_message import SdmProfileMessage
-from fit_tool.profile.messages.segment_file_message import SegmentFileMessage
-from fit_tool.profile.messages.segment_id_message import SegmentIdMessage
-from fit_tool.profile.messages.segment_lap_message import SegmentLapMessage
-from fit_tool.profile.messages.segment_leaderboard_entry_message import SegmentLeaderboardEntryMessage
-from fit_tool.profile.messages.segment_point_message import SegmentPointMessage
-from fit_tool.profile.messages.session_message import SessionMessage
-from fit_tool.profile.messages.set_message import SetMessage
-from fit_tool.profile.messages.slave_device_message import SlaveDeviceMessage
-from fit_tool.profile.messages.software_message import SoftwareMessage
-from fit_tool.profile.messages.speed_zone_message import SpeedZoneMessage
-from fit_tool.profile.messages.sport_message import SportMessage
-from fit_tool.profile.messages.stress_level_message import StressLevelMessage
-from fit_tool.profile.messages.three_d_sensor_calibration_message import ThreeDSensorCalibrationMessage
-from fit_tool.profile.messages.timestamp_correlation_message import TimestampCorrelationMessage
-from fit_tool.profile.messages.totals_message import TotalsMessage
+from fit_tool.profile.messages.event_message import EventMessage
+from fit_tool.profile.messages.device_info_message import DeviceInfoMessage
 from fit_tool.profile.messages.training_file_message import TrainingFileMessage
-from fit_tool.profile.messages.user_profile_message import UserProfileMessage
-from fit_tool.profile.messages.video_clip_message import VideoClipMessage
-from fit_tool.profile.messages.video_description_message import VideoDescriptionMessage
+from fit_tool.profile.messages.hrv_message import HrvMessage
+from fit_tool.profile.messages.weather_conditions_message import WeatherConditionsMessage
+from fit_tool.profile.messages.weather_alert_message import WeatherAlertMessage
+from fit_tool.profile.messages.gps_metadata_message import GpsMetadataMessage
+from fit_tool.profile.messages.camera_event_message import CameraEventMessage
+from fit_tool.profile.messages.gyroscope_data_message import GyroscopeDataMessage
+from fit_tool.profile.messages.accelerometer_data_message import AccelerometerDataMessage
+from fit_tool.profile.messages.magnetometer_data_message import MagnetometerDataMessage
+from fit_tool.profile.messages.barometer_data_message import BarometerDataMessage
+from fit_tool.profile.messages.three_d_sensor_calibration_message import ThreeDSensorCalibrationMessage
+from fit_tool.profile.messages.one_d_sensor_calibration_message import OneDSensorCalibrationMessage
 from fit_tool.profile.messages.video_frame_message import VideoFrameMessage
+from fit_tool.profile.messages.obdii_data_message import ObdiiDataMessage
+from fit_tool.profile.messages.nmea_sentence_message import NmeaSentenceMessage
+from fit_tool.profile.messages.aviation_attitude_message import AviationAttitudeMessage
 from fit_tool.profile.messages.video_message import VideoMessage
 from fit_tool.profile.messages.video_title_message import VideoTitleMessage
-from fit_tool.profile.messages.watchface_settings_message import WatchfaceSettingsMessage
-from fit_tool.profile.messages.weather_alert_message import WeatherAlertMessage
-from fit_tool.profile.messages.weather_conditions_message import WeatherConditionsMessage
-from fit_tool.profile.messages.weight_scale_message import WeightScaleMessage
+from fit_tool.profile.messages.video_description_message import VideoDescriptionMessage
+from fit_tool.profile.messages.video_clip_message import VideoClipMessage
+from fit_tool.profile.messages.set_message import SetMessage
+from fit_tool.profile.messages.jump_message import JumpMessage
+from fit_tool.profile.messages.course_message import CourseMessage
+from fit_tool.profile.messages.course_point_message import CoursePointMessage
+from fit_tool.profile.messages.segment_id_message import SegmentIdMessage
+from fit_tool.profile.messages.segment_leaderboard_entry_message import SegmentLeaderboardEntryMessage
+from fit_tool.profile.messages.segment_point_message import SegmentPointMessage
+from fit_tool.profile.messages.segment_lap_message import SegmentLapMessage
+from fit_tool.profile.messages.segment_file_message import SegmentFileMessage
 from fit_tool.profile.messages.workout_message import WorkoutMessage
 from fit_tool.profile.messages.workout_session_message import WorkoutSessionMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
-from fit_tool.profile.messages.zones_target_message import ZonesTargetMessage
-
+from fit_tool.profile.messages.exercise_title_message import ExerciseTitleMessage
+from fit_tool.profile.messages.schedule_message import ScheduleMessage
+from fit_tool.profile.messages.totals_message import TotalsMessage
+from fit_tool.profile.messages.weight_scale_message import WeightScaleMessage
+from fit_tool.profile.messages.blood_pressure_message import BloodPressureMessage
+from fit_tool.profile.messages.monitoring_info_message import MonitoringInfoMessage
+from fit_tool.profile.messages.monitoring_message import MonitoringMessage
+from fit_tool.profile.messages.hr_message import HrMessage
+from fit_tool.profile.messages.stress_level_message import StressLevelMessage
+from fit_tool.profile.messages.memo_glob_message import MemoGlobMessage
+from fit_tool.profile.messages.ant_channel_id_message import AntChannelIdMessage
+from fit_tool.profile.messages.ant_rx_message import AntRxMessage
+from fit_tool.profile.messages.ant_tx_message import AntTxMessage
+from fit_tool.profile.messages.exd_screen_configuration_message import ExdScreenConfigurationMessage
+from fit_tool.profile.messages.exd_data_field_configuration_message import ExdDataFieldConfigurationMessage
+from fit_tool.profile.messages.exd_data_concept_configuration_message import ExdDataConceptConfigurationMessage
+from fit_tool.profile.messages.field_description_message import FieldDescriptionMessage
+from fit_tool.profile.messages.developer_data_id_message import DeveloperDataIdMessage
+from fit_tool.profile.messages.dive_summary_message import DiveSummaryMessage
+from fit_tool.profile.messages.climb_pro_message import ClimbProMessage
 
 class MessageFactory:
 
@@ -237,12 +237,10 @@ class MessageFactory:
             return BarometerDataMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ThreeDSensorCalibrationMessage.ID:
-            return ThreeDSensorCalibrationMessage(definition_message=definition_message,
-                                                  developer_fields=developer_fields)
+            return ThreeDSensorCalibrationMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == OneDSensorCalibrationMessage.ID:
-            return OneDSensorCalibrationMessage(definition_message=definition_message,
-                                                developer_fields=developer_fields)
+            return OneDSensorCalibrationMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == VideoFrameMessage.ID:
             return VideoFrameMessage(definition_message=definition_message, developer_fields=developer_fields)
@@ -284,8 +282,7 @@ class MessageFactory:
             return SegmentIdMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == SegmentLeaderboardEntryMessage.ID:
-            return SegmentLeaderboardEntryMessage(definition_message=definition_message,
-                                                  developer_fields=developer_fields)
+            return SegmentLeaderboardEntryMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == SegmentPointMessage.ID:
             return SegmentPointMessage(definition_message=definition_message, developer_fields=developer_fields)
@@ -345,16 +342,13 @@ class MessageFactory:
             return AntTxMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdScreenConfigurationMessage.ID:
-            return ExdScreenConfigurationMessage(definition_message=definition_message,
-                                                 developer_fields=developer_fields)
+            return ExdScreenConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdDataFieldConfigurationMessage.ID:
-            return ExdDataFieldConfigurationMessage(definition_message=definition_message,
-                                                    developer_fields=developer_fields)
+            return ExdDataFieldConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == ExdDataConceptConfigurationMessage.ID:
-            return ExdDataConceptConfigurationMessage(definition_message=definition_message,
-                                                      developer_fields=developer_fields)
+            return ExdDataConceptConfigurationMessage(definition_message=definition_message, developer_fields=developer_fields)
 
         elif definition_message.global_id == FieldDescriptionMessage.ID:
             return FieldDescriptionMessage(definition_message=definition_message, developer_fields=developer_fields)

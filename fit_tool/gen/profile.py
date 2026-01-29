@@ -297,10 +297,11 @@ class Profile:
                     if subfield.ref_field_map:
                         resolved_map = {}
                         for key, values in subfield.ref_field_map.items():
-                            field = message.get_field_by_name(key)
+                            ref_field_def = message.get_field_by_name(key)
                             resolved_values = []
                             for item in values:
-                                resolved_value = profile.get_type_by_name(field.type_name).get_value_by_name(item)
+                                resolved_value = profile.get_type_by_name(ref_field_def.type_name).get_value_by_name(
+                                    item)
                                 resolved_values.append(resolved_value)
                             resolved_map[key] = resolved_values
 

@@ -88,11 +88,11 @@ class DataMessage(Message):
         self.clear_field_by_id(field_id)
 
     def get_developer_field(self, developer_data_index: int, field_id: int) -> Optional[DeveloperField]:
-        return next(iter([x for x in self.developer_fields if
-                          x.developer_data_index == developer_data_index and x.field_id == field_id]))
+        return next((x for x in self.developer_fields if
+                     x.developer_data_index == developer_data_index and x.field_id == field_id), None)
 
     def get_developer_field_by_name(self, name: str) -> Optional[DeveloperField]:
-        return next(iter([x for x in self.developer_fields if x.name == name]))
+        return next((x for x in self.developer_fields if x.name == name), None)
 
     def read_from_bytes(self, bytes_buffer: bytes, offset: int = 0):
         start = offset

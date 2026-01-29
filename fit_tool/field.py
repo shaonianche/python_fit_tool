@@ -405,9 +405,10 @@ class Field:
         return bytes_buffer
 
     def to_bytes(self, endian: Endian = Endian.LITTLE) -> bytes:
-        bytes_buffer = b''
-        for value in self.encoded_values:
-            bytes_buffer += self.encoded_value_to_bytes(value, endian=endian)
+        bytes_buffer = b''.join(
+            self.encoded_value_to_bytes(value, endian=endian)
+            for value in self.encoded_values
+        )
 
         # sometimes subfields or strings can be less than the allocated field size,
         # so we pad the buffer with 0's to meet the size requirement.

@@ -73,12 +73,6 @@ class FitFile:
                 logger.warning(
                     f'Record {record_index}, {record.message}: size ({record_size}) != defined size ({defined_size}). Some fields were not read correctly.')
 
-            actual_bytes = bytes_buffer[offset:offset + defined_size]
-            record_bytes = record.to_bytes()
-
-            if actual_bytes != record_bytes:
-                logger.warning(f'- {record_index} -\n\tactual: {actual_bytes}\n\trecord: {record_bytes}')
-
             record_bytes_remaining_count -= defined_size
             offset += defined_size
             record_index += 1

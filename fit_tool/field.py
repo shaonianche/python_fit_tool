@@ -33,7 +33,7 @@ class Field:
                  ref_field_map: dict = None,
                  array_type: ArrayType = None,
                  array_fixed_length: int = None,
-                 field_type: FieldType = None):
+                 type_: FieldType = None):
 
         self.field_id = field_id
         self.name = name
@@ -51,7 +51,7 @@ class Field:
         self.ref_field_map = ref_field_map
         self.array_type = array_type
         self.array_fixed_length = array_fixed_length
-        self.type_ = field_type
+        self.type_ = type_
 
         self.encoded_values = [None for _ in range(Field.get_length_from_size(base_type, size))]
 
@@ -62,7 +62,7 @@ class Field:
                       is_expanded_field=other.is_expanded_field, sub_fields=other.sub_fields,
                       components=other.components,
                       size=other.size, growable=other.growable, type_name=other.type_name,
-                      field_type=getattr(other, 'type_', None))
+                      type_=getattr(other, 'type_', None))
         field.encoded_values = other.encoded_values
         return field
 

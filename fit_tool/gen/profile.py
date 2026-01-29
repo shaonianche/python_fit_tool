@@ -269,7 +269,7 @@ class Profile:
                                               type_name=field_type_name,
                                               array_type=array_type,
                                               array_fixed_length=array_fixed_length,
-                                              field_type=type_
+                                              type_=type_
                                               )
 
                     is_field = field_id is not None

@@ -97,33 +97,21 @@ class DefinitionMessage(Message):
         return values
 
     def to_bytes(self) -> bytes:
-        bytes_buffer = bytearray()
         endian_symbol = '<' if self.endian == Endian.LITTLE else '>'
+        parts = [
+            b'\x00',  # reserved
+            b'\x00' if self.endian == Endian.LITTLE else b'\x01',  # architecture
+            struct.pack(f'{endian_symbol}H', self.global_id),  # global id
+            bytes([len(self.field_definitions)]),  # field count
+        ]
 
-        # reserved
-        bytes_buffer.append(0)
+        parts.extend(fd.to_bytes() for fd in self.field_definitions)
 
-        # architecture
-        bytes_buffer.append(0 if self.endian == Endian.LITTLE else 1)
-
-        # global id
-        buffer = struct.pack(f'{endian_symbol}H', self.global_id)
-        bytes_buffer += buffer
-
-        # field count
-        bytes_buffer.append(len(self.field_definitions))
-
-        # field definitions
-        bytes_buffer += b''.join(fd.to_bytes() for fd in self.field_definitions)
-
-        # developer field definitions
         if self.developer_field_definitions:
-            bytes_buffer.append(len(self.developer_field_definitions))
+            parts.append(bytes([len(self.developer_field_definitions)]))
+            parts.extend(fd.to_bytes() for fd in self.developer_field_definitions)
 
-            # developer field definitions
-            bytes_buffer += b''.join(fd.to_bytes() for fd in self.developer_field_definitions)
-
-        return bytes(bytes_buffer)
+        return b''.join(parts)
 
     def get_developer_fields(self, developer_fields_by_data_index: dict) -> list[DeveloperField]:
         developer_fields = []

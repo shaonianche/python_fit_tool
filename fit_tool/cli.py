@@ -18,7 +18,6 @@ def parse_args():
     parser.add_argument(
         'fitfile',
         metavar='FILE',
-        type=argparse.FileType('r'),
         help='FIT file to process'
     )
     parser.add_argument(
@@ -58,10 +57,9 @@ def main():
         logger.addHandler(handler)
 
     logger.setLevel(logging.DEBUG)
-    logger.info(f'Loading fit file {args.fitfile.name}...')
-    fit_filename = args.fitfile.name
+    logger.info(f'Loading fit file {args.fitfile}...')
 
-    fit_file = FitFile.from_file(fit_filename)
+    fit_file = FitFile.from_file(args.fitfile)
 
     if args.type:
         format_type = args.type
@@ -71,7 +69,7 @@ def main():
     else:
         format_type = 'csv'
 
-    basename_noext, _ = os.path.splitext(os.path.basename(fit_filename))
+    basename_noext, _ = os.path.splitext(os.path.basename(args.fitfile))
     output_filename = args.output or f'{basename_noext}.{format_type}'
 
     logger.info(f'Exporting fit file to {output_filename} as format {format_type}...')

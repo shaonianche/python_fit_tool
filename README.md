@@ -9,15 +9,24 @@ A library for reading and writing Garmin FIT files.
 Installation
 ==================
 
+### Using uv (recommended)
+
+```bash
+uv add fit-tool
 ```
+
+### Using pip
+
+```bash
 python3 -m pip install --upgrade pip
-python3 -m pip install --upgrade fit_tool
+python3 -m pip install --upgrade fit-tool
 ```
 
 Command line interface
 =======================
+
 ```console
-usage: fittool [-h] [-v] [-o OUTPUT] [-l LOG] [-t TYPE] FILE
+usage: fit-tool [-h] [-v] [-o OUTPUT] [-l LOG] [-t TYPE] FILE
 
 Tool for managing FIT files.
 
@@ -34,8 +43,13 @@ optional arguments:
 ```
 
 ### Convert file to CSV
-```console
-fittool oldstage.fit 
+
+```bash
+# Using uv
+uv run fit-tool oldstage.fit
+
+# Or after installation
+fit-tool oldstage.fit
 ```
 
 Library Usage

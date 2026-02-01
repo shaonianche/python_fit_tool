@@ -44,16 +44,16 @@ def main():
     logger.addHandler(logging.NullHandler())
     logger.propagate = False
 
+    formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s %(message)s")
+
     if args.log:
         handler = logging.FileHandler(args.log)
-        formatter = logging.Formatter(
-            fmt="%(asctime)s %(levelname)s %(message)s"
-        )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
     if args.verbose:
         handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
         logger.addHandler(handler)
 
     logger.setLevel(logging.DEBUG)

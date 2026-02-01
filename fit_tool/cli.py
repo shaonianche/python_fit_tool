@@ -8,6 +8,7 @@ import logging
 import os
 
 from fit_tool.fit_file import FitFile
+from fit_tool.utils.logging import logger
 
 
 def parse_args():
@@ -39,11 +40,6 @@ def main():
     """Main entry point."""
     args = parse_args()
 
-    logger = logging.getLogger('fit_tool')
-    logger.handlers = []
-    logger.addHandler(logging.NullHandler())
-    logger.propagate = False
-
     formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s %(message)s")
 
     if args.log:
@@ -55,8 +51,7 @@ def main():
         handler = logging.StreamHandler()
         handler.setFormatter(formatter)
         logger.addHandler(handler)
-
-    logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
     logger.info(f'Loading fit file {args.fitfile}...')
 
     fit_file = FitFile.from_file(args.fitfile)

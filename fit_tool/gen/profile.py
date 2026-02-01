@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import FieldType, BaseType
 from fit_tool.field import Field, ArrayType
+from fit_tool.utils.logging import logger
 
 
 class Message:
@@ -138,9 +139,8 @@ class Profile:
                 # it.
                 type_base_type = BaseType.from_name(type_base_type_name)
                 if not type_base_type:
-                    # TODO: add proper logging
-                    print(
-                        'Warning: Unknown base_type {}'.format(type_base_type))
+                    logger.warning(
+                        'Unknown base_type {}'.format(type_base_type_name))
                     continue
                 current_type = FieldType(type_name, type_base_type)
                 profile.add_type(current_type)

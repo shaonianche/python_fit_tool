@@ -40,7 +40,7 @@ Homepage = "https://github.com/shaonianche/python_fit_tool"
 Repository = "https://github.com/shaonianche/python_fit_tool.git"
 
 [project.scripts]
-fittool = "fit_tool.cli:main"
+fit-tool = "fit_tool.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["fit_tool*"]

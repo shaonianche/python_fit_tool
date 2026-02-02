@@ -14,10 +14,10 @@ jobs:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.1
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
@@ -28,6 +28,9 @@ jobs:
       - name: Build package
         run: uv build
 
+      - name: Test with python ${{ matrix.python-version }}
+        run: uv run --frozen pytest  
+          
       - name: Run tests with coverage
         run: uv run pytest --cov=fit_tool --cov-report=xml --cov-report=term --junitxml=junit.xml
 

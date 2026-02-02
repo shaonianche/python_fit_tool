@@ -1,3 +1,5 @@
+> **Note**: This is a community-maintained fork. The original package was removed from PyPI by its author and cannot be restored. This repository continues development and publishing under the same package name.
+
 A library for reading and writing Garmin FIT files.
 
 ## Background
@@ -26,7 +28,7 @@ Command line interface
 =======================
 
 ```console
-usage: fit-tool [-h] [-v] [-o OUTPUT] [-l LOG] [-t TYPE] FILE
+usage: uvx fit-tool [-h] [-v] [-o OUTPUT] [-l LOG] [-t TYPE] FILE
 
 Tool for managing FIT files.
 
@@ -45,8 +47,8 @@ optional arguments:
 ### Convert file to CSV
 
 ```bash
-# Using uv
-uv run fit-tool oldstage.fit
+# Using uvx
+uvx fit-tool oldstage.fit
 
 # Or after installation
 fit-tool oldstage.fit

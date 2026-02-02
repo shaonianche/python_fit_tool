@@ -509,7 +509,7 @@ wheels = [
 
 [[package]]
 name = "fit-tool"
-version = "0.9.14"
+version = "0.9.15"
 source = { editable = "." }
 dependencies = [
     { name = "bitstruct", version = "8.20.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },

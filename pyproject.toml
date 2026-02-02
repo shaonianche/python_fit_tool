@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fit-tool"
-version = "0.9.14"
+version = "0.9.15"
 description = "A library for reading and writing Garmin FIT files."
 readme = "README.md"
 license = "BSD-3-Clause"

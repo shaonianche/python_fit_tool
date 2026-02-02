@@ -4,13 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fit-tool"
-version = "0.9.14"
+version = "0.9.15"
 description = "A library for reading and writing Garmin FIT files."
 readme = "README.md"
 license = "BSD-3-Clause"
 authors = [
+    {name = "Fei Duan", email = "github@duanfei.org"},
     {name = "Matt Tucker", email = "mtucker@stagescycling.com"}
 ]
+keywords = ["fit", "garmin", "fitness", "cycling", "gps", "workout", "activity"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -38,6 +40,8 @@ test = [
 [project.urls]
 Homepage = "https://github.com/shaonianche/python_fit_tool"
 Repository = "https://github.com/shaonianche/python_fit_tool.git"
+Documentation = "https://github.com/shaonianche/python_fit_tool#readme"
+Changelog = "https://github.com/shaonianche/python_fit_tool/blob/main/CHANGELOG.md"
 
 [project.scripts]
 fit-tool = "fit_tool.cli:main"
@@ -51,14 +55,20 @@ zip-safe = false
 [tool.pytest.ini_options]
 testpaths = ["fit_tool/tests"]
 python_files = ["test_*.py"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+addopts = "-r aR"
 
 [dependency-groups]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
+    "towncrier>=24.8.0",
 ]
 
 [tool.coverage.run]
+branch = true
 source = ["fit_tool"]
 omit = [
     "fit_tool/tests/**/*",
@@ -71,5 +81,80 @@ omit = [
 [tool.coverage.report]
 exclude_lines = [
     "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
     "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
+ignore_errors = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+extend-select = [
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "FA",   # flake8-future-annotations
+    "UP",   # pyupgrade
+    "W",    # pycodestyle
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["fit_tool"]
+
+[tool.mypy]
+follow_imports = "silent"
+ignore_missing_imports = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+exclude = "fit_tool/(tests|examples|gen|profile/messages)"
+
+[tool.codespell]
+ignore-words-list = "ba,te"
+
+[tool.towncrier]
+package = "fit_tool"
+filename = "CHANGELOG.md"
+issue_format = "[#{issue}](https://github.com/shaonianche/python_fit_tool/issues/{issue})"
+directory = "news/"
+title_format = "## Release v{version} ({project_date})"
+underlines = ["", "", ""]
+
+  [[tool.towncrier.type]]
+  directory = "break"
+  name = "Breaking Changes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "feature"
+  name = "Features & Improvements"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "bugfix"
+  name = "Bug Fixes"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "doc"
+  name = "Documentation"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "dep"
+  name = "Dependencies"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "removal"
+  name = "Removals and Deprecations"
+  showcontent = true
+
+  [[tool.towncrier.type]]
+  directory = "misc"
+  name = "Miscellany"
+  showcontent = true

@@ -107,7 +107,6 @@ class Profile:
 
     @classmethod
     def get_default_profile(cls):
-
         xlsx_filename = os.path.join(os.path.dirname(__file__), f'Profile_{SDK_VERSION}.xlsx')
         print(f'Loading profile from {xlsx_filename}...')
         profile = Profile.load(xlsx_filename)

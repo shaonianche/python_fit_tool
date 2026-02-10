@@ -10,7 +10,7 @@ from fit_tool.base_type import BaseType
 from fit_tool.field import Field
 from fit_tool.gen.profile import Profile, Message
 
-DEFAULT_BUILD_PATH = '../../build'
+DEFAULT_BUILD_PATH = str(Path(__file__).resolve().parents[1])
 
 
 def parse_args():
@@ -174,12 +174,36 @@ def main():
     if messages_dir.exists():
         for p in messages_dir.glob('*.py'):
             p.unlink()
+        # Remove any leftover files (e.g., __pycache__) to allow regeneration
+        for p in messages_dir.iterdir():
+            if p.is_dir():
+                for child in p.rglob('*'):
+                    if child.is_file():
+                        child.unlink()
+                for child in sorted(p.rglob('*'), reverse=True):
+                    if child.is_dir():
+                        child.rmdir()
+                p.rmdir()
+            else:
+                p.unlink()
         messages_dir.rmdir()
 
     profile_dir = Path(profile_path)
     if profile_dir.exists():
         for p in profile_dir.glob('*.py'):
             p.unlink()
+        # Remove any leftover files (e.g., __pycache__) to allow regeneration
+        for p in profile_dir.iterdir():
+            if p.is_dir():
+                for child in p.rglob('*'):
+                    if child.is_file():
+                        child.unlink()
+                for child in sorted(p.rglob('*'), reverse=True):
+                    if child.is_dir():
+                        child.rmdir()
+                p.rmdir()
+            else:
+                p.unlink()
         profile_dir.rmdir()
 
     Path(profile_path).mkdir(parents=True, exist_ok=True)
@@ -217,12 +241,13 @@ def main():
         profile_type = profile.types_by_name[k]
         profile_type.values_by_name = {convert_value_name(k): v for k, v in profile_type.values_by_name.items()}
 
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader('..'), )
+    templates_dir = Path(__file__).resolve().parent / 'templates'
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(str(templates_dir)), )
 
     #
     # Gen profile_type.py
     #
-    template = env.get_template('gen/templates/template_profile_type.jinja')
+    template = env.get_template('template_profile_type.jinja')
     rendering = template.render(profile=profile, profile_types=profile_types,
                                 sdk_version=SDK_VERSION)
     filename = os.path.join(profile_path, 'profile_type.py')
@@ -230,7 +255,7 @@ def main():
         file_out.write(rendering)
 
     for name, message in profile.messages_by_name.items():
-        template = env.get_template('gen/templates/template_message.jinja')
+        template = env.get_template('template_message.jinja')
         rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
                                     class_name=inflection.camelize(message.name + '_message'),
                                     message=message)
@@ -243,7 +268,7 @@ def main():
     message_class_names = [inflection.camelize(message_name + '_message') for message_name in
                            profile.messages_by_name.keys()]
 
-    template = env.get_template('gen/templates/template_message_factory.jinja')
+    template = env.get_template('template_message_factory.jinja')
 
     message_names = zip(message_class_names, message_file_names)
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
@@ -252,7 +277,7 @@ def main():
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 
-    template = env.get_template('gen/templates/template_common_fields.jinja')
+    template = env.get_template('template_common_fields.jinja')
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION)
     filename = os.path.join(messages_path, f"common_fields.py")
     with (open(filename, 'w')) as file_out:

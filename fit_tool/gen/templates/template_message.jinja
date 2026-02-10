@@ -128,7 +128,7 @@ class {{class_name}}(DataMessage):
             if value is None:
                 return None
             else:
-                return {{message.field_property_type_by_name[field_name]}}(field.get_value())
+                return {{field.subfield_property_type_by_name[sub_field.name]}}(value)
 
         else:
             return None

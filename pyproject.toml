@@ -29,6 +29,7 @@ requires-python = ">=3.8"
 dependencies = [
     "openpyxl>=2.5.12",
     "bitstruct>=8.11.1",
+    "inflection>=0.5.1",
 ]
 
 [project.optional-dependencies]
@@ -45,6 +46,7 @@ Changelog = "https://github.com/shaonianche/python_fit_tool/blob/main/CHANGELOG.
 
 [project.scripts]
 fit-tool = "fit_tool.cli:main"
+gen-profile = "fit_tool.gen.gen_profile:main"
 
 [tool.setuptools.packages.find]
 include = ["fit_tool*"]

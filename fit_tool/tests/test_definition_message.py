@@ -3,6 +3,7 @@
 import unittest
 
 from fit_tool.base_type import BaseType
+from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.endian import Endian
@@ -52,3 +53,26 @@ class TestDefinitionMessage(unittest.TestCase):
         )
         with self.assertRaises(ValueError):
             definition.get_developer_fields({})
+
+    def test_get_developer_fields_requires_field_id_mapping(self):
+        definition = DefinitionMessage(
+            developer_field_definitions=[DeveloperFieldDefinition(field_id=1, size=1, developer_data_index=0)]
+        )
+        with self.assertRaises(ValueError):
+            definition.get_developer_fields({0: {}})
+
+    def test_get_developer_fields_returns_sized_developer_field(self):
+        definition = DefinitionMessage(
+            developer_field_definitions=[DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=0)]
+        )
+        source_field = DeveloperField(
+            field_id=1,
+            name='dev',
+            developer_data_index=0,
+            base_type=BaseType.UINT8,
+            size=1,
+        )
+
+        result = definition.get_developer_fields({0: {1: source_field}})
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].size, 2)

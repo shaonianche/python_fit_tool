@@ -105,3 +105,13 @@ class TestField(unittest.TestCase):
         field = Field(base_type=BaseType.UINT8)
         with self.assertRaises(ValueError):
             field.encoded_value_to_bytes(None)
+
+    def test_set_encoded_value_raises_value_error_for_out_of_range_value(self):
+        field = Field(name='speed', base_type=BaseType.UINT8, size=1)
+        with self.assertRaises(ValueError):
+            field.set_encoded_value(0, 999)
+
+    def test_set_encoded_value_raises_value_error_when_string_exceeds_fixed_size(self):
+        field = Field(name='title', base_type=BaseType.STRING, size=1, growable=False)
+        with self.assertRaises(ValueError):
+            field.set_encoded_value(0, 'ab')

@@ -82,6 +82,19 @@ class TestFitFile(unittest.TestCase):
         with self.assertRaises(ValueError):
             fit_file.to_bytes()
 
+    def test_to_bytes_mismatched_crc_logs_warning_when_check_disabled(self):
+        mesg = WorkoutStepMessage(local_id=0)
+        mesg.workout_step_name = '1st step'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+
+        builder = FitFileBuilder(auto_define=True)
+        builder.add(mesg)
+        fit_file = builder.build()
+
+        fit_file.crc = (fit_file.crc + 1) % 65536
+        bytes_buffer = fit_file.to_bytes(check_crc=False)
+        self.assertIsInstance(bytes_buffer, bytes)
+
     def test_builder_requires_definition_when_auto_define_is_false(self):
         mesg = WorkoutStepMessage(local_id=0)
         mesg.workout_step_name = '1st step'

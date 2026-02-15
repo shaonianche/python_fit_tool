@@ -1,4 +1,5 @@
 import os.path
+import re
 
 from openpyxl import load_workbook
 
@@ -33,10 +34,20 @@ class Message:
 def parse_array_field(value):
     if value is None:
         return None, None
+    if isinstance(value, str):
+        value = value.strip()
+
+    if value == '':
+        return None, None
     if value == '[N]':
         return ArrayType.VARIABLE, None
 
-    return ArrayType.FIXED, int(value[1:-1])
+    if isinstance(value, str):
+        match = re.fullmatch(r'\[(\d+)\]', value)
+        if match:
+            return ArrayType.FIXED, int(match.group(1))
+
+    raise ValueError(f'Invalid array field value: {value!r}')
 
 
 class Profile:
@@ -118,6 +129,9 @@ class Profile:
         profile = cls()
         wb = load_workbook(filename=filename, read_only=True, data_only=True)
 
+        def is_blank(value):
+            return value is None or (isinstance(value, str) and value.strip() == '')
+
         #
         # Parse the Types worksheet
         #
@@ -179,7 +193,13 @@ class Profile:
                 field_id = row[1].value
                 field_name = row[2].value
                 field_type_name = row[3].value
-                array_type, array_fixed_length = parse_array_field(row[4].value)
+                try:
+                    array_type, array_fixed_length = parse_array_field(row[4].value)
+                except ValueError as exc:
+                    raise ValueError(
+                        'Invalid array declaration in Messages sheet '
+                        f'row={index + 1} field={field_name!r} value={row[4].value!r}'
+                    ) from exc
                 # components = row[5].value
                 scale = row[6].value if row[6].value is not None else 1
 
@@ -238,7 +258,7 @@ class Profile:
                     ref_field_values.append('speed_lap')
 
                 # comment = row[13].value
-                if field_id is not None or field_name is not None:
+                if not (is_blank(field_id) and is_blank(field_name)):
 
                     # First check if it is a base type
                     base_type_ = BaseType.from_name(field_type_name)

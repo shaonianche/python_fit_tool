@@ -131,10 +131,9 @@ class Record:
             message = DefinitionMessage.from_bytes(bytes_buffer, offset=offset,
                                                    has_developer_fields=header.has_developer_fields)
         else:
-            definition_message = definition_messages[header.local_id]
-
-            if not definition_message:
-                raise Exception(f'DefinitionMessage not defined for local_id: {header.local_id}')
+            definition_message = definition_messages.get(header.local_id)
+            if definition_message is None:
+                raise ValueError(f'DefinitionMessage not defined for local_id: {header.local_id}')
 
             if developer_fields_by_data_index:
                 developer_fields = definition_message.get_developer_fields(developer_fields_by_data_index)

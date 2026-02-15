@@ -35,3 +35,13 @@ class TestDataMessage(unittest.TestCase):
 
         row = dm1.to_row()
         print(row)
+
+    def test_size_is_read_only(self):
+        dm1 = WorkoutStepMessage()
+        with self.assertRaises(AttributeError):
+            dm1.size = 1
+
+    def test_read_from_bytes_requires_definition(self):
+        dm1 = WorkoutStepMessage()
+        with self.assertRaises(ValueError):
+            dm1.read_from_bytes(b'')

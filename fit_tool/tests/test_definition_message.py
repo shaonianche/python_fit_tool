@@ -3,6 +3,7 @@
 import unittest
 
 from fit_tool.base_type import BaseType
+from fit_tool.developer_field_definition import DeveloperFieldDefinition
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.endian import Endian
 from fit_tool.field_definition import FieldDefinition
@@ -44,3 +45,10 @@ class TestDefinitionMessage(unittest.TestCase):
         definition = DefinitionMessage.from_data_message(dm1)
         row = definition.to_row()
         print(row)
+
+    def test_get_developer_fields_requires_mapping(self):
+        definition = DefinitionMessage(
+            developer_field_definitions=[DeveloperFieldDefinition(field_id=1, size=1, developer_data_index=0)]
+        )
+        with self.assertRaises(ValueError):
+            definition.get_developer_fields({})

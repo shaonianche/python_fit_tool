@@ -69,7 +69,7 @@ class Profile:
         # Next check if it is derived type
         type_ = self.types_by_name.get(name)
         if not type_:
-            raise Exception('Type: {} not found in profile.'.format(name))
+            raise KeyError('Type: {} not found in profile.'.format(name))
         return type_
 
     def add_message(self, message):

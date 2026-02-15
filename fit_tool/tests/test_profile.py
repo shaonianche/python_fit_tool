@@ -46,3 +46,11 @@ class TestParseArrayField(unittest.TestCase):
         for value in invalid_values:
             with self.assertRaisesRegex(ValueError, 'Invalid array field value'):
                 parse_array_field(value)
+
+
+class TestProfileTypes(unittest.TestCase):
+
+    def test_get_type_by_name_raises_key_error_for_missing_type(self):
+        profile = Profile()
+        with self.assertRaises(KeyError):
+            profile.get_type_by_name('missing_type')

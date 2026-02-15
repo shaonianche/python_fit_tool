@@ -71,3 +71,37 @@ class TestField(unittest.TestCase):
         value = 'test12345'
         field.set_encoded_value(0, value)
         field.to_row()
+
+    def test_from_field_does_not_share_encoded_values(self):
+        original = Field(name='speed', base_type=BaseType.UINT8, size=1)
+        original.set_encoded_value(0, 7, check_validity=False)
+
+        clone = Field.from_field(original)
+        clone.set_encoded_value(0, 9, check_validity=False)
+
+        self.assertEqual(original.encoded_values, [7])
+        self.assertEqual(clone.encoded_values, [9])
+        self.assertIsNot(original.encoded_values, clone.encoded_values)
+
+    def test_un_scale_offset_value_raises_on_zero_scale(self):
+        with self.assertRaises(ZeroDivisionError):
+            Field.un_scale_offset_value(encoded_value=1, scale=0, offset=0)
+
+    def test_set_encoded_value_raises_value_error_when_not_growable(self):
+        field = Field(name='speed', base_type=BaseType.UINT8, size=1, growable=False)
+        with self.assertRaises(ValueError):
+            field.set_encoded_value(1, 2)
+
+    def test_read_from_bytes_raises_type_error_for_string_base_type(self):
+        field = Field(base_type=BaseType.STRING, size=1)
+        with self.assertRaises(TypeError):
+            field.read_from_bytes(b'\x00', index=0)
+
+    def test_get_length_from_size_raises_value_error_for_mismatched_size(self):
+        with self.assertRaises(ValueError):
+            Field.get_length_from_size(BaseType.UINT16, 3)
+
+    def test_encoded_value_to_bytes_raises_value_error_for_none(self):
+        field = Field(base_type=BaseType.UINT8)
+        with self.assertRaises(ValueError):
+            field.encoded_value_to_bytes(None)

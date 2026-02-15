@@ -1,4 +1,5 @@
 import datetime
+from pathlib import Path
 
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
@@ -40,13 +41,13 @@ def main():
     step.workout_step_name = 'Cool Down Until Lap Button Pressed'
     step.intensity = Intensity.COOLDOWN
     step.duration_type = WorkoutStepDuration.OPEN
-    step.durationValue = 0
+    step.duration_value = 0
     step.target_type = WorkoutStepTarget.OPEN
     step.target_value = 0
     workout_steps.append(step)
 
     workout_message = WorkoutMessage()
-    workout_message.workoutName = 'Tempo Bike'
+    workout_message.workout_name = 'Tempo Bike'
     workout_message.sport = Sport.CYCLING
     workout_message.num_valid_steps = len(workout_steps)
 
@@ -59,10 +60,14 @@ def main():
 
     fit_file = builder.build()
 
-    fit_file.to_file('../tests/out/tempo_bike_workout.fit')
+    root = Path(__file__).resolve().parents[2]
+    out_dir = root / 'fit_tool' / 'tests' / 'out'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fit_path = out_dir / 'tempo_bike_workout.fit'
+    fit_file.to_file(str(fit_path))
 
-    fit_file2 = FitFile.from_file('../tests/out/tempo_bike_workout.fit')
-    fit_file2.to_csv('../tests/out/tempo_bike_workout.csv')
+    fit_file2 = FitFile.from_file(str(fit_path))
+    fit_file2.to_csv(str(out_dir / 'tempo_bike_workout.csv'))
 
 
 if __name__ == "__main__":

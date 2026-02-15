@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 from pathlib import Path
 
 import inflection
@@ -80,7 +81,7 @@ def field_name_to_class_name(message: Message, field: Field, name: str) -> str:
     name = name.replace('wkt_', 'workout_')
 
     # if not a common field then prefix the message name so we don't get class naming conflicts
-    if field.field_id not in [253, 254]:
+    if not is_common_field(field):
         name = message.name + '_' + name
 
     name = inflection.camelize(name, uppercase_first_letter=True)
@@ -88,6 +89,15 @@ def field_name_to_class_name(message: Message, field: Field, name: str) -> str:
     if not name.endswith('Field'):
         name += 'Field'
     return name
+
+
+def is_common_field(field: Field) -> bool:
+    field_id = str(field.field_id).strip()
+    if field_id == '253' and field.name == 'timestamp' and field.type_name == 'date_time':
+        return True
+    if field_id == '254' and field.name == 'message_index' and field.type_name == 'message_index':
+        return True
+    return False
 
 
 RESERVED_PROPERTY_NAMES = {'name', 'local_id', 'global_id'}
@@ -172,39 +182,11 @@ def main():
 
     messages_dir = Path(messages_path)
     if messages_dir.exists():
-        for p in messages_dir.glob('*.py'):
-            p.unlink()
-        # Remove any leftover files (e.g., __pycache__) to allow regeneration
-        for p in messages_dir.iterdir():
-            if p.is_dir():
-                for child in p.rglob('*'):
-                    if child.is_file():
-                        child.unlink()
-                for child in sorted(p.rglob('*'), reverse=True):
-                    if child.is_dir():
-                        child.rmdir()
-                p.rmdir()
-            else:
-                p.unlink()
-        messages_dir.rmdir()
+        shutil.rmtree(messages_dir)
 
     profile_dir = Path(profile_path)
     if profile_dir.exists():
-        for p in profile_dir.glob('*.py'):
-            p.unlink()
-        # Remove any leftover files (e.g., __pycache__) to allow regeneration
-        for p in profile_dir.iterdir():
-            if p.is_dir():
-                for child in p.rglob('*'):
-                    if child.is_file():
-                        child.unlink()
-                for child in sorted(p.rglob('*'), reverse=True):
-                    if child.is_dir():
-                        child.rmdir()
-                p.rmdir()
-            else:
-                p.unlink()
-        profile_dir.rmdir()
+        shutil.rmtree(profile_dir)
 
     Path(profile_path).mkdir(parents=True, exist_ok=True)
     Path(messages_path).mkdir(parents=True, exist_ok=True)
@@ -220,6 +202,9 @@ def main():
     profile.type_class_name_by_name = {k: convert_type_name(k) for k in profile.types_by_name.keys()}
 
     for message in profile.messages_by_name.values():
+        for field in message.fields_by_name.values():
+            field.is_common_field = is_common_field(field)
+
         message.field_class_name_by_name = {k: field_name_to_class_name(message, message.fields_by_name[k], k) for k in
                                             message.fields_by_name.keys()}
         message.field_property_name_by_name = {k: field_name_to_property_name(message, k) for k in

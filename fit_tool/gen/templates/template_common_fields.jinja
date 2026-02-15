@@ -18,5 +18,5 @@ class MessageIndexField(Field):
     ID = 254
 
     def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(name='message_index', field_id=self.ID, base_type=BaseType.UINT16, size=size, units='ms',
-                         type_name='date_time', growable=growable, sub_fields=[])
+        super().__init__(name='message_index', field_id=self.ID, base_type=BaseType.UINT16, size=size,
+                         type_name='message_index', growable=growable, sub_fields=[])

@@ -52,7 +52,8 @@ class DataMessage(Message):
 
     @size.setter
     def size(self, _size: int):
-        pass
+        if hasattr(self, 'fields'):
+            raise AttributeError('DataMessage.size is computed from fields and cannot be set directly.')
 
     def set_definition_message(self, definition_message: DefinitionMessage):
         self.definition_message = definition_message
@@ -98,7 +99,7 @@ class DataMessage(Message):
         start = offset
 
         if not self.definition_message:
-            raise Exception('DefinitionMessage cannot be null.')
+            raise ValueError('DefinitionMessage cannot be null.')
 
         for field_definition in self.definition_message.field_definitions:
             field = self.get_field(field_definition.field_id)
@@ -114,7 +115,7 @@ class DataMessage(Message):
                 field.read_all_from_bytes(field_bytes, endian=self.endian)
                 start += field.size
             else:
-                raise Exception(f'Field ${field.name} is empty')
+                raise ValueError(f'Field {field.name} is empty')
 
         for developer_field_definition in self.definition_message.developer_field_definitions:
             field = self.get_developer_field(developer_field_definition.developer_data_index,
@@ -131,7 +132,7 @@ class DataMessage(Message):
                 field.read_all_from_bytes(field_bytes, endian=self.endian)
                 start += field.size
             else:
-                raise Exception(f'Developer Field ${field.name} is empty')
+                raise ValueError(f'Developer Field {field.name} is empty')
 
     def to_row(self) -> list:
         row = [self.name]
@@ -147,20 +148,20 @@ class DataMessage(Message):
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise Exception(f'Field for id: {field_definition.field_id} is not valid.')
+                    raise ValueError(f'Field for id: {field_definition.field_id} is not valid.')
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = self.get_developer_field(field_definition.developer_data_index, field_definition.field_id)
 
                 if field is None:
-                    raise Exception(
+                    raise ValueError(
                         f'Developer field for id: {field_definition.developer_data_index}:{field_definition.field_id} not found.')
 
                 if field.is_valid():
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise Exception(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    raise ValueError(f'Developer Field for id: {field_definition.field_id} is not valid.')
 
         else:
             for field in self.fields:
@@ -188,19 +189,19 @@ class DataMessage(Message):
                 if field.is_valid():
                     bytes_buffer += field.to_bytes(endian=self.endian)
                 else:
-                    raise Exception(f'Field for id: {field_definition.field_id} is not valid.')
+                    raise ValueError(f'Field for id: {field_definition.field_id} is not valid.')
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = self.get_developer_field(field_definition.developer_data_index, field_definition.field_id)
 
                 if field is None:
-                    raise Exception(
+                    raise ValueError(
                         f'Developer field for id: {field_definition.developer_data_index}:{field_definition.field_id} not found.')
 
                 if field.is_valid():
                     bytes_buffer += field.to_bytes(endian=self.endian)
                 else:
-                    raise Exception(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    raise ValueError(f'Developer Field for id: {field_definition.field_id} is not valid.')
 
         else:
             for field in self.fields:

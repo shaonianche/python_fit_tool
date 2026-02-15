@@ -14,7 +14,7 @@ class Message:
         self.size = size
 
     def to_bytes(self) -> bytes:
-        raise Exception('Not implemented')
+        raise NotImplementedError
 
     def to_row(self) -> list:
-        raise Exception('Not implemented')
+        raise NotImplementedError

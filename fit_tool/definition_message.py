@@ -131,11 +131,23 @@ class DefinitionMessage(Message):
         developer_fields = []
 
         for field_definition in self.developer_field_definitions:
-            developer_field = developer_fields_by_data_index[field_definition.developer_data_index][
-                field_definition.field_id]
-            if developer_field:
-                sized_developer_field = DeveloperField.from_developer_field(developer_field, size=field_definition.size)
-                developer_fields.append(sized_developer_field)
+            developer_fields_by_index = developer_fields_by_data_index.get(field_definition.developer_data_index)
+            if developer_fields_by_index is None:
+                raise ValueError(
+                    f'Developer field definition refers to missing developer_data_index: '
+                    f'{field_definition.developer_data_index}'
+                )
+
+            developer_field = developer_fields_by_index.get(field_definition.field_id)
+            if developer_field is None:
+                raise ValueError(
+                    f'Developer field definition refers to missing field id '
+                    f'{field_definition.field_id} for developer_data_index '
+                    f'{field_definition.developer_data_index}'
+                )
+
+            sized_developer_field = DeveloperField.from_developer_field(developer_field, size=field_definition.size)
+            developer_fields.append(sized_developer_field)
 
         return developer_fields
 

@@ -11,6 +11,9 @@ from fit_tool.fit_file import FitFile
 from fit_tool.utils.logging import logger
 
 
+SUPPORTED_FORMATS = {"csv", "fit"}
+
+
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
@@ -30,10 +33,26 @@ def parse_args():
     parser.add_argument("-l", "--log", help="Log filename.")
     parser.add_argument(
         "-t", "--type",
+        choices=sorted(SUPPORTED_FORMATS),
         help="Output format type. Options: csv, fit."
     )
 
     return parser.parse_args()
+
+
+def resolve_format_type(args) -> str:
+    if args.type:
+        return args.type.lower()
+
+    if args.output:
+        _, out_ext = os.path.splitext(os.path.basename(args.output))
+        inferred_type = out_ext.lstrip('.').lower()
+        if inferred_type:
+            if inferred_type not in SUPPORTED_FORMATS:
+                raise ValueError(f'Unsupported output format "{inferred_type}". Supported formats: csv, fit.')
+            return inferred_type
+
+    return 'csv'
 
 
 def main():
@@ -56,13 +75,7 @@ def main():
 
     fit_file = FitFile.from_file(args.fitfile)
 
-    if args.type:
-        format_type = args.type
-    elif args.output:
-        _, out_ext = os.path.splitext(os.path.basename(args.output))
-        format_type = out_ext.lstrip('.')
-    else:
-        format_type = 'csv'
+    format_type = resolve_format_type(args)
 
     basename_noext, _ = os.path.splitext(os.path.basename(args.fitfile))
     output_filename = args.output or f'{basename_noext}.{format_type}'

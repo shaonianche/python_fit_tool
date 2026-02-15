@@ -10,6 +10,7 @@ from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
 from fit_tool.sub_field import SubField
+from fit_tool.profile.messages.common_fields import MessageIndexField, TimestampField
 from fit_tool.profile.profile_type import *
 from typing import List as list
 from typing import Dict as dict
@@ -159,7 +160,7 @@ class {{class_name}}(DataMessage):
     {%- endfor %}
 
 
-{% for field_name, field in message.fields_by_name.items() if field.def_num not in [253, 254] %}
+{% for field_name, field in message.fields_by_name.items() if not field.is_common_field %}
 
 
 class {{message.field_class_name_by_name[field_name]}}(Field):
@@ -176,8 +177,8 @@ class {{message.field_class_name_by_name[field_name]}}(Field):
                                 {%- if field.units %}
         units = '{{field.units}}',
                 {%- endif %}
-        {%- if field.units %}
-        type_name = '{{field.type_.name}}',
+        {%- if field.type_name %}
+        type_name = '{{field.type_name}}',
                     {%- endif %}
         growable = growable,
                    sub_fields = [

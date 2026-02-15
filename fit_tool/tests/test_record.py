@@ -67,3 +67,12 @@ class TestRecord(unittest.TestCase):
         record1 = Record.from_message(dm1)
 
         print(record1.to_row())
+
+    def test_record_from_bytes_without_definition_raises_value_error(self):
+        local_id = 15
+        data_message = WorkoutStepMessage(local_id=local_id)
+        data_message.workout_step_name = 'test'
+        record = Record.from_message(data_message)
+
+        with self.assertRaises(ValueError):
+            Record.from_bytes(definition_messages={}, bytes_buffer=record.to_bytes())

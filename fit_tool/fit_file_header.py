@@ -104,7 +104,7 @@ class FitFileHeader:
         offset = 0
         size, = struct.unpack('B', bytes_buffer[0:1])
         if size != len(bytes_buffer):
-            raise Exception(f'Size {size} does not match bytes length: ${len(bytes_buffer)}')
+            raise ValueError(f'Size {size} does not match bytes length: {len(bytes_buffer)}')
         offset += 1
 
         protocol_version = ProtocolVersion.from_bytes(bytes_buffer[offset: offset + 1])
@@ -120,7 +120,7 @@ class FitFileHeader:
         tag_value, = struct.unpack('4s', bytes_buffer[offset:offset + 4])
         offset += 4
         if tag_value != b'.FIT':
-            raise Exception('".FIT" not in header.')
+            raise ValueError('".FIT" not in header.')
 
         crc = None
         if len(bytes_buffer) == 14:

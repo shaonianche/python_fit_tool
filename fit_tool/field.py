@@ -60,7 +60,7 @@ class Field:
                       is_expanded_field=other.is_expanded_field, sub_fields=other.sub_fields,
                       components=other.components,
                       size=other.size, growable=other.growable, type_name=other.type_name)
-        field.encoded_values = other.encoded_values
+        field.encoded_values = other.encoded_values.copy()
         return field
 
     @classmethod
@@ -214,11 +214,7 @@ class Field:
 
     @staticmethod
     def un_scale_offset_value(encoded_value: int, scale: float, offset: float) -> float:
-        try:
-            value = encoded_value / scale - offset
-        except Exception as ex:
-            raise ex
-        return value
+        return encoded_value / scale - offset
 
     @property
     def length(self) -> int:
@@ -234,13 +230,13 @@ class Field:
 
         if check_validity and self.base_type != BaseType.STRING:
             if not self.base_type.is_valid(encoded_value):
-                raise Exception(
+                raise ValueError(
                     f'{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
 
         size_changed = False
         while index >= self.length:
             if (self.base_type != BaseType.STRING or self.array_type is not None) and not self.growable:
-                raise Exception('Field is not growable')
+                raise ValueError('Field is not growable')
 
             self.encoded_values.append(None)
             size_changed = True
@@ -251,7 +247,7 @@ class Field:
             new_size = self.calculate_size()
             if new_size > self.size:
                 if not self.growable:
-                    raise Exception('Size exceeds fixed field size of $size bytes. Consider making field growable.')
+                    raise ValueError(f'Size exceeds fixed field size of {self.size} bytes. Consider making field growable.')
                 self.size = new_size
 
     def encode_value(self, value, sub_field: SubField = None):
@@ -283,7 +279,7 @@ class Field:
 
     def read_from_bytes(self, bytes_buffer: bytes, index: int, endian: Endian = Endian.LITTLE):
         if self.base_type == BaseType.STRING:
-            raise Exception('Type cannot be string')
+            raise TypeError('Type cannot be string')
 
         encoded_value = self.get_encoded_value_from_bytes(bytes_buffer, endian=endian)
         self.set_encoded_value(index, encoded_value, check_validity=False)
@@ -307,7 +303,7 @@ class Field:
             length = size // base_type.size
 
             if length * base_type.size != size:
-                raise Exception('Size is not a multiple of type: size: $size, type: $type')
+                raise ValueError(f'Size is not a multiple of type: size: {size}, type: {base_type}')
 
             return length
 
@@ -365,7 +361,7 @@ class Field:
 
     def encoded_value_to_bytes(self, encoded_value, endian: Endian = Endian.LITTLE) -> bytes:
         if encoded_value is None:
-            raise Exception('Value cannot be None')
+            raise ValueError('Value cannot be None')
 
         if self.base_type == BaseType.STRING:
             return encoded_value.encode('utf-8') + b'\0'

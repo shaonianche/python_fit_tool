@@ -80,10 +80,10 @@ class FitFile:
         file_crc, = struct.unpack(f'<H', bytes_buffer[offset:offset + 2])
 
         if crc != file_crc:
-            message = f'Calculated crc ({hex(crc)}) does match crc in file ({hex(file_crc)}).'
+            message = f'Calculated crc ({hex(crc)}) does not match crc in file ({hex(file_crc)}).'
 
             if check_crc:
-                raise Exception(message)
+                raise ValueError(message)
             else:
                 logger.warning(message)
 
@@ -108,9 +108,9 @@ class FitFile:
             message = f'Calculated crc ({calculated_crc}) != defined crc ({self.crc})'
 
             if check_crc:
-                raise Exception(message)
+                raise ValueError(message)
             else:
-                logger.warn(message)
+                logger.warning(message)
 
         buffer = struct.pack('<H', self.crc)
         bytes_buffer.extend(buffer)

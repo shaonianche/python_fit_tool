@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.record_message import RecordMessage, RecordHeartRateField, RecordPowerField
@@ -9,8 +11,9 @@ def main():
         based on a variety of criteria (see comments below). Finally we output
         the modified data to a new FIT file.
     """
-    path = '../tests/data/sdk/Activity.fit'
-    fit_file = FitFile.from_file(path)
+    root = Path(__file__).resolve().parents[2]
+    path = root / 'fit_tool' / 'tests' / 'data' / 'sdk' / 'Activity.fit'
+    fit_file = FitFile.from_file(str(path))
 
     builder = FitFileBuilder(auto_define=False)
 
@@ -34,9 +37,11 @@ def main():
             builder.add(message)
 
     modified_file = builder.build()
-    modified_file.to_file('../tests/out/modified_activity.fit')
+    out_path = root / 'fit_tool' / 'tests' / 'out' / 'modified_activity.fit'
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    modified_file.to_file(str(out_path))
 
-    fit_file2 = FitFile.from_file('../tests/out/modified_activity.fit')
+    FitFile.from_file(str(out_path))
 
 
 if __name__ == "__main__":

@@ -28,6 +28,11 @@ class TestParseArgs(unittest.TestCase):
             self.assertEqual(args.log, 'log.txt')
             self.assertEqual(args.type, 'csv')
 
+    def test_parse_args_rejects_unknown_type(self):
+        with patch('sys.argv', ['fit-tool', 'test.fit', '-t', 'bad']):
+            with self.assertRaises(SystemExit):
+                parse_args()
+
 
 class TestMain(unittest.TestCase):
 
@@ -86,6 +91,12 @@ class TestMain(unittest.TestCase):
         with patch('sys.argv', ['fit-tool', self.test_fit_file, '-o', output_file]):
             main()
         self.assertTrue(os.path.exists(output_file))
+
+    def test_main_rejects_unsupported_output_extension(self):
+        output_file = os.path.join(self.test_dir, 'output.bad')
+        with patch('sys.argv', ['fit-tool', self.test_fit_file, '-o', output_file]):
+            with self.assertRaises(ValueError):
+                main()
 
 
 if __name__ == '__main__':

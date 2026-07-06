@@ -35,7 +35,7 @@ jobs:
         run: uv build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: fit-tool-wheel
           path: dist/*.whl
@@ -51,7 +51,7 @@ jobs:
           awk '/## Release/{if (flag==1)exit;else;flag=1;next} flag' CHANGELOG.md > .changelog.md
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body_path: .changelog.md
           draft: false

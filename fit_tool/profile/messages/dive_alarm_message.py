@@ -117,7 +117,7 @@ class DiveAlarmMessage(DataMessage):
     
 
     @property
-    def depth(self) -> Optional[int]:
+    def depth(self) -> Optional[float]:
         field = self.get_field(DiveAlarmDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -128,7 +128,7 @@ class DiveAlarmMessage(DataMessage):
 
 
     @depth.setter
-    def depth(self, value: int):
+    def depth(self, value: float):
         field = self.get_field(DiveAlarmDepthField.ID)
 
         if field:
@@ -379,7 +379,7 @@ class DiveAlarmMessage(DataMessage):
     
 
     @property
-    def speed(self) -> Optional[int]:
+    def speed(self) -> Optional[float]:
         field = self.get_field(DiveAlarmSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -390,7 +390,7 @@ class DiveAlarmMessage(DataMessage):
 
 
     @speed.setter
-    def speed(self, value: int):
+    def speed(self, value: float):
         field = self.get_field(DiveAlarmSpeedField.ID)
 
         if field:
@@ -415,7 +415,7 @@ class DiveAlarmDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -615,7 +615,7 @@ class DiveAlarmSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'mps',
         type_name = 'sint32',

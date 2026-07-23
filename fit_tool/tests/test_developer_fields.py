@@ -1,7 +1,9 @@
 
 import unittest
+
 from fit_tool.data_message import DataMessage
 from fit_tool.developer_field import DeveloperField
+
 
 class TestDeveloperFields(unittest.TestCase):
 

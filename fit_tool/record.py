@@ -1,5 +1,4 @@
-from typing import Dict as dict
-from typing import List as list
+from __future__ import annotations
 
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage

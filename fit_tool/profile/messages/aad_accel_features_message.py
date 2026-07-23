@@ -194,7 +194,7 @@ class AadAccelFeaturesMessage(DataMessage):
     
 
     @property
-    def time_above_threshold(self) -> Optional[int]:
+    def time_above_threshold(self) -> Optional[float]:
         field = self.get_field(AadAccelFeaturesTimeAboveThresholdField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -205,7 +205,7 @@ class AadAccelFeaturesMessage(DataMessage):
 
 
     @time_above_threshold.setter
-    def time_above_threshold(self, value: int):
+    def time_above_threshold(self, value: float):
         field = self.get_field(AadAccelFeaturesTimeAboveThresholdField.ID)
 
         if field:
@@ -303,7 +303,7 @@ class AadAccelFeaturesTimeAboveThresholdField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 25,
                          size = size,
         units = 's',
         type_name = 'uint16',

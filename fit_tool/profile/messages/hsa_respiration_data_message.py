@@ -113,7 +113,7 @@ class HsaRespirationDataMessage(DataMessage):
     
 
     @property
-    def respiration_rate(self) -> Optional[list[int]]:
+    def respiration_rate(self) -> Optional[list[float]]:
         field = self.get_field(HsaRespirationDataRespirationRateField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -123,7 +123,7 @@ class HsaRespirationDataMessage(DataMessage):
 
 
     @respiration_rate.setter
-    def respiration_rate(self, value: list[int]):
+    def respiration_rate(self, value: list[float]):
         field = self.get_field(HsaRespirationDataRespirationRateField.ID)
 
         if field:
@@ -166,7 +166,7 @@ class HsaRespirationDataRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'breaths/min',
         type_name = 'sint16',

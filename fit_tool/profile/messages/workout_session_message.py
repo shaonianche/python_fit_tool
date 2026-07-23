@@ -195,7 +195,7 @@ class WorkoutSessionMessage(DataMessage):
     
 
     @property
-    def pool_length(self) -> Optional[int]:
+    def pool_length(self) -> Optional[float]:
         field = self.get_field(WorkoutSessionPoolLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -206,7 +206,7 @@ class WorkoutSessionMessage(DataMessage):
 
 
     @pool_length.setter
-    def pool_length(self, value: int):
+    def pool_length(self, value: float):
         field = self.get_field(WorkoutSessionPoolLengthField.ID)
 
         if field:
@@ -327,7 +327,7 @@ class WorkoutSessionPoolLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint16',

@@ -408,7 +408,7 @@ class SleepAssessmentMessage(DataMessage):
     
 
     @property
-    def average_stress_during_sleep(self) -> Optional[int]:
+    def average_stress_during_sleep(self) -> Optional[float]:
         field = self.get_field(SleepAssessmentAverageStressDuringSleepField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -419,7 +419,7 @@ class SleepAssessmentMessage(DataMessage):
 
 
     @average_stress_during_sleep.setter
-    def average_stress_during_sleep(self, value: int):
+    def average_stress_during_sleep(self, value: float):
         field = self.get_field(SleepAssessmentAverageStressDuringSleepField.ID)
 
         if field:
@@ -678,7 +678,7 @@ class SleepAssessmentAverageStressDuringSleepField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         type_name = 'uint16',
         growable = growable,

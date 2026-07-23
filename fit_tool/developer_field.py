@@ -1,4 +1,4 @@
-from typing import List as list
+from __future__ import annotations
 
 from fit_tool.base_type import BaseType
 from fit_tool.field import Field

@@ -380,7 +380,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def altitude(self) -> Optional[int]:
+    def altitude(self) -> Optional[float]:
         field = self.get_field(RecordAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -391,7 +391,7 @@ class RecordMessage(DataMessage):
 
 
     @altitude.setter
-    def altitude(self, value: int):
+    def altitude(self, value: float):
         field = self.get_field(RecordAltitudeField.ID)
 
         if field:
@@ -452,7 +452,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def distance(self) -> Optional[int]:
+    def distance(self) -> Optional[float]:
         field = self.get_field(RecordDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -463,7 +463,7 @@ class RecordMessage(DataMessage):
 
 
     @distance.setter
-    def distance(self, value: int):
+    def distance(self, value: float):
         field = self.get_field(RecordDistanceField.ID)
 
         if field:
@@ -476,7 +476,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def speed(self) -> Optional[int]:
+    def speed(self) -> Optional[float]:
         field = self.get_field(RecordSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -487,7 +487,7 @@ class RecordMessage(DataMessage):
 
 
     @speed.setter
-    def speed(self, value: int):
+    def speed(self, value: float):
         field = self.get_field(RecordSpeedField.ID)
 
         if field:
@@ -546,7 +546,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def grade(self) -> Optional[int]:
+    def grade(self) -> Optional[float]:
         field = self.get_field(RecordGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -557,7 +557,7 @@ class RecordMessage(DataMessage):
 
 
     @grade.setter
-    def grade(self, value: int):
+    def grade(self, value: float):
         field = self.get_field(RecordGradeField.ID)
 
         if field:
@@ -594,7 +594,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def time_from_course(self) -> Optional[int]:
+    def time_from_course(self) -> Optional[float]:
         field = self.get_field(RecordTimeFromCourseField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -605,7 +605,7 @@ class RecordMessage(DataMessage):
 
 
     @time_from_course.setter
-    def time_from_course(self, value: int):
+    def time_from_course(self, value: float):
         field = self.get_field(RecordTimeFromCourseField.ID)
 
         if field:
@@ -618,7 +618,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def cycle_length(self) -> Optional[int]:
+    def cycle_length(self) -> Optional[float]:
         field = self.get_field(RecordCycleLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -629,7 +629,7 @@ class RecordMessage(DataMessage):
 
 
     @cycle_length.setter
-    def cycle_length(self, value: int):
+    def cycle_length(self, value: float):
         field = self.get_field(RecordCycleLengthField.ID)
 
         if field:
@@ -666,7 +666,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def speed_1s(self) -> Optional[list[int]]:
+    def speed_1s(self) -> Optional[list[float]]:
         field = self.get_field(RecordSpeed1sField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -676,7 +676,7 @@ class RecordMessage(DataMessage):
 
 
     @speed_1s.setter
-    def speed_1s(self, value: list[int]):
+    def speed_1s(self, value: list[float]):
         field = self.get_field(RecordSpeed1sField.ID)
 
         if field:
@@ -832,7 +832,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def vertical_speed(self) -> Optional[int]:
+    def vertical_speed(self) -> Optional[float]:
         field = self.get_field(RecordVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -843,7 +843,7 @@ class RecordMessage(DataMessage):
 
 
     @vertical_speed.setter
-    def vertical_speed(self, value: int):
+    def vertical_speed(self, value: float):
         field = self.get_field(RecordVerticalSpeedField.ID)
 
         if field:
@@ -880,7 +880,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def vertical_oscillation(self) -> Optional[int]:
+    def vertical_oscillation(self) -> Optional[float]:
         field = self.get_field(RecordVerticalOscillationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -891,7 +891,7 @@ class RecordMessage(DataMessage):
 
 
     @vertical_oscillation.setter
-    def vertical_oscillation(self, value: int):
+    def vertical_oscillation(self, value: float):
         field = self.get_field(RecordVerticalOscillationField.ID)
 
         if field:
@@ -904,7 +904,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def stance_time_percent(self) -> Optional[int]:
+    def stance_time_percent(self) -> Optional[float]:
         field = self.get_field(RecordStanceTimePercentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -915,7 +915,7 @@ class RecordMessage(DataMessage):
 
 
     @stance_time_percent.setter
-    def stance_time_percent(self, value: int):
+    def stance_time_percent(self, value: float):
         field = self.get_field(RecordStanceTimePercentField.ID)
 
         if field:
@@ -928,7 +928,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def stance_time(self) -> Optional[int]:
+    def stance_time(self) -> Optional[float]:
         field = self.get_field(RecordStanceTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -939,7 +939,7 @@ class RecordMessage(DataMessage):
 
 
     @stance_time.setter
-    def stance_time(self, value: int):
+    def stance_time(self, value: float):
         field = self.get_field(RecordStanceTimeField.ID)
 
         if field:
@@ -976,7 +976,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def left_torque_effectiveness(self) -> Optional[int]:
+    def left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(RecordLeftTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -987,7 +987,7 @@ class RecordMessage(DataMessage):
 
 
     @left_torque_effectiveness.setter
-    def left_torque_effectiveness(self, value: int):
+    def left_torque_effectiveness(self, value: float):
         field = self.get_field(RecordLeftTorqueEffectivenessField.ID)
 
         if field:
@@ -1000,7 +1000,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def right_torque_effectiveness(self) -> Optional[int]:
+    def right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(RecordRightTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1011,7 +1011,7 @@ class RecordMessage(DataMessage):
 
 
     @right_torque_effectiveness.setter
-    def right_torque_effectiveness(self, value: int):
+    def right_torque_effectiveness(self, value: float):
         field = self.get_field(RecordRightTorqueEffectivenessField.ID)
 
         if field:
@@ -1024,7 +1024,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def left_pedal_smoothness(self) -> Optional[int]:
+    def left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(RecordLeftPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1035,7 +1035,7 @@ class RecordMessage(DataMessage):
 
 
     @left_pedal_smoothness.setter
-    def left_pedal_smoothness(self, value: int):
+    def left_pedal_smoothness(self, value: float):
         field = self.get_field(RecordLeftPedalSmoothnessField.ID)
 
         if field:
@@ -1048,7 +1048,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def right_pedal_smoothness(self) -> Optional[int]:
+    def right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(RecordRightPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1059,7 +1059,7 @@ class RecordMessage(DataMessage):
 
 
     @right_pedal_smoothness.setter
-    def right_pedal_smoothness(self, value: int):
+    def right_pedal_smoothness(self, value: float):
         field = self.get_field(RecordRightPedalSmoothnessField.ID)
 
         if field:
@@ -1072,7 +1072,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def combined_pedal_smoothness(self) -> Optional[int]:
+    def combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(RecordCombinedPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1083,7 +1083,7 @@ class RecordMessage(DataMessage):
 
 
     @combined_pedal_smoothness.setter
-    def combined_pedal_smoothness(self, value: int):
+    def combined_pedal_smoothness(self, value: float):
         field = self.get_field(RecordCombinedPedalSmoothnessField.ID)
 
         if field:
@@ -1096,7 +1096,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def time128(self) -> Optional[int]:
+    def time128(self) -> Optional[float]:
         field = self.get_field(RecordTime128Field.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1107,7 +1107,7 @@ class RecordMessage(DataMessage):
 
 
     @time128.setter
-    def time128(self, value: int):
+    def time128(self, value: float):
         field = self.get_field(RecordTime128Field.ID)
 
         if field:
@@ -1168,7 +1168,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def ball_speed(self) -> Optional[int]:
+    def ball_speed(self) -> Optional[float]:
         field = self.get_field(RecordBallSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1179,7 +1179,7 @@ class RecordMessage(DataMessage):
 
 
     @ball_speed.setter
-    def ball_speed(self, value: int):
+    def ball_speed(self, value: float):
         field = self.get_field(RecordBallSpeedField.ID)
 
         if field:
@@ -1192,7 +1192,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def cadence256(self) -> Optional[int]:
+    def cadence256(self) -> Optional[float]:
         field = self.get_field(RecordCadence256Field.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1203,7 +1203,7 @@ class RecordMessage(DataMessage):
 
 
     @cadence256.setter
-    def cadence256(self, value: int):
+    def cadence256(self, value: float):
         field = self.get_field(RecordCadence256Field.ID)
 
         if field:
@@ -1216,7 +1216,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def fractional_cadence(self) -> Optional[int]:
+    def fractional_cadence(self) -> Optional[float]:
         field = self.get_field(RecordFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1227,7 +1227,7 @@ class RecordMessage(DataMessage):
 
 
     @fractional_cadence.setter
-    def fractional_cadence(self, value: int):
+    def fractional_cadence(self, value: float):
         field = self.get_field(RecordFractionalCadenceField.ID)
 
         if field:
@@ -1240,7 +1240,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def total_hemoglobin_conc(self) -> Optional[int]:
+    def total_hemoglobin_conc(self) -> Optional[float]:
         field = self.get_field(RecordTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1251,7 +1251,7 @@ class RecordMessage(DataMessage):
 
 
     @total_hemoglobin_conc.setter
-    def total_hemoglobin_conc(self, value: int):
+    def total_hemoglobin_conc(self, value: float):
         field = self.get_field(RecordTotalHemoglobinConcField.ID)
 
         if field:
@@ -1264,7 +1264,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def total_hemoglobin_conc_min(self) -> Optional[int]:
+    def total_hemoglobin_conc_min(self) -> Optional[float]:
         field = self.get_field(RecordTotalHemoglobinConcMinField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1275,7 +1275,7 @@ class RecordMessage(DataMessage):
 
 
     @total_hemoglobin_conc_min.setter
-    def total_hemoglobin_conc_min(self, value: int):
+    def total_hemoglobin_conc_min(self, value: float):
         field = self.get_field(RecordTotalHemoglobinConcMinField.ID)
 
         if field:
@@ -1288,7 +1288,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def total_hemoglobin_conc_max(self) -> Optional[int]:
+    def total_hemoglobin_conc_max(self) -> Optional[float]:
         field = self.get_field(RecordTotalHemoglobinConcMaxField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1299,7 +1299,7 @@ class RecordMessage(DataMessage):
 
 
     @total_hemoglobin_conc_max.setter
-    def total_hemoglobin_conc_max(self, value: int):
+    def total_hemoglobin_conc_max(self, value: float):
         field = self.get_field(RecordTotalHemoglobinConcMaxField.ID)
 
         if field:
@@ -1312,7 +1312,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def saturated_hemoglobin_percent(self) -> Optional[int]:
+    def saturated_hemoglobin_percent(self) -> Optional[float]:
         field = self.get_field(RecordSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1323,7 +1323,7 @@ class RecordMessage(DataMessage):
 
 
     @saturated_hemoglobin_percent.setter
-    def saturated_hemoglobin_percent(self, value: int):
+    def saturated_hemoglobin_percent(self, value: float):
         field = self.get_field(RecordSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -1336,7 +1336,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def saturated_hemoglobin_percent_min(self) -> Optional[int]:
+    def saturated_hemoglobin_percent_min(self) -> Optional[float]:
         field = self.get_field(RecordSaturatedHemoglobinPercentMinField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1347,7 +1347,7 @@ class RecordMessage(DataMessage):
 
 
     @saturated_hemoglobin_percent_min.setter
-    def saturated_hemoglobin_percent_min(self, value: int):
+    def saturated_hemoglobin_percent_min(self, value: float):
         field = self.get_field(RecordSaturatedHemoglobinPercentMinField.ID)
 
         if field:
@@ -1360,7 +1360,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def saturated_hemoglobin_percent_max(self) -> Optional[int]:
+    def saturated_hemoglobin_percent_max(self) -> Optional[float]:
         field = self.get_field(RecordSaturatedHemoglobinPercentMaxField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1371,7 +1371,7 @@ class RecordMessage(DataMessage):
 
 
     @saturated_hemoglobin_percent_max.setter
-    def saturated_hemoglobin_percent_max(self, value: int):
+    def saturated_hemoglobin_percent_max(self, value: float):
         field = self.get_field(RecordSaturatedHemoglobinPercentMaxField.ID)
 
         if field:
@@ -1456,7 +1456,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def left_power_phase(self) -> Optional[list[int]]:
+    def left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(RecordLeftPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1466,7 +1466,7 @@ class RecordMessage(DataMessage):
 
 
     @left_power_phase.setter
-    def left_power_phase(self, value: list[int]):
+    def left_power_phase(self, value: list[float]):
         field = self.get_field(RecordLeftPowerPhaseField.ID)
 
         if field:
@@ -1478,7 +1478,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def left_power_phase_peak(self) -> Optional[list[int]]:
+    def left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(RecordLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1488,7 +1488,7 @@ class RecordMessage(DataMessage):
 
 
     @left_power_phase_peak.setter
-    def left_power_phase_peak(self, value: list[int]):
+    def left_power_phase_peak(self, value: list[float]):
         field = self.get_field(RecordLeftPowerPhasePeakField.ID)
 
         if field:
@@ -1500,7 +1500,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def right_power_phase(self) -> Optional[list[int]]:
+    def right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(RecordRightPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1510,7 +1510,7 @@ class RecordMessage(DataMessage):
 
 
     @right_power_phase.setter
-    def right_power_phase(self, value: list[int]):
+    def right_power_phase(self, value: list[float]):
         field = self.get_field(RecordRightPowerPhaseField.ID)
 
         if field:
@@ -1522,7 +1522,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def right_power_phase_peak(self) -> Optional[list[int]]:
+    def right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(RecordRightPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1532,7 +1532,7 @@ class RecordMessage(DataMessage):
 
 
     @right_power_phase_peak.setter
-    def right_power_phase_peak(self, value: list[int]):
+    def right_power_phase_peak(self, value: list[float]):
         field = self.get_field(RecordRightPowerPhasePeakField.ID)
 
         if field:
@@ -1544,7 +1544,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def enhanced_speed(self) -> Optional[int]:
+    def enhanced_speed(self) -> Optional[float]:
         field = self.get_field(RecordEnhancedSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1555,7 +1555,7 @@ class RecordMessage(DataMessage):
 
 
     @enhanced_speed.setter
-    def enhanced_speed(self, value: int):
+    def enhanced_speed(self, value: float):
         field = self.get_field(RecordEnhancedSpeedField.ID)
 
         if field:
@@ -1568,7 +1568,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def enhanced_altitude(self) -> Optional[int]:
+    def enhanced_altitude(self) -> Optional[float]:
         field = self.get_field(RecordEnhancedAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1579,7 +1579,7 @@ class RecordMessage(DataMessage):
 
 
     @enhanced_altitude.setter
-    def enhanced_altitude(self, value: int):
+    def enhanced_altitude(self, value: float):
         field = self.get_field(RecordEnhancedAltitudeField.ID)
 
         if field:
@@ -1592,7 +1592,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def battery_soc(self) -> Optional[int]:
+    def battery_soc(self) -> Optional[float]:
         field = self.get_field(RecordBatterySocField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1603,7 +1603,7 @@ class RecordMessage(DataMessage):
 
 
     @battery_soc.setter
-    def battery_soc(self, value: int):
+    def battery_soc(self, value: float):
         field = self.get_field(RecordBatterySocField.ID)
 
         if field:
@@ -1640,7 +1640,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def vertical_ratio(self) -> Optional[int]:
+    def vertical_ratio(self) -> Optional[float]:
         field = self.get_field(RecordVerticalRatioField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1651,7 +1651,7 @@ class RecordMessage(DataMessage):
 
 
     @vertical_ratio.setter
-    def vertical_ratio(self, value: int):
+    def vertical_ratio(self, value: float):
         field = self.get_field(RecordVerticalRatioField.ID)
 
         if field:
@@ -1664,7 +1664,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def stance_time_balance(self) -> Optional[int]:
+    def stance_time_balance(self) -> Optional[float]:
         field = self.get_field(RecordStanceTimeBalanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1675,7 +1675,7 @@ class RecordMessage(DataMessage):
 
 
     @stance_time_balance.setter
-    def stance_time_balance(self, value: int):
+    def stance_time_balance(self, value: float):
         field = self.get_field(RecordStanceTimeBalanceField.ID)
 
         if field:
@@ -1688,7 +1688,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def step_length(self) -> Optional[int]:
+    def step_length(self) -> Optional[float]:
         field = self.get_field(RecordStepLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1699,7 +1699,7 @@ class RecordMessage(DataMessage):
 
 
     @step_length.setter
-    def step_length(self, value: int):
+    def step_length(self, value: float):
         field = self.get_field(RecordStepLengthField.ID)
 
         if field:
@@ -1712,7 +1712,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def cycle_length16(self) -> Optional[int]:
+    def cycle_length16(self) -> Optional[float]:
         field = self.get_field(RecordCycleLength16Field.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1723,7 +1723,7 @@ class RecordMessage(DataMessage):
 
 
     @cycle_length16.setter
-    def cycle_length16(self, value: int):
+    def cycle_length16(self, value: float):
         field = self.get_field(RecordCycleLength16Field.ID)
 
         if field:
@@ -1760,7 +1760,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def depth(self) -> Optional[int]:
+    def depth(self) -> Optional[float]:
         field = self.get_field(RecordDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1771,7 +1771,7 @@ class RecordMessage(DataMessage):
 
 
     @depth.setter
-    def depth(self, value: int):
+    def depth(self, value: float):
         field = self.get_field(RecordDepthField.ID)
 
         if field:
@@ -1784,7 +1784,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def next_stop_depth(self) -> Optional[int]:
+    def next_stop_depth(self) -> Optional[float]:
         field = self.get_field(RecordNextStopDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1795,7 +1795,7 @@ class RecordMessage(DataMessage):
 
 
     @next_stop_depth.setter
-    def next_stop_depth(self, value: int):
+    def next_stop_depth(self, value: float):
         field = self.get_field(RecordNextStopDepthField.ID)
 
         if field:
@@ -1952,7 +1952,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def enhanced_respiration_rate(self) -> Optional[int]:
+    def enhanced_respiration_rate(self) -> Optional[float]:
         field = self.get_field(RecordEnhancedRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1963,7 +1963,7 @@ class RecordMessage(DataMessage):
 
 
     @enhanced_respiration_rate.setter
-    def enhanced_respiration_rate(self, value: int):
+    def enhanced_respiration_rate(self, value: float):
         field = self.get_field(RecordEnhancedRespirationRateField.ID)
 
         if field:
@@ -2024,7 +2024,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def current_stress(self) -> Optional[int]:
+    def current_stress(self) -> Optional[float]:
         field = self.get_field(RecordCurrentStressField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2035,7 +2035,7 @@ class RecordMessage(DataMessage):
 
 
     @current_stress.setter
-    def current_stress(self, value: int):
+    def current_stress(self, value: float):
         field = self.get_field(RecordCurrentStressField.ID)
 
         if field:
@@ -2168,7 +2168,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def pressure_sac(self) -> Optional[int]:
+    def pressure_sac(self) -> Optional[float]:
         field = self.get_field(RecordPressureSacField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2179,7 +2179,7 @@ class RecordMessage(DataMessage):
 
 
     @pressure_sac.setter
-    def pressure_sac(self, value: int):
+    def pressure_sac(self, value: float):
         field = self.get_field(RecordPressureSacField.ID)
 
         if field:
@@ -2192,7 +2192,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def volume_sac(self) -> Optional[int]:
+    def volume_sac(self) -> Optional[float]:
         field = self.get_field(RecordVolumeSacField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2203,7 +2203,7 @@ class RecordMessage(DataMessage):
 
 
     @volume_sac.setter
-    def volume_sac(self, value: int):
+    def volume_sac(self, value: float):
         field = self.get_field(RecordVolumeSacField.ID)
 
         if field:
@@ -2216,7 +2216,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def rmv(self) -> Optional[int]:
+    def rmv(self) -> Optional[float]:
         field = self.get_field(RecordRmvField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2227,7 +2227,7 @@ class RecordMessage(DataMessage):
 
 
     @rmv.setter
-    def rmv(self, value: int):
+    def rmv(self, value: float):
         field = self.get_field(RecordRmvField.ID)
 
         if field:
@@ -2240,7 +2240,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def ascent_rate(self) -> Optional[int]:
+    def ascent_rate(self) -> Optional[float]:
         field = self.get_field(RecordAscentRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2251,7 +2251,7 @@ class RecordMessage(DataMessage):
 
 
     @ascent_rate.setter
-    def ascent_rate(self, value: int):
+    def ascent_rate(self, value: float):
         field = self.get_field(RecordAscentRateField.ID)
 
         if field:
@@ -2264,7 +2264,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def po2(self) -> Optional[int]:
+    def po2(self) -> Optional[float]:
         field = self.get_field(RecordPo2Field.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2275,7 +2275,7 @@ class RecordMessage(DataMessage):
 
 
     @po2.setter
-    def po2(self, value: int):
+    def po2(self, value: float):
         field = self.get_field(RecordPo2Field.ID)
 
         if field:
@@ -2288,7 +2288,7 @@ class RecordMessage(DataMessage):
     
 
     @property
-    def core_temperature(self) -> Optional[int]:
+    def core_temperature(self) -> Optional[float]:
         field = self.get_field(RecordCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2299,7 +2299,7 @@ class RecordMessage(DataMessage):
 
 
     @core_temperature.setter
-    def core_temperature(self, value: int):
+    def core_temperature(self, value: float):
         field = self.get_field(RecordCoreTemperatureField.ID)
 
         if field:
@@ -2362,7 +2362,7 @@ class RecordAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -2419,7 +2419,7 @@ class RecordDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -2438,7 +2438,7 @@ class RecordSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -2495,7 +2495,7 @@ class RecordGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -2532,7 +2532,7 @@ class RecordTimeFromCourseField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'sint32',
@@ -2551,7 +2551,7 @@ class RecordCycleLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -2589,7 +2589,7 @@ class RecordSpeed1sField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 16,
                          size = size,
         units = 'm/s',
         type_name = 'uint8',
@@ -2721,7 +2721,7 @@ class RecordVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -2759,7 +2759,7 @@ class RecordVerticalOscillationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -2778,7 +2778,7 @@ class RecordStanceTimePercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -2797,7 +2797,7 @@ class RecordStanceTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -2834,7 +2834,7 @@ class RecordLeftTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -2853,7 +2853,7 @@ class RecordRightTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -2872,7 +2872,7 @@ class RecordLeftPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -2891,7 +2891,7 @@ class RecordRightPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -2910,7 +2910,7 @@ class RecordCombinedPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -2929,7 +2929,7 @@ class RecordTime128Field(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 's',
         type_name = 'uint8',
@@ -2984,7 +2984,7 @@ class RecordBallSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -3003,7 +3003,7 @@ class RecordCadence256Field(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 256,
                          size = size,
         units = 'rpm',
         type_name = 'uint16',
@@ -3022,7 +3022,7 @@ class RecordFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -3041,7 +3041,7 @@ class RecordTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -3060,7 +3060,7 @@ class RecordTotalHemoglobinConcMinField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -3079,7 +3079,7 @@ class RecordTotalHemoglobinConcMaxField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -3098,7 +3098,7 @@ class RecordSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -3117,7 +3117,7 @@ class RecordSaturatedHemoglobinPercentMinField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -3136,7 +3136,7 @@ class RecordSaturatedHemoglobinPercentMaxField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -3211,7 +3211,7 @@ class RecordLeftPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -3230,7 +3230,7 @@ class RecordLeftPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -3249,7 +3249,7 @@ class RecordRightPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -3268,7 +3268,7 @@ class RecordRightPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -3287,7 +3287,7 @@ class RecordEnhancedSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -3306,7 +3306,7 @@ class RecordEnhancedAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -3325,7 +3325,7 @@ class RecordBatterySocField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3363,7 +3363,7 @@ class RecordVerticalRatioField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -3382,7 +3382,7 @@ class RecordStanceTimeBalanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -3401,7 +3401,7 @@ class RecordStepLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -3420,7 +3420,7 @@ class RecordCycleLength16Field(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -3458,7 +3458,7 @@ class RecordDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -3477,7 +3477,7 @@ class RecordNextStopDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -3610,7 +3610,7 @@ class RecordEnhancedRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'Breaths/min',
         type_name = 'uint16',
@@ -3665,7 +3665,7 @@ class RecordCurrentStressField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         type_name = 'uint16',
         growable = growable,
@@ -3778,7 +3778,7 @@ class RecordPressureSacField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'bar/min',
         type_name = 'uint16',
@@ -3797,7 +3797,7 @@ class RecordVolumeSacField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'L/min',
         type_name = 'uint16',
@@ -3816,7 +3816,7 @@ class RecordRmvField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'L/min',
         type_name = 'uint16',
@@ -3835,7 +3835,7 @@ class RecordAscentRateField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint32',
@@ -3854,7 +3854,7 @@ class RecordPo2Field(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3873,7 +3873,7 @@ class RecordCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',

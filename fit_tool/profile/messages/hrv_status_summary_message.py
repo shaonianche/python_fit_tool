@@ -104,7 +104,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def weekly_average(self) -> Optional[int]:
+    def weekly_average(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryWeeklyAverageField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -115,7 +115,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @weekly_average.setter
-    def weekly_average(self, value: int):
+    def weekly_average(self, value: float):
         field = self.get_field(HrvStatusSummaryWeeklyAverageField.ID)
 
         if field:
@@ -128,7 +128,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def last_night_average(self) -> Optional[int]:
+    def last_night_average(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryLastNightAverageField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -139,7 +139,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @last_night_average.setter
-    def last_night_average(self, value: int):
+    def last_night_average(self, value: float):
         field = self.get_field(HrvStatusSummaryLastNightAverageField.ID)
 
         if field:
@@ -152,7 +152,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def last_night_5_min_high(self) -> Optional[int]:
+    def last_night_5_min_high(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryLastNight5MinHighField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -163,7 +163,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @last_night_5_min_high.setter
-    def last_night_5_min_high(self, value: int):
+    def last_night_5_min_high(self, value: float):
         field = self.get_field(HrvStatusSummaryLastNight5MinHighField.ID)
 
         if field:
@@ -176,7 +176,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def baseline_low_upper(self) -> Optional[int]:
+    def baseline_low_upper(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryBaselineLowUpperField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -187,7 +187,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @baseline_low_upper.setter
-    def baseline_low_upper(self, value: int):
+    def baseline_low_upper(self, value: float):
         field = self.get_field(HrvStatusSummaryBaselineLowUpperField.ID)
 
         if field:
@@ -200,7 +200,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def baseline_balanced_lower(self) -> Optional[int]:
+    def baseline_balanced_lower(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryBaselineBalancedLowerField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -211,7 +211,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @baseline_balanced_lower.setter
-    def baseline_balanced_lower(self, value: int):
+    def baseline_balanced_lower(self, value: float):
         field = self.get_field(HrvStatusSummaryBaselineBalancedLowerField.ID)
 
         if field:
@@ -224,7 +224,7 @@ class HrvStatusSummaryMessage(DataMessage):
     
 
     @property
-    def baseline_balanced_upper(self) -> Optional[int]:
+    def baseline_balanced_upper(self) -> Optional[float]:
         field = self.get_field(HrvStatusSummaryBaselineBalancedUpperField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -235,7 +235,7 @@ class HrvStatusSummaryMessage(DataMessage):
 
 
     @baseline_balanced_upper.setter
-    def baseline_balanced_upper(self, value: int):
+    def baseline_balanced_upper(self, value: float):
         field = self.get_field(HrvStatusSummaryBaselineBalancedUpperField.ID)
 
         if field:
@@ -284,7 +284,7 @@ class HrvStatusSummaryWeeklyAverageField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -303,7 +303,7 @@ class HrvStatusSummaryLastNightAverageField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -322,7 +322,7 @@ class HrvStatusSummaryLastNight5MinHighField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -341,7 +341,7 @@ class HrvStatusSummaryBaselineLowUpperField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -360,7 +360,7 @@ class HrvStatusSummaryBaselineBalancedLowerField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -379,7 +379,7 @@ class HrvStatusSummaryBaselineBalancedUpperField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',

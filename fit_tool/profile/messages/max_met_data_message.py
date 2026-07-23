@@ -104,7 +104,7 @@ class MaxMetDataMessage(DataMessage):
     
 
     @property
-    def vo2_max(self) -> Optional[int]:
+    def vo2_max(self) -> Optional[float]:
         field = self.get_field(MaxMetDataVo2MaxField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -115,7 +115,7 @@ class MaxMetDataMessage(DataMessage):
 
 
     @vo2_max.setter
-    def vo2_max(self, value: int):
+    def vo2_max(self, value: float):
         field = self.get_field(MaxMetDataVo2MaxField.ID)
 
         if field:
@@ -303,7 +303,7 @@ class MaxMetDataVo2MaxField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mL/kg/min',
         type_name = 'uint16',

@@ -208,7 +208,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def duration_time(self) -> Optional[int]:
+    def duration_time(self) -> Optional[float]:
         field = self.get_field(WorkoutStepDurationValueField.ID)
         type_field = self.get_field(WorkoutStepDurationTypeField.ID)
 
@@ -220,7 +220,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @duration_time.setter
-    def duration_time(self, value: int):
+    def duration_time(self, value: float):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
             if value is None:
@@ -231,7 +231,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def duration_distance(self) -> Optional[int]:
+    def duration_distance(self) -> Optional[float]:
         field = self.get_field(WorkoutStepDurationValueField.ID)
         type_field = self.get_field(WorkoutStepDurationTypeField.ID)
 
@@ -243,7 +243,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @duration_distance.setter
-    def duration_distance(self, value: int):
+    def duration_distance(self, value: float):
         field = self.get_field(WorkoutStepDurationValueField.ID)
         if field:
             if value is None:
@@ -532,7 +532,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def target_repeat_time(self) -> Optional[int]:
+    def target_repeat_time(self) -> Optional[float]:
         field = self.get_field(WorkoutStepTargetValueField.ID)
         type_field = self.get_field(WorkoutStepDurationTypeField.ID)
 
@@ -544,7 +544,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @target_repeat_time.setter
-    def target_repeat_time(self, value: int):
+    def target_repeat_time(self, value: float):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
             if value is None:
@@ -555,7 +555,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def target_repeat_distance(self) -> Optional[int]:
+    def target_repeat_distance(self) -> Optional[float]:
         field = self.get_field(WorkoutStepTargetValueField.ID)
         type_field = self.get_field(WorkoutStepDurationTypeField.ID)
 
@@ -567,7 +567,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @target_repeat_distance.setter
-    def target_repeat_distance(self, value: int):
+    def target_repeat_distance(self, value: float):
         field = self.get_field(WorkoutStepTargetValueField.ID)
         if field:
             if value is None:
@@ -694,7 +694,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def custom_target_speed_low(self) -> Optional[int]:
+    def custom_target_speed_low(self) -> Optional[float]:
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         type_field = self.get_field(WorkoutStepTargetTypeField.ID)
 
@@ -706,7 +706,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @custom_target_speed_low.setter
-    def custom_target_speed_low(self, value: int):
+    def custom_target_speed_low(self, value: float):
         field = self.get_field(WorkoutStepCustomTargetValueLowField.ID)
         if field:
             if value is None:
@@ -810,7 +810,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def custom_target_speed_high(self) -> Optional[int]:
+    def custom_target_speed_high(self) -> Optional[float]:
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         type_field = self.get_field(WorkoutStepTargetTypeField.ID)
 
@@ -822,7 +822,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @custom_target_speed_high.setter
-    def custom_target_speed_high(self, value: int):
+    def custom_target_speed_high(self, value: float):
         field = self.get_field(WorkoutStepCustomTargetValueHighField.ID)
         if field:
             if value is None:
@@ -1021,7 +1021,7 @@ class WorkoutStepMessage(DataMessage):
     
 
     @property
-    def exercise_weight(self) -> Optional[int]:
+    def exercise_weight(self) -> Optional[float]:
         field = self.get_field(WorkoutStepExerciseWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1032,7 +1032,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @exercise_weight.setter
-    def exercise_weight(self, value: int):
+    def exercise_weight(self, value: float):
         field = self.get_field(WorkoutStepExerciseWeightField.ID)
 
         if field:
@@ -1257,7 +1257,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def secondary_custom_target_speed_low(self) -> Optional[int]:
+    def secondary_custom_target_speed_low(self) -> Optional[float]:
         field = self.get_field(WorkoutStepSecondaryCustomTargetValueLowField.ID)
         type_field = self.get_field(WorkoutStepSecondaryTargetTypeField.ID)
 
@@ -1269,7 +1269,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @secondary_custom_target_speed_low.setter
-    def secondary_custom_target_speed_low(self, value: int):
+    def secondary_custom_target_speed_low(self, value: float):
         field = self.get_field(WorkoutStepSecondaryCustomTargetValueLowField.ID)
         if field:
             if value is None:
@@ -1373,7 +1373,7 @@ class WorkoutStepMessage(DataMessage):
 
 
     @property
-    def secondary_custom_target_speed_high(self) -> Optional[int]:
+    def secondary_custom_target_speed_high(self) -> Optional[float]:
         field = self.get_field(WorkoutStepSecondaryCustomTargetValueHighField.ID)
         type_field = self.get_field(WorkoutStepSecondaryTargetTypeField.ID)
 
@@ -1385,7 +1385,7 @@ class WorkoutStepMessage(DataMessage):
             return None
 
     @secondary_custom_target_speed_high.setter
-    def secondary_custom_target_speed_high(self, value: int):
+    def secondary_custom_target_speed_high(self, value: float):
         field = self.get_field(WorkoutStepSecondaryCustomTargetValueHighField.ID)
         if field:
             if value is None:
@@ -1520,7 +1520,7 @@ class WorkoutStepDurationValueField(Field):
         SubField(
             name='duration_time',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 's',
         reference_map = {
@@ -1529,7 +1529,7 @@ class WorkoutStepDurationValueField(Field):
         SubField(
             name='duration_distance',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 100,
                 offset = 0,
         units = 'm',
         reference_map = {
@@ -1657,7 +1657,7 @@ class WorkoutStepTargetValueField(Field):
         SubField(
             name='repeat_time',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 's',
         reference_map = {
@@ -1666,7 +1666,7 @@ class WorkoutStepTargetValueField(Field):
         SubField(
             name='repeat_distance',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 100,
                 offset = 0,
         units = 'm',
         reference_map = {
@@ -1728,7 +1728,7 @@ class WorkoutStepCustomTargetValueLowField(Field):
         SubField(
             name='custom_target_speed_low',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -1782,7 +1782,7 @@ class WorkoutStepCustomTargetValueHighField(Field):
         SubField(
             name='custom_target_speed_high',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -1918,7 +1918,7 @@ class WorkoutStepExerciseWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -2039,7 +2039,7 @@ class WorkoutStepSecondaryCustomTargetValueLowField(Field):
         SubField(
             name='secondary_custom_target_speed_low',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -2093,7 +2093,7 @@ class WorkoutStepSecondaryCustomTargetValueHighField(Field):
         SubField(
             name='secondary_custom_target_speed_high',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {

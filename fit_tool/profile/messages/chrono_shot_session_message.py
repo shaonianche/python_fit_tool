@@ -104,7 +104,7 @@ class ChronoShotSessionMessage(DataMessage):
     
 
     @property
-    def min_speed(self) -> Optional[int]:
+    def min_speed(self) -> Optional[float]:
         field = self.get_field(ChronoShotSessionMinSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -115,7 +115,7 @@ class ChronoShotSessionMessage(DataMessage):
 
 
     @min_speed.setter
-    def min_speed(self, value: int):
+    def min_speed(self, value: float):
         field = self.get_field(ChronoShotSessionMinSpeedField.ID)
 
         if field:
@@ -128,7 +128,7 @@ class ChronoShotSessionMessage(DataMessage):
     
 
     @property
-    def max_speed(self) -> Optional[int]:
+    def max_speed(self) -> Optional[float]:
         field = self.get_field(ChronoShotSessionMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -139,7 +139,7 @@ class ChronoShotSessionMessage(DataMessage):
 
 
     @max_speed.setter
-    def max_speed(self, value: int):
+    def max_speed(self, value: float):
         field = self.get_field(ChronoShotSessionMaxSpeedField.ID)
 
         if field:
@@ -152,7 +152,7 @@ class ChronoShotSessionMessage(DataMessage):
     
 
     @property
-    def avg_speed(self) -> Optional[int]:
+    def avg_speed(self) -> Optional[float]:
         field = self.get_field(ChronoShotSessionAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -163,7 +163,7 @@ class ChronoShotSessionMessage(DataMessage):
 
 
     @avg_speed.setter
-    def avg_speed(self, value: int):
+    def avg_speed(self, value: float):
         field = self.get_field(ChronoShotSessionAvgSpeedField.ID)
 
         if field:
@@ -224,7 +224,7 @@ class ChronoShotSessionMessage(DataMessage):
     
 
     @property
-    def grain_weight(self) -> Optional[int]:
+    def grain_weight(self) -> Optional[float]:
         field = self.get_field(ChronoShotSessionGrainWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -235,7 +235,7 @@ class ChronoShotSessionMessage(DataMessage):
 
 
     @grain_weight.setter
-    def grain_weight(self, value: int):
+    def grain_weight(self, value: float):
         field = self.get_field(ChronoShotSessionGrainWeightField.ID)
 
         if field:
@@ -248,7 +248,7 @@ class ChronoShotSessionMessage(DataMessage):
     
 
     @property
-    def standard_deviation(self) -> Optional[int]:
+    def standard_deviation(self) -> Optional[float]:
         field = self.get_field(ChronoShotSessionStandardDeviationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -259,7 +259,7 @@ class ChronoShotSessionMessage(DataMessage):
 
 
     @standard_deviation.setter
-    def standard_deviation(self, value: int):
+    def standard_deviation(self, value: float):
         field = self.get_field(ChronoShotSessionStandardDeviationField.ID)
 
         if field:
@@ -284,7 +284,7 @@ class ChronoShotSessionMinSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -303,7 +303,7 @@ class ChronoShotSessionMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -322,7 +322,7 @@ class ChronoShotSessionAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -377,7 +377,7 @@ class ChronoShotSessionGrainWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'gr',
         type_name = 'uint32',
@@ -396,7 +396,7 @@ class ChronoShotSessionStandardDeviationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',

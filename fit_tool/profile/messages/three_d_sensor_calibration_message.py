@@ -265,7 +265,7 @@ class ThreeDSensorCalibrationMessage(DataMessage):
     
 
     @property
-    def orientation_matrix(self) -> Optional[list[int]]:
+    def orientation_matrix(self) -> Optional[list[float]]:
         field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -275,7 +275,7 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
 
     @orientation_matrix.setter
-    def orientation_matrix(self, value: list[int]):
+    def orientation_matrix(self, value: list[float]):
         field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
 
         if field:
@@ -408,7 +408,7 @@ class ThreeDSensorCalibrationOrientationMatrixField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 65535,
                          size = size,
         type_name = 'sint32',
         growable = growable,

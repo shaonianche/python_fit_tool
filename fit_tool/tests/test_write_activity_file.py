@@ -3,10 +3,6 @@ import os
 import struct
 import unittest
 
-TEST_DIR = os.path.dirname(__file__)
-OUT_DIR = os.path.join(TEST_DIR, 'out')
-os.makedirs(OUT_DIR, exist_ok=True)
-
 from fit_tool.base_type import BaseType
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
@@ -19,9 +15,13 @@ from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.field_description_message import FieldDescriptionMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer, Event, EventType
+from fit_tool.profile.profile_type import Event, EventType, FileType, Manufacturer
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
+
+TEST_DIR = os.path.dirname(__file__)
+OUT_DIR = os.path.join(TEST_DIR, 'out')
+os.makedirs(OUT_DIR, exist_ok=True)
 
 
 class TestWriteActivityFile(unittest.TestCase):

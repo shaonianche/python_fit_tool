@@ -113,7 +113,7 @@ class TankUpdateMessage(DataMessage):
     
 
     @property
-    def pressure(self) -> Optional[int]:
+    def pressure(self) -> Optional[float]:
         field = self.get_field(TankUpdatePressureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -124,7 +124,7 @@ class TankUpdateMessage(DataMessage):
 
 
     @pressure.setter
-    def pressure(self, value: int):
+    def pressure(self, value: float):
         field = self.get_field(TankUpdatePressureField.ID)
 
         if field:
@@ -167,7 +167,7 @@ class TankUpdatePressureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'bar',
         type_name = 'uint16',

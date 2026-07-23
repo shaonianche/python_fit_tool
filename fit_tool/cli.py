@@ -10,7 +10,6 @@ import os
 from fit_tool.fit_file import FitFile
 from fit_tool.utils.logging import logger
 
-
 SUPPORTED_FORMATS = {"csv", "fit"}
 
 

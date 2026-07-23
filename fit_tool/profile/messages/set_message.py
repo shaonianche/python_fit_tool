@@ -113,7 +113,7 @@ class SetMessage(DataMessage):
     
 
     @property
-    def duration(self) -> Optional[int]:
+    def duration(self) -> Optional[float]:
         field = self.get_field(SetDurationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -124,7 +124,7 @@ class SetMessage(DataMessage):
 
 
     @duration.setter
-    def duration(self, value: int):
+    def duration(self, value: float):
         field = self.get_field(SetDurationField.ID)
 
         if field:
@@ -161,7 +161,7 @@ class SetMessage(DataMessage):
     
 
     @property
-    def weight(self) -> Optional[int]:
+    def weight(self) -> Optional[float]:
         field = self.get_field(SetWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -172,7 +172,7 @@ class SetMessage(DataMessage):
 
 
     @weight.setter
-    def weight(self, value: int):
+    def weight(self, value: float):
         field = self.get_field(SetWeightField.ID)
 
         if field:
@@ -382,7 +382,7 @@ class SetDurationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -419,7 +419,7 @@ class SetWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 16,
                          size = size,
         units = 'kg',
         type_name = 'uint16',

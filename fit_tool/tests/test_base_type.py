@@ -1,4 +1,5 @@
 import pytest
+
 from fit_tool.base_type import BaseType, FieldType
 
 

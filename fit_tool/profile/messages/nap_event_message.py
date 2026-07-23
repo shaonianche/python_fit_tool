@@ -16,9 +16,9 @@ from typing import List as list
 from typing import Dict as dict
 
 
-class ThreeDSensorCalibrationMessage(DataMessage):
-    ID = 167
-    NAME = 'three_d_sensor_calibration'
+class NapEventMessage(DataMessage):
+    ID = 412
+    NAME = 'nap_event'
 
     @staticmethod
     def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
@@ -32,33 +32,42 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
     def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
-        super().__init__(name=ThreeDSensorCalibrationMessage.NAME,
-                         global_id=ThreeDSensorCalibrationMessage.ID,
+        super().__init__(name=NapEventMessage.NAME,
+                         global_id=NapEventMessage.ID,
                          local_id=definition_message.local_id if definition_message else local_id,
                          endian=definition_message.endian if definition_message else endian,
                          definition_message=definition_message,
                          developer_fields=developer_fields,
                          fields=[
+        MessageIndexField(
+            size=self.__get_field_size(definition_message, MessageIndexField.ID),
+            growable=definition_message is None), 
         TimestampField(
             size=self.__get_field_size(definition_message, TimestampField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationSensorTypeField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationSensorTypeField.ID),
+        NapEventStartTimeField(
+            size=self.__get_field_size(definition_message, NapEventStartTimeField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationCalibrationFactorField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationCalibrationFactorField.ID),
+        NapEventStartTimezoneOffsetField(
+            size=self.__get_field_size(definition_message, NapEventStartTimezoneOffsetField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationCalibrationDivisorField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationCalibrationDivisorField.ID),
+        NapEventEndTimeField(
+            size=self.__get_field_size(definition_message, NapEventEndTimeField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationLevelShiftField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationLevelShiftField.ID),
+        NapEventEndTimezoneOffsetField(
+            size=self.__get_field_size(definition_message, NapEventEndTimezoneOffsetField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationOffsetCalField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationOffsetCalField.ID),
+        NapEventFeedbackField(
+            size=self.__get_field_size(definition_message, NapEventFeedbackField.ID),
             growable=definition_message is None), 
-        ThreeDSensorCalibrationOrientationMatrixField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationOrientationMatrixField.ID),
+        NapEventIsDeletedField(
+            size=self.__get_field_size(definition_message, NapEventIsDeletedField.ID),
+            growable=definition_message is None), 
+        NapEventSourceField(
+            size=self.__get_field_size(definition_message, NapEventSourceField.ID),
+            growable=definition_message is None), 
+        NapEventUpdateTimestampField(
+            size=self.__get_field_size(definition_message, NapEventUpdateTimestampField.ID),
             growable=definition_message is None)
         ])
 
@@ -73,6 +82,30 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
 
 
+
+    @property
+    def message_index(self) -> Optional[int]:
+        field = self.get_field(MessageIndexField.ID)
+        if field and field.is_valid():
+            sub_field = field.get_valid_sub_field(self.fields)
+            return field.get_value(sub_field=sub_field)
+        else:
+            return None
+
+
+
+    @message_index.setter
+    def message_index(self, value: int):
+        field = self.get_field(MessageIndexField.ID)
+
+        if field:
+            if value is None:
+                field.clear()
+            else:
+                sub_field = field.get_valid_sub_field(self.fields)
+                field.set_value(0, value, sub_field)
+
+    
 # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
@@ -99,10 +132,11 @@ class ThreeDSensorCalibrationMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
-    def sensor_type(self) -> Optional[SensorType]:
-        field = self.get_field(ThreeDSensorCalibrationSensorTypeField.ID)
+    def start_time(self) -> Optional[int]:
+        field = self.get_field(NapEventStartTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
             return field.get_value(sub_field=sub_field)
@@ -110,10 +144,11 @@ class ThreeDSensorCalibrationMessage(DataMessage):
             return None
 
 
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
-    @sensor_type.setter
-    def sensor_type(self, value: SensorType):
-        field = self.get_field(ThreeDSensorCalibrationSensorTypeField.ID)
+    @start_time.setter
+    def start_time(self, value: int):
+        field = self.get_field(NapEventStartTimeField.ID)
 
         if field:
             if value is None:
@@ -125,8 +160,8 @@ class ThreeDSensorCalibrationMessage(DataMessage):
     
 
     @property
-    def calibration_factor(self) -> Optional[int]:
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
+    def start_timezone_offset(self) -> Optional[int]:
+        field = self.get_field(NapEventStartTimezoneOffsetField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
             return field.get_value(sub_field=sub_field)
@@ -135,9 +170,9 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
 
 
-    @calibration_factor.setter
-    def calibration_factor(self, value: int):
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
+    @start_timezone_offset.setter
+    def start_timezone_offset(self, value: int):
+        field = self.get_field(NapEventStartTimezoneOffsetField.ID)
 
         if field:
             if value is None:
@@ -147,56 +182,11 @@ class ThreeDSensorCalibrationMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     
-
-
-    @property
-    def accel_cal_factor(self) -> Optional[int]:
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
-        type_field = self.get_field(ThreeDSensorCalibrationSensorTypeField.ID)
-
-        is_sub_field_valid = type_field and type_field.get_value() in [0]
-        if field and field.is_valid() and is_sub_field_valid:
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
-        else:
-            return None
-
-    @accel_cal_factor.setter
-    def accel_cal_factor(self, value: int):
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
-        if field:
-            if value is None:
-                field.clear()
-            else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
-
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
     @property
-    def gyro_cal_factor(self) -> Optional[int]:
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
-        type_field = self.get_field(ThreeDSensorCalibrationSensorTypeField.ID)
-
-        is_sub_field_valid = type_field and type_field.get_value() in [1]
-        if field and field.is_valid() and is_sub_field_valid:
-            sub_field = field.get_valid_sub_field(self.fields)
-            return field.get_value(sub_field=sub_field)
-        else:
-            return None
-
-    @gyro_cal_factor.setter
-    def gyro_cal_factor(self, value: int):
-        field = self.get_field(ThreeDSensorCalibrationCalibrationFactorField.ID)
-        if field:
-            if value is None:
-                field.clear()
-            else:
-                sub_field = field.get_valid_sub_field(self.fields)
-                field.set_value(0, value, sub_field)
-
-    @property
-    def calibration_divisor(self) -> Optional[int]:
-        field = self.get_field(ThreeDSensorCalibrationCalibrationDivisorField.ID)
+    def end_time(self) -> Optional[int]:
+        field = self.get_field(NapEventEndTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
             return field.get_value(sub_field=sub_field)
@@ -204,10 +194,11 @@ class ThreeDSensorCalibrationMessage(DataMessage):
             return None
 
 
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
 
-    @calibration_divisor.setter
-    def calibration_divisor(self, value: int):
-        field = self.get_field(ThreeDSensorCalibrationCalibrationDivisorField.ID)
+    @end_time.setter
+    def end_time(self, value: int):
+        field = self.get_field(NapEventEndTimeField.ID)
 
         if field:
             if value is None:
@@ -219,8 +210,8 @@ class ThreeDSensorCalibrationMessage(DataMessage):
     
 
     @property
-    def level_shift(self) -> Optional[int]:
-        field = self.get_field(ThreeDSensorCalibrationLevelShiftField.ID)
+    def end_timezone_offset(self) -> Optional[int]:
+        field = self.get_field(NapEventEndTimezoneOffsetField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
             return field.get_value(sub_field=sub_field)
@@ -229,9 +220,9 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
 
 
-    @level_shift.setter
-    def level_shift(self, value: int):
-        field = self.get_field(ThreeDSensorCalibrationLevelShiftField.ID)
+    @end_timezone_offset.setter
+    def end_timezone_offset(self, value: int):
+        field = self.get_field(NapEventEndTimezoneOffsetField.ID)
 
         if field:
             if value is None:
@@ -243,46 +234,100 @@ class ThreeDSensorCalibrationMessage(DataMessage):
     
 
     @property
-    def offset_cal(self) -> Optional[list[int]]:
-        field = self.get_field(ThreeDSensorCalibrationOffsetCalField.ID)
+    def feedback(self) -> Optional[NapPeriodFeedback]:
+        field = self.get_field(NapEventFeedbackField.ID)
         if field and field.is_valid():
-            return field.get_values()
+            sub_field = field.get_valid_sub_field(self.fields)
+            return field.get_value(sub_field=sub_field)
         else:
             return None
 
 
 
-    @offset_cal.setter
-    def offset_cal(self, value: list[int]):
-        field = self.get_field(ThreeDSensorCalibrationOffsetCalField.ID)
+    @feedback.setter
+    def feedback(self, value: NapPeriodFeedback):
+        field = self.get_field(NapEventFeedbackField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                field.set_values(value)
+                sub_field = field.get_valid_sub_field(self.fields)
+                field.set_value(0, value, sub_field)
 
     
 
     @property
-    def orientation_matrix(self) -> Optional[list[int]]:
-        field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
+    def is_deleted(self) -> Optional[bool]:
+        field = self.get_field(NapEventIsDeletedField.ID)
         if field and field.is_valid():
-            return field.get_values()
+            sub_field = field.get_valid_sub_field(self.fields)
+            return field.get_value(sub_field=sub_field)
         else:
             return None
 
 
 
-    @orientation_matrix.setter
-    def orientation_matrix(self, value: list[int]):
-        field = self.get_field(ThreeDSensorCalibrationOrientationMatrixField.ID)
+    @is_deleted.setter
+    def is_deleted(self, value: bool):
+        field = self.get_field(NapEventIsDeletedField.ID)
 
         if field:
             if value is None:
                 field.clear()
             else:
-                field.set_values(value)
+                sub_field = field.get_valid_sub_field(self.fields)
+                field.set_value(0, value, sub_field)
+
+    
+
+    @property
+    def source(self) -> Optional[NapSource]:
+        field = self.get_field(NapEventSourceField.ID)
+        if field and field.is_valid():
+            sub_field = field.get_valid_sub_field(self.fields)
+            return field.get_value(sub_field=sub_field)
+        else:
+            return None
+
+
+
+    @source.setter
+    def source(self, value: NapSource):
+        field = self.get_field(NapEventSourceField.ID)
+
+        if field:
+            if value is None:
+                field.clear()
+            else:
+                sub_field = field.get_valid_sub_field(self.fields)
+                field.set_value(0, value, sub_field)
+
+    
+# timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+    @property
+    def update_timestamp(self) -> Optional[int]:
+        field = self.get_field(NapEventUpdateTimestampField.ID)
+        if field and field.is_valid():
+            sub_field = field.get_valid_sub_field(self.fields)
+            return field.get_value(sub_field=sub_field)
+        else:
+            return None
+
+
+    # timestamp : milliseconds from January 1st, 1970 at 00:00:00 UTC
+
+    @update_timestamp.setter
+    def update_timestamp(self, value: int):
+        field = self.get_field(NapEventUpdateTimestampField.ID)
+
+        if field:
+            if value is None:
+                field.clear()
+            else:
+                sub_field = field.get_valid_sub_field(self.fields)
+                field.set_value(0, value, sub_field)
 
     
 
@@ -290,127 +335,149 @@ class ThreeDSensorCalibrationMessage(DataMessage):
 
 
 
-class ThreeDSensorCalibrationSensorTypeField(Field):
+class NapEventStartTimeField(Field):
     ID = 0
 
     def __init__(self, size: int = 0, growable: bool = True):
         super().__init__(
-            name='sensor_type',
+            name='start_time',
+            field_id=self.ID,
+            base_type=BaseType.UINT32,
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventStartTimezoneOffsetField(Field):
+    ID = 1
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='start_timezone_offset',
+            field_id=self.ID,
+            base_type=BaseType.SINT16,
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'minutes',
+        type_name = 'sint16',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventEndTimeField(Field):
+    ID = 2
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='end_time',
+            field_id=self.ID,
+            base_type=BaseType.UINT32,
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventEndTimezoneOffsetField(Field):
+    ID = 3
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='end_timezone_offset',
+            field_id=self.ID,
+            base_type=BaseType.SINT16,
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        units = 'minutes',
+        type_name = 'sint16',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventFeedbackField(Field):
+    ID = 4
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='feedback',
             field_id=self.ID,
             base_type=BaseType.ENUM,
         offset = 0,
                  scale = 1,
                          size = size,
-        type_name = 'sensor_type',
+        type_name = 'nap_period_feedback',
         growable = growable,
                    sub_fields = [
         ]
         )
 
 
-class ThreeDSensorCalibrationCalibrationFactorField(Field):
-    ID = 1
-
-    def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(
-            name='calibration_factor',
-            field_id=self.ID,
-            base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        type_name = 'uint32',
-        growable = growable,
-                   sub_fields = [
-        SubField(
-            name='accel_cal_factor',
-            base_type=BaseType.UINT32,
-        scale = 1,
-                offset = 0,
-        units = 'g',
-        reference_map = {
-        ThreeDSensorCalibrationSensorTypeField.ID: [0]
-        }), 
-        SubField(
-            name='gyro_cal_factor',
-            base_type=BaseType.UINT32,
-        scale = 1,
-                offset = 0,
-        units = 'deg/s',
-        reference_map = {
-        ThreeDSensorCalibrationSensorTypeField.ID: [1]
-        })
-        ]
-        )
-
-
-class ThreeDSensorCalibrationCalibrationDivisorField(Field):
-    ID = 2
-
-    def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(
-            name='calibration_divisor',
-            field_id=self.ID,
-            base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        units = 'counts',
-        type_name = 'uint32',
-        growable = growable,
-                   sub_fields = [
-        ]
-        )
-
-
-class ThreeDSensorCalibrationLevelShiftField(Field):
-    ID = 3
-
-    def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(
-            name='level_shift',
-            field_id=self.ID,
-            base_type=BaseType.UINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        type_name = 'uint32',
-        growable = growable,
-                   sub_fields = [
-        ]
-        )
-
-
-class ThreeDSensorCalibrationOffsetCalField(Field):
-    ID = 4
-
-    def __init__(self, size: int = 0, growable: bool = True):
-        super().__init__(
-            name='offset_cal',
-            field_id=self.ID,
-            base_type=BaseType.SINT32,
-        offset = 0,
-                 scale = 1,
-                         size = size,
-        type_name = 'sint32',
-        growable = growable,
-                   sub_fields = [
-        ]
-        )
-
-
-class ThreeDSensorCalibrationOrientationMatrixField(Field):
+class NapEventIsDeletedField(Field):
     ID = 5
 
     def __init__(self, size: int = 0, growable: bool = True):
         super().__init__(
-            name='orientation_matrix',
+            name='is_deleted',
             field_id=self.ID,
-            base_type=BaseType.SINT32,
+            base_type=BaseType.UINT8,
         offset = 0,
                  scale = 1,
                          size = size,
-        type_name = 'sint32',
+        type_name = 'bool',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventSourceField(Field):
+    ID = 6
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='source',
+            field_id=self.ID,
+            base_type=BaseType.ENUM,
+        offset = 0,
+                 scale = 1,
+                         size = size,
+        type_name = 'nap_source',
+        growable = growable,
+                   sub_fields = [
+        ]
+        )
+
+
+class NapEventUpdateTimestampField(Field):
+    ID = 7
+
+    def __init__(self, size: int = 0, growable: bool = True):
+        super().__init__(
+            name='update_timestamp',
+            field_id=self.ID,
+            base_type=BaseType.UINT32,
+        offset = -631065600000,
+                 scale = 0.001,
+                         size = size,
+        units = 'ms',
+        type_name = 'date_time',
         growable = growable,
                    sub_fields = [
         ]

@@ -1,7 +1,6 @@
+from __future__ import annotations
+
 import struct
-from typing import Dict as dict
-from typing import List as list
-from typing import Optional
 
 from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
@@ -38,7 +37,7 @@ class DefinitionMessage(Message):
     def has_developer_fields(self) -> bool:
         return len(self.developer_field_definitions) > 0
 
-    def get_field_definition(self, field_id: int) -> Optional[FieldDefinition]:
+    def get_field_definition(self, field_id: int) -> FieldDefinition | None:
         return next((x for x in self.field_definitions if x.field_id == field_id), None)
 
     def remove_field(self, field_id: int):
@@ -55,14 +54,16 @@ class DefinitionMessage(Message):
 
     def add_field_definition(self, definition: FieldDefinition):
         self.field_definitions.append(definition)
+        self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def get_developer_field_definition(self, developer_data_index: int, field_id: int) \
-            -> Optional[DeveloperFieldDefinition]:
+            -> DeveloperFieldDefinition | None:
         return next((x for x in self.developer_field_definitions if
                      x.developer_data_index == developer_data_index and x.field_id == field_id), None)
 
     def add_developer_field_definition(self, definition: DeveloperFieldDefinition):
         self.developer_field_definitions.append(definition)
+        self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def to_row(self) -> list:
         from fit_tool.profile.messages.message_factory import MessageFactory
@@ -89,7 +90,7 @@ class DefinitionMessage(Message):
                 logger.warning(f'Field id:{field_definition.field_id} could not be found in message: {message.name}')
                 continue
 
-            values.append(f'[{field.developer_data_index},{field.field_id}]');
+            values.append(f'[{field.developer_data_index},{field.field_id}]')
             values.append(field.size)
             ''
             values.append('bytes')
@@ -174,9 +175,8 @@ class DefinitionMessage(Message):
         # Field definitions;
         field_definitions = []
         field_definition_size = FieldDefinition.field_definition_size()
-        for i in range(field_count):
-            fd_bytes = bytes_buffer[offset:offset + field_definition_size]
-            field_definition = FieldDefinition.from_bytes(fd_bytes)
+        for _ in range(field_count):
+            field_definition = FieldDefinition.from_bytes(bytes_buffer, offset=offset)
             field_definitions.append(field_definition)
             offset += field_definition_size
 
@@ -187,9 +187,8 @@ class DefinitionMessage(Message):
             offset += 1
 
             developer_field_definition_size = DeveloperFieldDefinition.field_definition_size()
-            for i in range(dev_field_count):
-                fd_bytes = bytes_buffer[offset:offset + developer_field_definition_size]
-                field_definition = DeveloperFieldDefinition.from_bytes(fd_bytes)
+            for _ in range(dev_field_count):
+                field_definition = DeveloperFieldDefinition.from_bytes(bytes_buffer, offset=offset)
                 developer_field_definitions.append(field_definition)
                 offset += developer_field_definition_size
 
@@ -266,6 +265,9 @@ class DefinitionMessage(Message):
             other_field_definition = other.developer_field_definitions[i]
 
             if field_definition.field_id != other_field_definition.field_id:
+                return False
+
+            if field_definition.developer_data_index != other_field_definition.developer_data_index:
                 return False
 
             if field_definition.size < other_field_definition.size:

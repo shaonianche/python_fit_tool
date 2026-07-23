@@ -1,4 +1,4 @@
-from typing import List as list
+from __future__ import annotations
 
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
@@ -7,6 +7,7 @@ from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.message import Message
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
+from fit_tool.validation import FitFileValidator, validate_definition, validate_message_header
 
 
 def calc_records_size(records: list[Record]) -> int:
@@ -16,7 +17,7 @@ def calc_records_size(records: list[Record]) -> int:
     return size
 
 
-def calc_crc(header: FitFileHeader, records: [Record]):
+def calc_crc(header: FitFileHeader, records: list[Record]) -> int:
     crc = crc16(header.to_bytes())
     for record in records:
         crc = crc16(record.to_bytes(), crc=crc)
@@ -25,25 +26,29 @@ def calc_crc(header: FitFileHeader, records: [Record]):
 
 class FitFileBuilder:
 
-    def __init__(self, auto_define: bool = True, min_string_size: int = 0):
+    def __init__(self, auto_define: bool = True, min_string_size: int = 0, strict: bool = False):
         self.auto_define = auto_define
         self.min_string_size = min_string_size
-        self.records = []
-        self.definition_map = {}
+        self.strict = strict
+        self.records: list[Record] = []
+        self.definition_map: dict[int, DefinitionMessage] = {}
 
-    def add(self, message: Message):
+    def add(self, message: Message) -> None:
+        validate_message_header(message)
         if isinstance(message, DataMessage):
             stored_definition = self.definition_map.get(message.local_id)
 
             if stored_definition is None:
                 if self.auto_define:
                     new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
+                    validate_definition(new_definition)
                     self.definition_map[message.local_id] = new_definition
                     self.records.append(Record.from_message(new_definition))
                 else:
                     raise ValueError(f'Message has not been defined: {message.name} local_id: {message.local_id}')
             else:
                 new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
+                validate_definition(new_definition)
                 if not stored_definition.supports(new_definition):
                     if self.auto_define:
                         self.definition_map[new_definition.local_id] = new_definition
@@ -52,21 +57,34 @@ class FitFileBuilder:
                         raise ValueError(
                             f'The definition does not support this message. record:{len(self.records) + 1} name:{message.name} local_id:{message.local_id}')
 
-            if message.definition_message is None:
-                message.set_definition_message(self.definition_map[message.local_id])
+            message.set_definition_message(self.definition_map[message.local_id])
         elif isinstance(message, DefinitionMessage):
+            validate_definition(message)
             self.definition_map[message.local_id] = message
 
         record = Record.from_message(message)
         self.records.append(record)
 
-    def add_all(self, messages: list[Message]):
+    def add_all(self, messages: list[Message]) -> None:
         for message in messages:
             self.add(message)
 
     def build(self) -> FitFile:
+        self.validate()
         records_size = calc_records_size(self.records)
         header = FitFileHeader(records_size=records_size)
 
         crc = calc_crc(header, self.records)
         return FitFile(header, self.records, crc)
+
+    def build_bytes(self) -> bytes:
+        """Serialize the builder's current records without precomputing the CRC in a separate pass."""
+        self.validate()
+        records_size = calc_records_size(self.records)
+        header = FitFileHeader(records_size=records_size)
+        return FitFile(header, self.records).to_bytes()
+
+    def validate(self) -> None:
+        """Validate profile-level ordering and cardinality rules when strict mode is enabled."""
+        if self.strict:
+            FitFileValidator(self.records).validate()

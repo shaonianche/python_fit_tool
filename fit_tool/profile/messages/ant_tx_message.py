@@ -98,7 +98,7 @@ class AntTxMessage(DataMessage):
     
 
     @property
-    def fractional_timestamp(self) -> Optional[int]:
+    def fractional_timestamp(self) -> Optional[float]:
         field = self.get_field(AntTxFractionalTimestampField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -109,7 +109,7 @@ class AntTxMessage(DataMessage):
 
 
     @fractional_timestamp.setter
-    def fractional_timestamp(self, value: int):
+    def fractional_timestamp(self, value: float):
         field = self.get_field(AntTxFractionalTimestampField.ID)
 
         if field:
@@ -226,7 +226,7 @@ class AntTxFractionalTimestampField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 32768,
                          size = size,
         units = 's',
         type_name = 'uint16',

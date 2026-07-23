@@ -144,7 +144,7 @@ class MonitoringInfoMessage(DataMessage):
     
 
     @property
-    def cycles_to_distance(self) -> Optional[list[int]]:
+    def cycles_to_distance(self) -> Optional[list[float]]:
         field = self.get_field(MonitoringInfoCyclesToDistanceField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -154,7 +154,7 @@ class MonitoringInfoMessage(DataMessage):
 
 
     @cycles_to_distance.setter
-    def cycles_to_distance(self, value: list[int]):
+    def cycles_to_distance(self, value: list[float]):
         field = self.get_field(MonitoringInfoCyclesToDistanceField.ID)
 
         if field:
@@ -166,7 +166,7 @@ class MonitoringInfoMessage(DataMessage):
     
 
     @property
-    def cycles_to_calories(self) -> Optional[list[int]]:
+    def cycles_to_calories(self) -> Optional[list[float]]:
         field = self.get_field(MonitoringInfoCyclesToCaloriesField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -176,7 +176,7 @@ class MonitoringInfoMessage(DataMessage):
 
 
     @cycles_to_calories.setter
-    def cycles_to_calories(self, value: list[int]):
+    def cycles_to_calories(self, value: list[float]):
         field = self.get_field(MonitoringInfoCyclesToCaloriesField.ID)
 
         if field:
@@ -261,7 +261,7 @@ class MonitoringInfoCyclesToDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 5000,
                          size = size,
         units = 'm/cycle',
         type_name = 'uint16',
@@ -280,7 +280,7 @@ class MonitoringInfoCyclesToCaloriesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 5000,
                          size = size,
         units = 'kcal/cycle',
         type_name = 'uint16',

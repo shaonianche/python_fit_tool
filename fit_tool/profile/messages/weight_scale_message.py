@@ -122,7 +122,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def weight(self) -> Optional[int]:
+    def weight(self) -> Optional[float]:
         field = self.get_field(WeightScaleWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -133,7 +133,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @weight.setter
-    def weight(self, value: int):
+    def weight(self, value: float):
         field = self.get_field(WeightScaleWeightField.ID)
 
         if field:
@@ -146,7 +146,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def percent_fat(self) -> Optional[int]:
+    def percent_fat(self) -> Optional[float]:
         field = self.get_field(WeightScalePercentFatField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -157,7 +157,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @percent_fat.setter
-    def percent_fat(self, value: int):
+    def percent_fat(self, value: float):
         field = self.get_field(WeightScalePercentFatField.ID)
 
         if field:
@@ -170,7 +170,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def percent_hydration(self) -> Optional[int]:
+    def percent_hydration(self) -> Optional[float]:
         field = self.get_field(WeightScalePercentHydrationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -181,7 +181,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @percent_hydration.setter
-    def percent_hydration(self, value: int):
+    def percent_hydration(self, value: float):
         field = self.get_field(WeightScalePercentHydrationField.ID)
 
         if field:
@@ -194,7 +194,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def visceral_fat_mass(self) -> Optional[int]:
+    def visceral_fat_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleVisceralFatMassField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -205,7 +205,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @visceral_fat_mass.setter
-    def visceral_fat_mass(self, value: int):
+    def visceral_fat_mass(self, value: float):
         field = self.get_field(WeightScaleVisceralFatMassField.ID)
 
         if field:
@@ -218,7 +218,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def bone_mass(self) -> Optional[int]:
+    def bone_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleBoneMassField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -229,7 +229,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @bone_mass.setter
-    def bone_mass(self, value: int):
+    def bone_mass(self, value: float):
         field = self.get_field(WeightScaleBoneMassField.ID)
 
         if field:
@@ -242,7 +242,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def muscle_mass(self) -> Optional[int]:
+    def muscle_mass(self) -> Optional[float]:
         field = self.get_field(WeightScaleMuscleMassField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -253,7 +253,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @muscle_mass.setter
-    def muscle_mass(self, value: int):
+    def muscle_mass(self, value: float):
         field = self.get_field(WeightScaleMuscleMassField.ID)
 
         if field:
@@ -266,7 +266,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def basal_met(self) -> Optional[int]:
+    def basal_met(self) -> Optional[float]:
         field = self.get_field(WeightScaleBasalMetField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -277,7 +277,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @basal_met.setter
-    def basal_met(self, value: int):
+    def basal_met(self, value: float):
         field = self.get_field(WeightScaleBasalMetField.ID)
 
         if field:
@@ -314,7 +314,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def active_met(self) -> Optional[int]:
+    def active_met(self) -> Optional[float]:
         field = self.get_field(WeightScaleActiveMetField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -325,7 +325,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @active_met.setter
-    def active_met(self, value: int):
+    def active_met(self, value: float):
         field = self.get_field(WeightScaleActiveMetField.ID)
 
         if field:
@@ -410,7 +410,7 @@ class WeightScaleMessage(DataMessage):
     
 
     @property
-    def bmi(self) -> Optional[int]:
+    def bmi(self) -> Optional[float]:
         field = self.get_field(WeightScaleBmiField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -421,7 +421,7 @@ class WeightScaleMessage(DataMessage):
 
 
     @bmi.setter
-    def bmi(self, value: int):
+    def bmi(self, value: float):
         field = self.get_field(WeightScaleBmiField.ID)
 
         if field:
@@ -446,7 +446,7 @@ class WeightScaleWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'kg',
         type_name = 'weight',
@@ -465,7 +465,7 @@ class WeightScalePercentFatField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -484,7 +484,7 @@ class WeightScalePercentHydrationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -503,7 +503,7 @@ class WeightScaleVisceralFatMassField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -522,7 +522,7 @@ class WeightScaleBoneMassField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -541,7 +541,7 @@ class WeightScaleMuscleMassField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -560,7 +560,7 @@ class WeightScaleBasalMetField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 4,
                          size = size,
         units = 'kcal/day',
         type_name = 'uint16',
@@ -597,7 +597,7 @@ class WeightScaleActiveMetField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 4,
                          size = size,
         units = 'kcal/day',
         type_name = 'uint16',
@@ -671,7 +671,7 @@ class WeightScaleBmiField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'kg/m^2',
         type_name = 'uint16',

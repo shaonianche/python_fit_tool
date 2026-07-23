@@ -9,7 +9,7 @@ import jinja2
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType
 from fit_tool.field import Field
-from fit_tool.gen.profile import Profile, Message
+from fit_tool.gen.profile import Message, Profile
 
 DEFAULT_BUILD_PATH = str(Path(__file__).resolve().parents[1])
 
@@ -239,7 +239,7 @@ def main():
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 
-    for name, message in profile.messages_by_name.items():
+    for _name, message in profile.messages_by_name.items():
         template = env.get_template('template_message.jinja')
         rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
                                     class_name=inflection.camelize(message.name + '_message'),
@@ -255,16 +255,20 @@ def main():
 
     template = env.get_template('template_message_factory.jinja')
 
-    message_names = zip(message_class_names, message_file_names)
+    message_types = [
+        (message.id, class_name, file_name)
+        for message, class_name, file_name in
+        zip(profile.messages_by_name.values(), message_class_names, message_file_names)
+    ]
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION,
-                                message_names=message_names, message_class_names=message_class_names)
-    filename = os.path.join(messages_path, f"message_factory.py")
+                                message_types=message_types)
+    filename = os.path.join(messages_path, "message_factory.py")
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 
     template = env.get_template('template_common_fields.jinja')
     rendering = template.render(profile=profile, sdk_version=SDK_VERSION)
-    filename = os.path.join(messages_path, f"common_fields.py")
+    filename = os.path.join(messages_path, "common_fields.py")
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
 

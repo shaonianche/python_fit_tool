@@ -176,7 +176,7 @@ class CoursePointMessage(DataMessage):
     
 
     @property
-    def distance(self) -> Optional[int]:
+    def distance(self) -> Optional[float]:
         field = self.get_field(CoursePointDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -187,7 +187,7 @@ class CoursePointMessage(DataMessage):
 
 
     @distance.setter
-    def distance(self, value: int):
+    def distance(self, value: float):
         field = self.get_field(CoursePointDistanceField.ID)
 
         if field:
@@ -341,7 +341,7 @@ class CoursePointDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',

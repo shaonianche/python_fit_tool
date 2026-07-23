@@ -353,7 +353,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def po2_warn(self) -> Optional[int]:
+    def po2_warn(self) -> Optional[float]:
         field = self.get_field(DiveSettingsPo2WarnField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -364,7 +364,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @po2_warn.setter
-    def po2_warn(self, value: int):
+    def po2_warn(self, value: float):
         field = self.get_field(DiveSettingsPo2WarnField.ID)
 
         if field:
@@ -377,7 +377,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def po2_critical(self) -> Optional[int]:
+    def po2_critical(self) -> Optional[float]:
         field = self.get_field(DiveSettingsPo2CriticalField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -388,7 +388,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @po2_critical.setter
-    def po2_critical(self, value: int):
+    def po2_critical(self, value: float):
         field = self.get_field(DiveSettingsPo2CriticalField.ID)
 
         if field:
@@ -401,7 +401,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def po2_deco(self) -> Optional[int]:
+    def po2_deco(self) -> Optional[float]:
         field = self.get_field(DiveSettingsPo2DecoField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -412,7 +412,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @po2_deco.setter
-    def po2_deco(self, value: int):
+    def po2_deco(self, value: float):
         field = self.get_field(DiveSettingsPo2DecoField.ID)
 
         if field:
@@ -807,7 +807,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def ccr_low_setpoint(self) -> Optional[int]:
+    def ccr_low_setpoint(self) -> Optional[float]:
         field = self.get_field(DiveSettingsCcrLowSetpointField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -818,7 +818,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @ccr_low_setpoint.setter
-    def ccr_low_setpoint(self, value: int):
+    def ccr_low_setpoint(self, value: float):
         field = self.get_field(DiveSettingsCcrLowSetpointField.ID)
 
         if field:
@@ -831,7 +831,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def ccr_low_setpoint_depth(self) -> Optional[int]:
+    def ccr_low_setpoint_depth(self) -> Optional[float]:
         field = self.get_field(DiveSettingsCcrLowSetpointDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -842,7 +842,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @ccr_low_setpoint_depth.setter
-    def ccr_low_setpoint_depth(self, value: int):
+    def ccr_low_setpoint_depth(self, value: float):
         field = self.get_field(DiveSettingsCcrLowSetpointDepthField.ID)
 
         if field:
@@ -879,7 +879,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def ccr_high_setpoint(self) -> Optional[int]:
+    def ccr_high_setpoint(self) -> Optional[float]:
         field = self.get_field(DiveSettingsCcrHighSetpointField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -890,7 +890,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @ccr_high_setpoint.setter
-    def ccr_high_setpoint(self, value: int):
+    def ccr_high_setpoint(self, value: float):
         field = self.get_field(DiveSettingsCcrHighSetpointField.ID)
 
         if field:
@@ -903,7 +903,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def ccr_high_setpoint_depth(self) -> Optional[int]:
+    def ccr_high_setpoint_depth(self) -> Optional[float]:
         field = self.get_field(DiveSettingsCcrHighSetpointDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -914,7 +914,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @ccr_high_setpoint_depth.setter
-    def ccr_high_setpoint_depth(self, value: int):
+    def ccr_high_setpoint_depth(self, value: float):
         field = self.get_field(DiveSettingsCcrHighSetpointDepthField.ID)
 
         if field:
@@ -999,7 +999,7 @@ class DiveSettingsMessage(DataMessage):
     
 
     @property
-    def last_stop_multiple(self) -> Optional[int]:
+    def last_stop_multiple(self) -> Optional[float]:
         field = self.get_field(DiveSettingsLastStopMultipleField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1010,7 +1010,7 @@ class DiveSettingsMessage(DataMessage):
 
 
     @last_stop_multiple.setter
-    def last_stop_multiple(self, value: int):
+    def last_stop_multiple(self, value: float):
         field = self.get_field(DiveSettingsLastStopMultipleField.ID)
 
         if field:
@@ -1170,7 +1170,7 @@ class DiveSettingsPo2WarnField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -1189,7 +1189,7 @@ class DiveSettingsPo2CriticalField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -1208,7 +1208,7 @@ class DiveSettingsPo2DecoField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -1497,7 +1497,7 @@ class DiveSettingsCcrLowSetpointField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -1516,7 +1516,7 @@ class DiveSettingsCcrLowSetpointDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -1553,7 +1553,7 @@ class DiveSettingsCcrHighSetpointField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -1572,7 +1572,7 @@ class DiveSettingsCcrHighSetpointDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -1645,7 +1645,7 @@ class DiveSettingsLastStopMultipleField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         type_name = 'uint8',
         growable = growable,

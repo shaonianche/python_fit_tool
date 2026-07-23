@@ -119,7 +119,7 @@ class DeviceAuxBatteryInfoMessage(DataMessage):
     
 
     @property
-    def battery_voltage(self) -> Optional[int]:
+    def battery_voltage(self) -> Optional[float]:
         field = self.get_field(DeviceAuxBatteryInfoBatteryVoltageField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -130,7 +130,7 @@ class DeviceAuxBatteryInfoMessage(DataMessage):
 
 
     @battery_voltage.setter
-    def battery_voltage(self, value: int):
+    def battery_voltage(self, value: float):
         field = self.get_field(DeviceAuxBatteryInfoBatteryVoltageField.ID)
 
         if field:
@@ -221,7 +221,7 @@ class DeviceAuxBatteryInfoBatteryVoltageField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 256,
                          size = size,
         units = 'V',
         type_name = 'uint16',

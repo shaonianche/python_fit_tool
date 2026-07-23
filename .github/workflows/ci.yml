@@ -25,6 +25,16 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev
 
+      - name: Lint handwritten library
+        if: matrix.python-version == '3.12'
+        run: uv run --frozen ruff check fit_tool
+
+      - name: Type-check parser boundaries
+        if: matrix.python-version == '3.12'
+        run: >-
+          uv run --frozen mypy fit_tool/fit_file.py fit_tool/fit_file_stream.py fit_tool/exceptions.py
+          --follow-imports=skip --allow-untyped-defs --allow-incomplete-defs --no-strict-optional
+
       - name: Build package
         run: uv build
 
@@ -48,3 +58,40 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./junit.xml
+
+  garmin-js-interop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Read bundled Garmin Profile version
+        id: fit_version
+        run: echo "sdk_version=$(uv run --frozen python -c 'from fit_tool import SDK_VERSION; print(SDK_VERSION)')" >> "$GITHUB_OUTPUT"
+
+      - name: Check out matching Garmin JavaScript SDK
+        uses: actions/checkout@v6.0.2
+        with:
+          repository: garmin/fit-javascript-sdk
+          ref: ${{ steps.fit_version.outputs.sdk_version }}
+          path: .garmin-fit-javascript-sdk
+          persist-credentials: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Run bidirectional Garmin SDK interoperability tests
+        env:
+          FIT_JS_SDK_PATH: ${{ github.workspace }}/.garmin-fit-javascript-sdk
+        run: uv run --frozen pytest fit_tool/tests/test_garmin_sdk_interop.py -q

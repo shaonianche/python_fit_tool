@@ -179,7 +179,7 @@ class TimeInZoneMessage(DataMessage):
     
 
     @property
-    def time_in_hr_zone(self) -> Optional[list[int]]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(TimeInZoneTimeInHrZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -189,7 +189,7 @@ class TimeInZoneMessage(DataMessage):
 
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: list[int]):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(TimeInZoneTimeInHrZoneField.ID)
 
         if field:
@@ -201,7 +201,7 @@ class TimeInZoneMessage(DataMessage):
     
 
     @property
-    def time_in_speed_zone(self) -> Optional[list[int]]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(TimeInZoneTimeInSpeedZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -211,7 +211,7 @@ class TimeInZoneMessage(DataMessage):
 
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: list[int]):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(TimeInZoneTimeInSpeedZoneField.ID)
 
         if field:
@@ -223,7 +223,7 @@ class TimeInZoneMessage(DataMessage):
     
 
     @property
-    def time_in_cadence_zone(self) -> Optional[list[int]]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(TimeInZoneTimeInCadenceZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -233,7 +233,7 @@ class TimeInZoneMessage(DataMessage):
 
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: list[int]):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(TimeInZoneTimeInCadenceZoneField.ID)
 
         if field:
@@ -245,7 +245,7 @@ class TimeInZoneMessage(DataMessage):
     
 
     @property
-    def time_in_power_zone(self) -> Optional[list[int]]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(TimeInZoneTimeInPowerZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -255,7 +255,7 @@ class TimeInZoneMessage(DataMessage):
 
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: list[int]):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(TimeInZoneTimeInPowerZoneField.ID)
 
         if field:
@@ -289,7 +289,7 @@ class TimeInZoneMessage(DataMessage):
     
 
     @property
-    def speed_zone_high_boundary(self) -> Optional[list[int]]:
+    def speed_zone_high_boundary(self) -> Optional[list[float]]:
         field = self.get_field(TimeInZoneSpeedZoneHighBoundaryField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -299,7 +299,7 @@ class TimeInZoneMessage(DataMessage):
 
 
     @speed_zone_high_boundary.setter
-    def speed_zone_high_boundary(self, value: list[int]):
+    def speed_zone_high_boundary(self, value: list[float]):
         field = self.get_field(TimeInZoneSpeedZoneHighBoundaryField.ID)
 
         if field:
@@ -547,7 +547,7 @@ class TimeInZoneTimeInHrZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -566,7 +566,7 @@ class TimeInZoneTimeInSpeedZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -585,7 +585,7 @@ class TimeInZoneTimeInCadenceZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -604,7 +604,7 @@ class TimeInZoneTimeInPowerZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -642,7 +642,7 @@ class TimeInZoneSpeedZoneHighBoundaryField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',

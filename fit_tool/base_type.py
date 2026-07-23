@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from enum import Enum, unique
-from typing import Optional
 
 
 @unique
@@ -24,70 +25,26 @@ class BaseType(Enum):
 
     @property
     def size(self) -> int:
-        if self == BaseType.ENUM:
-            return 1
-        elif self == BaseType.SINT8:
-            return 1
-        elif self == BaseType.UINT8:
-            return 1
-        elif self == BaseType.SINT16:
-            return 2
-        elif self == BaseType.UINT16:
-            return 2
-        elif self == BaseType.SINT32:
-            return 4
-        elif self == BaseType.UINT32:
-            return 4
-        elif self == BaseType.STRING:
-            return 1
-        elif self == BaseType.FLOAT32:
-            return 4
-        elif self == BaseType.FLOAT64:
-            return 8
-        elif self == BaseType.UINT8Z:
-            return 1
-        elif self == BaseType.UINT16Z:
-            return 2
-        elif self == BaseType.UINT32Z:
-            return 4
-        elif self == BaseType.BYTE:
-            return 1
-        elif self == BaseType.SINT64:
-            return 8
-        elif self == BaseType.UINT64:
-            return 8
-        elif self == BaseType.UINT64Z:
-            return 8
-        else:
-            return 0
+        return _BASE_TYPE_INFO[self][0]
+
+    @property
+    def struct_format(self) -> str | None:
+        return _BASE_TYPE_INFO[self][1]
 
     def is_integer(self) -> bool:
-        if self in [BaseType.SINT8, BaseType.UINT8, BaseType.SINT16, BaseType.UINT16, BaseType.UINT16Z, BaseType.SINT32,
-                    BaseType.UINT32, BaseType.UINT32Z, BaseType.SINT64, BaseType.UINT64, BaseType.UINT64Z]:
-            return True
-        else:
-            return False
+        return self in _INTEGER_BASE_TYPES
 
     def is_signed_integer(self) -> bool:
-        if self in [BaseType.SINT8, BaseType.SINT16, BaseType.SINT32, BaseType.SINT64]:
-            return True
-        else:
-            return False
+        return self in _SIGNED_INTEGER_BASE_TYPES
 
     def is_big(self) -> bool:
-        if self in [BaseType.SINT64, BaseType.UINT64, BaseType.UINT64Z]:
-            return True
-        else:
-            return False
+        return self in _BIG_BASE_TYPES
 
     def is_string(self) -> bool:
         return self == BaseType.STRING
 
     def is_float(self) -> bool:
-        if self in [BaseType.FLOAT32, BaseType.FLOAT64]:
-            return True
-        else:
-            return False
+        return self in _FLOAT_BASE_TYPES
 
     def is_valid(self, value) -> bool:
         if value is None:
@@ -99,159 +56,50 @@ class BaseType(Enum):
         return self.min <= value <= self.max
 
     def invalid_raw_value(self) -> int:
-        if self == BaseType.ENUM:
-            return 0xff
-        elif self == BaseType.SINT8:
-            return 0x7f
-        elif self == BaseType.UINT8:
-            return 0xff
-        elif self == BaseType.SINT16:
-            return 0x7fff
-        elif self == BaseType.UINT16:
-            return 0xffff
-        elif self == BaseType.SINT32:
-            return 0x7fffffff
-        elif self == BaseType.UINT32:
-            return 0xffffffff
-        elif self == BaseType.STRING:
-            return 0x00
-        elif self == BaseType.FLOAT32:
-            return 0xffffffff
-        elif self == BaseType.FLOAT64:
-            return 0xffffffffffffffff
-        elif self == BaseType.UINT8Z:
-            return 0x00
-        elif self == BaseType.UINT16Z:
-            return 0x0000
-        elif self == BaseType.UINT32Z:
-            return 0x00000000
-        elif self == BaseType.BYTE:
-            return 0xff
-        elif self == BaseType.SINT64:
-            return 0x7fffffffffffffff
-        elif self == BaseType.UINT64:
-            return 0xffffffffffffffff
-        elif self == BaseType.UINT64Z:
-            return 0x0000000000000000
-        else:
-            return 0
+        return _BASE_TYPE_INFO[self][2]
 
     @property
-    def max(self) -> Optional[int]:
-        if self == BaseType.ENUM:
-            return 0xff
-        elif self == BaseType.SINT8:
-            return 0x7f
-        elif self == BaseType.UINT8:
-            return 0xff
-        elif self == BaseType.SINT16:
-            return 0x7fff
-        elif self == BaseType.UINT16:
-            return 0xffff
-        elif self == BaseType.SINT32:
-            return 0x7fffffff
-        elif self == BaseType.UINT32:
-            return 0xffffffff
-        elif self == BaseType.STRING:
-            return None
-        elif self == BaseType.FLOAT32:
-            return None
-        elif self == BaseType.FLOAT64:
-            return None
-        elif self == BaseType.UINT8Z:
-            return 0xff
-        elif self == BaseType.UINT16Z:
-            return 0xffff
-        elif self == BaseType.UINT32Z:
-            return 0xffffffff
-        elif self == BaseType.BYTE:
-            return 0xff
-        elif self == BaseType.SINT64:
-            return 0x7fffffffffffffff
-        elif self == BaseType.UINT64:
-            return 0xffffffffffffffff
-        elif self == BaseType.UINT64Z:
-            return 0xffffffffffffffff
-        else:
-            return 0
+    def max(self) -> int | None:
+        return _BASE_TYPE_INFO[self][4]
 
     @property
-    def min(self) -> Optional[int]:
-        if self == BaseType.ENUM:
-            return 0x00
-        elif self == BaseType.SINT8:
-            return -0x80
-        elif self == BaseType.UINT8:
-            return 0x00
-        elif self == BaseType.SINT16:
-            return -0x8000
-        elif self == BaseType.UINT16:
-            return 0x0000
-        elif self == BaseType.SINT32:
-            return -0x80000000
-        elif self == BaseType.UINT32:
-            return 0x00000000
-        elif self == BaseType.STRING:
-            return None
-        elif self == BaseType.FLOAT32:
-            return None
-        elif self == BaseType.FLOAT64:
-            return None
-        elif self == BaseType.UINT8Z:
-            return 0x00
-        elif self == BaseType.UINT16Z:
-            return 0x0000
-        elif self == BaseType.UINT32Z:
-            return 0x00000000
-        elif self == BaseType.BYTE:
-            return 0x00
-        elif self == BaseType.SINT64:
-            return -0x8000000000000000
-        elif self == BaseType.UINT64:
-            return 0x0000000000000000
-        elif self == BaseType.UINT64Z:
-            return 0x0000000000000000
-        else:
-            return None
+    def min(self) -> int | None:
+        return _BASE_TYPE_INFO[self][3]
 
     @classmethod
     def from_name(cls, name: str):
-        if name == 'enum':
-            return cls.ENUM
-        elif name == 'sint8':
-            return cls.SINT8
-        elif name == 'uint8':
-            return BaseType.UINT8
-        elif name == 'sint16':
-            return BaseType.SINT16
-        elif name == 'uint16':
-            return BaseType.UINT16
-        elif name == 'sint32':
-            return BaseType.SINT32
-        elif name == 'uint32':
-            return BaseType.UINT32
-        elif name == 'string':
-            return BaseType.STRING
-        elif name == 'float32':
-            return BaseType.FLOAT32
-        elif name == 'float64':
-            return BaseType.FLOAT64
-        elif name == 'uint8z':
-            return BaseType.UINT8Z
-        elif name == 'uint16z':
-            return BaseType.UINT16Z
-        elif name == 'uint32z':
-            return BaseType.UINT32Z
-        elif name == 'byte':
-            return BaseType.BYTE
-        elif name == 'sint64':
-            return BaseType.SINT64
-        elif name == 'uint64':
-            return BaseType.UINT64
-        elif name == 'uint64z':
-            return BaseType.UINT64Z
-        else:
-            return None
+        return _BASE_TYPE_BY_NAME.get(name)
+
+
+_BASE_TYPE_INFO = {
+    BaseType.ENUM: (1, 'B', 0xff, 0x00, 0xff),
+    BaseType.SINT8: (1, 'b', 0x7f, -0x80, 0x7f),
+    BaseType.UINT8: (1, 'B', 0xff, 0x00, 0xff),
+    BaseType.SINT16: (2, 'h', 0x7fff, -0x8000, 0x7fff),
+    BaseType.UINT16: (2, 'H', 0xffff, 0x0000, 0xffff),
+    BaseType.SINT32: (4, 'i', 0x7fffffff, -0x80000000, 0x7fffffff),
+    BaseType.UINT32: (4, 'I', 0xffffffff, 0x00000000, 0xffffffff),
+    BaseType.STRING: (1, None, 0x00, None, None),
+    BaseType.FLOAT32: (4, 'f', 0xffffffff, None, None),
+    BaseType.FLOAT64: (8, 'd', 0xffffffffffffffff, None, None),
+    BaseType.UINT8Z: (1, 'B', 0x00, 0x00, 0xff),
+    BaseType.UINT16Z: (2, 'H', 0x0000, 0x0000, 0xffff),
+    BaseType.UINT32Z: (4, 'I', 0x00000000, 0x00000000, 0xffffffff),
+    BaseType.BYTE: (1, 'B', 0xff, 0x00, 0xff),
+    BaseType.SINT64: (8, 'q', 0x7fffffffffffffff, -0x8000000000000000, 0x7fffffffffffffff),
+    BaseType.UINT64: (8, 'Q', 0xffffffffffffffff, 0x0000000000000000, 0xffffffffffffffff),
+    BaseType.UINT64Z: (8, 'Q', 0x0000000000000000, 0x0000000000000000, 0xffffffffffffffff),
+}
+
+_INTEGER_BASE_TYPES = frozenset({
+    BaseType.SINT8, BaseType.UINT8, BaseType.SINT16, BaseType.UINT16, BaseType.UINT16Z,
+    BaseType.SINT32, BaseType.UINT32, BaseType.UINT32Z, BaseType.SINT64, BaseType.UINT64,
+    BaseType.UINT64Z,
+})
+_SIGNED_INTEGER_BASE_TYPES = frozenset({BaseType.SINT8, BaseType.SINT16, BaseType.SINT32, BaseType.SINT64})
+_BIG_BASE_TYPES = frozenset({BaseType.SINT64, BaseType.UINT64, BaseType.UINT64Z})
+_FLOAT_BASE_TYPES = frozenset({BaseType.FLOAT32, BaseType.FLOAT64})
+_BASE_TYPE_BY_NAME = {base_type.name.lower(): base_type for base_type in BaseType}
 
 
 class FieldType:

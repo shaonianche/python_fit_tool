@@ -1,8 +1,7 @@
+from __future__ import annotations
+
 import struct
 from enum import Enum
-from typing import Dict as dict
-from typing import List as list
-from typing import Optional
 
 from fit_tool.base_type import BaseType
 from fit_tool.endian import Endian
@@ -73,7 +72,7 @@ class Field:
 
         return field
 
-    def get_sub_field(self, name: str = None, index: int = None) -> Optional[SubField]:
+    def get_sub_field(self, name: str = None, index: int = None) -> SubField | None:
         if index is not None and 0 <= index < len(self.sub_fields):
             return self.sub_fields[index]
 
@@ -131,7 +130,7 @@ class Field:
             return self.base_type
 
     def get_offset(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
-            Optional[float]:
+            float | None:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -147,7 +146,7 @@ class Field:
             return self.offset
 
     def get_scale(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
-            Optional[float]:
+            float | None:
         if sub_field:
             sb = sub_field
         elif sub_field_name is not None:
@@ -188,7 +187,7 @@ class Field:
             self.set_value(index, value)
 
     def decode_value(self, encoded_value, sub_field: SubField = None):
-        if encoded_value is None or type(encoded_value) == str:
+        if encoded_value is None or isinstance(encoded_value, str):
             return encoded_value
 
         scale = self.get_scale(sub_field=sub_field)
@@ -267,28 +266,28 @@ class Field:
                 encoded_value = self.scale_offset_value(value, scale, offset)
         return encoded_value
 
-    def read_all_from_bytes(self, bytes_buffer: bytes, endian: Endian = Endian.LITTLE):
+    def read_all_from_bytes(self, bytes_buffer: bytes, endian: Endian = Endian.LITTLE, offset: int = 0):
         if self.base_type == BaseType.STRING:
-            self.read_strings_from_bytes(bytes_buffer)
+            self.read_strings_from_bytes(bytes_buffer, offset=offset, size=self.size)
         else:
-            start = 0
+            start = offset
             for index in range(len(self.encoded_values)):
-                value_bytes = bytes_buffer[start:(start + self.base_type.size)]
-                self.read_from_bytes(value_bytes, index, endian=endian)
+                self.read_from_bytes(bytes_buffer, index, endian=endian, offset=start)
                 start += self.base_type.size
 
-    def read_from_bytes(self, bytes_buffer: bytes, index: int, endian: Endian = Endian.LITTLE):
+    def read_from_bytes(self, bytes_buffer: bytes, index: int, endian: Endian = Endian.LITTLE, offset: int = 0):
         if self.base_type == BaseType.STRING:
             raise TypeError('Type cannot be string')
 
-        encoded_value = self.get_encoded_value_from_bytes(bytes_buffer, endian=endian)
+        encoded_value = self.get_encoded_value_from_bytes(bytes_buffer, offset=offset, endian=endian)
         self.set_encoded_value(index, encoded_value, check_validity=False)
 
-    def read_strings_from_bytes(self, bytes_buffer: bytes):
+    def read_strings_from_bytes(self, bytes_buffer: bytes, offset: int = 0, size: int = None):
         # The number of strings is dynamic and is determined by the number of null
         # terminations in the string container
 
-        string_container = bytes_buffer.decode('utf-8')
+        end = None if size is None else offset + size
+        string_container = bytes(bytes_buffer[offset:end]).decode('utf-8')
         strings = string_container.split('\u0000')
         strings = strings[:-1]
         strings = [x for x in strings if x]
@@ -318,44 +317,13 @@ class Field:
             return self.length * self.base_type.size
 
     def get_encoded_value_from_bytes(self, bytes_buffer: bytes, offset: int = 0, endian: Endian = Endian.LITTLE):
-        endian_symbol = '<' if endian == Endian.LITTLE else '>'
-
-        if self.base_type in {BaseType.ENUM, BaseType.UINT8, BaseType.UINT8Z, BaseType.BYTE}:
-            value, = struct.unpack_from(f'{endian_symbol}B', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.SINT8:
-            value, = struct.unpack_from(f'{endian_symbol}b', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.SINT16:
-            value, = struct.unpack_from(f'{endian_symbol}h', bytes_buffer, offset)
-
-        elif self.base_type in {BaseType.UINT16, BaseType.UINT16Z}:
-            value, = struct.unpack_from(f'{endian_symbol}H', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.SINT32:
-            value, = struct.unpack_from(f'{endian_symbol}i', bytes_buffer, offset)
-
-        elif self.base_type in {BaseType.UINT32, BaseType.UINT32Z}:
-            value, = struct.unpack_from(f'{endian_symbol}I', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.SINT64:
-            value, = struct.unpack_from(f'{endian_symbol}q', bytes_buffer, offset)
-
-        elif self.base_type in {BaseType.UINT64, BaseType.UINT64Z}:
-            value, = struct.unpack_from(f'{endian_symbol}Q', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.FLOAT32:
-            value, = struct.unpack_from(f'{endian_symbol}f', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.FLOAT64:
-            value, = struct.unpack_from(f'{endian_symbol}d', bytes_buffer, offset)
-
-        elif self.base_type == BaseType.STRING:
+        if self.base_type == BaseType.STRING:
             length = len(bytes_buffer) - 1 - offset
             value, = struct.unpack_from(f'{length}s', bytes_buffer, offset)
-            value = value.decode('utf-8')
-        else:
-            value = None
+            return value.decode('utf-8')
+
+        endian_symbol = '<' if endian == Endian.LITTLE else '>'
+        value, = struct.unpack_from(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, offset)
 
         return value
 
@@ -368,35 +336,7 @@ class Field:
 
         endian_symbol = '<' if endian == Endian.LITTLE else '>'
         bytes_buffer = bytearray(b'\0' * self.base_type.size)
-        if self.base_type in {BaseType.ENUM, BaseType.UINT8, BaseType.UINT8Z, BaseType.BYTE}:
-            struct.pack_into('B', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.SINT8:
-            struct.pack_into('b', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.SINT16:
-            struct.pack_into(f'{endian_symbol}h', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type in {BaseType.UINT16, BaseType.UINT16Z}:
-            struct.pack_into(f'{endian_symbol}H', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.SINT32:
-            struct.pack_into(f'{endian_symbol}i', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type in {BaseType.UINT32, BaseType.UINT32Z}:
-            struct.pack_into(f'{endian_symbol}I', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.SINT64:
-            struct.pack_into(f'{endian_symbol}q', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type in {BaseType.UINT64, BaseType.UINT64Z}:
-            struct.pack_into(f'{endian_symbol}Q', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.FLOAT32:
-            struct.pack_into(f'{endian_symbol}f', bytes_buffer, 0, encoded_value)
-
-        elif self.base_type == BaseType.FLOAT64:
-            struct.pack_into(f'{endian_symbol}d', bytes_buffer, 0, encoded_value)
+        struct.pack_into(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, 0, encoded_value)
 
         return bytes_buffer
 
@@ -412,7 +352,7 @@ class Field:
 
         return bytes_buffer
 
-    def get_valid_sub_field(self, fields: list) -> Optional[SubField]:
+    def get_valid_sub_field(self, fields: list) -> SubField | None:
         if not self.sub_fields:
             return None
 

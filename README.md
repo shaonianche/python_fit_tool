@@ -56,6 +56,9 @@ fit-tool oldstage.fit
 Library Usage
 =======================
 
+The protocol-conformance architecture and implementation roadmap are documented
+in [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
+
 ### Minimal read/convert example
 
 ```python
@@ -71,6 +74,55 @@ out_file.parent.mkdir(parents=True, exist_ok=True)
 fit_file = FitFile.from_file(str(in_file))
 fit_file.to_csv(str(out_file))
 ```
+
+### Stream records from large FIT files
+
+`FitFile.from_file()` loads a complete file and is convenient when records must be edited. For read-only,
+record-by-record processing, use the streaming iterator to keep memory usage bounded:
+
+```python
+from fit_tool.fit_file import FitFile
+
+for record in FitFile.iter_file("activity.fit"):
+    process(record)
+```
+
+CRC validation is performed when the iterator is fully exhausted. `FitFile.iter_stream()` accepts an already-open
+binary stream. Builders can serialize directly with `FitFileBuilder.build_bytes()` when a `FitFile` object is not needed.
+
+### Validate generated FIT files
+
+`FitFileBuilder` always validates wire-level limits such as local message numbers and Definition Message field sizes.
+Use strict mode to additionally validate Developer Field declarations, `file_id` ordering, and Activity file message
+cardinality before bytes are produced:
+
+```python
+from fit_tool.fit_file_builder import FitFileBuilder
+
+builder = FitFileBuilder(strict=True)
+builder.add_all(messages)
+fit_bytes = builder.build_bytes()
+```
+
+Strict file-type rules currently cover Activity files and fail closed for other file types. Existing builder calls remain
+compatible because profile-level strict validation is opt-in.
+
+### Run Garmin SDK interoperability tests
+
+The normal test suite includes committed Garmin SDK golden bytes. A live bidirectional test additionally generates the
+same Activity with this library and the `fit-javascript-sdk` release matching `fit_tool.SDK_VERSION`, cross-decodes both
+files, runs Garmin's integrity check, and compares normalized semantics:
+
+```bash
+fit_profile_version=$(uv run python -c 'from fit_tool import SDK_VERSION; print(SDK_VERSION)')
+git clone --depth 1 --branch "$fit_profile_version" \
+  https://github.com/garmin/fit-javascript-sdk.git ../fit-javascript-sdk
+FIT_JS_SDK_PATH=../fit-javascript-sdk \
+  uv run pytest fit_tool/tests/test_garmin_sdk_interop.py -q
+```
+
+CI resolves and checks out the matching official SDK tag in a dedicated interoperability job. The test intentionally
+does not require the two legal FIT encodings to be byte-for-byte identical.
 
 ### Runnable examples in this repository
 

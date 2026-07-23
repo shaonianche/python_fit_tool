@@ -150,7 +150,7 @@ class SdmProfileMessage(DataMessage):
     
 
     @property
-    def sdm_cal_factor(self) -> Optional[int]:
+    def sdm_cal_factor(self) -> Optional[float]:
         field = self.get_field(SdmProfileSdmCalFactorField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -161,7 +161,7 @@ class SdmProfileMessage(DataMessage):
 
 
     @sdm_cal_factor.setter
-    def sdm_cal_factor(self, value: int):
+    def sdm_cal_factor(self, value: float):
         field = self.get_field(SdmProfileSdmCalFactorField.ID)
 
         if field:
@@ -174,7 +174,7 @@ class SdmProfileMessage(DataMessage):
     
 
     @property
-    def odometer(self) -> Optional[int]:
+    def odometer(self) -> Optional[float]:
         field = self.get_field(SdmProfileOdometerField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -185,7 +185,7 @@ class SdmProfileMessage(DataMessage):
 
 
     @odometer.setter
-    def odometer(self, value: int):
+    def odometer(self, value: float):
         field = self.get_field(SdmProfileOdometerField.ID)
 
         if field:
@@ -318,7 +318,7 @@ class SdmProfileSdmCalFactorField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -337,7 +337,7 @@ class SdmProfileOdometerField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',

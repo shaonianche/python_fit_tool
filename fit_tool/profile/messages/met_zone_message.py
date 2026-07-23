@@ -114,7 +114,7 @@ class MetZoneMessage(DataMessage):
     
 
     @property
-    def calories(self) -> Optional[int]:
+    def calories(self) -> Optional[float]:
         field = self.get_field(MetZoneCaloriesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -125,7 +125,7 @@ class MetZoneMessage(DataMessage):
 
 
     @calories.setter
-    def calories(self, value: int):
+    def calories(self, value: float):
         field = self.get_field(MetZoneCaloriesField.ID)
 
         if field:
@@ -138,7 +138,7 @@ class MetZoneMessage(DataMessage):
     
 
     @property
-    def fat_calories(self) -> Optional[int]:
+    def fat_calories(self) -> Optional[float]:
         field = self.get_field(MetZoneFatCaloriesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -149,7 +149,7 @@ class MetZoneMessage(DataMessage):
 
 
     @fat_calories.setter
-    def fat_calories(self, value: int):
+    def fat_calories(self, value: float):
         field = self.get_field(MetZoneFatCaloriesField.ID)
 
         if field:
@@ -192,7 +192,7 @@ class MetZoneCaloriesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'kcal / min',
         type_name = 'uint16',
@@ -211,7 +211,7 @@ class MetZoneFatCaloriesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'kcal / min',
         type_name = 'uint8',

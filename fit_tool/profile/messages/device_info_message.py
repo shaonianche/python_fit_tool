@@ -395,7 +395,7 @@ class DeviceInfoMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def software_version(self) -> Optional[int]:
+    def software_version(self) -> Optional[float]:
         field = self.get_field(DeviceInfoSoftwareVersionField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -406,7 +406,7 @@ class DeviceInfoMessage(DataMessage):
 
 
     @software_version.setter
-    def software_version(self, value: int):
+    def software_version(self, value: float):
         field = self.get_field(DeviceInfoSoftwareVersionField.ID)
 
         if field:
@@ -467,7 +467,7 @@ class DeviceInfoMessage(DataMessage):
     
 
     @property
-    def battery_voltage(self) -> Optional[int]:
+    def battery_voltage(self) -> Optional[float]:
         field = self.get_field(DeviceInfoBatteryVoltageField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -478,7 +478,7 @@ class DeviceInfoMessage(DataMessage):
 
 
     @battery_voltage.setter
-    def battery_voltage(self, value: int):
+    def battery_voltage(self, value: float):
         field = self.get_field(DeviceInfoBatteryVoltageField.ID)
 
         if field:
@@ -857,7 +857,7 @@ class DeviceInfoSoftwareVersionField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         type_name = 'uint16',
         growable = growable,
@@ -912,7 +912,7 @@ class DeviceInfoBatteryVoltageField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 256,
                          size = size,
         units = 'V',
         type_name = 'uint16',

@@ -87,7 +87,7 @@ class SoftwareMessage(DataMessage):
     
 
     @property
-    def version(self) -> Optional[int]:
+    def version(self) -> Optional[float]:
         field = self.get_field(SoftwareVersionField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -98,7 +98,7 @@ class SoftwareMessage(DataMessage):
 
 
     @version.setter
-    def version(self, value: int):
+    def version(self, value: float):
         field = self.get_field(SoftwareVersionField.ID)
 
         if field:
@@ -147,7 +147,7 @@ class SoftwareVersionField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         type_name = 'uint16',
         growable = growable,

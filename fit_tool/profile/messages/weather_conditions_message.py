@@ -224,7 +224,7 @@ class WeatherConditionsMessage(DataMessage):
     
 
     @property
-    def wind_speed(self) -> Optional[int]:
+    def wind_speed(self) -> Optional[float]:
         field = self.get_field(WeatherConditionsWindSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -235,7 +235,7 @@ class WeatherConditionsMessage(DataMessage):
 
 
     @wind_speed.setter
-    def wind_speed(self, value: int):
+    def wind_speed(self, value: float):
         field = self.get_field(WeatherConditionsWindSpeedField.ID)
 
         if field:
@@ -576,7 +576,7 @@ class WeatherConditionsWindSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',

@@ -4,8 +4,8 @@ import re
 from openpyxl import load_workbook
 
 from fit_tool import SDK_VERSION
-from fit_tool.base_type import FieldType, BaseType
-from fit_tool.field import Field, ArrayType
+from fit_tool.base_type import BaseType, FieldType
+from fit_tool.field import ArrayType, Field
 from fit_tool.utils.logging import logger
 
 
@@ -50,6 +50,21 @@ def parse_array_field(value):
     raise ValueError(f'Invalid array field value: {value!r}')
 
 
+def parse_profile_number(value, default):
+    """Parse numeric cells stored as either spreadsheet numbers or strings."""
+    if value is None or (isinstance(value, str) and value.strip() == ''):
+        return default
+    if isinstance(value, (int, float)):
+        return value
+    if isinstance(value, str):
+        value = value.strip()
+        try:
+            return int(value)
+        except ValueError:
+            return float(value)
+    raise ValueError(f'Invalid numeric profile value: {value!r}')
+
+
 class Profile:
 
     def __init__(self):
@@ -69,7 +84,7 @@ class Profile:
         # Next check if it is derived type
         type_ = self.types_by_name.get(name)
         if not type_:
-            raise KeyError('Type: {} not found in profile.'.format(name))
+            raise KeyError(f'Type: {name} not found in profile.')
         return type_
 
     def add_message(self, message):
@@ -204,13 +219,13 @@ class Profile:
                         f'row={index + 1} field={field_name!r} value={row[4].value!r}'
                     ) from exc
                 # components = row[5].value
-                scale = 1 if is_blank(row[6].value) else row[6].value
-
-                # Components are not supported yet
-                if isinstance(scale, str):
+                try:
+                    scale = parse_profile_number(row[6].value, 1)
+                except ValueError:
+                    # Multiple component scales are not supported yet.
                     scale = 1
 
-                offset = 0 if is_blank(row[7].value) else row[7].value
+                offset = parse_profile_number(row[7].value, 0)
                 units = row[8].value
                 if units:
                     units = units.replace('\n', '')

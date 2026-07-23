@@ -215,7 +215,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def distance(self) -> Optional[int]:
+    def distance(self) -> Optional[float]:
         field = self.get_field(MonitoringDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -226,7 +226,7 @@ class MonitoringMessage(DataMessage):
 
 
     @distance.setter
-    def distance(self, value: int):
+    def distance(self, value: float):
         field = self.get_field(MonitoringDistanceField.ID)
 
         if field:
@@ -239,7 +239,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def cycles(self) -> Optional[int]:
+    def cycles(self) -> Optional[float]:
         field = self.get_field(MonitoringCyclesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -250,7 +250,7 @@ class MonitoringMessage(DataMessage):
 
 
     @cycles.setter
-    def cycles(self, value: int):
+    def cycles(self, value: float):
         field = self.get_field(MonitoringCyclesField.ID)
 
         if field:
@@ -287,7 +287,7 @@ class MonitoringMessage(DataMessage):
 
 
     @property
-    def strokes(self) -> Optional[int]:
+    def strokes(self) -> Optional[float]:
         field = self.get_field(MonitoringCyclesField.ID)
         type_field = self.get_field(MonitoringActivityTypeField.ID)
 
@@ -299,7 +299,7 @@ class MonitoringMessage(DataMessage):
             return None
 
     @strokes.setter
-    def strokes(self, value: int):
+    def strokes(self, value: float):
         field = self.get_field(MonitoringCyclesField.ID)
         if field:
             if value is None:
@@ -309,7 +309,7 @@ class MonitoringMessage(DataMessage):
                 field.set_value(0, value, sub_field)
 
     @property
-    def active_time(self) -> Optional[int]:
+    def active_time(self) -> Optional[float]:
         field = self.get_field(MonitoringActiveTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -320,7 +320,7 @@ class MonitoringMessage(DataMessage):
 
 
     @active_time.setter
-    def active_time(self, value: int):
+    def active_time(self, value: float):
         field = self.get_field(MonitoringActiveTimeField.ID)
 
         if field:
@@ -501,7 +501,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def temperature(self) -> Optional[int]:
+    def temperature(self) -> Optional[float]:
         field = self.get_field(MonitoringTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -512,7 +512,7 @@ class MonitoringMessage(DataMessage):
 
 
     @temperature.setter
-    def temperature(self, value: int):
+    def temperature(self, value: float):
         field = self.get_field(MonitoringTemperatureField.ID)
 
         if field:
@@ -525,7 +525,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def temperature_min(self) -> Optional[int]:
+    def temperature_min(self) -> Optional[float]:
         field = self.get_field(MonitoringTemperatureMinField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -536,7 +536,7 @@ class MonitoringMessage(DataMessage):
 
 
     @temperature_min.setter
-    def temperature_min(self, value: int):
+    def temperature_min(self, value: float):
         field = self.get_field(MonitoringTemperatureMinField.ID)
 
         if field:
@@ -549,7 +549,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def temperature_max(self) -> Optional[int]:
+    def temperature_max(self) -> Optional[float]:
         field = self.get_field(MonitoringTemperatureMaxField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -560,7 +560,7 @@ class MonitoringMessage(DataMessage):
 
 
     @temperature_max.setter
-    def temperature_max(self, value: int):
+    def temperature_max(self, value: float):
         field = self.get_field(MonitoringTemperatureMaxField.ID)
 
         if field:
@@ -715,7 +715,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def intensity(self) -> Optional[int]:
+    def intensity(self) -> Optional[float]:
         field = self.get_field(MonitoringIntensityField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -726,7 +726,7 @@ class MonitoringMessage(DataMessage):
 
 
     @intensity.setter
-    def intensity(self, value: int):
+    def intensity(self, value: float):
         field = self.get_field(MonitoringIntensityField.ID)
 
         if field:
@@ -787,7 +787,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def ascent(self) -> Optional[int]:
+    def ascent(self) -> Optional[float]:
         field = self.get_field(MonitoringAscentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -798,7 +798,7 @@ class MonitoringMessage(DataMessage):
 
 
     @ascent.setter
-    def ascent(self, value: int):
+    def ascent(self, value: float):
         field = self.get_field(MonitoringAscentField.ID)
 
         if field:
@@ -811,7 +811,7 @@ class MonitoringMessage(DataMessage):
     
 
     @property
-    def descent(self) -> Optional[int]:
+    def descent(self) -> Optional[float]:
         field = self.get_field(MonitoringDescentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -822,7 +822,7 @@ class MonitoringMessage(DataMessage):
 
 
     @descent.setter
-    def descent(self, value: int):
+    def descent(self, value: float):
         field = self.get_field(MonitoringDescentField.ID)
 
         if field:
@@ -932,7 +932,7 @@ class MonitoringDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -951,7 +951,7 @@ class MonitoringCyclesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'cycles',
         type_name = 'uint32',
@@ -969,7 +969,7 @@ class MonitoringCyclesField(Field):
         SubField(
             name='strokes',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 2,
                 offset = 0,
         units = 'strokes',
         reference_map = {
@@ -988,7 +988,7 @@ class MonitoringActiveTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -1136,7 +1136,7 @@ class MonitoringTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'sint16',
@@ -1155,7 +1155,7 @@ class MonitoringTemperatureMinField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'sint16',
@@ -1174,7 +1174,7 @@ class MonitoringTemperatureMaxField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'sint16',
@@ -1306,7 +1306,7 @@ class MonitoringIntensityField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         type_name = 'uint8',
         growable = growable,
@@ -1362,7 +1362,7 @@ class MonitoringAscentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -1381,7 +1381,7 @@ class MonitoringDescentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',

@@ -149,7 +149,7 @@ class HsaAccelerometerDataMessage(DataMessage):
     
 
     @property
-    def accel_x(self) -> Optional[list[int]]:
+    def accel_x(self) -> Optional[list[float]]:
         field = self.get_field(HsaAccelerometerDataAccelXField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -159,7 +159,7 @@ class HsaAccelerometerDataMessage(DataMessage):
 
 
     @accel_x.setter
-    def accel_x(self, value: list[int]):
+    def accel_x(self, value: list[float]):
         field = self.get_field(HsaAccelerometerDataAccelXField.ID)
 
         if field:
@@ -171,7 +171,7 @@ class HsaAccelerometerDataMessage(DataMessage):
     
 
     @property
-    def accel_y(self) -> Optional[list[int]]:
+    def accel_y(self) -> Optional[list[float]]:
         field = self.get_field(HsaAccelerometerDataAccelYField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -181,7 +181,7 @@ class HsaAccelerometerDataMessage(DataMessage):
 
 
     @accel_y.setter
-    def accel_y(self, value: list[int]):
+    def accel_y(self, value: list[float]):
         field = self.get_field(HsaAccelerometerDataAccelYField.ID)
 
         if field:
@@ -193,7 +193,7 @@ class HsaAccelerometerDataMessage(DataMessage):
     
 
     @property
-    def accel_z(self) -> Optional[list[int]]:
+    def accel_z(self) -> Optional[list[float]]:
         field = self.get_field(HsaAccelerometerDataAccelZField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -203,7 +203,7 @@ class HsaAccelerometerDataMessage(DataMessage):
 
 
     @accel_z.setter
-    def accel_z(self, value: list[int]):
+    def accel_z(self, value: list[float]):
         field = self.get_field(HsaAccelerometerDataAccelZField.ID)
 
         if field:
@@ -289,7 +289,7 @@ class HsaAccelerometerDataAccelXField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1.024,
                          size = size,
         units = 'mG',
         type_name = 'sint16',
@@ -308,7 +308,7 @@ class HsaAccelerometerDataAccelYField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1.024,
                          size = size,
         units = 'mG',
         type_name = 'sint16',
@@ -327,7 +327,7 @@ class HsaAccelerometerDataAccelZField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1.024,
                          size = size,
         units = 'mG',
         type_name = 'sint16',

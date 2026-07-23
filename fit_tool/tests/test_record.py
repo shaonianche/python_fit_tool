@@ -4,7 +4,7 @@ import unittest
 
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
-from fit_tool.record import RecordHeader, Record
+from fit_tool.record import Record, RecordHeader
 
 
 class TestRecord(unittest.TestCase):

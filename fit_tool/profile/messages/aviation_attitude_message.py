@@ -162,7 +162,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def pitch(self) -> Optional[list[int]]:
+    def pitch(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudePitchField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -172,7 +172,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @pitch.setter
-    def pitch(self, value: list[int]):
+    def pitch(self, value: list[float]):
         field = self.get_field(AviationAttitudePitchField.ID)
 
         if field:
@@ -184,7 +184,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def roll(self) -> Optional[list[int]]:
+    def roll(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeRollField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -194,7 +194,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @roll.setter
-    def roll(self, value: list[int]):
+    def roll(self, value: list[float]):
         field = self.get_field(AviationAttitudeRollField.ID)
 
         if field:
@@ -206,7 +206,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def accel_lateral(self) -> Optional[list[int]]:
+    def accel_lateral(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeAccelLateralField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -216,7 +216,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @accel_lateral.setter
-    def accel_lateral(self, value: list[int]):
+    def accel_lateral(self, value: list[float]):
         field = self.get_field(AviationAttitudeAccelLateralField.ID)
 
         if field:
@@ -228,7 +228,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def accel_normal(self) -> Optional[list[int]]:
+    def accel_normal(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeAccelNormalField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -238,7 +238,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @accel_normal.setter
-    def accel_normal(self, value: list[int]):
+    def accel_normal(self, value: list[float]):
         field = self.get_field(AviationAttitudeAccelNormalField.ID)
 
         if field:
@@ -250,7 +250,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def turn_rate(self) -> Optional[list[int]]:
+    def turn_rate(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeTurnRateField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -260,7 +260,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @turn_rate.setter
-    def turn_rate(self, value: list[int]):
+    def turn_rate(self, value: list[float]):
         field = self.get_field(AviationAttitudeTurnRateField.ID)
 
         if field:
@@ -316,7 +316,7 @@ class AviationAttitudeMessage(DataMessage):
     
 
     @property
-    def track(self) -> Optional[list[int]]:
+    def track(self) -> Optional[list[float]]:
         field = self.get_field(AviationAttitudeTrackField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -326,7 +326,7 @@ class AviationAttitudeMessage(DataMessage):
 
 
     @track.setter
-    def track(self, value: list[int]):
+    def track(self, value: list[float]):
         field = self.get_field(AviationAttitudeTrackField.ID)
 
         if field:
@@ -410,7 +410,7 @@ class AviationAttitudePitchField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10430.38,
                          size = size,
         units = 'radians',
         type_name = 'sint16',
@@ -429,7 +429,7 @@ class AviationAttitudeRollField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10430.38,
                          size = size,
         units = 'radians',
         type_name = 'sint16',
@@ -448,7 +448,7 @@ class AviationAttitudeAccelLateralField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s^2',
         type_name = 'sint16',
@@ -467,7 +467,7 @@ class AviationAttitudeAccelNormalField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s^2',
         type_name = 'sint16',
@@ -486,7 +486,7 @@ class AviationAttitudeTurnRateField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1024,
                          size = size,
         units = 'radians/second',
         type_name = 'sint16',
@@ -542,7 +542,7 @@ class AviationAttitudeTrackField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10430.38,
                          size = size,
         units = 'radians',
         type_name = 'uint16',

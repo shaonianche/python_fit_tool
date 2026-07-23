@@ -86,7 +86,7 @@ class RespirationRateMessage(DataMessage):
     
 
     @property
-    def respiration_rate(self) -> Optional[int]:
+    def respiration_rate(self) -> Optional[float]:
         field = self.get_field(RespirationRateRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -97,7 +97,7 @@ class RespirationRateMessage(DataMessage):
 
 
     @respiration_rate.setter
-    def respiration_rate(self, value: int):
+    def respiration_rate(self, value: float):
         field = self.get_field(RespirationRateRespirationRateField.ID)
 
         if field:
@@ -122,7 +122,7 @@ class RespirationRateRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'breaths/min',
         type_name = 'sint16',

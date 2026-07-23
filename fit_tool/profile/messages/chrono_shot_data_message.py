@@ -89,7 +89,7 @@ class ChronoShotDataMessage(DataMessage):
     
 
     @property
-    def shot_speed(self) -> Optional[int]:
+    def shot_speed(self) -> Optional[float]:
         field = self.get_field(ChronoShotDataShotSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -100,7 +100,7 @@ class ChronoShotDataMessage(DataMessage):
 
 
     @shot_speed.setter
-    def shot_speed(self, value: int):
+    def shot_speed(self, value: float):
         field = self.get_field(ChronoShotDataShotSpeedField.ID)
 
         if field:
@@ -149,7 +149,7 @@ class ChronoShotDataShotSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',

@@ -237,7 +237,7 @@ class UserProfileMessage(DataMessage):
     
 
     @property
-    def height(self) -> Optional[int]:
+    def height(self) -> Optional[float]:
         field = self.get_field(UserProfileHeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -248,7 +248,7 @@ class UserProfileMessage(DataMessage):
 
 
     @height.setter
-    def height(self, value: int):
+    def height(self, value: float):
         field = self.get_field(UserProfileHeightField.ID)
 
         if field:
@@ -261,7 +261,7 @@ class UserProfileMessage(DataMessage):
     
 
     @property
-    def weight(self) -> Optional[int]:
+    def weight(self) -> Optional[float]:
         field = self.get_field(UserProfileWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -272,7 +272,7 @@ class UserProfileMessage(DataMessage):
 
 
     @weight.setter
-    def weight(self, value: int):
+    def weight(self, value: float):
         field = self.get_field(UserProfileWeightField.ID)
 
         if field:
@@ -739,7 +739,7 @@ class UserProfileMessage(DataMessage):
     
 
     @property
-    def user_running_step_length(self) -> Optional[int]:
+    def user_running_step_length(self) -> Optional[float]:
         field = self.get_field(UserProfileUserRunningStepLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -750,7 +750,7 @@ class UserProfileMessage(DataMessage):
 
 
     @user_running_step_length.setter
-    def user_running_step_length(self, value: int):
+    def user_running_step_length(self, value: float):
         field = self.get_field(UserProfileUserRunningStepLengthField.ID)
 
         if field:
@@ -763,7 +763,7 @@ class UserProfileMessage(DataMessage):
     
 
     @property
-    def user_walking_step_length(self) -> Optional[int]:
+    def user_walking_step_length(self) -> Optional[float]:
         field = self.get_field(UserProfileUserWalkingStepLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -774,7 +774,7 @@ class UserProfileMessage(DataMessage):
 
 
     @user_walking_step_length.setter
-    def user_walking_step_length(self, value: int):
+    def user_walking_step_length(self, value: float):
         field = self.get_field(UserProfileUserWalkingStepLengthField.ID)
 
         if field:
@@ -902,7 +902,7 @@ class UserProfileHeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -921,7 +921,7 @@ class UserProfileWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -1286,7 +1286,7 @@ class UserProfileUserRunningStepLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -1305,7 +1305,7 @@ class UserProfileUserWalkingStepLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint16',

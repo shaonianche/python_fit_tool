@@ -147,7 +147,7 @@ class SegmentPointMessage(DataMessage):
     
 
     @property
-    def distance(self) -> Optional[int]:
+    def distance(self) -> Optional[float]:
         field = self.get_field(SegmentPointDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -158,7 +158,7 @@ class SegmentPointMessage(DataMessage):
 
 
     @distance.setter
-    def distance(self, value: int):
+    def distance(self, value: float):
         field = self.get_field(SegmentPointDistanceField.ID)
 
         if field:
@@ -171,7 +171,7 @@ class SegmentPointMessage(DataMessage):
     
 
     @property
-    def altitude(self) -> Optional[int]:
+    def altitude(self) -> Optional[float]:
         field = self.get_field(SegmentPointAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -182,7 +182,7 @@ class SegmentPointMessage(DataMessage):
 
 
     @altitude.setter
-    def altitude(self, value: int):
+    def altitude(self, value: float):
         field = self.get_field(SegmentPointAltitudeField.ID)
 
         if field:
@@ -195,7 +195,7 @@ class SegmentPointMessage(DataMessage):
     
 
     @property
-    def leader_time(self) -> Optional[list[int]]:
+    def leader_time(self) -> Optional[list[float]]:
         field = self.get_field(SegmentPointLeaderTimeField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -205,7 +205,7 @@ class SegmentPointMessage(DataMessage):
 
 
     @leader_time.setter
-    def leader_time(self, value: list[int]):
+    def leader_time(self, value: list[float]):
         field = self.get_field(SegmentPointLeaderTimeField.ID)
 
         if field:
@@ -217,7 +217,7 @@ class SegmentPointMessage(DataMessage):
     
 
     @property
-    def enhanced_altitude(self) -> Optional[int]:
+    def enhanced_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentPointEnhancedAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -228,7 +228,7 @@ class SegmentPointMessage(DataMessage):
 
 
     @enhanced_altitude.setter
-    def enhanced_altitude(self, value: int):
+    def enhanced_altitude(self, value: float):
         field = self.get_field(SegmentPointEnhancedAltitudeField.ID)
 
         if field:
@@ -291,7 +291,7 @@ class SegmentPointDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -310,7 +310,7 @@ class SegmentPointAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -329,7 +329,7 @@ class SegmentPointLeaderTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -348,7 +348,7 @@ class SegmentPointEnhancedAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',

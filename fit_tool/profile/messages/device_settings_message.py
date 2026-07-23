@@ -218,7 +218,7 @@ class DeviceSettingsMessage(DataMessage):
     
 
     @property
-    def time_zone_offset(self) -> Optional[list[int]]:
+    def time_zone_offset(self) -> Optional[list[float]]:
         field = self.get_field(DeviceSettingsTimeZoneOffsetField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -228,7 +228,7 @@ class DeviceSettingsMessage(DataMessage):
 
 
     @time_zone_offset.setter
-    def time_zone_offset(self, value: list[int]):
+    def time_zone_offset(self, value: list[float]):
         field = self.get_field(DeviceSettingsTimeZoneOffsetField.ID)
 
         if field:
@@ -779,7 +779,7 @@ class DeviceSettingsTimeZoneOffsetField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 4,
                          size = size,
         units = 'hr',
         type_name = 'sint8',

@@ -66,7 +66,7 @@ class TrainingSettingsMessage(DataMessage):
 
 
     @property
-    def target_distance(self) -> Optional[int]:
+    def target_distance(self) -> Optional[float]:
         field = self.get_field(TrainingSettingsTargetDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -77,7 +77,7 @@ class TrainingSettingsMessage(DataMessage):
 
 
     @target_distance.setter
-    def target_distance(self, value: int):
+    def target_distance(self, value: float):
         field = self.get_field(TrainingSettingsTargetDistanceField.ID)
 
         if field:
@@ -90,7 +90,7 @@ class TrainingSettingsMessage(DataMessage):
     
 
     @property
-    def target_speed(self) -> Optional[int]:
+    def target_speed(self) -> Optional[float]:
         field = self.get_field(TrainingSettingsTargetSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -101,7 +101,7 @@ class TrainingSettingsMessage(DataMessage):
 
 
     @target_speed.setter
-    def target_speed(self, value: int):
+    def target_speed(self, value: float):
         field = self.get_field(TrainingSettingsTargetSpeedField.ID)
 
         if field:
@@ -138,7 +138,7 @@ class TrainingSettingsMessage(DataMessage):
     
 
     @property
-    def precise_target_speed(self) -> Optional[int]:
+    def precise_target_speed(self) -> Optional[float]:
         field = self.get_field(TrainingSettingsPreciseTargetSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -149,7 +149,7 @@ class TrainingSettingsMessage(DataMessage):
 
 
     @precise_target_speed.setter
-    def precise_target_speed(self, value: int):
+    def precise_target_speed(self, value: float):
         field = self.get_field(TrainingSettingsPreciseTargetSpeedField.ID)
 
         if field:
@@ -174,7 +174,7 @@ class TrainingSettingsTargetDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -193,7 +193,7 @@ class TrainingSettingsTargetSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -231,7 +231,7 @@ class TrainingSettingsPreciseTargetSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',

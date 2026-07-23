@@ -1,0 +1,71 @@
+{
+  "fileId": {
+    "type": "activity",
+    "manufacturer": "development",
+    "product": 0,
+    "serialNumber": 1234,
+    "timeCreated": "2024-01-01T00:00:00.000Z"
+  },
+  "events": [
+    {
+      "timestamp": "2024-01-01T00:00:00.000Z",
+      "event": "timer",
+      "eventType": "start"
+    },
+    {
+      "timestamp": "2024-01-01T00:00:02.000Z",
+      "event": "timer",
+      "eventType": "stop"
+    }
+  ],
+  "records": [
+    {
+      "timestamp": "2024-01-01T00:00:00.000Z",
+      "distance": 0,
+      "heartRate": 120,
+      "cadence": 80,
+      "power": 180
+    },
+    {
+      "timestamp": "2024-01-01T00:00:01.000Z",
+      "distance": 10,
+      "heartRate": 122,
+      "cadence": 82,
+      "power": 190
+    },
+    {
+      "timestamp": "2024-01-01T00:00:02.000Z",
+      "distance": 20,
+      "heartRate": 124,
+      "cadence": 84,
+      "power": 200
+    }
+  ],
+  "laps": [
+    {
+      "messageIndex": 0,
+      "timestamp": "2024-01-01T00:00:02.000Z",
+      "startTime": "2024-01-01T00:00:00.000Z",
+      "totalElapsedTime": 2,
+      "totalTimerTime": 2
+    }
+  ],
+  "sessions": [
+    {
+      "messageIndex": 0,
+      "timestamp": "2024-01-01T00:00:02.000Z",
+      "startTime": "2024-01-01T00:00:00.000Z",
+      "totalElapsedTime": 2,
+      "totalTimerTime": 2,
+      "sport": "cycling",
+      "subSport": "generic",
+      "firstLapIndex": 0,
+      "numLaps": 1
+    }
+  ],
+  "activity": {
+    "timestamp": "2024-01-01T00:00:02.000Z",
+    "numSessions": 1,
+    "totalTimerTime": 2
+  }
+}

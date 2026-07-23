@@ -113,7 +113,7 @@ class HsaWristTemperatureDataMessage(DataMessage):
     
 
     @property
-    def value(self) -> Optional[list[int]]:
+    def value(self) -> Optional[list[float]]:
         field = self.get_field(HsaWristTemperatureDataValueField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -123,7 +123,7 @@ class HsaWristTemperatureDataMessage(DataMessage):
 
 
     @value.setter
-    def value(self, value: list[int]):
+    def value(self, value: list[float]):
         field = self.get_field(HsaWristTemperatureDataValueField.ID)
 
         if field:
@@ -166,7 +166,7 @@ class HsaWristTemperatureDataValueField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'C',
         type_name = 'uint16',

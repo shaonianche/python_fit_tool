@@ -195,7 +195,7 @@ class SegmentLeaderboardEntryMessage(DataMessage):
     
 
     @property
-    def segment_time(self) -> Optional[int]:
+    def segment_time(self) -> Optional[float]:
         field = self.get_field(SegmentLeaderboardEntrySegmentTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -206,7 +206,7 @@ class SegmentLeaderboardEntryMessage(DataMessage):
 
 
     @segment_time.setter
-    def segment_time(self, value: int):
+    def segment_time(self, value: float):
         field = self.get_field(SegmentLeaderboardEntrySegmentTimeField.ID)
 
         if field:
@@ -327,7 +327,7 @@ class SegmentLeaderboardEntrySegmentTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',

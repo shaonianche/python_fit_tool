@@ -559,7 +559,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_elapsed_time(self) -> Optional[int]:
+    def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalElapsedTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -570,7 +570,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_elapsed_time.setter
-    def total_elapsed_time(self, value: int):
+    def total_elapsed_time(self, value: float):
         field = self.get_field(SegmentLapTotalElapsedTimeField.ID)
 
         if field:
@@ -583,7 +583,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_timer_time(self) -> Optional[int]:
+    def total_timer_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalTimerTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -594,7 +594,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_timer_time.setter
-    def total_timer_time(self, value: int):
+    def total_timer_time(self, value: float):
         field = self.get_field(SegmentLapTotalTimerTimeField.ID)
 
         if field:
@@ -607,7 +607,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_distance(self) -> Optional[int]:
+    def total_distance(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -618,7 +618,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_distance.setter
-    def total_distance(self, value: int):
+    def total_distance(self, value: float):
         field = self.get_field(SegmentLapTotalDistanceField.ID)
 
         if field:
@@ -726,7 +726,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_speed(self) -> Optional[int]:
+    def avg_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -737,7 +737,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_speed.setter
-    def avg_speed(self, value: int):
+    def avg_speed(self, value: float):
         field = self.get_field(SegmentLapAvgSpeedField.ID)
 
         if field:
@@ -750,7 +750,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_speed(self) -> Optional[int]:
+    def max_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -761,7 +761,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_speed.setter
-    def max_speed(self, value: int):
+    def max_speed(self, value: float):
         field = self.get_field(SegmentLapMaxSpeedField.ID)
 
         if field:
@@ -1230,7 +1230,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_altitude(self) -> Optional[int]:
+    def avg_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1241,7 +1241,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_altitude.setter
-    def avg_altitude(self, value: int):
+    def avg_altitude(self, value: float):
         field = self.get_field(SegmentLapAvgAltitudeField.ID)
 
         if field:
@@ -1254,7 +1254,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_altitude(self) -> Optional[int]:
+    def max_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1265,7 +1265,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_altitude.setter
-    def max_altitude(self, value: int):
+    def max_altitude(self, value: float):
         field = self.get_field(SegmentLapMaxAltitudeField.ID)
 
         if field:
@@ -1302,7 +1302,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_grade(self) -> Optional[int]:
+    def avg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1313,7 +1313,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_grade.setter
-    def avg_grade(self, value: int):
+    def avg_grade(self, value: float):
         field = self.get_field(SegmentLapAvgGradeField.ID)
 
         if field:
@@ -1326,7 +1326,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_pos_grade(self) -> Optional[int]:
+    def avg_pos_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1337,7 +1337,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_pos_grade.setter
-    def avg_pos_grade(self, value: int):
+    def avg_pos_grade(self, value: float):
         field = self.get_field(SegmentLapAvgPosGradeField.ID)
 
         if field:
@@ -1350,7 +1350,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_neg_grade(self) -> Optional[int]:
+    def avg_neg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1361,7 +1361,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_neg_grade.setter
-    def avg_neg_grade(self, value: int):
+    def avg_neg_grade(self, value: float):
         field = self.get_field(SegmentLapAvgNegGradeField.ID)
 
         if field:
@@ -1374,7 +1374,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_pos_grade(self) -> Optional[int]:
+    def max_pos_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1385,7 +1385,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_pos_grade.setter
-    def max_pos_grade(self, value: int):
+    def max_pos_grade(self, value: float):
         field = self.get_field(SegmentLapMaxPosGradeField.ID)
 
         if field:
@@ -1398,7 +1398,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_neg_grade(self) -> Optional[int]:
+    def max_neg_grade(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1409,7 +1409,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_neg_grade.setter
-    def max_neg_grade(self, value: int):
+    def max_neg_grade(self, value: float):
         field = self.get_field(SegmentLapMaxNegGradeField.ID)
 
         if field:
@@ -1470,7 +1470,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_moving_time(self) -> Optional[int]:
+    def total_moving_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalMovingTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1481,7 +1481,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_moving_time.setter
-    def total_moving_time(self, value: int):
+    def total_moving_time(self, value: float):
         field = self.get_field(SegmentLapTotalMovingTimeField.ID)
 
         if field:
@@ -1494,7 +1494,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_pos_vertical_speed(self) -> Optional[int]:
+    def avg_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1505,7 +1505,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_pos_vertical_speed.setter
-    def avg_pos_vertical_speed(self, value: int):
+    def avg_pos_vertical_speed(self, value: float):
         field = self.get_field(SegmentLapAvgPosVerticalSpeedField.ID)
 
         if field:
@@ -1518,7 +1518,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_neg_vertical_speed(self) -> Optional[int]:
+    def avg_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1529,7 +1529,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_neg_vertical_speed.setter
-    def avg_neg_vertical_speed(self, value: int):
+    def avg_neg_vertical_speed(self, value: float):
         field = self.get_field(SegmentLapAvgNegVerticalSpeedField.ID)
 
         if field:
@@ -1542,7 +1542,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_pos_vertical_speed(self) -> Optional[int]:
+    def max_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1553,7 +1553,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_pos_vertical_speed.setter
-    def max_pos_vertical_speed(self, value: int):
+    def max_pos_vertical_speed(self, value: float):
         field = self.get_field(SegmentLapMaxPosVerticalSpeedField.ID)
 
         if field:
@@ -1566,7 +1566,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_neg_vertical_speed(self) -> Optional[int]:
+    def max_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1577,7 +1577,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_neg_vertical_speed.setter
-    def max_neg_vertical_speed(self, value: int):
+    def max_neg_vertical_speed(self, value: float):
         field = self.get_field(SegmentLapMaxNegVerticalSpeedField.ID)
 
         if field:
@@ -1590,7 +1590,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def time_in_hr_zone(self) -> Optional[list[int]]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInHrZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1600,7 +1600,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: list[int]):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInHrZoneField.ID)
 
         if field:
@@ -1612,7 +1612,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def time_in_speed_zone(self) -> Optional[list[int]]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInSpeedZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1622,7 +1622,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: list[int]):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInSpeedZoneField.ID)
 
         if field:
@@ -1634,7 +1634,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def time_in_cadence_zone(self) -> Optional[list[int]]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInCadenceZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1644,7 +1644,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: list[int]):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInCadenceZoneField.ID)
 
         if field:
@@ -1656,7 +1656,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def time_in_power_zone(self) -> Optional[list[int]]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapTimeInPowerZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1666,7 +1666,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: list[int]):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(SegmentLapTimeInPowerZoneField.ID)
 
         if field:
@@ -1702,7 +1702,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def min_altitude(self) -> Optional[int]:
+    def min_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1713,7 +1713,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @min_altitude.setter
-    def min_altitude(self, value: int):
+    def min_altitude(self, value: float):
         field = self.get_field(SegmentLapMinAltitudeField.ID)
 
         if field:
@@ -1750,7 +1750,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def active_time(self) -> Optional[int]:
+    def active_time(self) -> Optional[float]:
         field = self.get_field(SegmentLapActiveTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1761,7 +1761,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @active_time.setter
-    def active_time(self, value: int):
+    def active_time(self, value: float):
         field = self.get_field(SegmentLapActiveTimeField.ID)
 
         if field:
@@ -1822,7 +1822,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_left_torque_effectiveness(self) -> Optional[int]:
+    def avg_left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1833,7 +1833,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_left_torque_effectiveness.setter
-    def avg_left_torque_effectiveness(self, value: int):
+    def avg_left_torque_effectiveness(self, value: float):
         field = self.get_field(SegmentLapAvgLeftTorqueEffectivenessField.ID)
 
         if field:
@@ -1846,7 +1846,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_right_torque_effectiveness(self) -> Optional[int]:
+    def avg_right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1857,7 +1857,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_right_torque_effectiveness.setter
-    def avg_right_torque_effectiveness(self, value: int):
+    def avg_right_torque_effectiveness(self, value: float):
         field = self.get_field(SegmentLapAvgRightTorqueEffectivenessField.ID)
 
         if field:
@@ -1870,7 +1870,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_left_pedal_smoothness(self) -> Optional[int]:
+    def avg_left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgLeftPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1881,7 +1881,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_left_pedal_smoothness.setter
-    def avg_left_pedal_smoothness(self, value: int):
+    def avg_left_pedal_smoothness(self, value: float):
         field = self.get_field(SegmentLapAvgLeftPedalSmoothnessField.ID)
 
         if field:
@@ -1894,7 +1894,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_right_pedal_smoothness(self) -> Optional[int]:
+    def avg_right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgRightPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1905,7 +1905,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_right_pedal_smoothness.setter
-    def avg_right_pedal_smoothness(self, value: int):
+    def avg_right_pedal_smoothness(self, value: float):
         field = self.get_field(SegmentLapAvgRightPedalSmoothnessField.ID)
 
         if field:
@@ -1918,7 +1918,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_combined_pedal_smoothness(self) -> Optional[int]:
+    def avg_combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgCombinedPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1929,7 +1929,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_combined_pedal_smoothness.setter
-    def avg_combined_pedal_smoothness(self, value: int):
+    def avg_combined_pedal_smoothness(self, value: float):
         field = self.get_field(SegmentLapAvgCombinedPedalSmoothnessField.ID)
 
         if field:
@@ -1990,7 +1990,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_fractional_cadence(self) -> Optional[int]:
+    def avg_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SegmentLapAvgFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2001,7 +2001,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_fractional_cadence.setter
-    def avg_fractional_cadence(self, value: int):
+    def avg_fractional_cadence(self, value: float):
         field = self.get_field(SegmentLapAvgFractionalCadenceField.ID)
 
         if field:
@@ -2014,7 +2014,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def max_fractional_cadence(self) -> Optional[int]:
+    def max_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SegmentLapMaxFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2025,7 +2025,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @max_fractional_cadence.setter
-    def max_fractional_cadence(self, value: int):
+    def max_fractional_cadence(self, value: float):
         field = self.get_field(SegmentLapMaxFractionalCadenceField.ID)
 
         if field:
@@ -2038,7 +2038,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_fractional_cycles(self) -> Optional[int]:
+    def total_fractional_cycles(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalCyclesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2049,7 +2049,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_fractional_cycles.setter
-    def total_fractional_cycles(self, value: int):
+    def total_fractional_cycles(self, value: float):
         field = self.get_field(SegmentLapTotalFractionalCyclesField.ID)
 
         if field:
@@ -2110,7 +2110,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def time_standing(self) -> Optional[int]:
+    def time_standing(self) -> Optional[float]:
         field = self.get_field(SegmentLapTimeStandingField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2121,7 +2121,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @time_standing.setter
-    def time_standing(self, value: int):
+    def time_standing(self, value: float):
         field = self.get_field(SegmentLapTimeStandingField.ID)
 
         if field:
@@ -2206,7 +2206,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase(self) -> Optional[list[int]]:
+    def avg_left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgLeftPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2216,7 +2216,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_left_power_phase.setter
-    def avg_left_power_phase(self, value: list[int]):
+    def avg_left_power_phase(self, value: list[float]):
         field = self.get_field(SegmentLapAvgLeftPowerPhaseField.ID)
 
         if field:
@@ -2228,7 +2228,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2238,7 +2238,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_left_power_phase_peak.setter
-    def avg_left_power_phase_peak(self, value: list[int]):
+    def avg_left_power_phase_peak(self, value: list[float]):
         field = self.get_field(SegmentLapAvgLeftPowerPhasePeakField.ID)
 
         if field:
@@ -2250,7 +2250,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase(self) -> Optional[list[int]]:
+    def avg_right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgRightPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2260,7 +2260,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_right_power_phase.setter
-    def avg_right_power_phase(self, value: list[int]):
+    def avg_right_power_phase(self, value: list[float]):
         field = self.get_field(SegmentLapAvgRightPowerPhaseField.ID)
 
         if field:
@@ -2272,7 +2272,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SegmentLapAvgRightPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2282,7 +2282,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @avg_right_power_phase_peak.setter
-    def avg_right_power_phase_peak(self, value: list[int]):
+    def avg_right_power_phase_peak(self, value: list[float]):
         field = self.get_field(SegmentLapAvgRightPowerPhasePeakField.ID)
 
         if field:
@@ -2502,7 +2502,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_fractional_ascent(self) -> Optional[int]:
+    def total_fractional_ascent(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalAscentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2513,7 +2513,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_fractional_ascent.setter
-    def total_fractional_ascent(self, value: int):
+    def total_fractional_ascent(self, value: float):
         field = self.get_field(SegmentLapTotalFractionalAscentField.ID)
 
         if field:
@@ -2526,7 +2526,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def total_fractional_descent(self) -> Optional[int]:
+    def total_fractional_descent(self) -> Optional[float]:
         field = self.get_field(SegmentLapTotalFractionalDescentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2537,7 +2537,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @total_fractional_descent.setter
-    def total_fractional_descent(self, value: int):
+    def total_fractional_descent(self, value: float):
         field = self.get_field(SegmentLapTotalFractionalDescentField.ID)
 
         if field:
@@ -2550,7 +2550,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_altitude(self) -> Optional[int]:
+    def enhanced_avg_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapEnhancedAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2561,7 +2561,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @enhanced_avg_altitude.setter
-    def enhanced_avg_altitude(self, value: int):
+    def enhanced_avg_altitude(self, value: float):
         field = self.get_field(SegmentLapEnhancedAvgAltitudeField.ID)
 
         if field:
@@ -2574,7 +2574,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def enhanced_max_altitude(self) -> Optional[int]:
+    def enhanced_max_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapEnhancedMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2585,7 +2585,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @enhanced_max_altitude.setter
-    def enhanced_max_altitude(self, value: int):
+    def enhanced_max_altitude(self, value: float):
         field = self.get_field(SegmentLapEnhancedMaxAltitudeField.ID)
 
         if field:
@@ -2598,7 +2598,7 @@ class SegmentLapMessage(DataMessage):
     
 
     @property
-    def enhanced_min_altitude(self) -> Optional[int]:
+    def enhanced_min_altitude(self) -> Optional[float]:
         field = self.get_field(SegmentLapEnhancedMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2609,7 +2609,7 @@ class SegmentLapMessage(DataMessage):
 
 
     @enhanced_min_altitude.setter
-    def enhanced_min_altitude(self, value: int):
+    def enhanced_min_altitude(self, value: float):
         field = self.get_field(SegmentLapEnhancedMinAltitudeField.ID)
 
         if field:
@@ -2765,7 +2765,7 @@ class SegmentLapTotalElapsedTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -2784,7 +2784,7 @@ class SegmentLapTotalTimerTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -2803,7 +2803,7 @@ class SegmentLapTotalDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -2888,7 +2888,7 @@ class SegmentLapAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -2907,7 +2907,7 @@ class SegmentLapMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -3282,7 +3282,7 @@ class SegmentLapAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -3301,7 +3301,7 @@ class SegmentLapMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -3339,7 +3339,7 @@ class SegmentLapAvgGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -3358,7 +3358,7 @@ class SegmentLapAvgPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -3377,7 +3377,7 @@ class SegmentLapAvgNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -3396,7 +3396,7 @@ class SegmentLapMaxPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -3415,7 +3415,7 @@ class SegmentLapMaxNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -3472,7 +3472,7 @@ class SegmentLapTotalMovingTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3491,7 +3491,7 @@ class SegmentLapAvgPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -3510,7 +3510,7 @@ class SegmentLapAvgNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -3529,7 +3529,7 @@ class SegmentLapMaxPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -3548,7 +3548,7 @@ class SegmentLapMaxNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -3567,7 +3567,7 @@ class SegmentLapTimeInHrZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3586,7 +3586,7 @@ class SegmentLapTimeInSpeedZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3605,7 +3605,7 @@ class SegmentLapTimeInCadenceZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3624,7 +3624,7 @@ class SegmentLapTimeInPowerZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3661,7 +3661,7 @@ class SegmentLapMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -3699,7 +3699,7 @@ class SegmentLapActiveTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3754,7 +3754,7 @@ class SegmentLapAvgLeftTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3773,7 +3773,7 @@ class SegmentLapAvgRightTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3792,7 +3792,7 @@ class SegmentLapAvgLeftPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3811,7 +3811,7 @@ class SegmentLapAvgRightPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3830,7 +3830,7 @@ class SegmentLapAvgCombinedPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -3885,7 +3885,7 @@ class SegmentLapAvgFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -3904,7 +3904,7 @@ class SegmentLapMaxFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -3923,7 +3923,7 @@ class SegmentLapTotalFractionalCyclesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'cycles',
         type_name = 'uint8',
@@ -3978,7 +3978,7 @@ class SegmentLapTimeStandingField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4053,7 +4053,7 @@ class SegmentLapAvgLeftPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -4072,7 +4072,7 @@ class SegmentLapAvgLeftPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -4091,7 +4091,7 @@ class SegmentLapAvgRightPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -4110,7 +4110,7 @@ class SegmentLapAvgRightPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -4299,7 +4299,7 @@ class SegmentLapTotalFractionalAscentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -4318,7 +4318,7 @@ class SegmentLapTotalFractionalDescentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -4337,7 +4337,7 @@ class SegmentLapEnhancedAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -4356,7 +4356,7 @@ class SegmentLapEnhancedMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -4375,7 +4375,7 @@ class SegmentLapEnhancedMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',

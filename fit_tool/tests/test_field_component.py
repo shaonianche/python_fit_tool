@@ -1,4 +1,5 @@
 import pytest
+
 from fit_tool.field_component import FieldComponent
 
 

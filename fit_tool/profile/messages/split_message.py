@@ -162,7 +162,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def total_elapsed_time(self) -> Optional[int]:
+    def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(SplitTotalElapsedTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -173,7 +173,7 @@ class SplitMessage(DataMessage):
 
 
     @total_elapsed_time.setter
-    def total_elapsed_time(self, value: int):
+    def total_elapsed_time(self, value: float):
         field = self.get_field(SplitTotalElapsedTimeField.ID)
 
         if field:
@@ -186,7 +186,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def total_timer_time(self) -> Optional[int]:
+    def total_timer_time(self) -> Optional[float]:
         field = self.get_field(SplitTotalTimerTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -197,7 +197,7 @@ class SplitMessage(DataMessage):
 
 
     @total_timer_time.setter
-    def total_timer_time(self, value: int):
+    def total_timer_time(self, value: float):
         field = self.get_field(SplitTotalTimerTimeField.ID)
 
         if field:
@@ -210,7 +210,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def total_distance(self) -> Optional[int]:
+    def total_distance(self) -> Optional[float]:
         field = self.get_field(SplitTotalDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -221,7 +221,7 @@ class SplitMessage(DataMessage):
 
 
     @total_distance.setter
-    def total_distance(self, value: int):
+    def total_distance(self, value: float):
         field = self.get_field(SplitTotalDistanceField.ID)
 
         if field:
@@ -234,7 +234,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def avg_speed(self) -> Optional[int]:
+    def avg_speed(self) -> Optional[float]:
         field = self.get_field(SplitAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -245,7 +245,7 @@ class SplitMessage(DataMessage):
 
 
     @avg_speed.setter
-    def avg_speed(self, value: int):
+    def avg_speed(self, value: float):
         field = self.get_field(SplitAvgSpeedField.ID)
 
         if field:
@@ -428,7 +428,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def max_speed(self) -> Optional[int]:
+    def max_speed(self) -> Optional[float]:
         field = self.get_field(SplitMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -439,7 +439,7 @@ class SplitMessage(DataMessage):
 
 
     @max_speed.setter
-    def max_speed(self, value: int):
+    def max_speed(self, value: float):
         field = self.get_field(SplitMaxSpeedField.ID)
 
         if field:
@@ -452,7 +452,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def avg_vert_speed(self) -> Optional[int]:
+    def avg_vert_speed(self) -> Optional[float]:
         field = self.get_field(SplitAvgVertSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -463,7 +463,7 @@ class SplitMessage(DataMessage):
 
 
     @avg_vert_speed.setter
-    def avg_vert_speed(self, value: int):
+    def avg_vert_speed(self, value: float):
         field = self.get_field(SplitAvgVertSpeedField.ID)
 
         if field:
@@ -526,7 +526,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def start_elevation(self) -> Optional[int]:
+    def start_elevation(self) -> Optional[float]:
         field = self.get_field(SplitStartElevationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -537,7 +537,7 @@ class SplitMessage(DataMessage):
 
 
     @start_elevation.setter
-    def start_elevation(self, value: int):
+    def start_elevation(self, value: float):
         field = self.get_field(SplitStartElevationField.ID)
 
         if field:
@@ -550,7 +550,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def active_time(self) -> Optional[int]:
+    def active_time(self) -> Optional[float]:
         field = self.get_field(SplitActiveTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -561,7 +561,7 @@ class SplitMessage(DataMessage):
 
 
     @active_time.setter
-    def active_time(self, value: int):
+    def active_time(self, value: float):
         field = self.get_field(SplitActiveTimeField.ID)
 
         if field:
@@ -574,7 +574,7 @@ class SplitMessage(DataMessage):
     
 
     @property
-    def total_moving_time(self) -> Optional[int]:
+    def total_moving_time(self) -> Optional[float]:
         field = self.get_field(SplitTotalMovingTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -585,7 +585,7 @@ class SplitMessage(DataMessage):
 
 
     @total_moving_time.setter
-    def total_moving_time(self, value: int):
+    def total_moving_time(self, value: float):
         field = self.get_field(SplitTotalMovingTimeField.ID)
 
         if field:
@@ -628,7 +628,7 @@ class SplitTotalElapsedTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -647,7 +647,7 @@ class SplitTotalTimerTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -666,7 +666,7 @@ class SplitTotalDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -685,7 +685,7 @@ class SplitAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -837,7 +837,7 @@ class SplitMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -856,7 +856,7 @@ class SplitAvgVertSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint32',
@@ -913,7 +913,7 @@ class SplitStartElevationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -932,7 +932,7 @@ class SplitActiveTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -951,7 +951,7 @@ class SplitTotalMovingTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',

@@ -104,7 +104,7 @@ class ActivityMessage(DataMessage):
     
 
     @property
-    def total_timer_time(self) -> Optional[int]:
+    def total_timer_time(self) -> Optional[float]:
         field = self.get_field(ActivityTotalTimerTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -115,7 +115,7 @@ class ActivityMessage(DataMessage):
 
 
     @total_timer_time.setter
-    def total_timer_time(self, value: int):
+    def total_timer_time(self, value: float):
         field = self.get_field(ActivityTotalTimerTimeField.ID)
 
         if field:
@@ -284,7 +284,7 @@ class ActivityTotalTimerTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',

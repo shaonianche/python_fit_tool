@@ -149,7 +149,7 @@ class HsaGyroscopeDataMessage(DataMessage):
     
 
     @property
-    def gyro_x(self) -> Optional[list[int]]:
+    def gyro_x(self) -> Optional[list[float]]:
         field = self.get_field(HsaGyroscopeDataGyroXField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -159,7 +159,7 @@ class HsaGyroscopeDataMessage(DataMessage):
 
 
     @gyro_x.setter
-    def gyro_x(self, value: list[int]):
+    def gyro_x(self, value: list[float]):
         field = self.get_field(HsaGyroscopeDataGyroXField.ID)
 
         if field:
@@ -171,7 +171,7 @@ class HsaGyroscopeDataMessage(DataMessage):
     
 
     @property
-    def gyro_y(self) -> Optional[list[int]]:
+    def gyro_y(self) -> Optional[list[float]]:
         field = self.get_field(HsaGyroscopeDataGyroYField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -181,7 +181,7 @@ class HsaGyroscopeDataMessage(DataMessage):
 
 
     @gyro_y.setter
-    def gyro_y(self, value: list[int]):
+    def gyro_y(self, value: list[float]):
         field = self.get_field(HsaGyroscopeDataGyroYField.ID)
 
         if field:
@@ -193,7 +193,7 @@ class HsaGyroscopeDataMessage(DataMessage):
     
 
     @property
-    def gyro_z(self) -> Optional[list[int]]:
+    def gyro_z(self) -> Optional[list[float]]:
         field = self.get_field(HsaGyroscopeDataGyroZField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -203,7 +203,7 @@ class HsaGyroscopeDataMessage(DataMessage):
 
 
     @gyro_z.setter
-    def gyro_z(self, value: list[int]):
+    def gyro_z(self, value: list[float]):
         field = self.get_field(HsaGyroscopeDataGyroZField.ID)
 
         if field:
@@ -289,7 +289,7 @@ class HsaGyroscopeDataGyroXField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 28.57143,
                          size = size,
         units = 'deg/s',
         type_name = 'sint16',
@@ -308,7 +308,7 @@ class HsaGyroscopeDataGyroYField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 28.57143,
                          size = size,
         units = 'deg/s',
         type_name = 'sint16',
@@ -327,7 +327,7 @@ class HsaGyroscopeDataGyroZField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 28.57143,
                          size = size,
         units = 'deg/s',
         type_name = 'sint16',

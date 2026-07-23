@@ -2,7 +2,7 @@ from pathlib import Path
 
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
-from fit_tool.profile.messages.record_message import RecordMessage, RecordHeartRateField, RecordPowerField
+from fit_tool.profile.messages.record_message import RecordHeartRateField, RecordMessage, RecordPowerField
 
 
 def main():

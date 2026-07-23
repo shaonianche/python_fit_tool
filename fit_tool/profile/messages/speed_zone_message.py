@@ -87,7 +87,7 @@ class SpeedZoneMessage(DataMessage):
     
 
     @property
-    def high_value(self) -> Optional[int]:
+    def high_value(self) -> Optional[float]:
         field = self.get_field(SpeedZoneHighValueField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -98,7 +98,7 @@ class SpeedZoneMessage(DataMessage):
 
 
     @high_value.setter
-    def high_value(self, value: int):
+    def high_value(self, value: float):
         field = self.get_field(SpeedZoneHighValueField.ID)
 
         if field:
@@ -147,7 +147,7 @@ class SpeedZoneHighValueField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',

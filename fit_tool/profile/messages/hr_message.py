@@ -98,7 +98,7 @@ class HrMessage(DataMessage):
     
 
     @property
-    def fractional_timestamp(self) -> Optional[int]:
+    def fractional_timestamp(self) -> Optional[float]:
         field = self.get_field(HrFractionalTimestampField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -109,7 +109,7 @@ class HrMessage(DataMessage):
 
 
     @fractional_timestamp.setter
-    def fractional_timestamp(self, value: int):
+    def fractional_timestamp(self, value: float):
         field = self.get_field(HrFractionalTimestampField.ID)
 
         if field:
@@ -122,7 +122,7 @@ class HrMessage(DataMessage):
     
 
     @property
-    def time256(self) -> Optional[int]:
+    def time256(self) -> Optional[float]:
         field = self.get_field(HrTime256Field.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -133,7 +133,7 @@ class HrMessage(DataMessage):
 
 
     @time256.setter
-    def time256(self, value: int):
+    def time256(self, value: float):
         field = self.get_field(HrTime256Field.ID)
 
         if field:
@@ -168,7 +168,7 @@ class HrMessage(DataMessage):
     
 
     @property
-    def event_timestamp(self) -> Optional[list[int]]:
+    def event_timestamp(self) -> Optional[list[float]]:
         field = self.get_field(HrEventTimestampField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -178,7 +178,7 @@ class HrMessage(DataMessage):
 
 
     @event_timestamp.setter
-    def event_timestamp(self, value: list[int]):
+    def event_timestamp(self, value: list[float]):
         field = self.get_field(HrEventTimestampField.ID)
 
         if field:
@@ -224,7 +224,7 @@ class HrFractionalTimestampField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 32768,
                          size = size,
         units = 's',
         type_name = 'uint16',
@@ -243,7 +243,7 @@ class HrTime256Field(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 256,
                          size = size,
         units = 's',
         type_name = 'uint8',
@@ -281,7 +281,7 @@ class HrEventTimestampField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1024,
                          size = size,
         units = 's',
         type_name = 'uint32',

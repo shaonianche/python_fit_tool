@@ -646,7 +646,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_elapsed_time(self) -> Optional[int]:
+    def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(LapTotalElapsedTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -657,7 +657,7 @@ class LapMessage(DataMessage):
 
 
     @total_elapsed_time.setter
-    def total_elapsed_time(self, value: int):
+    def total_elapsed_time(self, value: float):
         field = self.get_field(LapTotalElapsedTimeField.ID)
 
         if field:
@@ -670,7 +670,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_timer_time(self) -> Optional[int]:
+    def total_timer_time(self) -> Optional[float]:
         field = self.get_field(LapTotalTimerTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -681,7 +681,7 @@ class LapMessage(DataMessage):
 
 
     @total_timer_time.setter
-    def total_timer_time(self, value: int):
+    def total_timer_time(self, value: float):
         field = self.get_field(LapTotalTimerTimeField.ID)
 
         if field:
@@ -694,7 +694,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_distance(self) -> Optional[int]:
+    def total_distance(self) -> Optional[float]:
         field = self.get_field(LapTotalDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -705,7 +705,7 @@ class LapMessage(DataMessage):
 
 
     @total_distance.setter
-    def total_distance(self, value: int):
+    def total_distance(self, value: float):
         field = self.get_field(LapTotalDistanceField.ID)
 
         if field:
@@ -836,7 +836,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_speed(self) -> Optional[int]:
+    def avg_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -847,7 +847,7 @@ class LapMessage(DataMessage):
 
 
     @avg_speed.setter
-    def avg_speed(self, value: int):
+    def avg_speed(self, value: float):
         field = self.get_field(LapAvgSpeedField.ID)
 
         if field:
@@ -860,7 +860,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_speed(self) -> Optional[int]:
+    def max_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -871,7 +871,7 @@ class LapMessage(DataMessage):
 
 
     @max_speed.setter
-    def max_speed(self, value: int):
+    def max_speed(self, value: float):
         field = self.get_field(LapMaxSpeedField.ID)
 
         if field:
@@ -1314,7 +1314,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_stroke_distance(self) -> Optional[int]:
+    def avg_stroke_distance(self) -> Optional[float]:
         field = self.get_field(LapAvgStrokeDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1325,7 +1325,7 @@ class LapMessage(DataMessage):
 
 
     @avg_stroke_distance.setter
-    def avg_stroke_distance(self, value: int):
+    def avg_stroke_distance(self, value: float):
         field = self.get_field(LapAvgStrokeDistanceField.ID)
 
         if field:
@@ -1434,7 +1434,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_altitude(self) -> Optional[int]:
+    def avg_altitude(self) -> Optional[float]:
         field = self.get_field(LapAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1445,7 +1445,7 @@ class LapMessage(DataMessage):
 
 
     @avg_altitude.setter
-    def avg_altitude(self, value: int):
+    def avg_altitude(self, value: float):
         field = self.get_field(LapAvgAltitudeField.ID)
 
         if field:
@@ -1458,7 +1458,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_altitude(self) -> Optional[int]:
+    def max_altitude(self) -> Optional[float]:
         field = self.get_field(LapMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1469,7 +1469,7 @@ class LapMessage(DataMessage):
 
 
     @max_altitude.setter
-    def max_altitude(self, value: int):
+    def max_altitude(self, value: float):
         field = self.get_field(LapMaxAltitudeField.ID)
 
         if field:
@@ -1506,7 +1506,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_grade(self) -> Optional[int]:
+    def avg_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1517,7 +1517,7 @@ class LapMessage(DataMessage):
 
 
     @avg_grade.setter
-    def avg_grade(self, value: int):
+    def avg_grade(self, value: float):
         field = self.get_field(LapAvgGradeField.ID)
 
         if field:
@@ -1530,7 +1530,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_pos_grade(self) -> Optional[int]:
+    def avg_pos_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1541,7 +1541,7 @@ class LapMessage(DataMessage):
 
 
     @avg_pos_grade.setter
-    def avg_pos_grade(self, value: int):
+    def avg_pos_grade(self, value: float):
         field = self.get_field(LapAvgPosGradeField.ID)
 
         if field:
@@ -1554,7 +1554,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_neg_grade(self) -> Optional[int]:
+    def avg_neg_grade(self) -> Optional[float]:
         field = self.get_field(LapAvgNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1565,7 +1565,7 @@ class LapMessage(DataMessage):
 
 
     @avg_neg_grade.setter
-    def avg_neg_grade(self, value: int):
+    def avg_neg_grade(self, value: float):
         field = self.get_field(LapAvgNegGradeField.ID)
 
         if field:
@@ -1578,7 +1578,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_pos_grade(self) -> Optional[int]:
+    def max_pos_grade(self) -> Optional[float]:
         field = self.get_field(LapMaxPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1589,7 +1589,7 @@ class LapMessage(DataMessage):
 
 
     @max_pos_grade.setter
-    def max_pos_grade(self, value: int):
+    def max_pos_grade(self, value: float):
         field = self.get_field(LapMaxPosGradeField.ID)
 
         if field:
@@ -1602,7 +1602,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_neg_grade(self) -> Optional[int]:
+    def max_neg_grade(self) -> Optional[float]:
         field = self.get_field(LapMaxNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1613,7 +1613,7 @@ class LapMessage(DataMessage):
 
 
     @max_neg_grade.setter
-    def max_neg_grade(self, value: int):
+    def max_neg_grade(self, value: float):
         field = self.get_field(LapMaxNegGradeField.ID)
 
         if field:
@@ -1674,7 +1674,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_moving_time(self) -> Optional[int]:
+    def total_moving_time(self) -> Optional[float]:
         field = self.get_field(LapTotalMovingTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1685,7 +1685,7 @@ class LapMessage(DataMessage):
 
 
     @total_moving_time.setter
-    def total_moving_time(self, value: int):
+    def total_moving_time(self, value: float):
         field = self.get_field(LapTotalMovingTimeField.ID)
 
         if field:
@@ -1698,7 +1698,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_pos_vertical_speed(self) -> Optional[int]:
+    def avg_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1709,7 +1709,7 @@ class LapMessage(DataMessage):
 
 
     @avg_pos_vertical_speed.setter
-    def avg_pos_vertical_speed(self, value: int):
+    def avg_pos_vertical_speed(self, value: float):
         field = self.get_field(LapAvgPosVerticalSpeedField.ID)
 
         if field:
@@ -1722,7 +1722,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_neg_vertical_speed(self) -> Optional[int]:
+    def avg_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapAvgNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1733,7 +1733,7 @@ class LapMessage(DataMessage):
 
 
     @avg_neg_vertical_speed.setter
-    def avg_neg_vertical_speed(self, value: int):
+    def avg_neg_vertical_speed(self, value: float):
         field = self.get_field(LapAvgNegVerticalSpeedField.ID)
 
         if field:
@@ -1746,7 +1746,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_pos_vertical_speed(self) -> Optional[int]:
+    def max_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1757,7 +1757,7 @@ class LapMessage(DataMessage):
 
 
     @max_pos_vertical_speed.setter
-    def max_pos_vertical_speed(self, value: int):
+    def max_pos_vertical_speed(self, value: float):
         field = self.get_field(LapMaxPosVerticalSpeedField.ID)
 
         if field:
@@ -1770,7 +1770,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_neg_vertical_speed(self) -> Optional[int]:
+    def max_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(LapMaxNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1781,7 +1781,7 @@ class LapMessage(DataMessage):
 
 
     @max_neg_vertical_speed.setter
-    def max_neg_vertical_speed(self, value: int):
+    def max_neg_vertical_speed(self, value: float):
         field = self.get_field(LapMaxNegVerticalSpeedField.ID)
 
         if field:
@@ -1794,7 +1794,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def time_in_hr_zone(self) -> Optional[list[int]]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(LapTimeInHrZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1804,7 +1804,7 @@ class LapMessage(DataMessage):
 
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: list[int]):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(LapTimeInHrZoneField.ID)
 
         if field:
@@ -1816,7 +1816,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def time_in_speed_zone(self) -> Optional[list[int]]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(LapTimeInSpeedZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1826,7 +1826,7 @@ class LapMessage(DataMessage):
 
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: list[int]):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(LapTimeInSpeedZoneField.ID)
 
         if field:
@@ -1838,7 +1838,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def time_in_cadence_zone(self) -> Optional[list[int]]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(LapTimeInCadenceZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1848,7 +1848,7 @@ class LapMessage(DataMessage):
 
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: list[int]):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(LapTimeInCadenceZoneField.ID)
 
         if field:
@@ -1860,7 +1860,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def time_in_power_zone(self) -> Optional[list[int]]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(LapTimeInPowerZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -1870,7 +1870,7 @@ class LapMessage(DataMessage):
 
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: list[int]):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(LapTimeInPowerZoneField.ID)
 
         if field:
@@ -1906,7 +1906,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def min_altitude(self) -> Optional[int]:
+    def min_altitude(self) -> Optional[float]:
         field = self.get_field(LapMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1917,7 +1917,7 @@ class LapMessage(DataMessage):
 
 
     @min_altitude.setter
-    def min_altitude(self, value: int):
+    def min_altitude(self, value: float):
         field = self.get_field(LapMinAltitudeField.ID)
 
         if field:
@@ -1954,7 +1954,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def active_time(self) -> Optional[int]:
+    def active_time(self) -> Optional[float]:
         field = self.get_field(LapActiveTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1965,7 +1965,7 @@ class LapMessage(DataMessage):
 
 
     @active_time.setter
-    def active_time(self, value: int):
+    def active_time(self, value: float):
         field = self.get_field(LapActiveTimeField.ID)
 
         if field:
@@ -2070,7 +2070,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_vertical_oscillation(self) -> Optional[int]:
+    def avg_vertical_oscillation(self) -> Optional[float]:
         field = self.get_field(LapAvgVerticalOscillationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2081,7 +2081,7 @@ class LapMessage(DataMessage):
 
 
     @avg_vertical_oscillation.setter
-    def avg_vertical_oscillation(self, value: int):
+    def avg_vertical_oscillation(self, value: float):
         field = self.get_field(LapAvgVerticalOscillationField.ID)
 
         if field:
@@ -2094,7 +2094,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_stance_time_percent(self) -> Optional[int]:
+    def avg_stance_time_percent(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimePercentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2105,7 +2105,7 @@ class LapMessage(DataMessage):
 
 
     @avg_stance_time_percent.setter
-    def avg_stance_time_percent(self, value: int):
+    def avg_stance_time_percent(self, value: float):
         field = self.get_field(LapAvgStanceTimePercentField.ID)
 
         if field:
@@ -2118,7 +2118,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_stance_time(self) -> Optional[int]:
+    def avg_stance_time(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2129,7 +2129,7 @@ class LapMessage(DataMessage):
 
 
     @avg_stance_time.setter
-    def avg_stance_time(self, value: int):
+    def avg_stance_time(self, value: float):
         field = self.get_field(LapAvgStanceTimeField.ID)
 
         if field:
@@ -2142,7 +2142,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_fractional_cadence(self) -> Optional[int]:
+    def avg_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(LapAvgFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2153,7 +2153,7 @@ class LapMessage(DataMessage):
 
 
     @avg_fractional_cadence.setter
-    def avg_fractional_cadence(self, value: int):
+    def avg_fractional_cadence(self, value: float):
         field = self.get_field(LapAvgFractionalCadenceField.ID)
 
         if field:
@@ -2166,7 +2166,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_fractional_cadence(self) -> Optional[int]:
+    def max_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(LapMaxFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2177,7 +2177,7 @@ class LapMessage(DataMessage):
 
 
     @max_fractional_cadence.setter
-    def max_fractional_cadence(self, value: int):
+    def max_fractional_cadence(self, value: float):
         field = self.get_field(LapMaxFractionalCadenceField.ID)
 
         if field:
@@ -2190,7 +2190,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_fractional_cycles(self) -> Optional[int]:
+    def total_fractional_cycles(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalCyclesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2201,7 +2201,7 @@ class LapMessage(DataMessage):
 
 
     @total_fractional_cycles.setter
-    def total_fractional_cycles(self, value: int):
+    def total_fractional_cycles(self, value: float):
         field = self.get_field(LapTotalFractionalCyclesField.ID)
 
         if field:
@@ -2238,7 +2238,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def avg_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2248,7 +2248,7 @@ class LapMessage(DataMessage):
 
 
     @avg_total_hemoglobin_conc.setter
-    def avg_total_hemoglobin_conc(self, value: list[int]):
+    def avg_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(LapAvgTotalHemoglobinConcField.ID)
 
         if field:
@@ -2260,7 +2260,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def min_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def min_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(LapMinTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2270,7 +2270,7 @@ class LapMessage(DataMessage):
 
 
     @min_total_hemoglobin_conc.setter
-    def min_total_hemoglobin_conc(self, value: list[int]):
+    def min_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(LapMinTotalHemoglobinConcField.ID)
 
         if field:
@@ -2282,7 +2282,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def max_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(LapMaxTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2292,7 +2292,7 @@ class LapMessage(DataMessage):
 
 
     @max_total_hemoglobin_conc.setter
-    def max_total_hemoglobin_conc(self, value: list[int]):
+    def max_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(LapMaxTotalHemoglobinConcField.ID)
 
         if field:
@@ -2304,7 +2304,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def avg_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2314,7 +2314,7 @@ class LapMessage(DataMessage):
 
 
     @avg_saturated_hemoglobin_percent.setter
-    def avg_saturated_hemoglobin_percent(self, value: list[int]):
+    def avg_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(LapAvgSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2326,7 +2326,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def min_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def min_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(LapMinSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2336,7 +2336,7 @@ class LapMessage(DataMessage):
 
 
     @min_saturated_hemoglobin_percent.setter
-    def min_saturated_hemoglobin_percent(self, value: list[int]):
+    def min_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(LapMinSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2348,7 +2348,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def max_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(LapMaxSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2358,7 +2358,7 @@ class LapMessage(DataMessage):
 
 
     @max_saturated_hemoglobin_percent.setter
-    def max_saturated_hemoglobin_percent(self, value: list[int]):
+    def max_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(LapMaxSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2370,7 +2370,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_left_torque_effectiveness(self) -> Optional[int]:
+    def avg_left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2381,7 +2381,7 @@ class LapMessage(DataMessage):
 
 
     @avg_left_torque_effectiveness.setter
-    def avg_left_torque_effectiveness(self, value: int):
+    def avg_left_torque_effectiveness(self, value: float):
         field = self.get_field(LapAvgLeftTorqueEffectivenessField.ID)
 
         if field:
@@ -2394,7 +2394,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_right_torque_effectiveness(self) -> Optional[int]:
+    def avg_right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(LapAvgRightTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2405,7 +2405,7 @@ class LapMessage(DataMessage):
 
 
     @avg_right_torque_effectiveness.setter
-    def avg_right_torque_effectiveness(self, value: int):
+    def avg_right_torque_effectiveness(self, value: float):
         field = self.get_field(LapAvgRightTorqueEffectivenessField.ID)
 
         if field:
@@ -2418,7 +2418,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_left_pedal_smoothness(self) -> Optional[int]:
+    def avg_left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgLeftPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2429,7 +2429,7 @@ class LapMessage(DataMessage):
 
 
     @avg_left_pedal_smoothness.setter
-    def avg_left_pedal_smoothness(self, value: int):
+    def avg_left_pedal_smoothness(self, value: float):
         field = self.get_field(LapAvgLeftPedalSmoothnessField.ID)
 
         if field:
@@ -2442,7 +2442,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_right_pedal_smoothness(self) -> Optional[int]:
+    def avg_right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgRightPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2453,7 +2453,7 @@ class LapMessage(DataMessage):
 
 
     @avg_right_pedal_smoothness.setter
-    def avg_right_pedal_smoothness(self, value: int):
+    def avg_right_pedal_smoothness(self, value: float):
         field = self.get_field(LapAvgRightPedalSmoothnessField.ID)
 
         if field:
@@ -2466,7 +2466,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_combined_pedal_smoothness(self) -> Optional[int]:
+    def avg_combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(LapAvgCombinedPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2477,7 +2477,7 @@ class LapMessage(DataMessage):
 
 
     @avg_combined_pedal_smoothness.setter
-    def avg_combined_pedal_smoothness(self, value: int):
+    def avg_combined_pedal_smoothness(self, value: float):
         field = self.get_field(LapAvgCombinedPedalSmoothnessField.ID)
 
         if field:
@@ -2490,7 +2490,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def time_standing(self) -> Optional[int]:
+    def time_standing(self) -> Optional[float]:
         field = self.get_field(LapTimeStandingField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2501,7 +2501,7 @@ class LapMessage(DataMessage):
 
 
     @time_standing.setter
-    def time_standing(self, value: int):
+    def time_standing(self, value: float):
         field = self.get_field(LapTimeStandingField.ID)
 
         if field:
@@ -2586,7 +2586,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase(self) -> Optional[list[int]]:
+    def avg_left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgLeftPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2596,7 +2596,7 @@ class LapMessage(DataMessage):
 
 
     @avg_left_power_phase.setter
-    def avg_left_power_phase(self, value: list[int]):
+    def avg_left_power_phase(self, value: list[float]):
         field = self.get_field(LapAvgLeftPowerPhaseField.ID)
 
         if field:
@@ -2608,7 +2608,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2618,7 +2618,7 @@ class LapMessage(DataMessage):
 
 
     @avg_left_power_phase_peak.setter
-    def avg_left_power_phase_peak(self, value: list[int]):
+    def avg_left_power_phase_peak(self, value: list[float]):
         field = self.get_field(LapAvgLeftPowerPhasePeakField.ID)
 
         if field:
@@ -2630,7 +2630,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase(self) -> Optional[list[int]]:
+    def avg_right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgRightPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2640,7 +2640,7 @@ class LapMessage(DataMessage):
 
 
     @avg_right_power_phase.setter
-    def avg_right_power_phase(self, value: list[int]):
+    def avg_right_power_phase(self, value: list[float]):
         field = self.get_field(LapAvgRightPowerPhaseField.ID)
 
         if field:
@@ -2652,7 +2652,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(LapAvgRightPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2662,7 +2662,7 @@ class LapMessage(DataMessage):
 
 
     @avg_right_power_phase_peak.setter
-    def avg_right_power_phase_peak(self, value: list[int]):
+    def avg_right_power_phase_peak(self, value: list[float]):
         field = self.get_field(LapAvgRightPowerPhasePeakField.ID)
 
         if field:
@@ -2762,7 +2762,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_speed(self) -> Optional[int]:
+    def enhanced_avg_speed(self) -> Optional[float]:
         field = self.get_field(LapEnhancedAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2773,7 +2773,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_avg_speed.setter
-    def enhanced_avg_speed(self, value: int):
+    def enhanced_avg_speed(self, value: float):
         field = self.get_field(LapEnhancedAvgSpeedField.ID)
 
         if field:
@@ -2786,7 +2786,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_max_speed(self) -> Optional[int]:
+    def enhanced_max_speed(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2797,7 +2797,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_max_speed.setter
-    def enhanced_max_speed(self, value: int):
+    def enhanced_max_speed(self, value: float):
         field = self.get_field(LapEnhancedMaxSpeedField.ID)
 
         if field:
@@ -2810,7 +2810,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_altitude(self) -> Optional[int]:
+    def enhanced_avg_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2821,7 +2821,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_avg_altitude.setter
-    def enhanced_avg_altitude(self, value: int):
+    def enhanced_avg_altitude(self, value: float):
         field = self.get_field(LapEnhancedAvgAltitudeField.ID)
 
         if field:
@@ -2834,7 +2834,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_min_altitude(self) -> Optional[int]:
+    def enhanced_min_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2845,7 +2845,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_min_altitude.setter
-    def enhanced_min_altitude(self, value: int):
+    def enhanced_min_altitude(self, value: float):
         field = self.get_field(LapEnhancedMinAltitudeField.ID)
 
         if field:
@@ -2858,7 +2858,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_max_altitude(self) -> Optional[int]:
+    def enhanced_max_altitude(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2869,7 +2869,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_max_altitude.setter
-    def enhanced_max_altitude(self, value: int):
+    def enhanced_max_altitude(self, value: float):
         field = self.get_field(LapEnhancedMaxAltitudeField.ID)
 
         if field:
@@ -2930,7 +2930,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def lev_battery_consumption(self) -> Optional[int]:
+    def lev_battery_consumption(self) -> Optional[float]:
         field = self.get_field(LapLevBatteryConsumptionField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2941,7 +2941,7 @@ class LapMessage(DataMessage):
 
 
     @lev_battery_consumption.setter
-    def lev_battery_consumption(self, value: int):
+    def lev_battery_consumption(self, value: float):
         field = self.get_field(LapLevBatteryConsumptionField.ID)
 
         if field:
@@ -2954,7 +2954,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_vertical_ratio(self) -> Optional[int]:
+    def avg_vertical_ratio(self) -> Optional[float]:
         field = self.get_field(LapAvgVerticalRatioField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2965,7 +2965,7 @@ class LapMessage(DataMessage):
 
 
     @avg_vertical_ratio.setter
-    def avg_vertical_ratio(self, value: int):
+    def avg_vertical_ratio(self, value: float):
         field = self.get_field(LapAvgVerticalRatioField.ID)
 
         if field:
@@ -2978,7 +2978,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_stance_time_balance(self) -> Optional[int]:
+    def avg_stance_time_balance(self) -> Optional[float]:
         field = self.get_field(LapAvgStanceTimeBalanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2989,7 +2989,7 @@ class LapMessage(DataMessage):
 
 
     @avg_stance_time_balance.setter
-    def avg_stance_time_balance(self, value: int):
+    def avg_stance_time_balance(self, value: float):
         field = self.get_field(LapAvgStanceTimeBalanceField.ID)
 
         if field:
@@ -3002,7 +3002,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_step_length(self) -> Optional[int]:
+    def avg_step_length(self) -> Optional[float]:
         field = self.get_field(LapAvgStepLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3013,7 +3013,7 @@ class LapMessage(DataMessage):
 
 
     @avg_step_length.setter
-    def avg_step_length(self, value: int):
+    def avg_step_length(self, value: float):
         field = self.get_field(LapAvgStepLengthField.ID)
 
         if field:
@@ -3026,7 +3026,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_vam(self) -> Optional[int]:
+    def avg_vam(self) -> Optional[float]:
         field = self.get_field(LapAvgVamField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3037,7 +3037,7 @@ class LapMessage(DataMessage):
 
 
     @avg_vam.setter
-    def avg_vam(self, value: int):
+    def avg_vam(self, value: float):
         field = self.get_field(LapAvgVamField.ID)
 
         if field:
@@ -3050,7 +3050,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_depth(self) -> Optional[int]:
+    def avg_depth(self) -> Optional[float]:
         field = self.get_field(LapAvgDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3061,7 +3061,7 @@ class LapMessage(DataMessage):
 
 
     @avg_depth.setter
-    def avg_depth(self, value: int):
+    def avg_depth(self, value: float):
         field = self.get_field(LapAvgDepthField.ID)
 
         if field:
@@ -3074,7 +3074,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_depth(self) -> Optional[int]:
+    def max_depth(self) -> Optional[float]:
         field = self.get_field(LapMaxDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3085,7 +3085,7 @@ class LapMessage(DataMessage):
 
 
     @max_depth.setter
-    def max_depth(self, value: int):
+    def max_depth(self, value: float):
         field = self.get_field(LapMaxDepthField.ID)
 
         if field:
@@ -3122,7 +3122,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_respiration_rate(self) -> Optional[int]:
+    def enhanced_avg_respiration_rate(self) -> Optional[float]:
         field = self.get_field(LapEnhancedAvgRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3133,7 +3133,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_avg_respiration_rate.setter
-    def enhanced_avg_respiration_rate(self, value: int):
+    def enhanced_avg_respiration_rate(self, value: float):
         field = self.get_field(LapEnhancedAvgRespirationRateField.ID)
 
         if field:
@@ -3146,7 +3146,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def enhanced_max_respiration_rate(self) -> Optional[int]:
+    def enhanced_max_respiration_rate(self) -> Optional[float]:
         field = self.get_field(LapEnhancedMaxRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3157,7 +3157,7 @@ class LapMessage(DataMessage):
 
 
     @enhanced_max_respiration_rate.setter
-    def enhanced_max_respiration_rate(self, value: int):
+    def enhanced_max_respiration_rate(self, value: float):
         field = self.get_field(LapEnhancedMaxRespirationRateField.ID)
 
         if field:
@@ -3338,7 +3338,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_fractional_ascent(self) -> Optional[int]:
+    def total_fractional_ascent(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalAscentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3349,7 +3349,7 @@ class LapMessage(DataMessage):
 
 
     @total_fractional_ascent.setter
-    def total_fractional_ascent(self, value: int):
+    def total_fractional_ascent(self, value: float):
         field = self.get_field(LapTotalFractionalAscentField.ID)
 
         if field:
@@ -3362,7 +3362,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def total_fractional_descent(self) -> Optional[int]:
+    def total_fractional_descent(self) -> Optional[float]:
         field = self.get_field(LapTotalFractionalDescentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3373,7 +3373,7 @@ class LapMessage(DataMessage):
 
 
     @total_fractional_descent.setter
-    def total_fractional_descent(self, value: int):
+    def total_fractional_descent(self, value: float):
         field = self.get_field(LapTotalFractionalDescentField.ID)
 
         if field:
@@ -3386,7 +3386,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def avg_core_temperature(self) -> Optional[int]:
+    def avg_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapAvgCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3397,7 +3397,7 @@ class LapMessage(DataMessage):
 
 
     @avg_core_temperature.setter
-    def avg_core_temperature(self, value: int):
+    def avg_core_temperature(self, value: float):
         field = self.get_field(LapAvgCoreTemperatureField.ID)
 
         if field:
@@ -3410,7 +3410,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def min_core_temperature(self) -> Optional[int]:
+    def min_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapMinCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3421,7 +3421,7 @@ class LapMessage(DataMessage):
 
 
     @min_core_temperature.setter
-    def min_core_temperature(self, value: int):
+    def min_core_temperature(self, value: float):
         field = self.get_field(LapMinCoreTemperatureField.ID)
 
         if field:
@@ -3434,7 +3434,7 @@ class LapMessage(DataMessage):
     
 
     @property
-    def max_core_temperature(self) -> Optional[int]:
+    def max_core_temperature(self) -> Optional[float]:
         field = self.get_field(LapMaxCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3445,7 +3445,7 @@ class LapMessage(DataMessage):
 
 
     @max_core_temperature.setter
-    def max_core_temperature(self, value: int):
+    def max_core_temperature(self, value: float):
         field = self.get_field(LapMaxCoreTemperatureField.ID)
 
         if field:
@@ -3601,7 +3601,7 @@ class LapTotalElapsedTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3620,7 +3620,7 @@ class LapTotalTimerTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -3639,7 +3639,7 @@ class LapTotalDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -3733,7 +3733,7 @@ class LapAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -3752,7 +3752,7 @@ class LapMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -4087,7 +4087,7 @@ class LapAvgStrokeDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -4180,7 +4180,7 @@ class LapAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -4199,7 +4199,7 @@ class LapMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -4237,7 +4237,7 @@ class LapAvgGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -4256,7 +4256,7 @@ class LapAvgPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -4275,7 +4275,7 @@ class LapAvgNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -4294,7 +4294,7 @@ class LapMaxPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -4313,7 +4313,7 @@ class LapMaxNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -4370,7 +4370,7 @@ class LapTotalMovingTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4389,7 +4389,7 @@ class LapAvgPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -4408,7 +4408,7 @@ class LapAvgNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -4427,7 +4427,7 @@ class LapMaxPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -4446,7 +4446,7 @@ class LapMaxNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -4465,7 +4465,7 @@ class LapTimeInHrZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4484,7 +4484,7 @@ class LapTimeInSpeedZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4503,7 +4503,7 @@ class LapTimeInCadenceZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4522,7 +4522,7 @@ class LapTimeInPowerZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4559,7 +4559,7 @@ class LapMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -4597,7 +4597,7 @@ class LapActiveTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4690,7 +4690,7 @@ class LapAvgVerticalOscillationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -4709,7 +4709,7 @@ class LapAvgStanceTimePercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -4728,7 +4728,7 @@ class LapAvgStanceTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -4747,7 +4747,7 @@ class LapAvgFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -4766,7 +4766,7 @@ class LapMaxFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -4785,7 +4785,7 @@ class LapTotalFractionalCyclesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'cycles',
         type_name = 'uint8',
@@ -4822,7 +4822,7 @@ class LapAvgTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -4841,7 +4841,7 @@ class LapMinTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -4860,7 +4860,7 @@ class LapMaxTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -4879,7 +4879,7 @@ class LapAvgSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -4898,7 +4898,7 @@ class LapMinSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -4917,7 +4917,7 @@ class LapMaxSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -4936,7 +4936,7 @@ class LapAvgLeftTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -4955,7 +4955,7 @@ class LapAvgRightTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -4974,7 +4974,7 @@ class LapAvgLeftPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -4993,7 +4993,7 @@ class LapAvgRightPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -5012,7 +5012,7 @@ class LapAvgCombinedPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -5031,7 +5031,7 @@ class LapTimeStandingField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5106,7 +5106,7 @@ class LapAvgLeftPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -5125,7 +5125,7 @@ class LapAvgLeftPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -5144,7 +5144,7 @@ class LapAvgRightPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -5163,7 +5163,7 @@ class LapAvgRightPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -5258,7 +5258,7 @@ class LapEnhancedAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -5277,7 +5277,7 @@ class LapEnhancedMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -5296,7 +5296,7 @@ class LapEnhancedAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -5315,7 +5315,7 @@ class LapEnhancedMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -5334,7 +5334,7 @@ class LapEnhancedMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -5391,7 +5391,7 @@ class LapLevBatteryConsumptionField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -5410,7 +5410,7 @@ class LapAvgVerticalRatioField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -5429,7 +5429,7 @@ class LapAvgStanceTimeBalanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -5448,7 +5448,7 @@ class LapAvgStepLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -5467,7 +5467,7 @@ class LapAvgVamField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -5486,7 +5486,7 @@ class LapAvgDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -5505,7 +5505,7 @@ class LapMaxDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -5543,7 +5543,7 @@ class LapEnhancedAvgRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'Breaths/min',
         type_name = 'uint16',
@@ -5562,7 +5562,7 @@ class LapEnhancedMaxRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'Breaths/min',
         type_name = 'uint16',
@@ -5711,7 +5711,7 @@ class LapTotalFractionalAscentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -5730,7 +5730,7 @@ class LapTotalFractionalDescentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -5749,7 +5749,7 @@ class LapAvgCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',
@@ -5768,7 +5768,7 @@ class LapMinCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',
@@ -5787,7 +5787,7 @@ class LapMaxCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',

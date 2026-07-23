@@ -1,10 +1,11 @@
 import pytest
+
 from fit_tool.utils.conversions import (
     MILLISECONDS_EPOCH_1989_DELTA,
-    to_seconds_since_1989_epoch,
-    to_milliseconds_since_epoch,
-    to_semicircles,
     to_degrees,
+    to_milliseconds_since_epoch,
+    to_seconds_since_1989_epoch,
+    to_semicircles,
 )
 
 

@@ -280,7 +280,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def battery_level(self) -> Optional[int]:
+    def battery_level(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -292,7 +292,7 @@ class EventMessage(DataMessage):
             return None
 
     @battery_level.setter
-    def battery_level(self, value: int):
+    def battery_level(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -303,7 +303,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def virtual_partner_speed(self) -> Optional[int]:
+    def virtual_partner_speed(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -315,7 +315,7 @@ class EventMessage(DataMessage):
             return None
 
     @virtual_partner_speed.setter
-    def virtual_partner_speed(self, value: int):
+    def virtual_partner_speed(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -372,7 +372,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def speed_high_alert(self) -> Optional[int]:
+    def speed_high_alert(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -384,7 +384,7 @@ class EventMessage(DataMessage):
             return None
 
     @speed_high_alert.setter
-    def speed_high_alert(self, value: int):
+    def speed_high_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -395,7 +395,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def speed_low_alert(self) -> Optional[int]:
+    def speed_low_alert(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -407,7 +407,7 @@ class EventMessage(DataMessage):
             return None
 
     @speed_low_alert.setter
-    def speed_low_alert(self, value: int):
+    def speed_low_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -510,7 +510,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def time_duration_alert(self) -> Optional[int]:
+    def time_duration_alert(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -522,7 +522,7 @@ class EventMessage(DataMessage):
             return None
 
     @time_duration_alert.setter
-    def time_duration_alert(self, value: int):
+    def time_duration_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -533,7 +533,7 @@ class EventMessage(DataMessage):
 
 
     @property
-    def distance_duration_alert(self) -> Optional[int]:
+    def distance_duration_alert(self) -> Optional[float]:
         field = self.get_field(EventDataField.ID)
         type_field = self.get_field(EventEventField.ID)
 
@@ -545,7 +545,7 @@ class EventMessage(DataMessage):
             return None
 
     @distance_duration_alert.setter
-    def distance_duration_alert(self, value: int):
+    def distance_duration_alert(self, value: float):
         field = self.get_field(EventDataField.ID)
         if field:
             if value is None:
@@ -1075,7 +1075,7 @@ class EventMessage(DataMessage):
     
 
     @property
-    def radar_threat_avg_approach_speed(self) -> Optional[int]:
+    def radar_threat_avg_approach_speed(self) -> Optional[float]:
         field = self.get_field(EventRadarThreatAvgApproachSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1086,7 +1086,7 @@ class EventMessage(DataMessage):
 
 
     @radar_threat_avg_approach_speed.setter
-    def radar_threat_avg_approach_speed(self, value: int):
+    def radar_threat_avg_approach_speed(self, value: float):
         field = self.get_field(EventRadarThreatAvgApproachSpeedField.ID)
 
         if field:
@@ -1099,7 +1099,7 @@ class EventMessage(DataMessage):
     
 
     @property
-    def radar_threat_max_approach_speed(self) -> Optional[int]:
+    def radar_threat_max_approach_speed(self) -> Optional[float]:
         field = self.get_field(EventRadarThreatMaxApproachSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1110,7 +1110,7 @@ class EventMessage(DataMessage):
 
 
     @radar_threat_max_approach_speed.setter
-    def radar_threat_max_approach_speed(self, value: int):
+    def radar_threat_max_approach_speed(self, value: float):
         field = self.get_field(EventRadarThreatMaxApproachSpeedField.ID)
 
         if field:
@@ -1213,7 +1213,7 @@ class EventDataField(Field):
         SubField(
             name='battery_level',
             base_type=BaseType.UINT16,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'V',
         reference_map = {
@@ -1222,7 +1222,7 @@ class EventDataField(Field):
         SubField(
             name='virtual_partner_speed',
             base_type=BaseType.UINT16,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -1249,7 +1249,7 @@ class EventDataField(Field):
         SubField(
             name='speed_high_alert',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -1258,7 +1258,7 @@ class EventDataField(Field):
         SubField(
             name='speed_low_alert',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 'm/s',
         reference_map = {
@@ -1303,7 +1303,7 @@ class EventDataField(Field):
         SubField(
             name='time_duration_alert',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 1000,
                 offset = 0,
         units = 's',
         reference_map = {
@@ -1312,7 +1312,7 @@ class EventDataField(Field):
         SubField(
             name='distance_duration_alert',
             base_type=BaseType.UINT32,
-        scale = 1,
+        scale = 100,
                 offset = 0,
         units = 'm',
         reference_map = {
@@ -1631,7 +1631,7 @@ class EventRadarThreatAvgApproachSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'm/s',
         type_name = 'uint8',
@@ -1650,7 +1650,7 @@ class EventRadarThreatMaxApproachSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'm/s',
         type_name = 'uint8',

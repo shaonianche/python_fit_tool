@@ -246,7 +246,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def odometer(self) -> Optional[int]:
+    def odometer(self) -> Optional[float]:
         field = self.get_field(BikeProfileOdometerField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -257,7 +257,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @odometer.setter
-    def odometer(self, value: int):
+    def odometer(self, value: float):
         field = self.get_field(BikeProfileOdometerField.ID)
 
         if field:
@@ -366,7 +366,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def custom_wheelsize(self) -> Optional[int]:
+    def custom_wheelsize(self) -> Optional[float]:
         field = self.get_field(BikeProfileCustomWheelsizeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -377,7 +377,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @custom_wheelsize.setter
-    def custom_wheelsize(self, value: int):
+    def custom_wheelsize(self, value: float):
         field = self.get_field(BikeProfileCustomWheelsizeField.ID)
 
         if field:
@@ -390,7 +390,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def auto_wheelsize(self) -> Optional[int]:
+    def auto_wheelsize(self) -> Optional[float]:
         field = self.get_field(BikeProfileAutoWheelsizeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -401,7 +401,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @auto_wheelsize.setter
-    def auto_wheelsize(self, value: int):
+    def auto_wheelsize(self, value: float):
         field = self.get_field(BikeProfileAutoWheelsizeField.ID)
 
         if field:
@@ -414,7 +414,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def bike_weight(self) -> Optional[int]:
+    def bike_weight(self) -> Optional[float]:
         field = self.get_field(BikeProfileBikeWeightField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -425,7 +425,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @bike_weight.setter
-    def bike_weight(self, value: int):
+    def bike_weight(self, value: float):
         field = self.get_field(BikeProfileBikeWeightField.ID)
 
         if field:
@@ -438,7 +438,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def power_cal_factor(self) -> Optional[int]:
+    def power_cal_factor(self) -> Optional[float]:
         field = self.get_field(BikeProfilePowerCalFactorField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -449,7 +449,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @power_cal_factor.setter
-    def power_cal_factor(self, value: int):
+    def power_cal_factor(self, value: float):
         field = self.get_field(BikeProfilePowerCalFactorField.ID)
 
         if field:
@@ -630,7 +630,7 @@ class BikeProfileMessage(DataMessage):
     
 
     @property
-    def crank_length(self) -> Optional[int]:
+    def crank_length(self) -> Optional[float]:
         field = self.get_field(BikeProfileCrankLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -641,7 +641,7 @@ class BikeProfileMessage(DataMessage):
 
 
     @crank_length.setter
-    def crank_length(self, value: int):
+    def crank_length(self, value: float):
         field = self.get_field(BikeProfileCrankLengthField.ID)
 
         if field:
@@ -980,7 +980,7 @@ class BikeProfileOdometerField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -1071,7 +1071,7 @@ class BikeProfileCustomWheelsizeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -1090,7 +1090,7 @@ class BikeProfileAutoWheelsizeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -1109,7 +1109,7 @@ class BikeProfileBikeWeightField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'kg',
         type_name = 'uint16',
@@ -1128,7 +1128,7 @@ class BikeProfilePowerCalFactorField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -1273,7 +1273,7 @@ class BikeProfileCrankLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = -110,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'mm',
         type_name = 'uint8',

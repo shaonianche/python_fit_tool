@@ -748,7 +748,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_elapsed_time(self) -> Optional[int]:
+    def total_elapsed_time(self) -> Optional[float]:
         field = self.get_field(SessionTotalElapsedTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -759,7 +759,7 @@ class SessionMessage(DataMessage):
 
 
     @total_elapsed_time.setter
-    def total_elapsed_time(self, value: int):
+    def total_elapsed_time(self, value: float):
         field = self.get_field(SessionTotalElapsedTimeField.ID)
 
         if field:
@@ -772,7 +772,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_timer_time(self) -> Optional[int]:
+    def total_timer_time(self) -> Optional[float]:
         field = self.get_field(SessionTotalTimerTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -783,7 +783,7 @@ class SessionMessage(DataMessage):
 
 
     @total_timer_time.setter
-    def total_timer_time(self, value: int):
+    def total_timer_time(self, value: float):
         field = self.get_field(SessionTotalTimerTimeField.ID)
 
         if field:
@@ -796,7 +796,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_distance(self) -> Optional[int]:
+    def total_distance(self) -> Optional[float]:
         field = self.get_field(SessionTotalDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -807,7 +807,7 @@ class SessionMessage(DataMessage):
 
 
     @total_distance.setter
-    def total_distance(self, value: int):
+    def total_distance(self, value: float):
         field = self.get_field(SessionTotalDistanceField.ID)
 
         if field:
@@ -938,7 +938,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_speed(self) -> Optional[int]:
+    def avg_speed(self) -> Optional[float]:
         field = self.get_field(SessionAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -949,7 +949,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_speed.setter
-    def avg_speed(self, value: int):
+    def avg_speed(self, value: float):
         field = self.get_field(SessionAvgSpeedField.ID)
 
         if field:
@@ -962,7 +962,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_speed(self) -> Optional[int]:
+    def max_speed(self) -> Optional[float]:
         field = self.get_field(SessionMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -973,7 +973,7 @@ class SessionMessage(DataMessage):
 
 
     @max_speed.setter
-    def max_speed(self, value: int):
+    def max_speed(self, value: float):
         field = self.get_field(SessionMaxSpeedField.ID)
 
         if field:
@@ -1224,7 +1224,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_training_effect(self) -> Optional[int]:
+    def total_training_effect(self) -> Optional[float]:
         field = self.get_field(SessionTotalTrainingEffectField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1235,7 +1235,7 @@ class SessionMessage(DataMessage):
 
 
     @total_training_effect.setter
-    def total_training_effect(self, value: int):
+    def total_training_effect(self, value: float):
         field = self.get_field(SessionTotalTrainingEffectField.ID)
 
         if field:
@@ -1488,7 +1488,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def training_stress_score(self) -> Optional[int]:
+    def training_stress_score(self) -> Optional[float]:
         field = self.get_field(SessionTrainingStressScoreField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1499,7 +1499,7 @@ class SessionMessage(DataMessage):
 
 
     @training_stress_score.setter
-    def training_stress_score(self, value: int):
+    def training_stress_score(self, value: float):
         field = self.get_field(SessionTrainingStressScoreField.ID)
 
         if field:
@@ -1512,7 +1512,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def intensity_factor(self) -> Optional[int]:
+    def intensity_factor(self) -> Optional[float]:
         field = self.get_field(SessionIntensityFactorField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1523,7 +1523,7 @@ class SessionMessage(DataMessage):
 
 
     @intensity_factor.setter
-    def intensity_factor(self, value: int):
+    def intensity_factor(self, value: float):
         field = self.get_field(SessionIntensityFactorField.ID)
 
         if field:
@@ -1608,7 +1608,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_stroke_count(self) -> Optional[int]:
+    def avg_stroke_count(self) -> Optional[float]:
         field = self.get_field(SessionAvgStrokeCountField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1619,7 +1619,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_stroke_count.setter
-    def avg_stroke_count(self, value: int):
+    def avg_stroke_count(self, value: float):
         field = self.get_field(SessionAvgStrokeCountField.ID)
 
         if field:
@@ -1632,7 +1632,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_stroke_distance(self) -> Optional[int]:
+    def avg_stroke_distance(self) -> Optional[float]:
         field = self.get_field(SessionAvgStrokeDistanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1643,7 +1643,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_stroke_distance.setter
-    def avg_stroke_distance(self, value: int):
+    def avg_stroke_distance(self, value: float):
         field = self.get_field(SessionAvgStrokeDistanceField.ID)
 
         if field:
@@ -1680,7 +1680,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def pool_length(self) -> Optional[int]:
+    def pool_length(self) -> Optional[float]:
         field = self.get_field(SessionPoolLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1691,7 +1691,7 @@ class SessionMessage(DataMessage):
 
 
     @pool_length.setter
-    def pool_length(self, value: int):
+    def pool_length(self, value: float):
         field = self.get_field(SessionPoolLengthField.ID)
 
         if field:
@@ -1800,7 +1800,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_altitude(self) -> Optional[int]:
+    def avg_altitude(self) -> Optional[float]:
         field = self.get_field(SessionAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1811,7 +1811,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_altitude.setter
-    def avg_altitude(self, value: int):
+    def avg_altitude(self, value: float):
         field = self.get_field(SessionAvgAltitudeField.ID)
 
         if field:
@@ -1824,7 +1824,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_altitude(self) -> Optional[int]:
+    def max_altitude(self) -> Optional[float]:
         field = self.get_field(SessionMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1835,7 +1835,7 @@ class SessionMessage(DataMessage):
 
 
     @max_altitude.setter
-    def max_altitude(self, value: int):
+    def max_altitude(self, value: float):
         field = self.get_field(SessionMaxAltitudeField.ID)
 
         if field:
@@ -1872,7 +1872,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_grade(self) -> Optional[int]:
+    def avg_grade(self) -> Optional[float]:
         field = self.get_field(SessionAvgGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1883,7 +1883,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_grade.setter
-    def avg_grade(self, value: int):
+    def avg_grade(self, value: float):
         field = self.get_field(SessionAvgGradeField.ID)
 
         if field:
@@ -1896,7 +1896,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_pos_grade(self) -> Optional[int]:
+    def avg_pos_grade(self) -> Optional[float]:
         field = self.get_field(SessionAvgPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1907,7 +1907,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_pos_grade.setter
-    def avg_pos_grade(self, value: int):
+    def avg_pos_grade(self, value: float):
         field = self.get_field(SessionAvgPosGradeField.ID)
 
         if field:
@@ -1920,7 +1920,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_neg_grade(self) -> Optional[int]:
+    def avg_neg_grade(self) -> Optional[float]:
         field = self.get_field(SessionAvgNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1931,7 +1931,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_neg_grade.setter
-    def avg_neg_grade(self, value: int):
+    def avg_neg_grade(self, value: float):
         field = self.get_field(SessionAvgNegGradeField.ID)
 
         if field:
@@ -1944,7 +1944,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_pos_grade(self) -> Optional[int]:
+    def max_pos_grade(self) -> Optional[float]:
         field = self.get_field(SessionMaxPosGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1955,7 +1955,7 @@ class SessionMessage(DataMessage):
 
 
     @max_pos_grade.setter
-    def max_pos_grade(self, value: int):
+    def max_pos_grade(self, value: float):
         field = self.get_field(SessionMaxPosGradeField.ID)
 
         if field:
@@ -1968,7 +1968,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_neg_grade(self) -> Optional[int]:
+    def max_neg_grade(self) -> Optional[float]:
         field = self.get_field(SessionMaxNegGradeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -1979,7 +1979,7 @@ class SessionMessage(DataMessage):
 
 
     @max_neg_grade.setter
-    def max_neg_grade(self, value: int):
+    def max_neg_grade(self, value: float):
         field = self.get_field(SessionMaxNegGradeField.ID)
 
         if field:
@@ -2040,7 +2040,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_moving_time(self) -> Optional[int]:
+    def total_moving_time(self) -> Optional[float]:
         field = self.get_field(SessionTotalMovingTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2051,7 +2051,7 @@ class SessionMessage(DataMessage):
 
 
     @total_moving_time.setter
-    def total_moving_time(self, value: int):
+    def total_moving_time(self, value: float):
         field = self.get_field(SessionTotalMovingTimeField.ID)
 
         if field:
@@ -2064,7 +2064,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_pos_vertical_speed(self) -> Optional[int]:
+    def avg_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SessionAvgPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2075,7 +2075,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_pos_vertical_speed.setter
-    def avg_pos_vertical_speed(self, value: int):
+    def avg_pos_vertical_speed(self, value: float):
         field = self.get_field(SessionAvgPosVerticalSpeedField.ID)
 
         if field:
@@ -2088,7 +2088,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_neg_vertical_speed(self) -> Optional[int]:
+    def avg_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SessionAvgNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2099,7 +2099,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_neg_vertical_speed.setter
-    def avg_neg_vertical_speed(self, value: int):
+    def avg_neg_vertical_speed(self, value: float):
         field = self.get_field(SessionAvgNegVerticalSpeedField.ID)
 
         if field:
@@ -2112,7 +2112,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_pos_vertical_speed(self) -> Optional[int]:
+    def max_pos_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SessionMaxPosVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2123,7 +2123,7 @@ class SessionMessage(DataMessage):
 
 
     @max_pos_vertical_speed.setter
-    def max_pos_vertical_speed(self, value: int):
+    def max_pos_vertical_speed(self, value: float):
         field = self.get_field(SessionMaxPosVerticalSpeedField.ID)
 
         if field:
@@ -2136,7 +2136,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_neg_vertical_speed(self) -> Optional[int]:
+    def max_neg_vertical_speed(self) -> Optional[float]:
         field = self.get_field(SessionMaxNegVerticalSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2147,7 +2147,7 @@ class SessionMessage(DataMessage):
 
 
     @max_neg_vertical_speed.setter
-    def max_neg_vertical_speed(self, value: int):
+    def max_neg_vertical_speed(self, value: float):
         field = self.get_field(SessionMaxNegVerticalSpeedField.ID)
 
         if field:
@@ -2184,7 +2184,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def time_in_hr_zone(self) -> Optional[list[int]]:
+    def time_in_hr_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInHrZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2194,7 +2194,7 @@ class SessionMessage(DataMessage):
 
 
     @time_in_hr_zone.setter
-    def time_in_hr_zone(self, value: list[int]):
+    def time_in_hr_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInHrZoneField.ID)
 
         if field:
@@ -2206,7 +2206,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def time_in_speed_zone(self) -> Optional[list[int]]:
+    def time_in_speed_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInSpeedZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2216,7 +2216,7 @@ class SessionMessage(DataMessage):
 
 
     @time_in_speed_zone.setter
-    def time_in_speed_zone(self, value: list[int]):
+    def time_in_speed_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInSpeedZoneField.ID)
 
         if field:
@@ -2228,7 +2228,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def time_in_cadence_zone(self) -> Optional[list[int]]:
+    def time_in_cadence_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInCadenceZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2238,7 +2238,7 @@ class SessionMessage(DataMessage):
 
 
     @time_in_cadence_zone.setter
-    def time_in_cadence_zone(self, value: list[int]):
+    def time_in_cadence_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInCadenceZoneField.ID)
 
         if field:
@@ -2250,7 +2250,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def time_in_power_zone(self) -> Optional[list[int]]:
+    def time_in_power_zone(self) -> Optional[list[float]]:
         field = self.get_field(SessionTimeInPowerZoneField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2260,7 +2260,7 @@ class SessionMessage(DataMessage):
 
 
     @time_in_power_zone.setter
-    def time_in_power_zone(self, value: list[int]):
+    def time_in_power_zone(self, value: list[float]):
         field = self.get_field(SessionTimeInPowerZoneField.ID)
 
         if field:
@@ -2272,7 +2272,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_lap_time(self) -> Optional[int]:
+    def avg_lap_time(self) -> Optional[float]:
         field = self.get_field(SessionAvgLapTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2283,7 +2283,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_lap_time.setter
-    def avg_lap_time(self, value: int):
+    def avg_lap_time(self, value: float):
         field = self.get_field(SessionAvgLapTimeField.ID)
 
         if field:
@@ -2320,7 +2320,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def min_altitude(self) -> Optional[int]:
+    def min_altitude(self) -> Optional[float]:
         field = self.get_field(SessionMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2331,7 +2331,7 @@ class SessionMessage(DataMessage):
 
 
     @min_altitude.setter
-    def min_altitude(self, value: int):
+    def min_altitude(self, value: float):
         field = self.get_field(SessionMinAltitudeField.ID)
 
         if field:
@@ -2344,7 +2344,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def active_time(self) -> Optional[int]:
+    def active_time(self) -> Optional[float]:
         field = self.get_field(SessionActiveTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2355,7 +2355,7 @@ class SessionMessage(DataMessage):
 
 
     @active_time.setter
-    def active_time(self, value: int):
+    def active_time(self, value: float):
         field = self.get_field(SessionActiveTimeField.ID)
 
         if field:
@@ -2484,7 +2484,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_ball_speed(self) -> Optional[int]:
+    def max_ball_speed(self) -> Optional[float]:
         field = self.get_field(SessionMaxBallSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2495,7 +2495,7 @@ class SessionMessage(DataMessage):
 
 
     @max_ball_speed.setter
-    def max_ball_speed(self, value: int):
+    def max_ball_speed(self, value: float):
         field = self.get_field(SessionMaxBallSpeedField.ID)
 
         if field:
@@ -2508,7 +2508,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_ball_speed(self) -> Optional[int]:
+    def avg_ball_speed(self) -> Optional[float]:
         field = self.get_field(SessionAvgBallSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2519,7 +2519,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_ball_speed.setter
-    def avg_ball_speed(self, value: int):
+    def avg_ball_speed(self, value: float):
         field = self.get_field(SessionAvgBallSpeedField.ID)
 
         if field:
@@ -2532,7 +2532,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_vertical_oscillation(self) -> Optional[int]:
+    def avg_vertical_oscillation(self) -> Optional[float]:
         field = self.get_field(SessionAvgVerticalOscillationField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2543,7 +2543,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_vertical_oscillation.setter
-    def avg_vertical_oscillation(self, value: int):
+    def avg_vertical_oscillation(self, value: float):
         field = self.get_field(SessionAvgVerticalOscillationField.ID)
 
         if field:
@@ -2556,7 +2556,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_stance_time_percent(self) -> Optional[int]:
+    def avg_stance_time_percent(self) -> Optional[float]:
         field = self.get_field(SessionAvgStanceTimePercentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2567,7 +2567,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_stance_time_percent.setter
-    def avg_stance_time_percent(self, value: int):
+    def avg_stance_time_percent(self, value: float):
         field = self.get_field(SessionAvgStanceTimePercentField.ID)
 
         if field:
@@ -2580,7 +2580,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_stance_time(self) -> Optional[int]:
+    def avg_stance_time(self) -> Optional[float]:
         field = self.get_field(SessionAvgStanceTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2591,7 +2591,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_stance_time.setter
-    def avg_stance_time(self, value: int):
+    def avg_stance_time(self, value: float):
         field = self.get_field(SessionAvgStanceTimeField.ID)
 
         if field:
@@ -2604,7 +2604,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_fractional_cadence(self) -> Optional[int]:
+    def avg_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SessionAvgFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2615,7 +2615,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_fractional_cadence.setter
-    def avg_fractional_cadence(self, value: int):
+    def avg_fractional_cadence(self, value: float):
         field = self.get_field(SessionAvgFractionalCadenceField.ID)
 
         if field:
@@ -2628,7 +2628,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_fractional_cadence(self) -> Optional[int]:
+    def max_fractional_cadence(self) -> Optional[float]:
         field = self.get_field(SessionMaxFractionalCadenceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2639,7 +2639,7 @@ class SessionMessage(DataMessage):
 
 
     @max_fractional_cadence.setter
-    def max_fractional_cadence(self, value: int):
+    def max_fractional_cadence(self, value: float):
         field = self.get_field(SessionMaxFractionalCadenceField.ID)
 
         if field:
@@ -2652,7 +2652,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_fractional_cycles(self) -> Optional[int]:
+    def total_fractional_cycles(self) -> Optional[float]:
         field = self.get_field(SessionTotalFractionalCyclesField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2663,7 +2663,7 @@ class SessionMessage(DataMessage):
 
 
     @total_fractional_cycles.setter
-    def total_fractional_cycles(self, value: int):
+    def total_fractional_cycles(self, value: float):
         field = self.get_field(SessionTotalFractionalCyclesField.ID)
 
         if field:
@@ -2676,7 +2676,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def avg_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2686,7 +2686,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_total_hemoglobin_conc.setter
-    def avg_total_hemoglobin_conc(self, value: list[int]):
+    def avg_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionAvgTotalHemoglobinConcField.ID)
 
         if field:
@@ -2698,7 +2698,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def min_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def min_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionMinTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2708,7 +2708,7 @@ class SessionMessage(DataMessage):
 
 
     @min_total_hemoglobin_conc.setter
-    def min_total_hemoglobin_conc(self, value: list[int]):
+    def min_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionMinTotalHemoglobinConcField.ID)
 
         if field:
@@ -2720,7 +2720,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_total_hemoglobin_conc(self) -> Optional[list[int]]:
+    def max_total_hemoglobin_conc(self) -> Optional[list[float]]:
         field = self.get_field(SessionMaxTotalHemoglobinConcField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2730,7 +2730,7 @@ class SessionMessage(DataMessage):
 
 
     @max_total_hemoglobin_conc.setter
-    def max_total_hemoglobin_conc(self, value: list[int]):
+    def max_total_hemoglobin_conc(self, value: list[float]):
         field = self.get_field(SessionMaxTotalHemoglobinConcField.ID)
 
         if field:
@@ -2742,7 +2742,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def avg_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2752,7 +2752,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_saturated_hemoglobin_percent.setter
-    def avg_saturated_hemoglobin_percent(self, value: list[int]):
+    def avg_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionAvgSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2764,7 +2764,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def min_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def min_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionMinSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2774,7 +2774,7 @@ class SessionMessage(DataMessage):
 
 
     @min_saturated_hemoglobin_percent.setter
-    def min_saturated_hemoglobin_percent(self, value: list[int]):
+    def min_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionMinSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2786,7 +2786,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_saturated_hemoglobin_percent(self) -> Optional[list[int]]:
+    def max_saturated_hemoglobin_percent(self) -> Optional[list[float]]:
         field = self.get_field(SessionMaxSaturatedHemoglobinPercentField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -2796,7 +2796,7 @@ class SessionMessage(DataMessage):
 
 
     @max_saturated_hemoglobin_percent.setter
-    def max_saturated_hemoglobin_percent(self, value: list[int]):
+    def max_saturated_hemoglobin_percent(self, value: list[float]):
         field = self.get_field(SessionMaxSaturatedHemoglobinPercentField.ID)
 
         if field:
@@ -2808,7 +2808,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_left_torque_effectiveness(self) -> Optional[int]:
+    def avg_left_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SessionAvgLeftTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2819,7 +2819,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_left_torque_effectiveness.setter
-    def avg_left_torque_effectiveness(self, value: int):
+    def avg_left_torque_effectiveness(self, value: float):
         field = self.get_field(SessionAvgLeftTorqueEffectivenessField.ID)
 
         if field:
@@ -2832,7 +2832,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_right_torque_effectiveness(self) -> Optional[int]:
+    def avg_right_torque_effectiveness(self) -> Optional[float]:
         field = self.get_field(SessionAvgRightTorqueEffectivenessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2843,7 +2843,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_right_torque_effectiveness.setter
-    def avg_right_torque_effectiveness(self, value: int):
+    def avg_right_torque_effectiveness(self, value: float):
         field = self.get_field(SessionAvgRightTorqueEffectivenessField.ID)
 
         if field:
@@ -2856,7 +2856,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_left_pedal_smoothness(self) -> Optional[int]:
+    def avg_left_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SessionAvgLeftPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2867,7 +2867,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_left_pedal_smoothness.setter
-    def avg_left_pedal_smoothness(self, value: int):
+    def avg_left_pedal_smoothness(self, value: float):
         field = self.get_field(SessionAvgLeftPedalSmoothnessField.ID)
 
         if field:
@@ -2880,7 +2880,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_right_pedal_smoothness(self) -> Optional[int]:
+    def avg_right_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SessionAvgRightPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2891,7 +2891,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_right_pedal_smoothness.setter
-    def avg_right_pedal_smoothness(self, value: int):
+    def avg_right_pedal_smoothness(self, value: float):
         field = self.get_field(SessionAvgRightPedalSmoothnessField.ID)
 
         if field:
@@ -2904,7 +2904,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_combined_pedal_smoothness(self) -> Optional[int]:
+    def avg_combined_pedal_smoothness(self) -> Optional[float]:
         field = self.get_field(SessionAvgCombinedPedalSmoothnessField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2915,7 +2915,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_combined_pedal_smoothness.setter
-    def avg_combined_pedal_smoothness(self, value: int):
+    def avg_combined_pedal_smoothness(self, value: float):
         field = self.get_field(SessionAvgCombinedPedalSmoothnessField.ID)
 
         if field:
@@ -2976,7 +2976,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def time_standing(self) -> Optional[int]:
+    def time_standing(self) -> Optional[float]:
         field = self.get_field(SessionTimeStandingField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -2987,7 +2987,7 @@ class SessionMessage(DataMessage):
 
 
     @time_standing.setter
-    def time_standing(self, value: int):
+    def time_standing(self, value: float):
         field = self.get_field(SessionTimeStandingField.ID)
 
         if field:
@@ -3072,7 +3072,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase(self) -> Optional[list[int]]:
+    def avg_left_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgLeftPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -3082,7 +3082,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_left_power_phase.setter
-    def avg_left_power_phase(self, value: list[int]):
+    def avg_left_power_phase(self, value: list[float]):
         field = self.get_field(SessionAvgLeftPowerPhaseField.ID)
 
         if field:
@@ -3094,7 +3094,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_left_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_left_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgLeftPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -3104,7 +3104,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_left_power_phase_peak.setter
-    def avg_left_power_phase_peak(self, value: list[int]):
+    def avg_left_power_phase_peak(self, value: list[float]):
         field = self.get_field(SessionAvgLeftPowerPhasePeakField.ID)
 
         if field:
@@ -3116,7 +3116,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase(self) -> Optional[list[int]]:
+    def avg_right_power_phase(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgRightPowerPhaseField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -3126,7 +3126,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_right_power_phase.setter
-    def avg_right_power_phase(self, value: list[int]):
+    def avg_right_power_phase(self, value: list[float]):
         field = self.get_field(SessionAvgRightPowerPhaseField.ID)
 
         if field:
@@ -3138,7 +3138,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_right_power_phase_peak(self) -> Optional[list[int]]:
+    def avg_right_power_phase_peak(self) -> Optional[list[float]]:
         field = self.get_field(SessionAvgRightPowerPhasePeakField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -3148,7 +3148,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_right_power_phase_peak.setter
-    def avg_right_power_phase_peak(self, value: list[int]):
+    def avg_right_power_phase_peak(self, value: list[float]):
         field = self.get_field(SessionAvgRightPowerPhasePeakField.ID)
 
         if field:
@@ -3248,7 +3248,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_speed(self) -> Optional[int]:
+    def enhanced_avg_speed(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedAvgSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3259,7 +3259,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_avg_speed.setter
-    def enhanced_avg_speed(self, value: int):
+    def enhanced_avg_speed(self, value: float):
         field = self.get_field(SessionEnhancedAvgSpeedField.ID)
 
         if field:
@@ -3272,7 +3272,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_max_speed(self) -> Optional[int]:
+    def enhanced_max_speed(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedMaxSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3283,7 +3283,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_max_speed.setter
-    def enhanced_max_speed(self, value: int):
+    def enhanced_max_speed(self, value: float):
         field = self.get_field(SessionEnhancedMaxSpeedField.ID)
 
         if field:
@@ -3296,7 +3296,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_altitude(self) -> Optional[int]:
+    def enhanced_avg_altitude(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedAvgAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3307,7 +3307,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_avg_altitude.setter
-    def enhanced_avg_altitude(self, value: int):
+    def enhanced_avg_altitude(self, value: float):
         field = self.get_field(SessionEnhancedAvgAltitudeField.ID)
 
         if field:
@@ -3320,7 +3320,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_min_altitude(self) -> Optional[int]:
+    def enhanced_min_altitude(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedMinAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3331,7 +3331,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_min_altitude.setter
-    def enhanced_min_altitude(self, value: int):
+    def enhanced_min_altitude(self, value: float):
         field = self.get_field(SessionEnhancedMinAltitudeField.ID)
 
         if field:
@@ -3344,7 +3344,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_max_altitude(self) -> Optional[int]:
+    def enhanced_max_altitude(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedMaxAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3355,7 +3355,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_max_altitude.setter
-    def enhanced_max_altitude(self, value: int):
+    def enhanced_max_altitude(self, value: float):
         field = self.get_field(SessionEnhancedMaxAltitudeField.ID)
 
         if field:
@@ -3416,7 +3416,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def lev_battery_consumption(self) -> Optional[int]:
+    def lev_battery_consumption(self) -> Optional[float]:
         field = self.get_field(SessionLevBatteryConsumptionField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3427,7 +3427,7 @@ class SessionMessage(DataMessage):
 
 
     @lev_battery_consumption.setter
-    def lev_battery_consumption(self, value: int):
+    def lev_battery_consumption(self, value: float):
         field = self.get_field(SessionLevBatteryConsumptionField.ID)
 
         if field:
@@ -3440,7 +3440,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_vertical_ratio(self) -> Optional[int]:
+    def avg_vertical_ratio(self) -> Optional[float]:
         field = self.get_field(SessionAvgVerticalRatioField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3451,7 +3451,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_vertical_ratio.setter
-    def avg_vertical_ratio(self, value: int):
+    def avg_vertical_ratio(self, value: float):
         field = self.get_field(SessionAvgVerticalRatioField.ID)
 
         if field:
@@ -3464,7 +3464,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_stance_time_balance(self) -> Optional[int]:
+    def avg_stance_time_balance(self) -> Optional[float]:
         field = self.get_field(SessionAvgStanceTimeBalanceField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3475,7 +3475,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_stance_time_balance.setter
-    def avg_stance_time_balance(self, value: int):
+    def avg_stance_time_balance(self, value: float):
         field = self.get_field(SessionAvgStanceTimeBalanceField.ID)
 
         if field:
@@ -3488,7 +3488,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_step_length(self) -> Optional[int]:
+    def avg_step_length(self) -> Optional[float]:
         field = self.get_field(SessionAvgStepLengthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3499,7 +3499,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_step_length.setter
-    def avg_step_length(self, value: int):
+    def avg_step_length(self, value: float):
         field = self.get_field(SessionAvgStepLengthField.ID)
 
         if field:
@@ -3512,7 +3512,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_anaerobic_training_effect(self) -> Optional[int]:
+    def total_anaerobic_training_effect(self) -> Optional[float]:
         field = self.get_field(SessionTotalAnaerobicTrainingEffectField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3523,7 +3523,7 @@ class SessionMessage(DataMessage):
 
 
     @total_anaerobic_training_effect.setter
-    def total_anaerobic_training_effect(self, value: int):
+    def total_anaerobic_training_effect(self, value: float):
         field = self.get_field(SessionTotalAnaerobicTrainingEffectField.ID)
 
         if field:
@@ -3536,7 +3536,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_vam(self) -> Optional[int]:
+    def avg_vam(self) -> Optional[float]:
         field = self.get_field(SessionAvgVamField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3547,7 +3547,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_vam.setter
-    def avg_vam(self, value: int):
+    def avg_vam(self, value: float):
         field = self.get_field(SessionAvgVamField.ID)
 
         if field:
@@ -3560,7 +3560,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_depth(self) -> Optional[int]:
+    def avg_depth(self) -> Optional[float]:
         field = self.get_field(SessionAvgDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3571,7 +3571,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_depth.setter
-    def avg_depth(self, value: int):
+    def avg_depth(self, value: float):
         field = self.get_field(SessionAvgDepthField.ID)
 
         if field:
@@ -3584,7 +3584,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_depth(self) -> Optional[int]:
+    def max_depth(self) -> Optional[float]:
         field = self.get_field(SessionMaxDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3595,7 +3595,7 @@ class SessionMessage(DataMessage):
 
 
     @max_depth.setter
-    def max_depth(self, value: int):
+    def max_depth(self, value: float):
         field = self.get_field(SessionMaxDepthField.ID)
 
         if field:
@@ -3872,7 +3872,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def training_load_peak(self) -> Optional[int]:
+    def training_load_peak(self) -> Optional[float]:
         field = self.get_field(SessionTrainingLoadPeakField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3883,7 +3883,7 @@ class SessionMessage(DataMessage):
 
 
     @training_load_peak.setter
-    def training_load_peak(self, value: int):
+    def training_load_peak(self, value: float):
         field = self.get_field(SessionTrainingLoadPeakField.ID)
 
         if field:
@@ -3896,7 +3896,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_avg_respiration_rate(self) -> Optional[int]:
+    def enhanced_avg_respiration_rate(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedAvgRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3907,7 +3907,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_avg_respiration_rate.setter
-    def enhanced_avg_respiration_rate(self, value: int):
+    def enhanced_avg_respiration_rate(self, value: float):
         field = self.get_field(SessionEnhancedAvgRespirationRateField.ID)
 
         if field:
@@ -3920,7 +3920,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_max_respiration_rate(self) -> Optional[int]:
+    def enhanced_max_respiration_rate(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedMaxRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3931,7 +3931,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_max_respiration_rate.setter
-    def enhanced_max_respiration_rate(self, value: int):
+    def enhanced_max_respiration_rate(self, value: float):
         field = self.get_field(SessionEnhancedMaxRespirationRateField.ID)
 
         if field:
@@ -3944,7 +3944,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def enhanced_min_respiration_rate(self) -> Optional[int]:
+    def enhanced_min_respiration_rate(self) -> Optional[float]:
         field = self.get_field(SessionEnhancedMinRespirationRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -3955,7 +3955,7 @@ class SessionMessage(DataMessage):
 
 
     @enhanced_min_respiration_rate.setter
-    def enhanced_min_respiration_rate(self, value: int):
+    def enhanced_min_respiration_rate(self, value: float):
         field = self.get_field(SessionEnhancedMinRespirationRateField.ID)
 
         if field:
@@ -4256,7 +4256,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_fractional_ascent(self) -> Optional[int]:
+    def total_fractional_ascent(self) -> Optional[float]:
         field = self.get_field(SessionTotalFractionalAscentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -4267,7 +4267,7 @@ class SessionMessage(DataMessage):
 
 
     @total_fractional_ascent.setter
-    def total_fractional_ascent(self, value: int):
+    def total_fractional_ascent(self, value: float):
         field = self.get_field(SessionTotalFractionalAscentField.ID)
 
         if field:
@@ -4280,7 +4280,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def total_fractional_descent(self) -> Optional[int]:
+    def total_fractional_descent(self) -> Optional[float]:
         field = self.get_field(SessionTotalFractionalDescentField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -4291,7 +4291,7 @@ class SessionMessage(DataMessage):
 
 
     @total_fractional_descent.setter
-    def total_fractional_descent(self, value: int):
+    def total_fractional_descent(self, value: float):
         field = self.get_field(SessionTotalFractionalDescentField.ID)
 
         if field:
@@ -4304,7 +4304,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def avg_core_temperature(self) -> Optional[int]:
+    def avg_core_temperature(self) -> Optional[float]:
         field = self.get_field(SessionAvgCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -4315,7 +4315,7 @@ class SessionMessage(DataMessage):
 
 
     @avg_core_temperature.setter
-    def avg_core_temperature(self, value: int):
+    def avg_core_temperature(self, value: float):
         field = self.get_field(SessionAvgCoreTemperatureField.ID)
 
         if field:
@@ -4328,7 +4328,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def min_core_temperature(self) -> Optional[int]:
+    def min_core_temperature(self) -> Optional[float]:
         field = self.get_field(SessionMinCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -4339,7 +4339,7 @@ class SessionMessage(DataMessage):
 
 
     @min_core_temperature.setter
-    def min_core_temperature(self, value: int):
+    def min_core_temperature(self, value: float):
         field = self.get_field(SessionMinCoreTemperatureField.ID)
 
         if field:
@@ -4352,7 +4352,7 @@ class SessionMessage(DataMessage):
     
 
     @property
-    def max_core_temperature(self) -> Optional[int]:
+    def max_core_temperature(self) -> Optional[float]:
         field = self.get_field(SessionMaxCoreTemperatureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -4363,7 +4363,7 @@ class SessionMessage(DataMessage):
 
 
     @max_core_temperature.setter
-    def max_core_temperature(self, value: int):
+    def max_core_temperature(self, value: float):
         field = self.get_field(SessionMaxCoreTemperatureField.ID)
 
         if field:
@@ -4517,7 +4517,7 @@ class SessionTotalElapsedTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4536,7 +4536,7 @@ class SessionTotalTimerTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -4555,7 +4555,7 @@ class SessionTotalDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -4649,7 +4649,7 @@ class SessionAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -4668,7 +4668,7 @@ class SessionMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -4857,7 +4857,7 @@ class SessionTotalTrainingEffectField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         type_name = 'uint8',
         growable = growable,
@@ -5061,7 +5061,7 @@ class SessionTrainingStressScoreField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'tss',
         type_name = 'uint16',
@@ -5080,7 +5080,7 @@ class SessionIntensityFactorField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'if',
         type_name = 'uint16',
@@ -5155,7 +5155,7 @@ class SessionAvgStrokeCountField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'strokes/lap',
         type_name = 'uint32',
@@ -5174,7 +5174,7 @@ class SessionAvgStrokeDistanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -5212,7 +5212,7 @@ class SessionPoolLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -5306,7 +5306,7 @@ class SessionAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -5325,7 +5325,7 @@ class SessionMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -5363,7 +5363,7 @@ class SessionAvgGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -5382,7 +5382,7 @@ class SessionAvgPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -5401,7 +5401,7 @@ class SessionAvgNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -5420,7 +5420,7 @@ class SessionMaxPosGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -5439,7 +5439,7 @@ class SessionMaxNegGradeField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = '%',
         type_name = 'sint16',
@@ -5496,7 +5496,7 @@ class SessionTotalMovingTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5515,7 +5515,7 @@ class SessionAvgPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -5534,7 +5534,7 @@ class SessionAvgNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -5553,7 +5553,7 @@ class SessionMaxPosVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -5572,7 +5572,7 @@ class SessionMaxNegVerticalSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',
@@ -5610,7 +5610,7 @@ class SessionTimeInHrZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5629,7 +5629,7 @@ class SessionTimeInSpeedZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5648,7 +5648,7 @@ class SessionTimeInCadenceZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5667,7 +5667,7 @@ class SessionTimeInPowerZoneField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5686,7 +5686,7 @@ class SessionAvgLapTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5723,7 +5723,7 @@ class SessionMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint16',
@@ -5742,7 +5742,7 @@ class SessionActiveTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -5853,7 +5853,7 @@ class SessionMaxBallSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -5872,7 +5872,7 @@ class SessionAvgBallSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -5891,7 +5891,7 @@ class SessionAvgVerticalOscillationField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -5910,7 +5910,7 @@ class SessionAvgStanceTimePercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -5929,7 +5929,7 @@ class SessionAvgStanceTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'ms',
         type_name = 'uint16',
@@ -5948,7 +5948,7 @@ class SessionAvgFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -5967,7 +5967,7 @@ class SessionMaxFractionalCadenceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'rpm',
         type_name = 'uint8',
@@ -5986,7 +5986,7 @@ class SessionTotalFractionalCyclesField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'cycles',
         type_name = 'uint8',
@@ -6005,7 +6005,7 @@ class SessionAvgTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -6024,7 +6024,7 @@ class SessionMinTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -6043,7 +6043,7 @@ class SessionMaxTotalHemoglobinConcField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'g/dL',
         type_name = 'uint16',
@@ -6062,7 +6062,7 @@ class SessionAvgSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -6081,7 +6081,7 @@ class SessionMinSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -6100,7 +6100,7 @@ class SessionMaxSaturatedHemoglobinPercentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = '%',
         type_name = 'uint16',
@@ -6119,7 +6119,7 @@ class SessionAvgLeftTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6138,7 +6138,7 @@ class SessionAvgRightTorqueEffectivenessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6157,7 +6157,7 @@ class SessionAvgLeftPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6176,7 +6176,7 @@ class SessionAvgRightPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6195,7 +6195,7 @@ class SessionAvgCombinedPedalSmoothnessField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6250,7 +6250,7 @@ class SessionTimeStandingField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -6325,7 +6325,7 @@ class SessionAvgLeftPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -6344,7 +6344,7 @@ class SessionAvgLeftPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -6363,7 +6363,7 @@ class SessionAvgRightPowerPhaseField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -6382,7 +6382,7 @@ class SessionAvgRightPowerPhasePeakField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 0.7111111,
                          size = size,
         units = 'degrees',
         type_name = 'uint8',
@@ -6477,7 +6477,7 @@ class SessionEnhancedAvgSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -6496,7 +6496,7 @@ class SessionEnhancedMaxSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -6515,7 +6515,7 @@ class SessionEnhancedAvgAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -6534,7 +6534,7 @@ class SessionEnhancedMinAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -6553,7 +6553,7 @@ class SessionEnhancedMaxAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -6610,7 +6610,7 @@ class SessionLevBatteryConsumptionField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 2,
                          size = size,
         units = 'percent',
         type_name = 'uint8',
@@ -6629,7 +6629,7 @@ class SessionAvgVerticalRatioField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -6648,7 +6648,7 @@ class SessionAvgStanceTimeBalanceField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'percent',
         type_name = 'uint16',
@@ -6667,7 +6667,7 @@ class SessionAvgStepLengthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         units = 'mm',
         type_name = 'uint16',
@@ -6686,7 +6686,7 @@ class SessionTotalAnaerobicTrainingEffectField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 10,
                          size = size,
         type_name = 'uint8',
         growable = growable,
@@ -6704,7 +6704,7 @@ class SessionAvgVamField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -6723,7 +6723,7 @@ class SessionAvgDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -6742,7 +6742,7 @@ class SessionMaxDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -6966,7 +6966,7 @@ class SessionTrainingLoadPeakField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 65536,
                          size = size,
         type_name = 'sint32',
         growable = growable,
@@ -6984,7 +6984,7 @@ class SessionEnhancedAvgRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'Breaths/min',
         type_name = 'uint16',
@@ -7003,7 +7003,7 @@ class SessionEnhancedMaxRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'Breaths/min',
         type_name = 'uint16',
@@ -7022,7 +7022,7 @@ class SessionEnhancedMinRespirationRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         type_name = 'uint16',
         growable = growable,
@@ -7265,7 +7265,7 @@ class SessionTotalFractionalAscentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -7284,7 +7284,7 @@ class SessionTotalFractionalDescentField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT8,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm',
         type_name = 'uint8',
@@ -7303,7 +7303,7 @@ class SessionAvgCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',
@@ -7322,7 +7322,7 @@ class SessionMinCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',
@@ -7341,7 +7341,7 @@ class SessionMaxCoreTemperatureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'C',
         type_name = 'uint16',

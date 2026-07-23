@@ -101,7 +101,7 @@ class TimestampCorrelationMessage(DataMessage):
     
 
     @property
-    def fractional_timestamp(self) -> Optional[int]:
+    def fractional_timestamp(self) -> Optional[float]:
         field = self.get_field(TimestampCorrelationFractionalTimestampField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -112,7 +112,7 @@ class TimestampCorrelationMessage(DataMessage):
 
 
     @fractional_timestamp.setter
-    def fractional_timestamp(self, value: int):
+    def fractional_timestamp(self, value: float):
         field = self.get_field(TimestampCorrelationFractionalTimestampField.ID)
 
         if field:
@@ -151,7 +151,7 @@ class TimestampCorrelationMessage(DataMessage):
     
 
     @property
-    def fractional_system_timestamp(self) -> Optional[int]:
+    def fractional_system_timestamp(self) -> Optional[float]:
         field = self.get_field(TimestampCorrelationFractionalSystemTimestampField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -162,7 +162,7 @@ class TimestampCorrelationMessage(DataMessage):
 
 
     @fractional_system_timestamp.setter
-    def fractional_system_timestamp(self, value: int):
+    def fractional_system_timestamp(self, value: float):
         field = self.get_field(TimestampCorrelationFractionalSystemTimestampField.ID)
 
         if field:
@@ -259,7 +259,7 @@ class TimestampCorrelationFractionalTimestampField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 32768,
                          size = size,
         units = 's',
         type_name = 'uint16',
@@ -297,7 +297,7 @@ class TimestampCorrelationFractionalSystemTimestampField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 32768,
                          size = size,
         units = 's',
         type_name = 'uint16',

@@ -10,7 +10,7 @@ from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer, Sport, Event, EventType, CoursePoint
+from fit_tool.profile.profile_type import CoursePoint, Event, EventType, FileType, Manufacturer, Sport
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open('../tests/data/old_stage_left_hand_lee.gpx', 'r')
+    gpx_file = open('../tests/data/old_stage_left_hand_lee.gpx')
     gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()

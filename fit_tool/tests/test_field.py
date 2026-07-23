@@ -32,7 +32,7 @@ class TestField(unittest.TestCase):
             if min_value is not None and max_value is not None:
                 value = min_value
                 bytes_buffer = field.encoded_value_to_bytes(value)
-                value_from_bytes = field.get_encoded_value_from_bytes(bytes_buffer);
+                value_from_bytes = field.get_encoded_value_from_bytes(bytes_buffer)
                 self.assertEqual(value_from_bytes, value)
 
                 value = max_value
@@ -115,3 +115,17 @@ class TestField(unittest.TestCase):
         field = Field(name='title', base_type=BaseType.STRING, size=1, growable=False)
         with self.assertRaises(ValueError):
             field.set_encoded_value(0, 'ab')
+
+    def test_read_all_from_bytes_supports_numeric_offset(self):
+        field = Field(base_type=BaseType.UINT16, size=2)
+
+        field.read_all_from_bytes(b'\xff\x34\x12', offset=1)
+
+        self.assertEqual(field.encoded_values, [0x1234])
+
+    def test_read_all_from_bytes_supports_string_offset(self):
+        field = Field(base_type=BaseType.STRING, size=4)
+
+        field.read_all_from_bytes(memoryview(b'\xffabc\0'), offset=1)
+
+        self.assertEqual(field.encoded_values, ['abc'])

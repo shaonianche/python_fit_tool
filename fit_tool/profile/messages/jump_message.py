@@ -278,7 +278,7 @@ class JumpMessage(DataMessage):
     
 
     @property
-    def speed(self) -> Optional[int]:
+    def speed(self) -> Optional[float]:
         field = self.get_field(JumpSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -289,7 +289,7 @@ class JumpMessage(DataMessage):
 
 
     @speed.setter
-    def speed(self, value: int):
+    def speed(self, value: float):
         field = self.get_field(JumpSpeedField.ID)
 
         if field:
@@ -302,7 +302,7 @@ class JumpMessage(DataMessage):
     
 
     @property
-    def enhanced_speed(self) -> Optional[int]:
+    def enhanced_speed(self) -> Optional[float]:
         field = self.get_field(JumpEnhancedSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -313,7 +313,7 @@ class JumpMessage(DataMessage):
 
 
     @enhanced_speed.setter
-    def enhanced_speed(self, value: int):
+    def enhanced_speed(self, value: float):
         field = self.get_field(JumpEnhancedSpeedField.ID)
 
         if field:
@@ -469,7 +469,7 @@ class JumpSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint16',
@@ -488,7 +488,7 @@ class JumpEnhancedSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',

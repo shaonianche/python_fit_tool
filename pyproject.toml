@@ -64,8 +64,10 @@ addopts = "-r aR"
 
 [dependency-groups]
 dev = [
+    "mypy>=1.14.1",
     "pytest>=7.0",
     "pytest-cov>=4.0",
+    "ruff>=0.15.22",
     "towncrier>=24.8.0",
 ]
 
@@ -94,6 +96,10 @@ ignore_errors = true
 [tool.ruff]
 line-length = 120
 target-version = "py38"
+extend-exclude = [
+    "fit_tool/profile/profile_type.py",
+    "fit_tool/profile/messages",
+]
 
 [tool.ruff.lint]
 extend-select = [

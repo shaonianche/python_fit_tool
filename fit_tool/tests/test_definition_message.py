@@ -3,9 +3,9 @@
 import unittest
 
 from fit_tool.base_type import BaseType
+from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
-from fit_tool.definition_message import DefinitionMessage
 from fit_tool.endian import Endian
 from fit_tool.field_definition import FieldDefinition
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
@@ -76,3 +76,34 @@ class TestDefinitionMessage(unittest.TestCase):
         result = definition.get_developer_fields({0: {1: source_field}})
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].size, 2)
+
+    def test_add_field_definition_updates_size(self):
+        definition = DefinitionMessage()
+        original_size = definition.size
+
+        definition.add_field_definition(FieldDefinition(field_id=1, size=2, base_type=BaseType.UINT16))
+
+        self.assertEqual(definition.size, original_size + FieldDefinition.field_definition_size())
+
+    def test_add_developer_field_definition_updates_size(self):
+        definition = DefinitionMessage()
+
+        definition.add_developer_field_definition(
+            DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=0)
+        )
+
+        self.assertEqual(definition.size, 6 + DeveloperFieldDefinition.field_definition_size())
+
+    def test_supports_rejects_different_developer_data_index(self):
+        first = DefinitionMessage(
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=0)
+            ]
+        )
+        second = DefinitionMessage(
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=1)
+            ]
+        )
+
+        self.assertFalse(first.supports(second))

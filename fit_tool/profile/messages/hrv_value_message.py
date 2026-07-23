@@ -86,7 +86,7 @@ class HrvValueMessage(DataMessage):
     
 
     @property
-    def value(self) -> Optional[int]:
+    def value(self) -> Optional[float]:
         field = self.get_field(HrvValueValueField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -97,7 +97,7 @@ class HrvValueMessage(DataMessage):
 
 
     @value.setter
-    def value(self, value: int):
+    def value(self, value: float):
         field = self.get_field(HrvValueValueField.ID)
 
         if field:
@@ -122,7 +122,7 @@ class HrvValueValueField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 128,
                          size = size,
         units = 'ms',
         type_name = 'uint16',

@@ -2,7 +2,7 @@
 
 import unittest
 
-from fit_tool.fit_file_header import ProtocolVersion, ProfileVersion, FitFileHeader
+from fit_tool.fit_file_header import FitFileHeader, ProfileVersion, ProtocolVersion
 
 
 class TestFitFileHeader(unittest.TestCase):
@@ -31,6 +31,23 @@ class TestFitFileHeader(unittest.TestCase):
         bytes2 = pv2.to_bytes()
 
         self.assertEqual(bytes1, bytes2)
+
+    def test_current_profile_version_uses_three_digit_minor_version(self):
+        profile_version = ProfileVersion(21, 205)
+
+        self.assertEqual(21205, profile_version.version_code)
+        self.assertEqual('21.205', str(ProfileVersion.from_bytes(profile_version.to_bytes())))
+
+    def test_profile_versions_after_scale_transition_use_current_scale(self):
+        profile_version = ProfileVersion(22, 0)
+
+        self.assertEqual(22000, profile_version.version_code)
+        self.assertEqual('22.0', str(ProfileVersion.from_bytes(profile_version.to_bytes())))
+
+    def test_default_profile_version_matches_sdk_version(self):
+        header = FitFileHeader(records_size=0)
+
+        self.assertEqual('21.205', str(header.profile_version))
 
     def test_generate_crc(self):
         protocol_version = ProtocolVersion(2, 3)

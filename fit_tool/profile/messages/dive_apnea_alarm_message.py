@@ -117,7 +117,7 @@ class DiveApneaAlarmMessage(DataMessage):
     
 
     @property
-    def depth(self) -> Optional[int]:
+    def depth(self) -> Optional[float]:
         field = self.get_field(DiveApneaAlarmDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -128,7 +128,7 @@ class DiveApneaAlarmMessage(DataMessage):
 
 
     @depth.setter
-    def depth(self, value: int):
+    def depth(self, value: float):
         field = self.get_field(DiveApneaAlarmDepthField.ID)
 
         if field:
@@ -379,7 +379,7 @@ class DiveApneaAlarmMessage(DataMessage):
     
 
     @property
-    def speed(self) -> Optional[int]:
+    def speed(self) -> Optional[float]:
         field = self.get_field(DiveApneaAlarmSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -390,7 +390,7 @@ class DiveApneaAlarmMessage(DataMessage):
 
 
     @speed.setter
-    def speed(self, value: int):
+    def speed(self, value: float):
         field = self.get_field(DiveApneaAlarmSpeedField.ID)
 
         if field:
@@ -415,7 +415,7 @@ class DiveApneaAlarmDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -615,7 +615,7 @@ class DiveApneaAlarmSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'mps',
         type_name = 'sint32',

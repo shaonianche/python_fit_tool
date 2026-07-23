@@ -119,7 +119,7 @@ class TankSummaryMessage(DataMessage):
     
 
     @property
-    def start_pressure(self) -> Optional[int]:
+    def start_pressure(self) -> Optional[float]:
         field = self.get_field(TankSummaryStartPressureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -130,7 +130,7 @@ class TankSummaryMessage(DataMessage):
 
 
     @start_pressure.setter
-    def start_pressure(self, value: int):
+    def start_pressure(self, value: float):
         field = self.get_field(TankSummaryStartPressureField.ID)
 
         if field:
@@ -143,7 +143,7 @@ class TankSummaryMessage(DataMessage):
     
 
     @property
-    def end_pressure(self) -> Optional[int]:
+    def end_pressure(self) -> Optional[float]:
         field = self.get_field(TankSummaryEndPressureField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -154,7 +154,7 @@ class TankSummaryMessage(DataMessage):
 
 
     @end_pressure.setter
-    def end_pressure(self, value: int):
+    def end_pressure(self, value: float):
         field = self.get_field(TankSummaryEndPressureField.ID)
 
         if field:
@@ -167,7 +167,7 @@ class TankSummaryMessage(DataMessage):
     
 
     @property
-    def volume_used(self) -> Optional[int]:
+    def volume_used(self) -> Optional[float]:
         field = self.get_field(TankSummaryVolumeUsedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -178,7 +178,7 @@ class TankSummaryMessage(DataMessage):
 
 
     @volume_used.setter
-    def volume_used(self, value: int):
+    def volume_used(self, value: float):
         field = self.get_field(TankSummaryVolumeUsedField.ID)
 
         if field:
@@ -221,7 +221,7 @@ class TankSummaryStartPressureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'bar',
         type_name = 'uint16',
@@ -240,7 +240,7 @@ class TankSummaryEndPressureField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'bar',
         type_name = 'uint16',
@@ -259,7 +259,7 @@ class TankSummaryVolumeUsedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'L',
         type_name = 'uint32',

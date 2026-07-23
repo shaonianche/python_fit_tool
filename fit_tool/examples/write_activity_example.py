@@ -1,14 +1,14 @@
 import datetime
+import math
 
 import gpxpy
-import math
 from geopy.distance import geodesic
 
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.event_message import EventMessage
 from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.record_message import RecordMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer, Event, EventType
+from fit_tool.profile.profile_type import Event, EventType, FileType, Manufacturer
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     builder = FitFileBuilder(auto_define=True, min_string_size=50)
 
     # Read position data from a GPX file
-    gpx_file = open('../tests/data/old_stage_left_hand_lee.gpx', 'r')
+    gpx_file = open('../tests/data/old_stage_left_hand_lee.gpx')
     gpx = gpxpy.parse(gpx_file)
 
     message = FileIdMessage()

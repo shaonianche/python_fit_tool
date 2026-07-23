@@ -4,9 +4,9 @@ import unittest
 
 from fit_tool.base_type import BaseType
 from fit_tool.data_message import DataMessage
+from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
-from fit_tool.definition_message import DefinitionMessage
 from fit_tool.field import Field
 from fit_tool.field_definition import FieldDefinition
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage

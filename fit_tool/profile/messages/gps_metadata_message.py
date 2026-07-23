@@ -179,7 +179,7 @@ class GpsMetadataMessage(DataMessage):
     
 
     @property
-    def enhanced_altitude(self) -> Optional[int]:
+    def enhanced_altitude(self) -> Optional[float]:
         field = self.get_field(GpsMetadataEnhancedAltitudeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -190,7 +190,7 @@ class GpsMetadataMessage(DataMessage):
 
 
     @enhanced_altitude.setter
-    def enhanced_altitude(self, value: int):
+    def enhanced_altitude(self, value: float):
         field = self.get_field(GpsMetadataEnhancedAltitudeField.ID)
 
         if field:
@@ -203,7 +203,7 @@ class GpsMetadataMessage(DataMessage):
     
 
     @property
-    def enhanced_speed(self) -> Optional[int]:
+    def enhanced_speed(self) -> Optional[float]:
         field = self.get_field(GpsMetadataEnhancedSpeedField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -214,7 +214,7 @@ class GpsMetadataMessage(DataMessage):
 
 
     @enhanced_speed.setter
-    def enhanced_speed(self, value: int):
+    def enhanced_speed(self, value: float):
         field = self.get_field(GpsMetadataEnhancedSpeedField.ID)
 
         if field:
@@ -227,7 +227,7 @@ class GpsMetadataMessage(DataMessage):
     
 
     @property
-    def heading(self) -> Optional[int]:
+    def heading(self) -> Optional[float]:
         field = self.get_field(GpsMetadataHeadingField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -238,7 +238,7 @@ class GpsMetadataMessage(DataMessage):
 
 
     @heading.setter
-    def heading(self, value: int):
+    def heading(self, value: float):
         field = self.get_field(GpsMetadataHeadingField.ID)
 
         if field:
@@ -277,7 +277,7 @@ class GpsMetadataMessage(DataMessage):
     
 
     @property
-    def velocity(self) -> Optional[list[int]]:
+    def velocity(self) -> Optional[list[float]]:
         field = self.get_field(GpsMetadataVelocityField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -287,7 +287,7 @@ class GpsMetadataMessage(DataMessage):
 
 
     @velocity.setter
-    def velocity(self, value: list[int]):
+    def velocity(self, value: list[float]):
         field = self.get_field(GpsMetadataVelocityField.ID)
 
         if field:
@@ -368,7 +368,7 @@ class GpsMetadataEnhancedAltitudeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 500,
-                 scale = 1,
+                 scale = 5,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -387,7 +387,7 @@ class GpsMetadataEnhancedSpeedField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -406,7 +406,7 @@ class GpsMetadataHeadingField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'degrees',
         type_name = 'uint16',
@@ -444,7 +444,7 @@ class GpsMetadataVelocityField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'm/s',
         type_name = 'sint16',

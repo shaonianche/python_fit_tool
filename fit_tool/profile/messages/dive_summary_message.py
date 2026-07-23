@@ -197,7 +197,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_depth(self) -> Optional[int]:
+    def avg_depth(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -208,7 +208,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_depth.setter
-    def avg_depth(self, value: int):
+    def avg_depth(self, value: float):
         field = self.get_field(DiveSummaryAvgDepthField.ID)
 
         if field:
@@ -221,7 +221,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def max_depth(self) -> Optional[int]:
+    def max_depth(self) -> Optional[float]:
         field = self.get_field(DiveSummaryMaxDepthField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -232,7 +232,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @max_depth.setter
-    def max_depth(self, value: int):
+    def max_depth(self, value: float):
         field = self.get_field(DiveSummaryMaxDepthField.ID)
 
         if field:
@@ -413,7 +413,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def bottom_time(self) -> Optional[int]:
+    def bottom_time(self) -> Optional[float]:
         field = self.get_field(DiveSummaryBottomTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -424,7 +424,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @bottom_time.setter
-    def bottom_time(self, value: int):
+    def bottom_time(self, value: float):
         field = self.get_field(DiveSummaryBottomTimeField.ID)
 
         if field:
@@ -437,7 +437,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_pressure_sac(self) -> Optional[int]:
+    def avg_pressure_sac(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgPressureSacField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -448,7 +448,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_pressure_sac.setter
-    def avg_pressure_sac(self, value: int):
+    def avg_pressure_sac(self, value: float):
         field = self.get_field(DiveSummaryAvgPressureSacField.ID)
 
         if field:
@@ -461,7 +461,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_volume_sac(self) -> Optional[int]:
+    def avg_volume_sac(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgVolumeSacField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -472,7 +472,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_volume_sac.setter
-    def avg_volume_sac(self, value: int):
+    def avg_volume_sac(self, value: float):
         field = self.get_field(DiveSummaryAvgVolumeSacField.ID)
 
         if field:
@@ -485,7 +485,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_rmv(self) -> Optional[int]:
+    def avg_rmv(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgRmvField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -496,7 +496,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_rmv.setter
-    def avg_rmv(self, value: int):
+    def avg_rmv(self, value: float):
         field = self.get_field(DiveSummaryAvgRmvField.ID)
 
         if field:
@@ -509,7 +509,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def descent_time(self) -> Optional[int]:
+    def descent_time(self) -> Optional[float]:
         field = self.get_field(DiveSummaryDescentTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -520,7 +520,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @descent_time.setter
-    def descent_time(self, value: int):
+    def descent_time(self, value: float):
         field = self.get_field(DiveSummaryDescentTimeField.ID)
 
         if field:
@@ -533,7 +533,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def ascent_time(self) -> Optional[int]:
+    def ascent_time(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAscentTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -544,7 +544,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @ascent_time.setter
-    def ascent_time(self, value: int):
+    def ascent_time(self, value: float):
         field = self.get_field(DiveSummaryAscentTimeField.ID)
 
         if field:
@@ -557,7 +557,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_ascent_rate(self) -> Optional[int]:
+    def avg_ascent_rate(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgAscentRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -568,7 +568,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_ascent_rate.setter
-    def avg_ascent_rate(self, value: int):
+    def avg_ascent_rate(self, value: float):
         field = self.get_field(DiveSummaryAvgAscentRateField.ID)
 
         if field:
@@ -581,7 +581,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def avg_descent_rate(self) -> Optional[int]:
+    def avg_descent_rate(self) -> Optional[float]:
         field = self.get_field(DiveSummaryAvgDescentRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -592,7 +592,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @avg_descent_rate.setter
-    def avg_descent_rate(self, value: int):
+    def avg_descent_rate(self, value: float):
         field = self.get_field(DiveSummaryAvgDescentRateField.ID)
 
         if field:
@@ -605,7 +605,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def max_ascent_rate(self) -> Optional[int]:
+    def max_ascent_rate(self) -> Optional[float]:
         field = self.get_field(DiveSummaryMaxAscentRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -616,7 +616,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @max_ascent_rate.setter
-    def max_ascent_rate(self, value: int):
+    def max_ascent_rate(self, value: float):
         field = self.get_field(DiveSummaryMaxAscentRateField.ID)
 
         if field:
@@ -629,7 +629,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def max_descent_rate(self) -> Optional[int]:
+    def max_descent_rate(self) -> Optional[float]:
         field = self.get_field(DiveSummaryMaxDescentRateField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -640,7 +640,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @max_descent_rate.setter
-    def max_descent_rate(self, value: int):
+    def max_descent_rate(self, value: float):
         field = self.get_field(DiveSummaryMaxDescentRateField.ID)
 
         if field:
@@ -653,7 +653,7 @@ class DiveSummaryMessage(DataMessage):
     
 
     @property
-    def hang_time(self) -> Optional[int]:
+    def hang_time(self) -> Optional[float]:
         field = self.get_field(DiveSummaryHangTimeField.ID)
         if field and field.is_valid():
             sub_field = field.get_valid_sub_field(self.fields)
@@ -664,7 +664,7 @@ class DiveSummaryMessage(DataMessage):
 
 
     @hang_time.setter
-    def hang_time(self, value: int):
+    def hang_time(self, value: float):
         field = self.get_field(DiveSummaryHangTimeField.ID)
 
         if field:
@@ -725,7 +725,7 @@ class DiveSummaryAvgDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -744,7 +744,7 @@ class DiveSummaryMaxDepthField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm',
         type_name = 'uint32',
@@ -895,7 +895,7 @@ class DiveSummaryBottomTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -914,7 +914,7 @@ class DiveSummaryAvgPressureSacField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'bar/min',
         type_name = 'uint16',
@@ -933,7 +933,7 @@ class DiveSummaryAvgVolumeSacField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'L/min',
         type_name = 'uint16',
@@ -952,7 +952,7 @@ class DiveSummaryAvgRmvField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 100,
                          size = size,
         units = 'L/min',
         type_name = 'uint16',
@@ -971,7 +971,7 @@ class DiveSummaryDescentTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -990,7 +990,7 @@ class DiveSummaryAscentTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',
@@ -1009,7 +1009,7 @@ class DiveSummaryAvgAscentRateField(Field):
             field_id=self.ID,
             base_type=BaseType.SINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'sint32',
@@ -1028,7 +1028,7 @@ class DiveSummaryAvgDescentRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -1047,7 +1047,7 @@ class DiveSummaryMaxAscentRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -1066,7 +1066,7 @@ class DiveSummaryMaxDescentRateField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 'm/s',
         type_name = 'uint32',
@@ -1085,7 +1085,7 @@ class DiveSummaryHangTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT32,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint32',

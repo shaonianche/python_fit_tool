@@ -57,7 +57,7 @@ class HrvMessage(DataMessage):
 
 
     @property
-    def time(self) -> Optional[list[int]]:
+    def time(self) -> Optional[list[float]]:
         field = self.get_field(HrvTimeField.ID)
         if field and field.is_valid():
             return field.get_values()
@@ -67,7 +67,7 @@ class HrvMessage(DataMessage):
 
 
     @time.setter
-    def time(self, value: list[int]):
+    def time(self, value: list[float]):
         field = self.get_field(HrvTimeField.ID)
 
         if field:
@@ -91,7 +91,7 @@ class HrvTimeField(Field):
             field_id=self.ID,
             base_type=BaseType.UINT16,
         offset = 0,
-                 scale = 1,
+                 scale = 1000,
                          size = size,
         units = 's',
         type_name = 'uint16',

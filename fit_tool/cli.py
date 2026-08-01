@@ -64,24 +64,24 @@ def main(argv: list[str] | None = None) -> None:
     """Main entry point.
 
     On FIT / I/O / usage failures, prints a short message to stderr and exits
-    with status 1 (instead of an uncaught traceback).
+    with status 1 (instead of an uncaught traceback). Log-file creation is
+    inside the same guard so an unwritable ``--log`` path does not dump a stack.
     """
     args = parse_args(argv)
-
     formatter = logging.Formatter(fmt="%(asctime)s %(levelname)s %(message)s")
 
-    if args.log:
-        handler = logging.FileHandler(args.log)
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-
-    if args.verbose:
-        handler = logging.StreamHandler()
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)
-
     try:
+        if args.log:
+            handler = logging.FileHandler(args.log)
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+
+        if args.verbose:
+            handler = logging.StreamHandler()
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+            logger.setLevel(logging.DEBUG)
+
         logger.info(f'Loading fit file {args.fitfile}...')
         fit_file = FitFile.from_file(args.fitfile)
 

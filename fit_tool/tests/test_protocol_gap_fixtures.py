@@ -1,0 +1,232 @@
+"""Golden / constructive fixtures for Stage-2 protocol gaps (Phase 0 characterize).
+
+See ``fit_tool/tests/data/README.md`` for the gap inventory. These tests document
+current behavior and pin desired semantics with ``xfail`` until components (C),
+subfields (D), and unknown-field preservation (E) land. No unexplained skips.
+"""
+
+from __future__ import annotations
+
+import unittest
+
+import pytest
+
+from fit_tool.components import expand_message_components
+from fit_tool.exceptions import FitParseError
+from fit_tool.fit_file import FitFile
+from fit_tool.profile.messages.record_message import RecordMessage
+from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
+from fit_tool.profile.profile_type import WorkoutStepDuration
+from fit_tool.tests.protocol_fixture_helpers import (
+    build_record_with_compressed_speed_distance,
+    build_record_with_unknown_field,
+    build_workout_step_with_duration,
+    chain_segments,
+)
+from fit_tool.wire.decoder import decode_bytes
+from fit_tool.wire.model import RawDefinitionRecord
+
+
+class TestComponentExpansionEdges(unittest.TestCase):
+    """Additional packed-field cases beyond registry smoke in high-severity tests."""
+
+    def test_wire_decode_expands_compressed_speed_distance(self):
+        raw = build_record_with_compressed_speed_distance(
+            speed_encoded_12bit=1000,
+            distance_encoded_12bit=32,
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        self.assertIsInstance(message, RecordMessage)
+        speed = message.get_field(6)
+        distance = message.get_field(5)
+        assert speed is not None and distance is not None
+        self.assertAlmostEqual(speed.get_value(), 10.0)
+        self.assertAlmostEqual(distance.get_value(), 2.0)
+
+    def test_accumulate_16bit_rollover(self):
+        """Unsigned modular delta when the packed 16-bit value wraps."""
+        message = RecordMessage()
+        source = message.get_field(28)
+        assert source is not None
+        source.size = 2
+        acc: dict[tuple[int, int], int] = {}
+
+        source.encoded_values = [65535]
+        expand_message_components(message, acc)
+        self.assertEqual(acc[(20, 29)], 65535)
+
+        source.encoded_values = [1]  # wrap past 0xFFFF → modular delta 2
+        expand_message_components(message, acc)
+        power = message.get_field(29)
+        assert power is not None
+        self.assertEqual(acc[(20, 29)], 65537)
+        self.assertEqual(power.get_value(), 65537)
+
+    def test_nested_components_not_in_registry(self):
+        """Document that nested component graphs are not expanded yet (Stage 2 C)."""
+        from fit_tool.components import components_for_field
+        from fit_tool.field_component import FieldComponent
+
+        message = RecordMessage()
+        # No nested entries in _KNOWN_COMPONENTS; field without components returns ().
+        empty = message.get_field(0)  # position_lat — no components
+        assert empty is not None
+        self.assertEqual(components_for_field(20, empty), ())
+
+        # Explicit nested-style metadata is accepted on the Field but expansion is
+        # single-level only (no recursive expand of destinations as sources).
+        source = message.get_field(8)
+        assert source is not None
+        source.components = [
+            FieldComponent(field_id=6, accumulate=False, bits=12, scale=100.0, offset=0.0),
+            FieldComponent(field_id=5, accumulate=False, bits=12, scale=16.0, offset=0.0),
+        ]
+        self.assertEqual(len(components_for_field(20, source)), 2)
+
+
+class TestUnknownFieldOnKnownMessage(unittest.TestCase):
+    """Unknown field ids on a known global message (Stage 2 E)."""
+
+    UNKNOWN_ID = 250
+    UNKNOWN_VALUE = 0xABCD
+
+    def test_wire_definition_retains_unknown_field_id(self):
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+        )
+        document = decode_bytes(raw)
+        definition = next(
+            r for r in document.first_segment.records if isinstance(r, RawDefinitionRecord)
+        )
+        field_ids = [fd.field_id for fd in definition.field_definitions]
+        self.assertEqual(field_ids, [253, self.UNKNOWN_ID, 3])
+
+    def test_projection_skips_unknown_field_but_keeps_known(self):
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+            heart_rate=120,
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        self.assertIsInstance(message, RecordMessage)
+        # Current behavior: unknown native field is not projected onto the message.
+        self.assertIsNone(message.get_field(self.UNKNOWN_ID))
+        hr = message.get_field(3)
+        assert hr is not None
+        self.assertEqual(hr.get_value(), 120)
+        # Definition snapshot still lists the unknown id (structural truth).
+        assert message.definition_message is not None
+        def_ids = [fd.field_id for fd in message.definition_message.field_definitions]
+        self.assertIn(self.UNKNOWN_ID, def_ids)
+
+    def test_untouched_preserve_keeps_unknown_field_bytes(self):
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+        )
+        fit = FitFile.from_bytes(raw)
+        self.assertEqual(fit.to_bytes(preserve=True), raw)
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason='Stage 2 E: project unknown field ids as retained values on known messages',
+    )
+    def test_projected_message_exposes_unknown_field_value(self):
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        unknown = message.get_field(self.UNKNOWN_ID)
+        assert unknown is not None
+        self.assertEqual(unknown.get_value(), self.UNKNOWN_VALUE)
+
+
+class TestSubfieldBearingMessage(unittest.TestCase):
+    """Subfield-relevant workout_step samples (Stage 2 D)."""
+
+    def test_workout_step_with_duration_decodes(self):
+        # duration_type DISTANCE = 1; raw duration_value 50000 (wire UINT32)
+        raw = build_workout_step_with_duration(
+            duration_type=WorkoutStepDuration.DISTANCE.value,
+            duration_value_raw=50000,
+            name='gap-step',
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        self.assertIsInstance(message, WorkoutStepMessage)
+        self.assertEqual(message.workout_step_name, 'gap-step')
+        self.assertEqual(message.duration_type, WorkoutStepDuration.DISTANCE.value)
+        # Smoke: value is readable (scale may be wrong until subfield fix — see xfail).
+        self.assertIsNotNone(message.duration_value)
+
+    def test_subfield_is_valid_matches_all_when_ref_field_present(self):
+        """Characterize SubField.is_valid bug: value checked against map keys, not ref list."""
+        message = WorkoutStepMessage()
+        message.duration_type = WorkoutStepDuration.DISTANCE
+        duration_value = message.get_field(2)
+        assert duration_value is not None
+        valid = [sf for sf in duration_value.sub_fields if sf.is_valid(message.fields)]
+        # With the bug, every subfield that keys on field 1 reports valid.
+        self.assertGreater(len(valid), 1)
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason='Stage 2 D: SubField.is_valid must match reference values, not map keys',
+    )
+    def test_duration_distance_subfield_is_selected(self):
+        message = WorkoutStepMessage()
+        message.duration_type = WorkoutStepDuration.DISTANCE
+        duration_value = message.get_field(2)
+        assert duration_value is not None
+        selected = duration_value.get_valid_sub_field(message.fields)
+        assert selected is not None
+        self.assertEqual(selected.name, 'duration_distance')
+        self.assertEqual(selected.scale, 100)
+        self.assertEqual(selected.units, 'm')
+
+    @pytest.mark.xfail(
+        strict=True,
+        reason='Stage 2 D: decoded duration_value must use duration_distance scale (100)',
+    )
+    def test_duration_distance_scale_applied_on_decode(self):
+        # Wire raw 50000 with scale 100 → 500 m when duration_type is DISTANCE.
+        raw = build_workout_step_with_duration(
+            duration_type=WorkoutStepDuration.DISTANCE.value,
+            duration_value_raw=50000,
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        self.assertAlmostEqual(message.duration_value, 500.0)
+
+
+class TestMultiSegmentAndTrailingCorpus(unittest.TestCase):
+    """Cross-check multi-segment / trailing cases (already covered; keep corpus link)."""
+
+    def test_three_segment_chain(self):
+        one = build_workout_step_with_duration(
+            duration_type=WorkoutStepDuration.TIME.value,
+            duration_value_raw=1000,
+            name='a',
+        )
+        chained = chain_segments(one, one, one)
+        document = decode_bytes(chained)
+        self.assertEqual(len(document.segments), 3)
+        self.assertTrue(document.is_chained)
+        fit = FitFile.from_bytes(chained)
+        self.assertEqual(fit.to_bytes(preserve=True), chained)
+
+    def test_trailing_bytes_policy(self):
+        one = build_record_with_compressed_speed_distance()
+        with self.assertRaises(FitParseError):
+            FitFile.from_bytes(one + b'\xff\x00')
+        fit = FitFile.from_bytes(one + b'\xff\x00', allow_trailing_bytes=True)
+        self.assertGreaterEqual(len(fit.records), 1)
+
+
+if __name__ == '__main__':
+    unittest.main()

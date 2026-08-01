@@ -13,7 +13,7 @@ from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
 from fit_tool.utils.logging import logger
-from fit_tool.wire.encoder import encode_document
+from fit_tool.wire.encoder import encode_document, encode_document_mixed
 from fit_tool.wire.model import FitDocument
 
 if TYPE_CHECKING:
@@ -26,8 +26,15 @@ class FitFile:
     Decode uses the unified :class:`~fit_tool.decoder.FitDecoder` state machine
     (wire layer + projection) shared with streaming APIs. When the source is an
     in-memory buffer, the raw :class:`~fit_tool.wire.model.FitDocument` is retained
-    so :meth:`to_bytes` can re-emit the original bytes until the file is edited
+    so :meth:`to_bytes` can re-emit the original bytes for **unedited** records
     (preservation mode).
+
+    **Post-edit PRESERVATION:** mutating fields on projected messages marks the
+    owning :class:`~fit_tool.record.Record` dirty (via field mutation hooks).
+    :meth:`to_bytes` with ``preserve=True`` (default) then re-encodes only dirty
+    records and copies ``source_bytes`` for the rest. Structural edits
+    (:meth:`add_record`, :meth:`remove_record`, :meth:`mark_dirty`, CRC override)
+    drop the wire document and fully re-project on encode.
     """
 
     def __init__(
@@ -46,7 +53,13 @@ class FitFile:
 
     @property
     def wire_document(self) -> FitDocument | None:
-        """Raw multi-segment wire model when decoded from a buffer and not edited."""
+        """Raw multi-segment wire model when decoded from a buffer.
+
+        Present after buffer decode until a **structural** edit clears it
+        (:meth:`mark_dirty`, add/remove record, CRC override). Per-record field
+        edits keep this document so untouched records can be re-emitted from
+        ``source_bytes``.
+        """
         return self._wire_document
 
     @property
@@ -60,7 +73,12 @@ class FitFile:
         self._wire_document = None
 
     def mark_dirty(self) -> None:
-        """Mark the current checksum / wire snapshot as stale after an in-memory edit."""
+        """Mark the file structurally dirty (full re-encode on next ``to_bytes``).
+
+        Clears the retained wire document. Prefer editing fields in place so
+        only the affected :class:`~fit_tool.record.Record` is marked dirty and
+        post-edit PRESERVATION can keep other records' ``source_bytes``.
+        """
         self._crc = None
         self._crc_overridden = False
         self._wire_document = None
@@ -72,6 +90,10 @@ class FitFile:
     def remove_record(self, record: Record) -> None:
         self.records.remove(record)
         self.mark_dirty()
+
+    def has_dirty_records(self) -> bool:
+        """Return True when any projected record was edited in place."""
+        return any(record.dirty for record in self.records)
 
     @classmethod
     def from_file(cls, path: str, *, allow_trailing_bytes: bool = False) -> FitFile:
@@ -142,13 +164,74 @@ class FitFile:
     def to_bytes(self, check_crc: bool = True, *, preserve: bool = True) -> bytes:
         """Serialize this file.
 
-        When ``preserve`` is true and a wire document is still available (decoded
-        from a buffer and never edited), the original segment bytes are re-emitted
-        so chained files and unknown layouts round-trip bit-identically.
+        When ``preserve`` is true and a wire document is still available:
+
+        * **No dirty records** — re-emit original segment bytes bit-identically
+          (chained files, unknown layouts, compressed headers).
+        * **Some dirty records** — copy ``source_bytes`` for untouched records
+          and re-project dirty ones; recompute header size and file CRC only for
+          segments that contain edits (post-edit PRESERVATION).
+
+        Set ``preserve=False`` (or call :meth:`mark_dirty`) to force a full
+        projected re-encode of every record.
         """
         if preserve and self._wire_document is not None:
+            if self.has_dirty_records():
+                return self._to_bytes_preserve_edits()
             return encode_document(self._wire_document, recompute_crc=False)
 
+        return self._to_bytes_projected(check_crc=check_crc)
+
+    def _to_bytes_preserve_edits(self) -> bytes:
+        """Mixed preserve: untouched wire bytes + re-encoded dirty records."""
+        document = self._wire_document
+        assert document is not None
+
+        wire_count = sum(len(segment.records) for segment in document.segments)
+        if wire_count != len(self.records):
+            # Structural mismatch — fall back to full projected encode.
+            logger.warning(
+                'Record count (%s) does not match wire document (%s); '
+                'falling back to full re-encode.',
+                len(self.records),
+                wire_count,
+            )
+            self.mark_dirty()
+            return self._to_bytes_projected(check_crc=True)
+
+        projected_iter = iter(self.records)
+        segment_record_bytes: list[list[bytes]] = []
+        segment_recompute: list[bool] = []
+
+        try:
+            for segment in document.segments:
+                rec_bytes: list[bytes] = []
+                dirty_in_segment = False
+                for raw in segment.records:
+                    projected = next(projected_iter)
+                    if projected.dirty:
+                        dirty_in_segment = True
+                        rec_bytes.append(projected.to_bytes())
+                    elif projected.source_bytes is not None:
+                        rec_bytes.append(projected.source_bytes)
+                    elif raw.source_bytes:
+                        rec_bytes.append(raw.source_bytes)
+                    else:
+                        rec_bytes.append(projected.to_bytes())
+                        dirty_in_segment = True
+                segment_record_bytes.append(rec_bytes)
+                segment_recompute.append(dirty_in_segment)
+        except (IndexError, struct.error, UnicodeError, ValueError) as exc:
+            raise FitEncodingError(f'Could not encode FIT records: {exc}') from exc
+
+        result = encode_document_mixed(document, segment_record_bytes, segment_recompute)
+        # Stale file CRC after mixed encode; leave override semantics to caller.
+        self._crc = None
+        self._crc_overridden = False
+        return result
+
+    def _to_bytes_projected(self, *, check_crc: bool = True) -> bytes:
+        """Full projected re-encode (no wire document, or preserve=False)."""
         try:
             record_buffers = [record.to_bytes() for record in self.records]
         except (IndexError, struct.error, UnicodeError, ValueError) as exc:
@@ -234,8 +317,10 @@ class FitFile:
         """Validate this file at selected conformance levels.
 
         Independent of :class:`~fit_tool.fit_file_builder.FitFileBuilder`.
-        Defaults to all implemented levels (WIRE, PROFILE, FILE_TYPE). Use
-        ``levels={ConformanceLevel.WIRE}`` for structure-only checks after decode.
+        Defaults to WIRE + PROFILE + FILE_TYPE. Use
+        ``levels={ConformanceLevel.WIRE}`` for structure-only checks after decode,
+        or include :attr:`~fit_tool.validation.ConformanceLevel.PRESERVATION`
+        for opt-in post-edit rewrite-loss findings.
 
         See :func:`~fit_tool.validation.validate_fit_file` for details.
         """

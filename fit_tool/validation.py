@@ -1,4 +1,4 @@
-"""Composable FIT validation: wire, profile, and file-type levels.
+"""Composable FIT validation: wire, profile, file-type, and preservation levels.
 
 Validation is a first-class API independent of :class:`~fit_tool.fit_file_builder.FitFileBuilder`.
 Builder ``strict=True`` is a thin wrapper that runs the same checks and raises on errors.
@@ -11,10 +11,12 @@ Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
   This is **not** full Garmin Profile validation (enums, units, required
   native fields per message, and broader subfield rule families remain deferred).
 * **FILE_TYPE** — ``file_id`` rules and Activity required messages/fields
+* **PRESERVATION** — opt-in checks for post-edit rewrite loss (e.g. unknown
+  field ``raw_bytes`` cleared). Not part of default / strict levels.
 
 File-type rules are implemented only for **Activity**. Other ``file_id.type``
 values fail closed at the FILE_TYPE level (intentional until more validators
-exist). PRESERVATION level is not implemented yet.
+exist).
 """
 
 from __future__ import annotations
@@ -29,6 +31,7 @@ from fit_tool.base_type import BaseType
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.exceptions import FitValidationError
+from fit_tool.field import UnknownField
 from fit_tool.message import Message
 from fit_tool.profile.profile_type import FileType, MesgNum
 from fit_tool.record import Record
@@ -52,6 +55,7 @@ class ConformanceLevel(Enum):
     WIRE = 'wire'
     PROFILE = 'profile'
     FILE_TYPE = 'file_type'
+    PRESERVATION = 'preservation'
 
 
 class Severity(Enum):
@@ -62,7 +66,7 @@ class Severity(Enum):
     INFO = 'info'
 
 
-# Levels available in this release (PRESERVATION deferred).
+# Default / Builder-strict levels. PRESERVATION is opt-in (post-edit loss checks).
 DEFAULT_LEVELS = frozenset({
     ConformanceLevel.WIRE,
     ConformanceLevel.PROFILE,
@@ -123,13 +127,17 @@ def _enum_value(value: Any) -> Any:
     return value.value if hasattr(value, 'value') else value
 
 
+# All levels recognized by :func:`validate_fit_file` (includes opt-in PRESERVATION).
+KNOWN_LEVELS = frozenset(ConformanceLevel)
+
+
 def _normalize_levels(levels: Iterable[ConformanceLevel] | None) -> frozenset:
     if levels is None:
         return DEFAULT_LEVELS
     normalized = frozenset(levels)
     if not normalized:
         raise FitValidationError('levels must contain at least one ConformanceLevel')
-    unknown = normalized - DEFAULT_LEVELS
+    unknown = normalized - KNOWN_LEVELS
     if unknown:
         names = ', '.join(sorted(level.value for level in unknown))
         raise FitValidationError(f'Unsupported conformance level(s): {names}')
@@ -529,6 +537,54 @@ def _collect_activity_field_findings(
             )
 
 
+def _collect_preservation_findings(
+    records: Sequence[Record],
+    findings: list[ValidationFinding],
+) -> None:
+    """Report post-edit rewrite risks (opt-in PRESERVATION level).
+
+    Findings fire when an unknown native field lost its captured wire slice
+    (``raw_bytes is None``) so a projected re-encode cannot guarantee the same
+    bytes. Untouched records that still have ``source_bytes`` are fine.
+    """
+    for record_index, record in enumerate(records):
+        if record.is_definition or not isinstance(record.message, DataMessage):
+            continue
+        message = record.message
+        for field in message.fields:
+            if not isinstance(field, UnknownField):
+                continue
+            if not field.is_valid():
+                continue
+            if field.raw_bytes is None:
+                findings.append(
+                    ValidationFinding(
+                        level=ConformanceLevel.PRESERVATION,
+                        severity=Severity.ERROR,
+                        message=(
+                            f'Unknown field id {field.field_id} on message '
+                            f'{message.name!r} (global {message.global_id}) lost '
+                            f'raw_bytes; post-edit rewrite cannot preserve the '
+                            f'original wire slice.'
+                        ),
+                        record_index=record_index,
+                    )
+                )
+            elif len(field.raw_bytes) != field.size:
+                findings.append(
+                    ValidationFinding(
+                        level=ConformanceLevel.PRESERVATION,
+                        severity=Severity.ERROR,
+                        message=(
+                            f'Unknown field id {field.field_id} on message '
+                            f'{message.name!r} has raw_bytes length '
+                            f'{len(field.raw_bytes)} != field size {field.size}.'
+                        ),
+                        record_index=record_index,
+                    )
+                )
+
+
 def validate_fit_file(
     source: FitFile | Sequence[Record],
     levels: Iterable[ConformanceLevel] | None = None,
@@ -542,9 +598,9 @@ def validate_fit_file(
     source:
         A :class:`FitFile` or a sequence of :class:`~fit_tool.record.Record`.
     levels:
-        Conformance levels to run. Defaults to all implemented levels
-        (WIRE, PROFILE, FILE_TYPE). Pass a subset for partial checks
-        (for example wire-only after decode).
+        Conformance levels to run. Defaults to WIRE + PROFILE + FILE_TYPE.
+        Pass ``{ConformanceLevel.PRESERVATION}`` (or include it) for opt-in
+        post-edit loss checks. PRESERVATION is **not** in the default set.
     raise_on_error:
         If true, raise :class:`FitValidationError` when any ERROR findings exist
         (first error message is used, matching historical Builder strict behavior).
@@ -571,6 +627,8 @@ def validate_fit_file(
         _collect_profile_findings(data_messages, findings, data_message_indices)
     if ConformanceLevel.FILE_TYPE in selected:
         _collect_file_type_findings(data_messages, findings, data_message_indices)
+    if ConformanceLevel.PRESERVATION in selected:
+        _collect_preservation_findings(records, findings)
 
     report = ValidationReport(findings)
     if raise_on_error:

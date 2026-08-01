@@ -93,7 +93,7 @@ def project_definition_record(raw: RawDefinitionRecord) -> Record:
     """Project a wire definition record to a compatibility Record."""
     header = record_header_from_raw(raw.header)
     message = definition_from_raw(raw)
-    return Record(header, message)
+    return Record(header, message, source_bytes=raw.source_bytes, dirty=raw.dirty)
 
 
 def project_data_record(
@@ -142,7 +142,17 @@ def project_data_record(
     else:
         expand_message_components(message)
 
-    return Record(header, message)
+    # Bind mutation hooks after component expansion so decode-time
+    # set_encoded_value(..., check_validity=False) does not mark dirty, and
+    # subsequent API edits do.
+    record = Record(
+        header,
+        message,
+        source_bytes=raw.source_bytes,
+        dirty=raw.dirty,
+    )
+    record.bind_mutation_hooks()
+    return record
 
 
 def _apply_resolved_timestamp(message: DataMessage, timestamp: int) -> None:

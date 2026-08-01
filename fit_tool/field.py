@@ -255,6 +255,13 @@ class Field:
                     )
                 self.size = new_size
 
+        # API mutations (check_validity=True) notify the owning Record for
+        # post-edit PRESERVATION dirty tracking. Decode uses check_validity=False.
+        if check_validity:
+            dirty_host = getattr(self, '_dirty_host', None)
+            if dirty_host is not None:
+                dirty_host()
+
     def encode_value(self, value, sub_field: SubField = None):
         if isinstance(value, str):
             return value

@@ -297,17 +297,14 @@ class TestFitFileMutationAndStream(unittest.TestCase):
 
     def test_to_bytes_encoding_error(self):
         from fit_tool.exceptions import FitEncodingError
-        from fit_tool.record import Record
 
         fit = self._simple_fit()
-        # Force a message that fails to_bytes
-        bad = mock.Mock()
-        bad.to_bytes.side_effect = ValueError('boom')
-        fit.records = [Record.from_message(WorkoutStepMessage())]
-        # Replace message to_bytes on the last record message path via mock of record.to_bytes
-        with mock.patch.object(fit.records[0], 'to_bytes', side_effect=ValueError('boom')):
+        # Projected encode uses encode_record_projected → message.to_bytes.
+        with mock.patch.object(
+            fit.records[0].message, 'to_bytes', side_effect=ValueError('boom'),
+        ):
             with self.assertRaises(FitEncodingError):
-                fit.to_bytes()
+                fit.to_bytes(preserve=False)
 
     def test_builder_add_all(self):
         mesg = WorkoutStepMessage(local_id=0)

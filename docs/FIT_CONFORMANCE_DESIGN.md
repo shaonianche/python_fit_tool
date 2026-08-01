@@ -20,7 +20,8 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Component expansion** for all Profile **main-field** sources (generated registry, nested expansion, accumulators); also expands components declared on the **active subfield** | Supported (main fields + active-subfield components) | Remaining edge cases only |
 | **Subfield resolution** (ref-field match → type / scale / offset / units; first match wins; multi-ref AND) | Supported | Generated property accessors call `get_valid_sub_field` |
 | **Ambiguous subfields** (more than one match) | PROFILE ERROR (decode still uses first match) | Same policy |
-| **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded files: unedited path bit-identical; **post-edit** path re-encodes dirty records and copies `source_bytes` for the rest | Supported | Canonical encode policies (Stage 3 G); compressed-header dirty rewrite may expand to normal headers |
+| **Preservation encode** (`to_bytes(mode=EncodeMode.PRESERVE)` / `preserve=True`, default) for buffer-decoded files: unedited path bit-identical; **post-edit** path re-encodes dirty records and copies `source_bytes` for the rest | Supported | Aligns with design §6.1 |
+| **Canonical encode** (`to_bytes(mode=EncodeMode.CANONICAL)` / `preserve=False`); optional `strict=True` precheck | Supported | Compressed-header expansion only when field 253 is on the definition; otherwise keep compressed (non-strict) or raise (strict) |
 | Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity FILE_TYPE; opt-in **PRESERVATION** level; Builder `strict=True` wraps default levels only | Partial | Full Profile field/enum/units rules; Workout/Course FILE_TYPE |
 | Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
 | Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; survive post-edit when not mutated) | Supported | Mutating an unknown field clears `raw_bytes` (PRESERVATION ERROR if that level is selected) |
@@ -43,7 +44,7 @@ stable keys, later letters are stage placeholders until children are created.
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | **Done** runtime match + PROFILE ambiguity ERROR |
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done**: per-record dirty + mixed encode; opt-in PRESERVATION findings |
-| Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** (SHA-12 stage 3; child TBD) | |
+| Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** SHA-19 | **Done**: `EncodeMode` + policy matrix; no silent invalid clamp; `repair()` API still future |
 | Full PROFILE validation from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE | **H** (SHA-12 stage 4; child TBD) | Slice by message family / rule kind |
 | Workout FILE_TYPE rules | Phase 4 §7 | **I** (SHA-12 stage 4; child TBD) | Not in first batch |
 | Course FILE_TYPE rules | Phase 4 §7 | **J** (SHA-12 stage 4; child TBD) | Not in first batch |
@@ -465,39 +466,66 @@ discarded.
 
 ## 6. Encoder design
 
-The encoder has two explicit modes.
+The encoder has two explicit modes, exported as
+`fit_tool.EncodeMode` / `EncodeOptions` and accepted by
+`FitFile.to_bytes(mode=..., strict=...)`. The boolean `preserve=` kwarg remains
+as a compatibility alias (`True` → PRESERVE, `False` → CANONICAL).
 
 ### 6.1 Preservation mode
 
 ```python
-document.to_bytes(mode=EncodeMode.PRESERVE)
+from fit_tool import EncodeMode, FitFile
+
+fit.to_bytes(mode=EncodeMode.PRESERVE)  # default
+fit.to_bytes(preserve=True)             # alias
 ```
 
 - Untouched raw records are copied byte-for-byte.
-- Dirty records are rebuilt from their definition snapshot.
-- Unknown messages, fields, header extensions, and compressed headers survive.
+- Dirty records are rebuilt from their definition snapshot (encode policies apply).
+- Unknown messages, fields, header extensions, and compressed headers survive
+  when untouched.
 - Segment boundaries are retained.
 - CRCs and sizes are recalculated only for dirty segments.
 
 ### 6.2 Canonical mode
 
 ```python
-document.to_bytes(mode=EncodeMode.CANONICAL, strict=True)
+fit.to_bytes(mode=EncodeMode.CANONICAL)
+fit.to_bytes(mode=EncodeMode.CANONICAL, strict=True)
+fit.to_bytes(preserve=False)  # alias for non-strict canonical
 ```
 
-- Rebuild all definitions and data records.
-- Use normal headers by default; compressed timestamps are an explicit option.
-- Generate consistent header and file CRCs.
-- Emit the bundled Profile version.
-- Reject invalid values, sizes, local IDs, missing definitions, and unresolved
-  developer fields.
-- Run the selected conformance levels before returning bytes.
+- Rebuild all definitions and data records from the projected model.
+- Prefer normal record headers; expand compressed-timestamp headers when field
+  253 is present on the definition (otherwise keep compressed, or raise if
+  `strict=True`).
+- Generate consistent header and file CRCs (sizes always rewritten).
+- Reject out-of-range encoded values at set time (no clamp). Cleared fields
+  emit protocol-invalid fill so the definition stays aligned.
+- `strict=True` runs default conformance levels (WIRE + PROFILE + FILE_TYPE)
+  before returning bytes and forces CANONICAL.
 
-`strict=True` never silently repairs caller-supplied invariants. A separate
+`strict=True` never silently repairs caller-supplied invariants (no range
+clamping; mismatched overridden CRC raises when `check_crc=True`). A separate
 `repair()` API may intentionally fix sizes or CRCs and must return a report of
-every repair.
+every repair — **not implemented yet**.
 
-### 6.1 Compatibility-layer implementation status
+### 6.3 Encode policy matrix (implemented)
+
+| Concern | PRESERVE (default) | CANONICAL | CANONICAL + `strict=True` |
+| --- | --- | --- | --- |
+| Untouched records | `source_bytes` copy | full re-project | full re-project |
+| Dirty records | re-project | re-project | re-project |
+| Out-of-range field values | rejected at set (no clamp) | same | same + pre-encode validation |
+| Cleared field (`None`) still on definition | protocol-invalid fill | same | same |
+| Scale / offset | `round((v+offset)*scale)` | same | same |
+| Expanded component destinations | off-wire unless listed on definition | same | same |
+| Compressed timestamp (untouched) | keep wire bytes | expand to normal if def has 253; else keep compressed | expand if 253; else **raise** |
+| Compressed timestamp (dirty re-encode) | expand if def has 253; else keep compressed | same | expand if 253; else **raise** |
+| Header / file CRC | recompute dirty segments only | recompute all | recompute; wrong override raises |
+| Pre-encode validation | no | no | DEFAULT levels, raise on ERROR |
+
+### 6.4 Compatibility-layer implementation status
 
 Composable validation is available independently of the Builder:
 
@@ -522,8 +550,9 @@ messages, and preservation encode via `to_bytes(preserve=True)` for unedited
 re-project).
 
 This still does **not** complete the conformance claim. Remaining work includes
-full Profile validation scopes (DOMAIN/FULL), canonical encode policies, and
-Workout/Course FILE_TYPE validators — see **Remaining gaps** and Phases 3–5.
+full Profile validation scopes (DOMAIN/FULL) and Workout/Course FILE_TYPE
+validators — see **Remaining gaps** and Phases 3–5. Encode modes (G) are on the
+compatibility path; the long-term `FitDocument` encode surface remains future.
 
 ## 7. File-type validators
 
@@ -706,10 +735,10 @@ subfields, and full PROFILE validation remain Multica D / H (stages 2 and 4).
 Exit: all produced standard files pass the selected Garmin and repository
 validators without repair.
 
-**Progress (partial):** unedited and **post-edit** `preserve=True` paths exist
-(dirty records re-projected; untouched records keep `source_bytes`; opt-in
-`ConformanceLevel.PRESERVATION`). Activity FILE_TYPE (fail-closed other types)
-exists. Encode policies and Workout/Course validators remain Multica G / I–J.
+**Progress (partial):** unedited and **post-edit** PRESERVE paths exist; explicit
+`EncodeMode` / `strict` / policy matrix landed (G / SHA-19). Activity FILE_TYPE
+(fail-closed other types) exists. Workout/Course validators remain Multica I–J.
+`repair()` API is still future.
 
 ### Phase 5: API migration and performance
 

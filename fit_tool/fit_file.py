@@ -8,6 +8,13 @@ from collections.abc import Iterable, Iterator
 from typing import TYPE_CHECKING, BinaryIO
 
 from fit_tool.decoder import FitDecoder
+from fit_tool.encode import (
+    EncodeMode,
+    EncodeOptions,
+    apply_strict_precheck,
+    encode_record_projected,
+    resolve_encode_options,
+)
 from fit_tool.exceptions import FitCRCError, FitEncodingError
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
@@ -19,6 +26,10 @@ from fit_tool.wire.model import FitDocument
 if TYPE_CHECKING:
     from fit_tool.validation import ConformanceLevel, ValidationReport
 
+# Sentinel so explicit ``check_crc=True`` can override ``options.check_crc=False``
+# (a bare default of True is indistinguishable from "caller omitted the kwarg").
+_CHECK_CRC_UNSET: object = object()
+
 
 class FitFile:
     """Public FIT file facade.
@@ -29,12 +40,21 @@ class FitFile:
     so :meth:`to_bytes` can re-emit the original bytes for **unedited** records
     (preservation mode).
 
+    **Encode modes** (Stage 3 G):
+
+    * :attr:`~fit_tool.encode.EncodeMode.PRESERVE` (default) — unedited
+      ``source_bytes`` + dirty re-project (post-edit PRESERVATION / F).
+    * :attr:`~fit_tool.encode.EncodeMode.CANONICAL` — full projected re-encode
+      with normalized sizes/CRCs; compressed dirty headers may expand to normal.
+
+    Pass ``mode=`` / ``strict=`` to :meth:`to_bytes`, or the legacy
+    ``preserve=True|False`` alias (``False`` maps to CANONICAL).
+
     **Post-edit PRESERVATION:** mutating fields on projected messages marks the
     owning :class:`~fit_tool.record.Record` dirty (via field mutation hooks).
-    :meth:`to_bytes` with ``preserve=True`` (default) then re-encodes only dirty
-    records and copies ``source_bytes`` for the rest. Structural edits
-    (:meth:`add_record`, :meth:`remove_record`, :meth:`mark_dirty`, CRC override)
-    drop the wire document and fully re-project on encode.
+    Preserve mode then re-encodes only dirty records and copies ``source_bytes``
+    for the rest. Structural edits (:meth:`add_record`, :meth:`remove_record`,
+    :meth:`mark_dirty`, CRC override) drop the wire document and fully re-project.
     """
 
     def __init__(
@@ -161,28 +181,77 @@ class FitFile:
             wire_document=decoder.wire_document,
         )
 
-    def to_bytes(self, check_crc: bool = True, *, preserve: bool = True) -> bytes:
+    def to_bytes(
+            self,
+            check_crc: bool | object = _CHECK_CRC_UNSET,
+            *,
+            preserve: bool | None = None,
+            mode: EncodeMode | str | None = None,
+            strict: bool = False,
+            options: EncodeOptions | None = None,
+    ) -> bytes:
         """Serialize this file.
 
-        When ``preserve`` is true and a wire document is still available:
+        **Modes** (see :class:`~fit_tool.encode.EncodeMode`):
 
-        * **No dirty records** — re-emit original segment bytes bit-identically
-          (chained files, unknown layouts, compressed headers).
-        * **Some dirty records** — copy ``source_bytes`` for untouched records
-          and re-project dirty ones; recompute header size and file CRC only for
-          segments that contain edits (post-edit PRESERVATION).
+        * **PRESERVE** (default; ``preserve=True``) when a wire document is
+          available:
 
-        Set ``preserve=False`` (or call :meth:`mark_dirty`) to force a full
-        projected re-encode of every record.
+          - **No dirty records** — re-emit original segment bytes bit-identically
+            (chained files, unknown layouts, compressed headers).
+          - **Some dirty records** — copy ``source_bytes`` for untouched records
+            and re-project dirty ones; recompute header size and file CRC only for
+            segments that contain edits (post-edit PRESERVATION).
+
+        * **CANONICAL** (``mode=EncodeMode.CANONICAL`` or ``preserve=False``) —
+          full projected re-encode of every record; normalized sizes and CRCs.
+
+        ``strict=True`` forces CANONICAL, runs WIRE+PROFILE+FILE_TYPE validation
+        before encode, and raises rather than silently repairing invalid field
+        data or mismatched overridden CRCs (when ``check_crc`` is true).
+
+        Prefer ``mode=`` / ``strict=`` for new code; ``preserve=`` remains the
+        boolean compatibility alias. Explicit kwargs win over a partial
+        ``options=`` object (including ``check_crc=True`` vs
+        ``EncodeOptions(check_crc=False)``).
         """
-        if preserve and self._wire_document is not None:
+        check_crc_explicit = check_crc is not _CHECK_CRC_UNSET
+        check_crc_value = True if not check_crc_explicit else bool(check_crc)
+
+        if options is None:
+            options = resolve_encode_options(
+                mode=mode,
+                preserve=preserve,
+                strict=strict,
+                check_crc=check_crc_value,
+            )
+        elif (
+            preserve is not None
+            or mode is not None
+            or strict
+            or check_crc_explicit
+        ):
+            # Explicit kwargs win over a partial options object when both given.
+            options = resolve_encode_options(
+                mode=mode if mode is not None else options.mode,
+                preserve=preserve,
+                strict=strict or options.strict,
+                check_crc=(
+                    check_crc_value if check_crc_explicit else options.check_crc
+                ),
+            )
+
+        if options.strict:
+            apply_strict_precheck(self)
+
+        if options.mode is EncodeMode.PRESERVE and self._wire_document is not None:
             if self.has_dirty_records():
-                return self._to_bytes_preserve_edits()
+                return self._to_bytes_preserve_edits(options=options)
             return encode_document(self._wire_document, recompute_crc=False)
 
-        return self._to_bytes_projected(check_crc=check_crc)
+        return self._to_bytes_projected(options=options)
 
-    def _to_bytes_preserve_edits(self) -> bytes:
+    def _to_bytes_preserve_edits(self, *, options: EncodeOptions) -> bytes:
         """Mixed preserve: untouched wire bytes + re-encoded dirty records."""
         document = self._wire_document
         assert document is not None
@@ -197,7 +266,13 @@ class FitFile:
                 wire_count,
             )
             self.mark_dirty()
-            return self._to_bytes_projected(check_crc=True)
+            return self._to_bytes_projected(
+                options=EncodeOptions(
+                    mode=EncodeMode.CANONICAL,
+                    strict=options.strict,
+                    check_crc=options.check_crc,
+                )
+            )
 
         projected_iter = iter(self.records)
         segment_record_bytes: list[list[bytes]] = []
@@ -211,16 +286,22 @@ class FitFile:
                     projected = next(projected_iter)
                     if projected.dirty:
                         dirty_in_segment = True
-                        rec_bytes.append(projected.to_bytes())
+                        rec_bytes.append(
+                            encode_record_projected(projected, options=options)
+                        )
                     elif projected.source_bytes is not None:
                         rec_bytes.append(projected.source_bytes)
                     elif raw.source_bytes:
                         rec_bytes.append(raw.source_bytes)
                     else:
-                        rec_bytes.append(projected.to_bytes())
+                        rec_bytes.append(
+                            encode_record_projected(projected, options=options)
+                        )
                         dirty_in_segment = True
                 segment_record_bytes.append(rec_bytes)
                 segment_recompute.append(dirty_in_segment)
+        except FitEncodingError:
+            raise
         except (IndexError, struct.error, UnicodeError, ValueError) as exc:
             raise FitEncodingError(f'Could not encode FIT records: {exc}') from exc
 
@@ -230,10 +311,15 @@ class FitFile:
         self._crc_overridden = False
         return result
 
-    def _to_bytes_projected(self, *, check_crc: bool = True) -> bytes:
-        """Full projected re-encode (no wire document, or preserve=False)."""
+    def _to_bytes_projected(self, *, options: EncodeOptions) -> bytes:
+        """Full projected re-encode (canonical path, or no wire document)."""
         try:
-            record_buffers = [record.to_bytes() for record in self.records]
+            record_buffers = [
+                encode_record_projected(record, options=options)
+                for record in self.records
+            ]
+        except FitEncodingError:
+            raise
         except (IndexError, struct.error, UnicodeError, ValueError) as exc:
             raise FitEncodingError(f'Could not encode FIT records: {exc}') from exc
 
@@ -261,7 +347,7 @@ class FitFile:
         elif self._crc != calculated_crc:
             if self._crc_overridden:
                 message = f'Calculated crc ({calculated_crc}) != defined crc ({self._crc})'
-                if check_crc:
+                if options.check_crc:
                     raise FitCRCError(message)
                 logger.warning(message)
             else:
@@ -304,9 +390,18 @@ class FitFile:
                 csv_writer.writerow(self._create_csv_header(max_columns))
                 shutil.copyfileobj(rows_file, csv_file)
 
-    def to_file(self, path: str, *, preserve: bool = True) -> None:
+    def to_file(
+            self,
+            path: str,
+            *,
+            preserve: bool | None = None,
+            mode: EncodeMode | str | None = None,
+            strict: bool = False,
+    ) -> None:
         with open(path, 'wb') as file_object:
-            file_object.write(self.to_bytes(preserve=preserve))
+            file_object.write(
+                self.to_bytes(preserve=preserve, mode=mode, strict=strict)
+            )
 
     def validate(
         self,

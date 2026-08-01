@@ -11,6 +11,7 @@ from __future__ import annotations
 import struct
 
 from fit_tool.base_type import BaseType
+from fit_tool.components import expand_message_components
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
@@ -22,12 +23,15 @@ from fit_tool.fit_file_header import FitFileHeader, ProfileVersion, ProtocolVers
 from fit_tool.profile.messages.field_description_message import FieldDescriptionMessage
 from fit_tool.record import Record, RecordHeader
 from fit_tool.wire.model import (
+    FitDocument,
     FitSegment,
     RawDataRecord,
     RawDefinitionRecord,
     RawFileHeader,
     RawRecord,
 )
+
+_TIMESTAMP_FIELD_ID = 253
 
 
 def project_header(raw: RawFileHeader) -> FitFileHeader:
@@ -95,6 +99,8 @@ def project_definition_record(raw: RawDefinitionRecord) -> Record:
 def project_data_record(
         raw: RawDataRecord,
         developer_fields_by_data_index: dict[int, dict[int, DeveloperField]],
+        *,
+        accumulators: dict[tuple[int, int], int] | None = None,
 ) -> Record:
     """Project a wire data record to a typed DataMessage wrapped in a Record."""
     header = record_header_from_raw(raw.header)
@@ -127,7 +133,27 @@ def project_data_record(
         ) from exc
 
     message.local_id = raw.local_id
+
+    if raw.resolved_timestamp is not None:
+        _apply_resolved_timestamp(message, raw.resolved_timestamp)
+
+    if accumulators is not None:
+        expand_message_components(message, accumulators)
+    else:
+        expand_message_components(message)
+
     return Record(header, message)
+
+
+def _apply_resolved_timestamp(message: DataMessage, timestamp: int) -> None:
+    """Inject a reconstructed FIT date_time into field 253 when present."""
+    field = message.get_field(_TIMESTAMP_FIELD_ID)
+    if field is None:
+        return
+    if field.size == 0:
+        field.size = field.base_type.size
+        field.encoded_values = [None]
+    field.set_encoded_value(0, timestamp, check_validity=False)
 
 
 def register_developer_field(
@@ -167,21 +193,40 @@ def register_developer_field(
 _register_developer_field = register_developer_field
 
 
-def project_segment(segment: FitSegment) -> list[Record]:
+def project_segment(
+        segment: FitSegment,
+        *,
+        accumulators: dict[tuple[int, int], int] | None = None,
+) -> list[Record]:
     """Project all wire records in a segment to compatibility Records."""
     records: list[Record] = []
     developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = {}
+    if accumulators is None:
+        accumulators = {}
 
     for raw in segment.records:
         if isinstance(raw, RawDefinitionRecord):
             record = project_definition_record(raw)
         elif isinstance(raw, RawDataRecord):
-            record = project_data_record(raw, developer_fields_by_data_index)
+            record = project_data_record(
+                raw,
+                developer_fields_by_data_index,
+                accumulators=accumulators,
+            )
             register_developer_field(record, developer_fields_by_data_index)
         else:
             raise FitRecordError(f'Unsupported wire record type: {type(raw)!r}')
         records.append(record)
 
+    return records
+
+
+def project_document(document: FitDocument) -> list[Record]:
+    """Project every segment of a (possibly chained) document into one record list."""
+    records: list[Record] = []
+    accumulators: dict[tuple[int, int], int] = {}
+    for segment in document.segments:
+        records.extend(project_segment(segment, accumulators=accumulators))
     return records
 
 

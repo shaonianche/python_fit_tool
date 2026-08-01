@@ -11,13 +11,14 @@ Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
   ambiguous native subfields). DOMAIN and FULL add data-driven native base-type
   and closed-enum checks from the gen-exported field catalog (design doc §3.1 O1).
   FULL is **opt-in**, never the default for ``strict=True`` / :data:`DEFAULT_LEVELS`.
-* **FILE_TYPE** — ``file_id`` rules and Activity required messages/fields
+* **FILE_TYPE** — ``file_id`` rules plus required messages/fields for
+  **Activity**, **Workout**, and **Course**
 * **PRESERVATION** — opt-in checks for post-edit rewrite loss (e.g. unknown
   field ``raw_bytes`` cleared). Not part of default / strict levels.
 
-File-type rules are implemented only for **Activity**. Other ``file_id.type``
-values fail closed at the FILE_TYPE level (intentional until more validators
-exist).
+File-type rules are implemented for Activity, Workout, and Course
+(:data:`IMPLEMENTED_FILE_TYPES`). Other ``file_id.type`` values fail closed at
+the FILE_TYPE level (intentional until more validators exist).
 """
 
 from __future__ import annotations

@@ -53,14 +53,17 @@ FIT_JS_SDK_PATH=../fit-javascript-sdk \
 
 See also the README section **Run Garmin SDK interoperability tests**.
 
-## Gap inventory (protocol / Stage 2 topics)
+## Gap inventory (protocol / SHA-12 topics)
 
-Maps known conformance gaps to fixtures or constructive tests. Stage-2 work
-(C/D/E) should promote `xfail` cases rather than invent new silent skips.
+Maps protocol topics to fixtures or constructive tests after Stages 1–4
+(C–J). Prefer promoting known-gap `xfail` cases over inventing silent skips.
+User-facing Supported/Partial claims live in the repository `README.md`
+capability matrix; residual §11 blockers are in
+[`docs/FIT_CONFORMANCE_DESIGN.md`](../../../docs/FIT_CONFORMANCE_DESIGN.md) §11.
 
 | Gap / topic | Status today | Fixture or generator | Primary tests | Stage |
 | --- | --- | --- | --- | --- |
-| Compressed timestamp offset + rollover | Supported | Constructive + unit helpers | `test_protocol_high_severity.py` | done |
+| Compressed timestamp offset + rollover | Supported (decode → field 253) | Constructive + unit helpers | `test_protocol_high_severity.py` | done |
 | Chained multi-segment FIT | Supported | Constructive (`segment + segment`) | `test_protocol_high_severity.TestChainedAndTrailing` | done |
 | Trailing bytes after last segment | Supported (`allow_trailing_bytes`) | Constructive | same | done |
 | Component: `compressed_speed_distance` | Supported (Profile registry) | Constructive wire + in-memory | `test_protocol_high_severity.TestComponents`, `test_components.py`, `test_protocol_gap_fixtures` | C done |
@@ -68,20 +71,20 @@ Maps known conformance gaps to fixtures or constructive tests. Stage-2 work
 | Component: 16-bit / 8-bit / 12-bit accumulator **rollover** | Supported | Constructive expansion helper | `test_components.py`, `test_protocol_gap_fixtures` | C done |
 | Nested components (e.g. speed → enhanced_speed) | Supported | Constructive | `test_components.py` | C done |
 | Full Profile **main-field** component set | Supported (37/37 sources, generated registry) | `fit_tool/profile/component_registry.py` | `test_components.TestRegistryCoverage` | C done |
-| Subfield-gated components (event sport_point, etc.) | **Gap** (needs D) | deferred | Stage 2 D | D |
+| Subfield-gated components (event sport_point, etc.) | **Supported** (active subfield via D) | Constructive / unit | `test_components`, `test_subfields` | D done |
 | Unknown **global** messages | Partial (`GenericMessage`) | Device/SDK files with odd IDs; wire decode | `test_wire.py`, SDK smokes | E |
-| Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes` on decode; unedited preserve ok) | Constructive definition + data | `test_protocol_gap_fixtures` | E |
-| Subfields (e.g. `workout_step.duration_value`) | **Supported** (ref match + scale/units; multi-ref AND; PROFILE ERROR on ambiguity) | Constructive workout step | `test_subfields`, `test_protocol_gap_fixtures` | D |
+| Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes`; unedited + post-edit preserve when not mutated) | Constructive definition + data | `test_protocol_gap_fixtures`, `test_post_edit_preservation` | E/F done |
+| Subfields (e.g. `workout_step.duration_value`) | **Supported** (ref match + scale/units; multi-ref AND; PROFILE ERROR on ambiguity) | Constructive workout step | `test_subfields`, `test_protocol_gap_fixtures` | D done |
 | Developer fields (common patterns) | Supported | `sdk/DeveloperData.fit`, `activity_developerdata.fit` | `test_sdk_files.py`, `test_developer_fields.py` | — |
 | Header CRC (14-byte / extended) | Supported | Constructive | `test_protocol_high_severity.TestHeaderCRC` | done |
 | File CRC | Supported | All CRC-checked loads | suite-wide | done |
-| Post-edit PRESERVATION | **Gap** | Untouched preserve tests only | `test_protocol_high_severity.TestPreservationEncode` | F |
-| FILE_TYPE Workout / Course rules | **Gap** (not Stage 1) | Builder examples / later | deferred | I/J |
-| Full PROFILE validation | **Gap** | deferred | deferred | H |
+| Post-edit PRESERVATION | **Supported** (dirty records + mixed encode; opt-in PRESERVATION level) | Constructive | `test_post_edit_preservation`, encode policy tests | F done |
+| Encode modes PRESERVE / CANONICAL | **Supported** | Constructive | `test_encode_policies` | G done |
+| FILE_TYPE Activity / Workout / Course | **Supported** for those three; other types fail closed | SDK Activity/Workout + Course builders | `test_validation`, `test_workout_files`, `test_course_files` | I/J done |
+| PROFILE scopes CORE / DOMAIN / FULL | **Partial** (CORE default; DOMAIN/FULL = base-type + closed-enum; no native required/units yet) | Gen `field_catalog` + constructive | `test_profile_scope`, `test_validation` | H done (scoped) |
 
-Legend: **Gap** = behavior incomplete or incorrect relative to design doc;
-constructive tests may assert current behavior and mark the desired semantics
-with `@pytest.mark.xfail(strict=True, reason='… Stage N …')`.
+Legend: rows marked **Partial** or residual §11 items are incomplete relative to
+full design-doc DoD, not relative to the closed Multica stage letter.
 
 ## Adding fixtures
 

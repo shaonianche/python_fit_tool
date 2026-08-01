@@ -23,15 +23,30 @@ package already implements. Profile version in use: `21.205.0` (see
 
 | Status | Capabilities |
 | --- | --- |
-| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **encode modes** `EncodeMode.PRESERVE` (default; unedited bit-identical + post-edit dirty re-project) and `EncodeMode.CANONICAL` (full re-project, normalized sizes/CRCs; optional `strict=True` precheck) — see [Encode policies](#encode-policies) |
-| **Partial** | Unknown global messages via `GenericMessage` (readable; unedited preserve keeps wire bytes; post-edit re-encodes dirty records only); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + **Activity, Workout, and Course** FILE_TYPE levels — **PROFILE validation is CORE today** (developer-field subset + **ambiguous subfield** ERROR); opt-in **PRESERVATION** level reports unknown-field `raw_bytes` loss after edits; architecture decision **O1** keeps bundled `Profile.xlsx` as the full metadata source of truth with future DOMAIN/FULL scopes (FULL opt-in, not default strict) — see [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3.1; Builder `strict=True` is a thin wrapper over the same checks (WIRE+PROFILE+FILE_TYPE only) |
-| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units beyond subfield scale/units); file-type rules for types other than Activity/Workout/Course (FILE_TYPE fails closed for remaining types); intentional `repair()` API (strict path never silent-repairs); bit-identical rewrite of compressed-timestamp dirty records when field 253 is not on the definition (strict raises; non-strict keeps compressed header) |
+| **Supported** | Common Activity / Workout / Course read-write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **encode modes** `EncodeMode.PRESERVE` (default; unedited bit-identical + post-edit dirty re-project) and `EncodeMode.CANONICAL` (full re-project, normalized sizes/CRCs; optional `strict=True` precheck) — see [Encode policies](#encode-policies) |
+| **Partial** | Unknown global messages via `GenericMessage` (readable; unedited preserve keeps wire bytes; post-edit re-encodes dirty records only); composable validation (`validate_fit_file` / `FitFile.validate`) with **WIRE** + **PROFILE** + **FILE_TYPE** (Activity / Workout / Course) and opt-in **PRESERVATION**; **PROFILE scopes** under O1 (`ProfileScope.CORE` default for `strict` / `DEFAULT_LEVELS`: developer-field rules + ambiguous-subfield ERROR; **DOMAIN** / **FULL** opt-in: native base-type + closed-enum checks from gen-exported `field_catalog` for high-frequency vs entire Profile.xlsx `21.205.0` catalog) — see [Validate FIT files](#validate-fit-files) and design doc §3.1; Builder `strict=True` wraps WIRE+PROFILE+FILE_TYPE at **CORE** only |
+| **Not supported / incomplete** | Remaining PROFILE rule families (native **required** fields, units/scale consistency beyond subfield scale/units, open/ranged enums as ERROR); FILE_TYPE for types other than Activity/Workout/Course (fails closed); intentional `repair()` API (strict path never silent-repairs); bit-identical rewrite of compressed-timestamp dirty records when field 253 is not on the definition (strict raises; non-strict keeps compressed header); public `FitDocument` / multi-segment encode API; full Garmin SDK cross-validation as a release gate |
+
+### What this library still does not claim
+
+Until design-doc [§11 Definition of Done](docs/FIT_CONFORMANCE_DESIGN.md#11-definition-of-done) is met with evidence, do **not** describe the package as “full Garmin FIT / Profile conformant.” Prefer:
+
+- “Supports common Activity / Workout / Course workflows”
+- “PROFILE validation defaults to CORE; DOMAIN/FULL are opt-in”
+- “FILE_TYPE validates Activity, Workout, and Course only”
+
+**Non-goals** (by design, not just unfinished work):
+
+- Reproducing undocumented Garmin Connect acceptance heuristics
+- Silent repair of corrupt files on the strict path
+- Treating every Garmin best-practice note as a wire ERROR
+- Replacing generated typed message classes as the ergonomic public API
+
+**Residuals** that still block §11 marketing claims (honest backlog, not this matrix’s “Supported” row): other standard file types, remaining PROFILE rule families, broader interop/golden corpus, compressed-timestamp encode parity, and performance/API migration items in design-doc Phases 1–5. See the design doc **Remaining gaps** / §11 residual checklist.
 
 If you need a construct listed as incomplete, prefer an official Garmin SDK or
-wait for the phased work in the design doc (including the **Remaining gaps**
-table in [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md)).
-Architecture reviews should judge this package against the matrix above, not
-against full protocol conformance.
+track follow-up work against the design doc. Architecture reviews should judge
+this package against the matrix above, not against full protocol conformance.
 
 Installation
 ==================
@@ -243,6 +258,10 @@ fit_file.validate(raise_on_error=True)
 # Wire-only (e.g. after decode, without file-type rules)
 validate_fit_file(fit_file, levels={ConformanceLevel.WIRE})
 
+# Opt-in PROFILE DOMAIN / FULL (native base-type + closed-enum; never default strict)
+from fit_tool import ProfileScope
+validate_fit_file(fit_file, profile_scope=ProfileScope.FULL)
+
 # Opt-in post-edit rewrite-loss checks (unknown field raw_bytes, etc.)
 validate_fit_file(fit_file, levels={ConformanceLevel.PRESERVATION})
 ```
@@ -324,9 +343,12 @@ Committed samples live under [`fit_tool/tests/data/`](fit_tool/tests/data/). See
 [`fit_tool/tests/data/README.md`](fit_tool/tests/data/README.md) for:
 
 - layout of `sdk/`, `interop/`, and device smokes;
-- a **gap inventory** mapping Stage-2 topics (components, subfields, unknown fields,
-  multi-segment) to constructive helpers or fixtures;
+- a **gap inventory** mapping protocol topics (components, subfields, unknown
+  fields, encode/FILE_TYPE/PROFILE scopes) to constructive helpers or fixtures;
 - how to obtain additional Garmin SDK samples when licensing allows.
+
+Epic-level release narrative (next version bump):  
+[`docs/EPIC_SHA12_RELEASE_NOTES.md`](docs/EPIC_SHA12_RELEASE_NOTES.md).
 
 Prefer constructive builders in `fit_tool/tests/protocol_fixture_helpers.py` over
 new large binary dumps. Known incomplete semantics are pinned with explicit

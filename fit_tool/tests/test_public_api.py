@@ -47,10 +47,10 @@ class TestPublicApi(unittest.TestCase):
             self.assertTrue(hasattr(fit_tool, name))
 
     def test_deep_imports_remain_supported(self) -> None:
+        from fit_tool import FitCRCError, FitFile, FitFileBuilder
         from fit_tool.exceptions import FitCRCError as DeepFitCRCError
         from fit_tool.fit_file import FitFile as DeepFitFile
         from fit_tool.fit_file_builder import FitFileBuilder as DeepFitFileBuilder
-        from fit_tool import FitCRCError, FitFile, FitFileBuilder
 
         self.assertIs(FitFile, DeepFitFile)
         self.assertIs(FitFileBuilder, DeepFitFileBuilder)

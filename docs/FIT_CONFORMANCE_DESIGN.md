@@ -17,7 +17,7 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Header CRC** (14-byte headers, gated by `check_crc`) | Supported | Keep strict; no silent repair |
 | **Chained multi-segment** FIT decode via `FitFile.from_bytes` / `from_file` (all segments projected into `records`) | Supported | Full `FitDocument` / segment API remains the long-term surface (§4–5) |
 | **Compressed timestamp** reconstruction into field 253 (wire decoder + projection) | Supported | Encode compressed headers still optional / canonical path |
-| **Component expansion** for known packed fields (hand-maintained registry, e.g. `compressed_speed_distance`) | Partial | Full Profile components, nested components, accumulators (Phase 3) |
+| **Component expansion** for all Profile **main-field** sources (generated registry, nested expansion, accumulators) | Supported (main fields; subfield-gated components still open) | Subfield-gated components with subfield selection (Phase 3 / Multica D) |
 | **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded, **unedited** files (`wire_document` intact) | Supported | Post-edit PRESERVATION and unknown-field rewrite (Phases 3–4) |
 | Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer-field subset) + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile field/enum/units/subfields; Workout/Course FILE_TYPE; PRESERVATION level |
 | Full PROFILE semantics (native required fields, enums, units, **subfields**); post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
@@ -37,7 +37,7 @@ stable keys, later letters are stage placeholders until children are created.
 | Gap | Design doc | Multica | Notes |
 | --- | --- | --- | --- |
 | Fixture / golden corpus for remaining protocol edges | Phase 0 | **B** SHA-14 | Stage 1; coordinate with this status table |
-| Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | Stage 2 |
+| Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | Stage 2 — main-field registry + nested + rollover done; subfield-gated components remain with D |
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | Stage 2 |
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** (SHA-12 stage 3; child TBD) | Unedited preserve path already works |
@@ -677,11 +677,11 @@ Compressed encode and full Garmin bidirectional golden coverage remain.
 
 Exit: Profile-level golden corpus and Garmin cross-validation pass.
 
-**Progress (partial):** small hand-maintained component registry expands a few
-record packed fields. Unknown field ids on known messages are retained as
-`UnknownField` with `raw_bytes` (Stage 2 E). Subfields, full
-components/accumulators, and full PROFILE validation remain Multica C–D / H
-(stages 2 and 4).
+**Progress (partial):** generated Profile main-field component registry (37/37
+sources) expands packed fields with nested components and accumulator rollover
+at decode time. Unknown field ids on known messages are retained as
+`UnknownField` with `raw_bytes` (Stage 2 E). Subfield-gated components,
+subfields, and full PROFILE validation remain Multica D / H (stages 2 and 4).
 
 ### Phase 4: strict encoder and file validators
 

@@ -34,6 +34,10 @@ this package against the matrix above, not against full protocol conformance.
 Installation
 ==================
 
+The runtime library and `fit-tool` CLI have no third-party dependencies.
+Optional packages are only needed for profile generation (maintainers regenerating
+code from the Garmin Profile spreadsheet).
+
 ### Using uv (recommended)
 
 ```bash
@@ -46,6 +50,33 @@ uv add fit-tool
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade fit-tool
 ```
+
+### Profile generation tooling (optional)
+
+Regenerating `fit_tool/profile/` from the Garmin Profile spreadsheet requires the
+`gen` extra (`openpyxl`, `inflection`, `jinja2`):
+
+```bash
+# pip
+python3 -m pip install 'fit-tool[gen]'
+
+# uv (published package)
+uv add 'fit-tool[gen]'
+
+# local checkout (dev group already includes gen deps for the full test suite)
+uv sync --group dev
+# or, without the full dev toolchain:
+uv sync --extra gen
+```
+
+Then run:
+
+```bash
+uv run gen-profile
+```
+
+Without the gen extra, `gen-profile` exits with an install hint. End users who
+only read/write FIT files do not need these packages.
 
 Command line interface
 =======================

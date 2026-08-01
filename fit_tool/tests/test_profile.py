@@ -5,6 +5,8 @@ import sys
 import unittest
 from pathlib import Path
 
+import pytest
+
 from fit_tool import SDK_VERSION
 from fit_tool.field import ArrayType
 from fit_tool.gen import profile as profile_module
@@ -16,6 +18,9 @@ from fit_tool.profile.messages.record_message import RecordMessage
 class TestFitFile(unittest.TestCase):
 
     def test_profile(self):
+        # Spreadsheet loading needs openpyxl from the optional [gen] extra.
+        pytest.importorskip("openpyxl")
+
         gen_dir = Path(profile_module.__file__).resolve().parent
         expected = gen_dir / f'Profile_{SDK_VERSION}.xlsx'
         self.assertTrue(

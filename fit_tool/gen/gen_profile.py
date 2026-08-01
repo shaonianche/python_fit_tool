@@ -8,6 +8,7 @@ from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType
 from fit_tool.field import Field
 from fit_tool.gen.component_registry import write_component_registry
+from fit_tool.gen.field_catalog import write_field_catalog
 from fit_tool.gen.profile import Message, Profile
 
 DEFAULT_BUILD_PATH = str(Path(__file__).resolve().parents[1])
@@ -314,6 +315,14 @@ def main():
     component_registry_path = os.path.join(profile_path, 'component_registry.py')
     write_component_registry(
         component_registry_path,
+        xlsx_path=xlsx_filename,
+        sdk_version=SDK_VERSION,
+    )
+
+    # Native field + closed-enum catalog for PROFILE DOMAIN/FULL (Stage 4 H / O1).
+    field_catalog_path = os.path.join(profile_path, 'field_catalog.py')
+    write_field_catalog(
+        field_catalog_path,
         xlsx_path=xlsx_filename,
         sdk_version=SDK_VERSION,
     )

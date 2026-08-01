@@ -23,9 +23,11 @@ class TestPublicApi(unittest.TestCase):
             FitParseError,
             FitRecordError,
             FitValidationError,
+            ProfileScope,
             Severity,
             ValidationFinding,
             ValidationReport,
+            profile_rule_coverage,
             validate_fit_file,
         )
 
@@ -49,6 +51,9 @@ class TestPublicApi(unittest.TestCase):
         self.assertEqual(EncodeMode.PRESERVE.value, 'preserve')
         self.assertEqual(EncodeMode.CANONICAL.value, 'canonical')
         self.assertIsInstance(EncodeOptions(), EncodeOptions)
+        self.assertEqual(ProfileScope.CORE.value, 'core')
+        self.assertEqual(ProfileScope.FULL.value, 'full')
+        self.assertTrue(callable(profile_rule_coverage))
 
     def test_package_all_matches_api_surface(self) -> None:
         import fit_tool

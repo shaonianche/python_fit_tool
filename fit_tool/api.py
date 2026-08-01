@@ -30,9 +30,11 @@ from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.validation import (
     ConformanceLevel,
+    ProfileScope,
     Severity,
     ValidationFinding,
     ValidationReport,
+    profile_rule_coverage,
     validate_fit_file,
 )
 
@@ -49,8 +51,10 @@ __all__ = [
     'EncodeMode',
     'EncodeOptions',
     'ConformanceLevel',
+    'ProfileScope',
     'Severity',
     'ValidationFinding',
     'ValidationReport',
+    'profile_rule_coverage',
     'validate_fit_file',
 ]

@@ -24,7 +24,7 @@ from fit_tool.wire.encoder import encode_document, encode_document_mixed
 from fit_tool.wire.model import FitDocument
 
 if TYPE_CHECKING:
-    from fit_tool.validation import ConformanceLevel, ValidationReport
+    from fit_tool.validation import ConformanceLevel, ProfileScope, ValidationReport
 
 # Sentinel so explicit ``check_crc=True`` can override ``options.check_crc=False``
 # (a bare default of True is indistinguishable from "caller omitted the kwarg").
@@ -407,6 +407,7 @@ class FitFile:
         self,
         levels: Iterable[ConformanceLevel] | None = None,
         *,
+        profile_scope: ProfileScope | None = None,
         raise_on_error: bool = False,
     ) -> ValidationReport:
         """Validate this file at selected conformance levels.
@@ -417,8 +418,14 @@ class FitFile:
         or include :attr:`~fit_tool.validation.ConformanceLevel.PRESERVATION`
         for opt-in post-edit rewrite-loss findings.
 
+        ``profile_scope`` selects PROFILE depth (CORE default; DOMAIN/FULL opt-in).
         See :func:`~fit_tool.validation.validate_fit_file` for details.
         """
         from fit_tool.validation import validate_fit_file
 
-        return validate_fit_file(self, levels=levels, raise_on_error=raise_on_error)
+        return validate_fit_file(
+            self,
+            levels=levels,
+            profile_scope=profile_scope,
+            raise_on_error=raise_on_error,
+        )

@@ -81,6 +81,8 @@ class {{class_name}}(DataMessage):
         {%- endfor %}
         ])
         message.growable = False
+        # Keep definition field ids not present in the Profile schema (Stage 2 E).
+        message.retain_unknown_fields()
         return message
 
     @classmethod

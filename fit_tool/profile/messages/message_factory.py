@@ -161,5 +161,9 @@ class MessageFactory:
             return GenericMessage.from_definition(
                 definition_message, developer_fields=developer_fields)
 
-        return message_class.from_definition(
+        # Typed from_definition also calls retain_unknown_fields; keep a second
+        # guard here so factory-only changes stay correct if templates diverge.
+        message = message_class.from_definition(
             definition_message, developer_fields=developer_fields)
+        message.retain_unknown_fields()
+        return message

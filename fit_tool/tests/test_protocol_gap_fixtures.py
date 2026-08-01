@@ -1,8 +1,8 @@
 """Golden / constructive fixtures for Stage-2 protocol gaps (Phase 0 characterize).
 
-See ``fit_tool/tests/data/README.md`` for the gap inventory. These tests document
-current behavior and pin desired semantics with ``xfail`` until components (C),
-subfields (D), and unknown-field preservation (E) land. No unexplained skips.
+See ``fit_tool/tests/data/README.md`` for the gap inventory. Unknown-field
+preservation (E) is implemented; component (C) and subfield (D) cases may still
+use ``xfail`` until those stages land. No unexplained skips.
 """
 
 from __future__ import annotations
@@ -103,7 +103,7 @@ class TestUnknownFieldOnKnownMessage(unittest.TestCase):
         field_ids = [fd.field_id for fd in definition.field_definitions]
         self.assertEqual(field_ids, [253, self.UNKNOWN_ID, 3])
 
-    def test_projection_skips_unknown_field_but_keeps_known(self):
+    def test_projection_retains_unknown_and_known_fields(self):
         raw = build_record_with_unknown_field(
             unknown_field_id=self.UNKNOWN_ID,
             unknown_value=self.UNKNOWN_VALUE,
@@ -112,8 +112,9 @@ class TestUnknownFieldOnKnownMessage(unittest.TestCase):
         fit = FitFile.from_bytes(raw)
         message = next(r.message for r in fit.records if not r.header.is_definition)
         self.assertIsInstance(message, RecordMessage)
-        # Current behavior: unknown native field is not projected onto the message.
-        self.assertIsNone(message.get_field(self.UNKNOWN_ID))
+        unknown = message.get_field(self.UNKNOWN_ID)
+        assert unknown is not None
+        self.assertEqual(unknown.get_value(), self.UNKNOWN_VALUE)
         hr = message.get_field(3)
         assert hr is not None
         self.assertEqual(hr.get_value(), 120)
@@ -130,11 +131,9 @@ class TestUnknownFieldOnKnownMessage(unittest.TestCase):
         fit = FitFile.from_bytes(raw)
         self.assertEqual(fit.to_bytes(preserve=True), raw)
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason='Stage 2 E: project unknown field ids as retained values on known messages',
-    )
     def test_projected_message_exposes_unknown_field_value(self):
+        from fit_tool.field import UnknownField
+
         raw = build_record_with_unknown_field(
             unknown_field_id=self.UNKNOWN_ID,
             unknown_value=self.UNKNOWN_VALUE,
@@ -143,7 +142,31 @@ class TestUnknownFieldOnKnownMessage(unittest.TestCase):
         message = next(r.message for r in fit.records if not r.header.is_definition)
         unknown = message.get_field(self.UNKNOWN_ID)
         assert unknown is not None
+        self.assertIsInstance(unknown, UnknownField)
+        self.assertTrue(unknown.is_unknown)
         self.assertEqual(unknown.get_value(), self.UNKNOWN_VALUE)
+        self.assertEqual(unknown.name, f'unknown_{self.UNKNOWN_ID}')
+        # Raw wire slice held for later PRESERVATION rewrite (Stage 3 F).
+        self.assertEqual(unknown.raw_bytes, self.UNKNOWN_VALUE.to_bytes(2, 'little'))
+
+    def test_reencode_without_preserve_keeps_unknown_payload(self):
+        """Projected re-encode (no wire_document) still emits unknown field bytes."""
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+            heart_rate=99,
+        )
+        fit = FitFile.from_bytes(raw)
+        fit.mark_dirty()
+        rebuilt = fit.to_bytes(preserve=False)
+        again = FitFile.from_bytes(rebuilt)
+        message = next(r.message for r in again.records if not r.header.is_definition)
+        unknown = message.get_field(self.UNKNOWN_ID)
+        assert unknown is not None
+        self.assertEqual(unknown.get_value(), self.UNKNOWN_VALUE)
+        hr = message.get_field(3)
+        assert hr is not None
+        self.assertEqual(hr.get_value(), 99)
 
 
 class TestSubfieldBearingMessage(unittest.TestCase):

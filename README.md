@@ -114,12 +114,54 @@ See [Capability boundary](#capability-boundary) for what works today. The
 strict-conformance roadmap (target architecture, not current guarantees) is in
 [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
 
+### Public API
+
+Application code should import the stable surface from the package root:
+
+```python
+from fit_tool import (
+    FitFile,
+    FitFileBuilder,
+    FitError,
+    FitParseError,
+    FitCRCError,
+    FitValidationError,
+    PROTOCOL_VERSION,
+    SDK_VERSION,
+)
+```
+
+| Symbol | Role |
+| --- | --- |
+| `FitFile` | Load, inspect, stream, and serialize FIT files |
+| `FitFileBuilder` | Build FIT files from messages |
+| `FitError` and subclasses | Typed errors for parse, CRC, encode, and validation failures |
+| `PROTOCOL_VERSION`, `SDK_VERSION`, `FIT_DATA_TYPE` | Bundled protocol/profile version metadata |
+
+The same symbols are defined in `fit_tool.api` and re-exported by `fit_tool`.
+
+**Profile messages** (generated types such as `RecordMessage`, `FileIdMessage`) are
+not re-exported at the package root. Import them by module path:
+
+```python
+from fit_tool.profile.messages.file_id_message import FileIdMessage
+from fit_tool.profile.messages.record_message import RecordMessage
+from fit_tool.profile.profile_type import FileType, Sport
+```
+
+Naming convention: message module is the snake_case form of the class
+(`record_message` → `RecordMessage`), under `fit_tool.profile.messages`.
+
+**Compatibility:** deep imports such as `from fit_tool.fit_file import FitFile`
+remain supported. Prefer the package-root form for new code. No deep-import paths
+are removed in this release; future deprecations will be announced in the changelog.
+
 ### Minimal read/convert example
 
 ```python
 from pathlib import Path
 
-from fit_tool.fit_file import FitFile
+from fit_tool import FitFile
 
 root = Path.cwd()
 in_file = root / "fit_tool" / "tests" / "data" / "sdk" / "Activity.fit"
@@ -136,7 +178,7 @@ fit_file.to_csv(str(out_file))
 record-by-record processing, use the streaming iterator to keep memory usage bounded:
 
 ```python
-from fit_tool.fit_file import FitFile
+from fit_tool import FitFile
 
 for record in FitFile.iter_file("activity.fit"):
     process(record)
@@ -152,7 +194,7 @@ Use strict mode to additionally validate Developer Field declarations, `file_id`
 cardinality before bytes are produced:
 
 ```python
-from fit_tool.fit_file_builder import FitFileBuilder
+from fit_tool import FitFileBuilder
 
 builder = FitFileBuilder(strict=True)
 builder.add_all(messages)

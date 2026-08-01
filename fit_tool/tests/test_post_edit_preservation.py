@@ -46,6 +46,35 @@ class TestPostEditPreservation(unittest.TestCase):
         # Structural wire snapshot retained for mixed preserve.
         self.assertIsNotNone(fit.wire_document)
 
+    def test_clearing_field_via_none_marks_dirty_and_removes_value(self):
+        """Codex P1: generated setters use Field.clear() for None assignments."""
+        raw = build_record_with_unknown_field(
+            unknown_field_id=self.UNKNOWN_ID,
+            unknown_value=self.UNKNOWN_VALUE,
+            heart_rate=120,
+        )
+        fit = FitFile.from_bytes(raw)
+        data = next(r for r in fit.records if not r.is_definition)
+        assert isinstance(data.message, RecordMessage)
+        self.assertEqual(data.message.heart_rate, 120)
+
+        data.message.heart_rate = None  # type: ignore[assignment]
+
+        self.assertTrue(data.dirty)
+        self.assertTrue(fit.has_dirty_records())
+        self.assertIsNone(data.message.heart_rate)
+
+        out = fit.to_bytes(preserve=True)
+        again = FitFile.from_bytes(out)
+        message = next(r.message for r in again.records if not r.is_definition)
+        assert isinstance(message, RecordMessage)
+        # Cleared field must not reappear with the old wire value (120).
+        # Slot is re-emitted as protocol-invalid so the definition still matches.
+        self.assertNotEqual(message.heart_rate, 120)
+        unknown = message.get_field(self.UNKNOWN_ID)
+        assert unknown is not None
+        self.assertEqual(unknown.get_value(), self.UNKNOWN_VALUE)
+
     def test_edit_one_field_unknown_field_bytes_survive(self):
         raw = build_record_with_unknown_field(
             unknown_field_id=self.UNKNOWN_ID,

@@ -213,7 +213,8 @@ class DataMessage(Message):
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise FitEncodingError(f'Field for id: {field_definition.field_id} is not valid.')
+                    # Cleared field still listed on definition — CSV gets empty cells.
+                    row.extend([''] * max(1, field_definition.size // max(field.base_type.size, 1)))
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = developer_fields_by_id.get(
@@ -228,7 +229,7 @@ class DataMessage(Message):
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise FitEncodingError(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    row.extend([''] * max(1, field_definition.size // max(field.base_type.size, 1)))
 
         else:
             for field in self.fields:
@@ -261,7 +262,15 @@ class DataMessage(Message):
                 if field.is_valid():
                     bytes_buffer.extend(field.to_bytes(endian=self.endian))
                 else:
-                    raise FitEncodingError(f'Field for id: {field_definition.field_id} is not valid.')
+                    # Cleared fields (e.g. property set to None → Field.clear()) stay
+                    # listed on the definition until it is rewritten. Emit invalid
+                    # bytes of the definition size so encode still succeeds.
+                    bytes_buffer.extend(
+                        field.invalid_bytes_for_definition_size(
+                            field_definition.size,
+                            endian=self.endian,
+                        )
+                    )
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = developer_fields_by_id.get(
@@ -275,7 +284,12 @@ class DataMessage(Message):
                 if field.is_valid():
                     bytes_buffer.extend(field.to_bytes(endian=self.endian))
                 else:
-                    raise FitEncodingError(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    bytes_buffer.extend(
+                        field.invalid_bytes_for_definition_size(
+                            field_definition.size,
+                            endian=self.endian,
+                        )
+                    )
 
         else:
             for field in self.fields:

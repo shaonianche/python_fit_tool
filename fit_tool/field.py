@@ -163,6 +163,12 @@ class Field:
     def clear(self):
         self.size = 0
         self.encoded_values = []
+        # Generated property setters assign None via clear() rather than
+        # set_encoded_value(); still mark the owning Record dirty so
+        # preserve=True re-encodes instead of replaying stale source_bytes.
+        dirty_host = getattr(self, '_dirty_host', None)
+        if dirty_host is not None:
+            dirty_host()
 
     def is_valid(self) -> bool:
         return self.size != 0
@@ -413,6 +419,32 @@ class Field:
         bytes_buffer = bytes_buffer.ljust(self.size, b'\0')
 
         return bytes_buffer
+
+    def invalid_bytes_for_definition_size(
+            self,
+            size: int,
+            endian: Endian = Endian.LITTLE,
+    ) -> bytes:
+        """Emit protocol-invalid payload matching *size* (cleared field on wire).
+
+        Used when the field was cleared in memory (``size == 0``) but the active
+        definition still lists the field id — keeps definition and data aligned
+        after post-edit ``None`` assignment without rewriting the definition.
+        """
+        if size <= 0:
+            return b''
+        if self.base_type == BaseType.STRING:
+            return b'\x00' * size
+        element = max(self.base_type.size, 1)
+        count = size // element
+        rem = size % element
+        chunks = [
+            self.encoded_value_to_bytes(self.base_type.invalid_raw_value(), endian=endian)
+            for _ in range(count)
+        ]
+        if rem:
+            chunks.append(b'\x00' * rem)
+        return b''.join(chunks)
 
     def resolve_sub_field(self, fields: list) -> SubFieldResolution:
         """Resolve active subfield(s) from sibling field values (Profile order).

@@ -17,60 +17,119 @@ from typing import Dict as dict
 
 
 class HrvStatusSummaryMessage(DataMessage):
+    """HrvStatusSummaryMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``HrvStatusSummaryMessage()`` — create path: growable fields, no wire definition.
+    * ``HrvStatusSummaryMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 370
     NAME = 'hrv_status_summary'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=HrvStatusSummaryMessage.NAME,
                          global_id=HrvStatusSummaryMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryWeeklyAverageField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryWeeklyAverageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryLastNightAverageField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryLastNightAverageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryLastNight5MinHighField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryLastNight5MinHighField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryBaselineLowUpperField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryBaselineLowUpperField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryBaselineBalancedLowerField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryBaselineBalancedLowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryBaselineBalancedUpperField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryBaselineBalancedUpperField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrvStatusSummaryStatusField(
-            size=self.__get_field_size(definition_message, HrvStatusSummaryStatusField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        HrvStatusSummaryWeeklyAverageField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryWeeklyAverageField.ID),
+            growable=False), 
+        HrvStatusSummaryLastNightAverageField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryLastNightAverageField.ID),
+            growable=False), 
+        HrvStatusSummaryLastNight5MinHighField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryLastNight5MinHighField.ID),
+            growable=False), 
+        HrvStatusSummaryBaselineLowUpperField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryBaselineLowUpperField.ID),
+            growable=False), 
+        HrvStatusSummaryBaselineBalancedLowerField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryBaselineBalancedLowerField.ID),
+            growable=False), 
+        HrvStatusSummaryBaselineBalancedUpperField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryBaselineBalancedUpperField.ID),
+            growable=False), 
+        HrvStatusSummaryStatusField(
+            size=cls._field_size_from_definition(
+                definition_message, HrvStatusSummaryStatusField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

@@ -17,96 +17,203 @@ from typing import Dict as dict
 
 
 class SplitMessage(DataMessage):
+    """SplitMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``SplitMessage()`` — create path: growable fields, no wire definition.
+    * ``SplitMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 312
     NAME = 'split'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=SplitMessage.NAME,
                          global_id=SplitMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitSplitTypeField(
-            size=self.__get_field_size(definition_message, SplitSplitTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalElapsedTimeField(
-            size=self.__get_field_size(definition_message, SplitTotalElapsedTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalTimerTimeField(
-            size=self.__get_field_size(definition_message, SplitTotalTimerTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalDistanceField(
-            size=self.__get_field_size(definition_message, SplitTotalDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitAvgSpeedField(
-            size=self.__get_field_size(definition_message, SplitAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitStartTimeField(
-            size=self.__get_field_size(definition_message, SplitStartTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalAscentField(
-            size=self.__get_field_size(definition_message, SplitTotalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalDescentField(
-            size=self.__get_field_size(definition_message, SplitTotalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitStartPositionLatField(
-            size=self.__get_field_size(definition_message, SplitStartPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitStartPositionLongField(
-            size=self.__get_field_size(definition_message, SplitStartPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitEndPositionLatField(
-            size=self.__get_field_size(definition_message, SplitEndPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitEndPositionLongField(
-            size=self.__get_field_size(definition_message, SplitEndPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitMaxSpeedField(
-            size=self.__get_field_size(definition_message, SplitMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitAvgVertSpeedField(
-            size=self.__get_field_size(definition_message, SplitAvgVertSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitEndTimeField(
-            size=self.__get_field_size(definition_message, SplitEndTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalCaloriesField(
-            size=self.__get_field_size(definition_message, SplitTotalCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitStartElevationField(
-            size=self.__get_field_size(definition_message, SplitStartElevationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitActiveTimeField(
-            size=self.__get_field_size(definition_message, SplitActiveTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SplitTotalMovingTimeField(
-            size=self.__get_field_size(definition_message, SplitTotalMovingTimeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        SplitSplitTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitSplitTypeField.ID),
+            growable=False), 
+        SplitTotalElapsedTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalElapsedTimeField.ID),
+            growable=False), 
+        SplitTotalTimerTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalTimerTimeField.ID),
+            growable=False), 
+        SplitTotalDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalDistanceField.ID),
+            growable=False), 
+        SplitAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitAvgSpeedField.ID),
+            growable=False), 
+        SplitStartTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitStartTimeField.ID),
+            growable=False), 
+        SplitTotalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalAscentField.ID),
+            growable=False), 
+        SplitTotalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalDescentField.ID),
+            growable=False), 
+        SplitStartPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitStartPositionLatField.ID),
+            growable=False), 
+        SplitStartPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitStartPositionLongField.ID),
+            growable=False), 
+        SplitEndPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitEndPositionLatField.ID),
+            growable=False), 
+        SplitEndPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitEndPositionLongField.ID),
+            growable=False), 
+        SplitMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitMaxSpeedField.ID),
+            growable=False), 
+        SplitAvgVertSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitAvgVertSpeedField.ID),
+            growable=False), 
+        SplitEndTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitEndTimeField.ID),
+            growable=False), 
+        SplitTotalCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalCaloriesField.ID),
+            growable=False), 
+        SplitStartElevationField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitStartElevationField.ID),
+            growable=False), 
+        SplitActiveTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitActiveTimeField.ID),
+            growable=False), 
+        SplitTotalMovingTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SplitTotalMovingTimeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

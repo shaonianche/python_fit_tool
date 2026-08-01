@@ -17,72 +17,147 @@ from typing import Dict as dict
 
 
 class AviationAttitudeMessage(DataMessage):
+    """AviationAttitudeMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``AviationAttitudeMessage()`` — create path: growable fields, no wire definition.
+    * ``AviationAttitudeMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 178
     NAME = 'aviation_attitude'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=AviationAttitudeMessage.NAME,
                          global_id=AviationAttitudeMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeTimestampMsField(
-            size=self.__get_field_size(definition_message, AviationAttitudeTimestampMsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeSystemTimeField(
-            size=self.__get_field_size(definition_message, AviationAttitudeSystemTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudePitchField(
-            size=self.__get_field_size(definition_message, AviationAttitudePitchField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeRollField(
-            size=self.__get_field_size(definition_message, AviationAttitudeRollField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeAccelLateralField(
-            size=self.__get_field_size(definition_message, AviationAttitudeAccelLateralField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeAccelNormalField(
-            size=self.__get_field_size(definition_message, AviationAttitudeAccelNormalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeTurnRateField(
-            size=self.__get_field_size(definition_message, AviationAttitudeTurnRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeStageField(
-            size=self.__get_field_size(definition_message, AviationAttitudeStageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeAttitudeStageCompleteField(
-            size=self.__get_field_size(definition_message, AviationAttitudeAttitudeStageCompleteField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeTrackField(
-            size=self.__get_field_size(definition_message, AviationAttitudeTrackField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         AviationAttitudeValidityField(
-            size=self.__get_field_size(definition_message, AviationAttitudeValidityField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        AviationAttitudeTimestampMsField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeTimestampMsField.ID),
+            growable=False), 
+        AviationAttitudeSystemTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeSystemTimeField.ID),
+            growable=False), 
+        AviationAttitudePitchField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudePitchField.ID),
+            growable=False), 
+        AviationAttitudeRollField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeRollField.ID),
+            growable=False), 
+        AviationAttitudeAccelLateralField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeAccelLateralField.ID),
+            growable=False), 
+        AviationAttitudeAccelNormalField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeAccelNormalField.ID),
+            growable=False), 
+        AviationAttitudeTurnRateField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeTurnRateField.ID),
+            growable=False), 
+        AviationAttitudeStageField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeStageField.ID),
+            growable=False), 
+        AviationAttitudeAttitudeStageCompleteField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeAttitudeStageCompleteField.ID),
+            growable=False), 
+        AviationAttitudeTrackField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeTrackField.ID),
+            growable=False), 
+        AviationAttitudeValidityField(
+            size=cls._field_size_from_definition(
+                definition_message, AviationAttitudeValidityField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

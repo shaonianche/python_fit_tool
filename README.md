@@ -155,6 +155,25 @@ from fit_tool.profile.profile_type import FileType, Sport
 Naming convention: message module is the snake_case form of the class
 (`record_message` → `RecordMessage`), under `fit_tool.profile.messages`.
 
+**Construction paths** (do not pass a definition into `__init__`):
+
+| Mode | API | Use when |
+| --- | --- | --- |
+| Create / author | `RecordMessage()` | Writing new messages in a builder |
+| Project / decode | `RecordMessage.from_definition(definition, developer_fields=...)` | Applying a local definition (decode path) |
+
+`MessageFactory.from_definition` and the FitFile/wire projection path use the
+definition factory. Example authoring:
+
+```python
+from fit_tool.profile.messages.file_id_message import FileIdMessage
+from fit_tool.profile.profile_type import FileType, Manufacturer
+
+msg = FileIdMessage()
+msg.type = FileType.ACTIVITY
+msg.manufacturer = Manufacturer.DEVELOPMENT
+```
+
 **Compatibility:** deep imports such as `from fit_tool.fit_file import FitFile`
 remain supported. Prefer the package-root form for new code. No deep-import paths
 are removed in this release; future deprecations will be announced in the changelog.

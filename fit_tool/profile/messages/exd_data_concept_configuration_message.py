@@ -17,69 +17,140 @@ from typing import Dict as dict
 
 
 class ExdDataConceptConfigurationMessage(DataMessage):
+    """ExdDataConceptConfigurationMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``ExdDataConceptConfigurationMessage()`` — create path: growable fields, no wire definition.
+    * ``ExdDataConceptConfigurationMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 202
     NAME = 'exd_data_concept_configuration'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=ExdDataConceptConfigurationMessage.NAME,
                          global_id=ExdDataConceptConfigurationMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         ExdDataConceptConfigurationScreenIndexField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationScreenIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationConceptField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationFieldIdField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationFieldIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationConceptIndexField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationDataPageField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDataPageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationConceptKeyField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationConceptKeyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationScalingField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationScalingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationDataUnitsField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDataUnitsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationQualifierField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationQualifierField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationDescriptorField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationDescriptorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ExdDataConceptConfigurationIsSignedField(
-            size=self.__get_field_size(definition_message, ExdDataConceptConfigurationIsSignedField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        ExdDataConceptConfigurationScreenIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationScreenIndexField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationConceptField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationConceptField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationFieldIdField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationFieldIdField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationConceptIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationConceptIndexField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationDataPageField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationDataPageField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationConceptKeyField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationConceptKeyField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationScalingField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationScalingField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationDataUnitsField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationDataUnitsField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationQualifierField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationQualifierField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationDescriptorField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationDescriptorField.ID),
+            growable=False), 
+        ExdDataConceptConfigurationIsSignedField(
+            size=cls._field_size_from_definition(
+                definition_message, ExdDataConceptConfigurationIsSignedField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

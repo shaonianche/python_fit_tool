@@ -17,66 +17,133 @@ from typing import Dict as dict
 
 
 class JumpMessage(DataMessage):
+    """JumpMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``JumpMessage()`` — create path: growable fields, no wire definition.
+    * ``JumpMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 285
     NAME = 'jump'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=JumpMessage.NAME,
                          global_id=JumpMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpDistanceField(
-            size=self.__get_field_size(definition_message, JumpDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpHeightField(
-            size=self.__get_field_size(definition_message, JumpHeightField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpRotationsField(
-            size=self.__get_field_size(definition_message, JumpRotationsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpHangTimeField(
-            size=self.__get_field_size(definition_message, JumpHangTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpScoreField(
-            size=self.__get_field_size(definition_message, JumpScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpPositionLatField(
-            size=self.__get_field_size(definition_message, JumpPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpPositionLongField(
-            size=self.__get_field_size(definition_message, JumpPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpSpeedField(
-            size=self.__get_field_size(definition_message, JumpSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         JumpEnhancedSpeedField(
-            size=self.__get_field_size(definition_message, JumpEnhancedSpeedField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        JumpDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpDistanceField.ID),
+            growable=False), 
+        JumpHeightField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpHeightField.ID),
+            growable=False), 
+        JumpRotationsField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpRotationsField.ID),
+            growable=False), 
+        JumpHangTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpHangTimeField.ID),
+            growable=False), 
+        JumpScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpScoreField.ID),
+            growable=False), 
+        JumpPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpPositionLatField.ID),
+            growable=False), 
+        JumpPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpPositionLongField.ID),
+            growable=False), 
+        JumpSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpSpeedField.ID),
+            growable=False), 
+        JumpEnhancedSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, JumpEnhancedSpeedField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

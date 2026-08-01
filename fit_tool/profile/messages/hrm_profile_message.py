@@ -17,51 +17,98 @@ from typing import Dict as dict
 
 
 class HrmProfileMessage(DataMessage):
+    """HrmProfileMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``HrmProfileMessage()`` — create path: growable fields, no wire definition.
+    * ``HrmProfileMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 4
     NAME = 'hrm_profile'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=HrmProfileMessage.NAME,
                          global_id=HrmProfileMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrmProfileEnabledField(
-            size=self.__get_field_size(definition_message, HrmProfileEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrmProfileHrmAntIdField(
-            size=self.__get_field_size(definition_message, HrmProfileHrmAntIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrmProfileLogHrvField(
-            size=self.__get_field_size(definition_message, HrmProfileLogHrvField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         HrmProfileHrmAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, HrmProfileHrmAntIdTransTypeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        HrmProfileEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, HrmProfileEnabledField.ID),
+            growable=False), 
+        HrmProfileHrmAntIdField(
+            size=cls._field_size_from_definition(
+                definition_message, HrmProfileHrmAntIdField.ID),
+            growable=False), 
+        HrmProfileLogHrvField(
+            size=cls._field_size_from_definition(
+                definition_message, HrmProfileLogHrvField.ID),
+            growable=False), 
+        HrmProfileHrmAntIdTransTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, HrmProfileHrmAntIdTransTypeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

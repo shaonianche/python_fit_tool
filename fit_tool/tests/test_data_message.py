@@ -26,13 +26,36 @@ class TestDataMessage(unittest.TestCase):
         bytes1 = dm1.to_bytes()
 
         definition_message = DefinitionMessage.from_data_message(dm1)
-        dm2 = WorkoutStepMessage(definition_message=definition_message)
+        dm2 = WorkoutStepMessage.from_definition(definition_message)
         dm2.read_from_bytes(bytes1)
         bytes2 = dm2.to_bytes()
 
         self.assertEqual('test', dm2.workout_step_name)
 
         self.assertEqual(bytes2, bytes1)
+
+    def test_create_vs_from_definition_paths(self):
+        """Blank create is growable; from_definition freezes field sizes."""
+        created = WorkoutStepMessage()
+        self.assertIsNone(created.definition_message)
+        self.assertTrue(created.growable)
+        name_field = created.get_field_by_name('wkt_step_name')
+        self.assertIsNotNone(name_field)
+        self.assertEqual(0, name_field.size)
+        self.assertTrue(name_field.growable)
+
+        created.workout_step_name = 'authored'
+        definition = DefinitionMessage.from_data_message(created)
+        projected = WorkoutStepMessage.from_definition(definition)
+        self.assertIs(definition, projected.definition_message)
+        self.assertFalse(projected.growable)
+        projected_name = projected.get_field_by_name('wkt_step_name')
+        self.assertIsNotNone(projected_name)
+        self.assertFalse(projected_name.growable)
+        self.assertEqual(
+            definition.get_field_definition(projected_name.field_id).size,
+            projected_name.size,
+        )
 
     def test_to_row(self):
         dm1 = WorkoutStepMessage()

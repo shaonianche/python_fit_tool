@@ -17,87 +17,182 @@ from typing import Dict as dict
 
 
 class TimeInZoneMessage(DataMessage):
+    """TimeInZoneMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``TimeInZoneMessage()`` — create path: growable fields, no wire definition.
+    * ``TimeInZoneMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 216
     NAME = 'time_in_zone'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=TimeInZoneMessage.NAME,
                          global_id=TimeInZoneMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneReferenceMesgField(
-            size=self.__get_field_size(definition_message, TimeInZoneReferenceMesgField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneReferenceIndexField(
-            size=self.__get_field_size(definition_message, TimeInZoneReferenceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneTimeInHrZoneField(
-            size=self.__get_field_size(definition_message, TimeInZoneTimeInHrZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneTimeInSpeedZoneField(
-            size=self.__get_field_size(definition_message, TimeInZoneTimeInSpeedZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneTimeInCadenceZoneField(
-            size=self.__get_field_size(definition_message, TimeInZoneTimeInCadenceZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneTimeInPowerZoneField(
-            size=self.__get_field_size(definition_message, TimeInZoneTimeInPowerZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneHrZoneHighBoundaryField(
-            size=self.__get_field_size(definition_message, TimeInZoneHrZoneHighBoundaryField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneSpeedZoneHighBoundaryField(
-            size=self.__get_field_size(definition_message, TimeInZoneSpeedZoneHighBoundaryField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneCadenceZoneHighBondaryField(
-            size=self.__get_field_size(definition_message, TimeInZoneCadenceZoneHighBondaryField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZonePowerZoneHighBoundaryField(
-            size=self.__get_field_size(definition_message, TimeInZonePowerZoneHighBoundaryField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneHrCalcTypeField(
-            size=self.__get_field_size(definition_message, TimeInZoneHrCalcTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneMaxHeartRateField(
-            size=self.__get_field_size(definition_message, TimeInZoneMaxHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneRestingHeartRateField(
-            size=self.__get_field_size(definition_message, TimeInZoneRestingHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneThresholdHeartRateField(
-            size=self.__get_field_size(definition_message, TimeInZoneThresholdHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZonePwrCalcTypeField(
-            size=self.__get_field_size(definition_message, TimeInZonePwrCalcTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimeInZoneFunctionalThresholdPowerField(
-            size=self.__get_field_size(definition_message, TimeInZoneFunctionalThresholdPowerField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        TimeInZoneReferenceMesgField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneReferenceMesgField.ID),
+            growable=False), 
+        TimeInZoneReferenceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneReferenceIndexField.ID),
+            growable=False), 
+        TimeInZoneTimeInHrZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneTimeInHrZoneField.ID),
+            growable=False), 
+        TimeInZoneTimeInSpeedZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneTimeInSpeedZoneField.ID),
+            growable=False), 
+        TimeInZoneTimeInCadenceZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneTimeInCadenceZoneField.ID),
+            growable=False), 
+        TimeInZoneTimeInPowerZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneTimeInPowerZoneField.ID),
+            growable=False), 
+        TimeInZoneHrZoneHighBoundaryField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneHrZoneHighBoundaryField.ID),
+            growable=False), 
+        TimeInZoneSpeedZoneHighBoundaryField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneSpeedZoneHighBoundaryField.ID),
+            growable=False), 
+        TimeInZoneCadenceZoneHighBondaryField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneCadenceZoneHighBondaryField.ID),
+            growable=False), 
+        TimeInZonePowerZoneHighBoundaryField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZonePowerZoneHighBoundaryField.ID),
+            growable=False), 
+        TimeInZoneHrCalcTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneHrCalcTypeField.ID),
+            growable=False), 
+        TimeInZoneMaxHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneMaxHeartRateField.ID),
+            growable=False), 
+        TimeInZoneRestingHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneRestingHeartRateField.ID),
+            growable=False), 
+        TimeInZoneThresholdHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneThresholdHeartRateField.ID),
+            growable=False), 
+        TimeInZonePwrCalcTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZonePwrCalcTypeField.ID),
+            growable=False), 
+        TimeInZoneFunctionalThresholdPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, TimeInZoneFunctionalThresholdPowerField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

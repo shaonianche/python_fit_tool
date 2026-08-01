@@ -17,132 +17,287 @@ from typing import Dict as dict
 
 
 class BikeProfileMessage(DataMessage):
+    """BikeProfileMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``BikeProfileMessage()`` — create path: growable fields, no wire definition.
+    * ``BikeProfileMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 6
     NAME = 'bike_profile'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=BikeProfileMessage.NAME,
                          global_id=BikeProfileMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileNameField(
-            size=self.__get_field_size(definition_message, BikeProfileNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileSportField(
-            size=self.__get_field_size(definition_message, BikeProfileSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileSubSportField(
-            size=self.__get_field_size(definition_message, BikeProfileSubSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileOdometerField(
-            size=self.__get_field_size(definition_message, BikeProfileOdometerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeSpdAntIdField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeSpdAntIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeCadAntIdField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeCadAntIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeSpdcadAntIdField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeSpdcadAntIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikePowerAntIdField(
-            size=self.__get_field_size(definition_message, BikeProfileBikePowerAntIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileCustomWheelsizeField(
-            size=self.__get_field_size(definition_message, BikeProfileCustomWheelsizeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileAutoWheelsizeField(
-            size=self.__get_field_size(definition_message, BikeProfileAutoWheelsizeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeWeightField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeWeightField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfilePowerCalFactorField(
-            size=self.__get_field_size(definition_message, BikeProfilePowerCalFactorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileAutoWheelCalField(
-            size=self.__get_field_size(definition_message, BikeProfileAutoWheelCalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileAutoPowerZeroField(
-            size=self.__get_field_size(definition_message, BikeProfileAutoPowerZeroField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileIdField(
-            size=self.__get_field_size(definition_message, BikeProfileIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileSpdEnabledField(
-            size=self.__get_field_size(definition_message, BikeProfileSpdEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileCadEnabledField(
-            size=self.__get_field_size(definition_message, BikeProfileCadEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileSpdcadEnabledField(
-            size=self.__get_field_size(definition_message, BikeProfileSpdcadEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfilePowerEnabledField(
-            size=self.__get_field_size(definition_message, BikeProfilePowerEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileCrankLengthField(
-            size=self.__get_field_size(definition_message, BikeProfileCrankLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileEnabledField(
-            size=self.__get_field_size(definition_message, BikeProfileEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeSpdAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeSpdAntIdTransTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeCadAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeCadAntIdTransTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikeSpdcadAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, BikeProfileBikeSpdcadAntIdTransTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileBikePowerAntIdTransTypeField(
-            size=self.__get_field_size(definition_message, BikeProfileBikePowerAntIdTransTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileOdometerRolloverField(
-            size=self.__get_field_size(definition_message, BikeProfileOdometerRolloverField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileFrontGearNumField(
-            size=self.__get_field_size(definition_message, BikeProfileFrontGearNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileFrontGearField(
-            size=self.__get_field_size(definition_message, BikeProfileFrontGearField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileRearGearNumField(
-            size=self.__get_field_size(definition_message, BikeProfileRearGearNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileRearGearField(
-            size=self.__get_field_size(definition_message, BikeProfileRearGearField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BikeProfileShimanoDi2EnabledField(
-            size=self.__get_field_size(definition_message, BikeProfileShimanoDi2EnabledField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        BikeProfileNameField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileNameField.ID),
+            growable=False), 
+        BikeProfileSportField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileSportField.ID),
+            growable=False), 
+        BikeProfileSubSportField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileSubSportField.ID),
+            growable=False), 
+        BikeProfileOdometerField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileOdometerField.ID),
+            growable=False), 
+        BikeProfileBikeSpdAntIdField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeSpdAntIdField.ID),
+            growable=False), 
+        BikeProfileBikeCadAntIdField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeCadAntIdField.ID),
+            growable=False), 
+        BikeProfileBikeSpdcadAntIdField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeSpdcadAntIdField.ID),
+            growable=False), 
+        BikeProfileBikePowerAntIdField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikePowerAntIdField.ID),
+            growable=False), 
+        BikeProfileCustomWheelsizeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileCustomWheelsizeField.ID),
+            growable=False), 
+        BikeProfileAutoWheelsizeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileAutoWheelsizeField.ID),
+            growable=False), 
+        BikeProfileBikeWeightField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeWeightField.ID),
+            growable=False), 
+        BikeProfilePowerCalFactorField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfilePowerCalFactorField.ID),
+            growable=False), 
+        BikeProfileAutoWheelCalField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileAutoWheelCalField.ID),
+            growable=False), 
+        BikeProfileAutoPowerZeroField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileAutoPowerZeroField.ID),
+            growable=False), 
+        BikeProfileIdField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileIdField.ID),
+            growable=False), 
+        BikeProfileSpdEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileSpdEnabledField.ID),
+            growable=False), 
+        BikeProfileCadEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileCadEnabledField.ID),
+            growable=False), 
+        BikeProfileSpdcadEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileSpdcadEnabledField.ID),
+            growable=False), 
+        BikeProfilePowerEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfilePowerEnabledField.ID),
+            growable=False), 
+        BikeProfileCrankLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileCrankLengthField.ID),
+            growable=False), 
+        BikeProfileEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileEnabledField.ID),
+            growable=False), 
+        BikeProfileBikeSpdAntIdTransTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeSpdAntIdTransTypeField.ID),
+            growable=False), 
+        BikeProfileBikeCadAntIdTransTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeCadAntIdTransTypeField.ID),
+            growable=False), 
+        BikeProfileBikeSpdcadAntIdTransTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikeSpdcadAntIdTransTypeField.ID),
+            growable=False), 
+        BikeProfileBikePowerAntIdTransTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileBikePowerAntIdTransTypeField.ID),
+            growable=False), 
+        BikeProfileOdometerRolloverField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileOdometerRolloverField.ID),
+            growable=False), 
+        BikeProfileFrontGearNumField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileFrontGearNumField.ID),
+            growable=False), 
+        BikeProfileFrontGearField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileFrontGearField.ID),
+            growable=False), 
+        BikeProfileRearGearNumField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileRearGearNumField.ID),
+            growable=False), 
+        BikeProfileRearGearField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileRearGearField.ID),
+            growable=False), 
+        BikeProfileShimanoDi2EnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, BikeProfileShimanoDi2EnabledField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

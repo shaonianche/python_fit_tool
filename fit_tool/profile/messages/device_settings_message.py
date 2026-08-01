@@ -17,108 +17,231 @@ from typing import Dict as dict
 
 
 class DeviceSettingsMessage(DataMessage):
+    """DeviceSettingsMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``DeviceSettingsMessage()`` — create path: growable fields, no wire definition.
+    * ``DeviceSettingsMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 2
     NAME = 'device_settings'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=DeviceSettingsMessage.NAME,
                          global_id=DeviceSettingsMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         DeviceSettingsActiveTimeZoneField(
-            size=self.__get_field_size(definition_message, DeviceSettingsActiveTimeZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsUtcOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsUtcOffsetField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsTimeOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeOffsetField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsTimeModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsTimeZoneOffsetField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTimeZoneOffsetField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsBacklightModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsBacklightModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsActivityTrackerEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsActivityTrackerEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsClockTimeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsClockTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsPagesEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsPagesEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsMoveAlertEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsMoveAlertEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsDateModeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDateModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsDisplayOrientationField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDisplayOrientationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsMountingSideField(
-            size=self.__get_field_size(definition_message, DeviceSettingsMountingSideField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsDefaultPageField(
-            size=self.__get_field_size(definition_message, DeviceSettingsDefaultPageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsAutosyncMinStepsField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinStepsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsAutosyncMinTimeField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutosyncMinTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsLactateThresholdAutodetectEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsLactateThresholdAutodetectEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsBleAutoUploadEnabledField(
-            size=self.__get_field_size(definition_message, DeviceSettingsBleAutoUploadEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsAutoSyncFrequencyField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutoSyncFrequencyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsAutoActivityDetectField(
-            size=self.__get_field_size(definition_message, DeviceSettingsAutoActivityDetectField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsNumberOfScreensField(
-            size=self.__get_field_size(definition_message, DeviceSettingsNumberOfScreensField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsSmartNotificationDisplayOrientationField(
-            size=self.__get_field_size(definition_message, DeviceSettingsSmartNotificationDisplayOrientationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsTapInterfaceField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTapInterfaceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceSettingsTapSensitivityField(
-            size=self.__get_field_size(definition_message, DeviceSettingsTapSensitivityField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        DeviceSettingsActiveTimeZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsActiveTimeZoneField.ID),
+            growable=False), 
+        DeviceSettingsUtcOffsetField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsUtcOffsetField.ID),
+            growable=False), 
+        DeviceSettingsTimeOffsetField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsTimeOffsetField.ID),
+            growable=False), 
+        DeviceSettingsTimeModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsTimeModeField.ID),
+            growable=False), 
+        DeviceSettingsTimeZoneOffsetField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsTimeZoneOffsetField.ID),
+            growable=False), 
+        DeviceSettingsBacklightModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsBacklightModeField.ID),
+            growable=False), 
+        DeviceSettingsActivityTrackerEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsActivityTrackerEnabledField.ID),
+            growable=False), 
+        DeviceSettingsClockTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsClockTimeField.ID),
+            growable=False), 
+        DeviceSettingsPagesEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsPagesEnabledField.ID),
+            growable=False), 
+        DeviceSettingsMoveAlertEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsMoveAlertEnabledField.ID),
+            growable=False), 
+        DeviceSettingsDateModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsDateModeField.ID),
+            growable=False), 
+        DeviceSettingsDisplayOrientationField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsDisplayOrientationField.ID),
+            growable=False), 
+        DeviceSettingsMountingSideField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsMountingSideField.ID),
+            growable=False), 
+        DeviceSettingsDefaultPageField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsDefaultPageField.ID),
+            growable=False), 
+        DeviceSettingsAutosyncMinStepsField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsAutosyncMinStepsField.ID),
+            growable=False), 
+        DeviceSettingsAutosyncMinTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsAutosyncMinTimeField.ID),
+            growable=False), 
+        DeviceSettingsLactateThresholdAutodetectEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsLactateThresholdAutodetectEnabledField.ID),
+            growable=False), 
+        DeviceSettingsBleAutoUploadEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsBleAutoUploadEnabledField.ID),
+            growable=False), 
+        DeviceSettingsAutoSyncFrequencyField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsAutoSyncFrequencyField.ID),
+            growable=False), 
+        DeviceSettingsAutoActivityDetectField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsAutoActivityDetectField.ID),
+            growable=False), 
+        DeviceSettingsNumberOfScreensField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsNumberOfScreensField.ID),
+            growable=False), 
+        DeviceSettingsSmartNotificationDisplayOrientationField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsSmartNotificationDisplayOrientationField.ID),
+            growable=False), 
+        DeviceSettingsTapInterfaceField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsTapInterfaceField.ID),
+            growable=False), 
+        DeviceSettingsTapSensitivityField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceSettingsTapSensitivityField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

@@ -17,57 +17,112 @@ from typing import Dict as dict
 
 
 class ThreeDSensorCalibrationMessage(DataMessage):
+    """ThreeDSensorCalibrationMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``ThreeDSensorCalibrationMessage()`` — create path: growable fields, no wire definition.
+    * ``ThreeDSensorCalibrationMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 167
     NAME = 'three_d_sensor_calibration'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=ThreeDSensorCalibrationMessage.NAME,
                          global_id=ThreeDSensorCalibrationMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationSensorTypeField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationSensorTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationCalibrationFactorField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationCalibrationFactorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationCalibrationDivisorField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationCalibrationDivisorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationLevelShiftField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationLevelShiftField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationOffsetCalField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationOffsetCalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         ThreeDSensorCalibrationOrientationMatrixField(
-            size=self.__get_field_size(definition_message, ThreeDSensorCalibrationOrientationMatrixField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationSensorTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationSensorTypeField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationCalibrationFactorField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationCalibrationFactorField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationCalibrationDivisorField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationCalibrationDivisorField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationLevelShiftField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationLevelShiftField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationOffsetCalField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationOffsetCalField.ID),
+            growable=False), 
+        ThreeDSensorCalibrationOrientationMatrixField(
+            size=cls._field_size_from_definition(
+                definition_message, ThreeDSensorCalibrationOrientationMatrixField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

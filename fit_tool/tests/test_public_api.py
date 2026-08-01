@@ -12,6 +12,8 @@ class TestPublicApi(unittest.TestCase):
             PROTOCOL_VERSION,
             SDK_VERSION,
             ConformanceLevel,
+            EncodeMode,
+            EncodeOptions,
             FitCRCError,
             FitEncodingError,
             FitError,
@@ -44,6 +46,9 @@ class TestPublicApi(unittest.TestCase):
         self.assertEqual(Severity.ERROR.value, 'error')
         self.assertTrue(issubclass(ValidationFinding, object))
         self.assertTrue(callable(ValidationReport))
+        self.assertEqual(EncodeMode.PRESERVE.value, 'preserve')
+        self.assertEqual(EncodeMode.CANONICAL.value, 'canonical')
+        self.assertIsInstance(EncodeOptions(), EncodeOptions)
 
     def test_package_all_matches_api_surface(self) -> None:
         import fit_tool

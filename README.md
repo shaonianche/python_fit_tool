@@ -23,9 +23,9 @@ package already implements. Profile version in use: `21.205.0` (see
 
 | Status | Capabilities |
 | --- | --- |
-| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **preservation encode** (`to_bytes(preserve=True)`, default) for unedited files **and post-edit** (dirty records re-projected; untouched records keep `source_bytes`) |
+| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **encode modes** `EncodeMode.PRESERVE` (default; unedited bit-identical + post-edit dirty re-project) and `EncodeMode.CANONICAL` (full re-project, normalized sizes/CRCs; optional `strict=True` precheck) — see [Encode policies](#encode-policies) |
 | **Partial** | Unknown global messages via `GenericMessage` (readable; unedited preserve keeps wire bytes; post-edit re-encodes dirty records only); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE levels — **PROFILE validation is CORE today** (developer-field subset + **ambiguous subfield** ERROR); opt-in **PRESERVATION** level reports unknown-field `raw_bytes` loss after edits; architecture decision **O1** keeps bundled `Profile.xlsx` as the full metadata source of truth with future DOMAIN/FULL scopes (FULL opt-in, not default strict) — see [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3.1; Builder `strict=True` is a thin wrapper over the same checks (WIRE+PROFILE+FILE_TYPE only) |
-| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units beyond subfield scale/units); file-type rules for non-Activity types (FILE_TYPE level fails closed); canonical encode policies (Stage 3 G); bit-identical rewrite of compressed-timestamp dirty records (re-encode may expand to normal headers) |
+| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units beyond subfield scale/units); file-type rules for non-Activity types (FILE_TYPE level fails closed); intentional `repair()` API (strict path never silent-repairs); bit-identical rewrite of compressed-timestamp dirty records when field 253 is not on the definition (strict raises; non-strict keeps compressed header) |
 
 If you need a construct listed as incomplete, prefer an official Garmin SDK or
 wait for the phased work in the design doc (including the **Remaining gaps**
@@ -139,6 +139,7 @@ from fit_tool import (
 | --- | --- |
 | `FitFile` | Load, inspect, stream, serialize, and validate FIT files |
 | `FitFileBuilder` | Build FIT files from messages |
+| `EncodeMode`, `EncodeOptions` | Explicit encode policies (PRESERVE vs CANONICAL) for `to_bytes` |
 | `validate_fit_file`, `ConformanceLevel`, `ValidationReport` | Composable validation (independent of Builder) |
 | `FitError` and subclasses | Typed errors for parse, CRC, encode, and validation failures |
 | `PROTOCOL_VERSION`, `SDK_VERSION`, `FIT_DATA_TYPE` | Bundled protocol/profile version metadata |
@@ -246,16 +247,50 @@ validate_fit_file(fit_file, levels={ConformanceLevel.WIRE})
 validate_fit_file(fit_file, levels={ConformanceLevel.PRESERVATION})
 ```
 
+### Encode policies
+
+`FitFile.to_bytes` supports two explicit modes (`EncodeMode`), with the legacy
+`preserve=` boolean as an alias. Defaults: **PRESERVE**, non-strict.
+
+```python
+from fit_tool import EncodeMode, FitFile
+
+fit = FitFile.from_bytes(raw_bytes)
+fit.to_bytes()                                   # PRESERVE (default)
+fit.to_bytes(mode=EncodeMode.PRESERVE)           # same
+fit.to_bytes(mode=EncodeMode.CANONICAL)          # full re-project
+fit.to_bytes(mode=EncodeMode.CANONICAL, strict=True)  # validate first
+fit.to_bytes(preserve=False)                     # alias → CANONICAL
+```
+
+| Concern | PRESERVE (default) | CANONICAL | + `strict=True` |
+| --- | --- | --- | --- |
+| Untouched records | copy `source_bytes` | re-project all | re-project all |
+| Dirty records | re-project | re-project | re-project |
+| Out-of-range values | reject at set (no clamp) | same | same + pre-encode validation |
+| Cleared field still on definition | protocol-invalid fill | same | same |
+| Scale / offset | `round((v+offset)*scale)` | same | same |
+| Expanded components | only definition fields on wire | same | same |
+| Compressed timestamp headers | keep if untouched; dirty may expand when field 253 is on the definition | expand when 253 on def; else keep compressed | expand when 253 on def; else **raise** |
+| CRC / sizes | recompute dirty segments only | recompute all | recompute; bad override raises |
+
+`strict=True` forces CANONICAL and runs WIRE + PROFILE + FILE_TYPE before encode.
+It never clamps invalid values or silently “fixes” bad caller data. Prefer
+`validate_fit_file` when you need a report without encoding.
+
+Full matrix and design notes:
+[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §6.
+
 ### Post-edit preservation
 
 After `FitFile.from_bytes` / `from_file`, field mutations mark the owning
-`Record` dirty. `to_bytes(preserve=True)` (default) re-encodes only dirty
-records and copies original wire bytes for the rest (including unknown fields
-on untouched records). Structural edits (`add_record` / `remove_record` /
-`mark_dirty()`) drop the wire snapshot and fully re-project:
+`Record` dirty. PRESERVE mode re-encodes only dirty records and copies original
+wire bytes for the rest (including unknown fields on untouched records).
+Structural edits (`add_record` / `remove_record` / `mark_dirty()`) drop the wire
+snapshot and fully re-project:
 
 ```python
-from fit_tool import FitFile
+from fit_tool import EncodeMode, FitFile
 from fit_tool.profile.messages.record_message import RecordMessage
 
 fit = FitFile.from_bytes(raw_bytes)
@@ -265,7 +300,7 @@ for record in fit.records:
         break
 
 # Untouched records keep source_bytes; edited record is re-projected.
-out = fit.to_bytes(preserve=True)
+out = fit.to_bytes(mode=EncodeMode.PRESERVE)
 ```
 
 `FitFileBuilder` always checks wire limits on `add` (local message numbers, definition

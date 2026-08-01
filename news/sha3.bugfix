@@ -1,0 +1,1 @@
+Copy record-header `local_id` onto parsed definition and data messages, and fix FLOAT field encoding so fractional values are preserved and FIT invalid all-ones bit patterns round-trip as `None`.

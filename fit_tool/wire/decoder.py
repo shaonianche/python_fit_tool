@@ -13,7 +13,7 @@ from __future__ import annotations
 import struct
 from typing import BinaryIO, Iterator, Protocol, Union
 
-from fit_tool.exceptions import FitCRCError, FitHeaderError, FitRecordError
+from fit_tool.exceptions import FitCRCError, FitHeaderError, FitParseError, FitRecordError
 from fit_tool.wire.crc import crc16
 from fit_tool.wire.model import (
     FitDocument,
@@ -26,6 +26,10 @@ from fit_tool.wire.model import (
     RawRecord,
     RawRecordHeader,
 )
+from fit_tool.wire.timestamp import apply_compressed_time_offset
+
+# Native FIT date_time field number (seconds since 1989-12-31).
+_TIMESTAMP_FIELD_ID = 253
 
 _IS_TIME_COMPRESSED = 0x80
 _IS_DEFINITION = 0x40
@@ -126,8 +130,9 @@ class WireDecoder:
     - :attr:`last_timestamp` — reserved for compressed-timestamp reconstruction
     """
 
-    def __init__(self, check_crc: bool = True) -> None:
+    def __init__(self, check_crc: bool = True, allow_trailing_bytes: bool = False) -> None:
         self.check_crc = check_crc
+        self.allow_trailing_bytes = allow_trailing_bytes
         self._reset_session()
 
     def _reset_session(self) -> None:
@@ -136,16 +141,54 @@ class WireDecoder:
         self.calculated_crc: int = 0
         self.stored_crc: int = 0
         self.crc_offset: int = 0
-        # Hook for compressed timestamp reconstruction (Stage later).
         self.last_timestamp: int | None = None
 
-    def decode(self, bytes_buffer: bytes) -> FitDocument:
-        """Decode a buffer into a document (single segment for MVP)."""
+    def decode(
+            self,
+            bytes_buffer: bytes,
+            *,
+            allow_trailing_bytes: bool | None = None,
+    ) -> FitDocument:
+        """Decode a buffer into a document (supports chained multi-segment FIT).
+
+        After each segment's file CRC, if more bytes remain and look like another
+        FIT header, a further segment is decoded. Non-header trailing bytes raise
+        :class:`FitParseError` unless ``allow_trailing_bytes`` is true.
+        """
         if len(bytes_buffer) < 1:
             raise FitHeaderError('FIT data is empty; expected at least a header-size byte.')
 
-        segment = self.decode_segment(bytes_buffer, offset=0)
-        return FitDocument(segments=[segment])
+        allow_trailing = (
+            self.allow_trailing_bytes if allow_trailing_bytes is None else allow_trailing_bytes
+        )
+        segments: list[FitSegment] = []
+        offset = 0
+        while offset < len(bytes_buffer):
+            segment = self.decode_segment(bytes_buffer, offset=offset)
+            segments.append(segment)
+            offset = segment.crc_offset + _FILE_CRC_SIZE
+            if offset >= len(bytes_buffer):
+                break
+            if self._looks_like_header(bytes_buffer, offset):
+                continue
+            if allow_trailing:
+                break
+            raise FitParseError(
+                f'Trailing {len(bytes_buffer) - offset} byte(s) after FIT segment at '
+                f'offset {offset} are not a chained FIT header. '
+                f'Pass allow_trailing_bytes=True to ignore them.'
+            )
+
+        return FitDocument(segments=segments)
+
+    @staticmethod
+    def _looks_like_header(buffer: bytes, offset: int) -> bool:
+        if offset + _MIN_HEADER_SIZE > len(buffer):
+            return False
+        header_size = buffer[offset]
+        if header_size < _MIN_HEADER_SIZE or offset + header_size > len(buffer):
+            return False
+        return buffer[offset + 8:offset + 12] == _FIT_TAG
 
     def decode_segment(self, source: ByteSourceInput, offset: int = 0) -> FitSegment:
         """Decode a single segment from bytes or a binary stream."""
@@ -210,6 +253,8 @@ class WireDecoder:
             if isinstance(raw_record, RawDefinitionRecord):
                 # Store immutable snapshot; redefinition does not mutate prior snapshots.
                 self.definitions[raw_record.local_id] = raw_record
+            elif isinstance(raw_record, RawDataRecord):
+                raw_record = self._apply_timestamp_state(raw_record, record_index)
 
             self.calculated_crc = crc16(raw_record.source_bytes, crc=self.calculated_crc)
             remaining -= record_size
@@ -226,6 +271,57 @@ class WireDecoder:
             )
             if self.check_crc:
                 raise FitCRCError(message)
+
+    def _apply_timestamp_state(
+            self,
+            raw_record: RawDataRecord,
+            record_index: int,
+    ) -> RawDataRecord:
+        """Update ``last_timestamp`` and attach resolved compressed timestamps."""
+        resolved: int | None = None
+        header = raw_record.header
+
+        if header.is_time_compressed:
+            if self.last_timestamp is None:
+                raise FitRecordError(
+                    f'Compressed timestamp at record {record_index} requires a prior '
+                    f'full timestamp field (253).'
+                )
+            resolved = apply_compressed_time_offset(
+                self.last_timestamp, header.time_offset_seconds
+            )
+            self.last_timestamp = resolved
+            return RawDataRecord(
+                header=raw_record.header,
+                definition=raw_record.definition,
+                payload=raw_record.payload,
+                source_offset=raw_record.source_offset,
+                source_bytes=raw_record.source_bytes,
+                dirty=raw_record.dirty,
+                resolved_timestamp=resolved,
+            )
+
+        native_ts = self._extract_timestamp_from_payload(raw_record)
+        if native_ts is not None:
+            self.last_timestamp = native_ts
+        return raw_record
+
+    @staticmethod
+    def _extract_timestamp_from_payload(raw_record: RawDataRecord) -> int | None:
+        """Read native field 253 (date_time) from a data payload when present."""
+        definition = raw_record.definition
+        endian_symbol = '<' if definition.architecture == 0 else '>'
+        offset = 0
+        for field_def in definition.field_definitions:
+            if field_def.field_id == _TIMESTAMP_FIELD_ID and field_def.size >= 4:
+                # date_time is uint32; take the first 4 bytes of the field slot.
+                value, = struct.unpack_from(f'{endian_symbol}I', raw_record.payload, offset)
+                # Invalid FIT date_time is 0xFFFFFFFF.
+                if value == 0xFFFFFFFF:
+                    return None
+                return value
+            offset += field_def.size
+        return None
 
     def _read_header(self, source: _ByteSource) -> RawFileHeader:
         offset = source.position
@@ -394,6 +490,14 @@ class WireDecoder:
         )
 
 
-def decode_bytes(bytes_buffer: bytes, check_crc: bool = True) -> FitDocument:
-    """Decode FIT bytes into a wire document."""
-    return WireDecoder(check_crc=check_crc).decode(bytes_buffer)
+def decode_bytes(
+        bytes_buffer: bytes,
+        check_crc: bool = True,
+        *,
+        allow_trailing_bytes: bool = False,
+) -> FitDocument:
+    """Decode FIT bytes into a wire document (chained segments supported)."""
+    return WireDecoder(
+        check_crc=check_crc,
+        allow_trailing_bytes=allow_trailing_bytes,
+    ).decode(bytes_buffer, allow_trailing_bytes=allow_trailing_bytes)

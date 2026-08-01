@@ -92,6 +92,8 @@ class RawDataRecord:
     source_offset: int
     source_bytes: bytes
     dirty: bool = False
+    # Absolute FIT date_time when reconstructed from a compressed timestamp header.
+    resolved_timestamp: int | None = None
 
     @property
     def local_id(self) -> int:
@@ -136,14 +138,14 @@ class FitSegment:
 
 @dataclass
 class FitDocument:
-    """Top-level wire document.
-
-    MVP decoder produces a single segment. Multi-segment (chained) documents
-    are deferred.
-    """
+    """Top-level wire document (one or more chained segments)."""
 
     segments: list[FitSegment] = field(default_factory=list)
 
     @property
     def first_segment(self) -> FitSegment | None:
         return self.segments[0] if self.segments else None
+
+    @property
+    def is_chained(self) -> bool:
+        return len(self.segments) > 1

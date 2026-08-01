@@ -17,93 +17,196 @@ from typing import Dict as dict
 
 
 class EventMessage(DataMessage):
+    """EventMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``EventMessage()`` — create path: growable fields, no wire definition.
+    * ``EventMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 21
     NAME = 'event'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=EventMessage.NAME,
                          global_id=EventMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventEventField(
-            size=self.__get_field_size(definition_message, EventEventField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventEventTypeField(
-            size=self.__get_field_size(definition_message, EventEventTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventData16Field(
-            size=self.__get_field_size(definition_message, EventData16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventDataField(
-            size=self.__get_field_size(definition_message, EventDataField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventEventGroupField(
-            size=self.__get_field_size(definition_message, EventEventGroupField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventScoreField(
-            size=self.__get_field_size(definition_message, EventScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventOpponentScoreField(
-            size=self.__get_field_size(definition_message, EventOpponentScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventFrontGearNumField(
-            size=self.__get_field_size(definition_message, EventFrontGearNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventFrontGearField(
-            size=self.__get_field_size(definition_message, EventFrontGearField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRearGearNumField(
-            size=self.__get_field_size(definition_message, EventRearGearNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRearGearField(
-            size=self.__get_field_size(definition_message, EventRearGearField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventDeviceIndexField(
-            size=self.__get_field_size(definition_message, EventDeviceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventActivityTypeField(
-            size=self.__get_field_size(definition_message, EventActivityTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventStartTimestampField(
-            size=self.__get_field_size(definition_message, EventStartTimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRadarThreatLevelMaxField(
-            size=self.__get_field_size(definition_message, EventRadarThreatLevelMaxField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRadarThreatCountField(
-            size=self.__get_field_size(definition_message, EventRadarThreatCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRadarThreatAvgApproachSpeedField(
-            size=self.__get_field_size(definition_message, EventRadarThreatAvgApproachSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         EventRadarThreatMaxApproachSpeedField(
-            size=self.__get_field_size(definition_message, EventRadarThreatMaxApproachSpeedField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        EventEventField(
+            size=cls._field_size_from_definition(
+                definition_message, EventEventField.ID),
+            growable=False), 
+        EventEventTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, EventEventTypeField.ID),
+            growable=False), 
+        EventData16Field(
+            size=cls._field_size_from_definition(
+                definition_message, EventData16Field.ID),
+            growable=False), 
+        EventDataField(
+            size=cls._field_size_from_definition(
+                definition_message, EventDataField.ID),
+            growable=False), 
+        EventEventGroupField(
+            size=cls._field_size_from_definition(
+                definition_message, EventEventGroupField.ID),
+            growable=False), 
+        EventScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, EventScoreField.ID),
+            growable=False), 
+        EventOpponentScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, EventOpponentScoreField.ID),
+            growable=False), 
+        EventFrontGearNumField(
+            size=cls._field_size_from_definition(
+                definition_message, EventFrontGearNumField.ID),
+            growable=False), 
+        EventFrontGearField(
+            size=cls._field_size_from_definition(
+                definition_message, EventFrontGearField.ID),
+            growable=False), 
+        EventRearGearNumField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRearGearNumField.ID),
+            growable=False), 
+        EventRearGearField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRearGearField.ID),
+            growable=False), 
+        EventDeviceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, EventDeviceIndexField.ID),
+            growable=False), 
+        EventActivityTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, EventActivityTypeField.ID),
+            growable=False), 
+        EventStartTimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, EventStartTimestampField.ID),
+            growable=False), 
+        EventRadarThreatLevelMaxField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRadarThreatLevelMaxField.ID),
+            growable=False), 
+        EventRadarThreatCountField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRadarThreatCountField.ID),
+            growable=False), 
+        EventRadarThreatAvgApproachSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRadarThreatAvgApproachSpeedField.ID),
+            growable=False), 
+        EventRadarThreatMaxApproachSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, EventRadarThreatMaxApproachSpeedField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

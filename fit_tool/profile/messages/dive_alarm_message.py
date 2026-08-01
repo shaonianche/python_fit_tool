@@ -17,75 +17,154 @@ from typing import Dict as dict
 
 
 class DiveAlarmMessage(DataMessage):
+    """DiveAlarmMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``DiveAlarmMessage()`` — create path: growable fields, no wire definition.
+    * ``DiveAlarmMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 262
     NAME = 'dive_alarm'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=DiveAlarmMessage.NAME,
                          global_id=DiveAlarmMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmDepthField(
-            size=self.__get_field_size(definition_message, DiveAlarmDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmTimeField(
-            size=self.__get_field_size(definition_message, DiveAlarmTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmEnabledField(
-            size=self.__get_field_size(definition_message, DiveAlarmEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmAlarmTypeField(
-            size=self.__get_field_size(definition_message, DiveAlarmAlarmTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmSoundField(
-            size=self.__get_field_size(definition_message, DiveAlarmSoundField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmDiveTypesField(
-            size=self.__get_field_size(definition_message, DiveAlarmDiveTypesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmIdField(
-            size=self.__get_field_size(definition_message, DiveAlarmIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmPopupEnabledField(
-            size=self.__get_field_size(definition_message, DiveAlarmPopupEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmTriggerOnDescentField(
-            size=self.__get_field_size(definition_message, DiveAlarmTriggerOnDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmTriggerOnAscentField(
-            size=self.__get_field_size(definition_message, DiveAlarmTriggerOnAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmRepeatingField(
-            size=self.__get_field_size(definition_message, DiveAlarmRepeatingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveAlarmSpeedField(
-            size=self.__get_field_size(definition_message, DiveAlarmSpeedField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        DiveAlarmDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmDepthField.ID),
+            growable=False), 
+        DiveAlarmTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmTimeField.ID),
+            growable=False), 
+        DiveAlarmEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmEnabledField.ID),
+            growable=False), 
+        DiveAlarmAlarmTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmAlarmTypeField.ID),
+            growable=False), 
+        DiveAlarmSoundField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmSoundField.ID),
+            growable=False), 
+        DiveAlarmDiveTypesField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmDiveTypesField.ID),
+            growable=False), 
+        DiveAlarmIdField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmIdField.ID),
+            growable=False), 
+        DiveAlarmPopupEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmPopupEnabledField.ID),
+            growable=False), 
+        DiveAlarmTriggerOnDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmTriggerOnDescentField.ID),
+            growable=False), 
+        DiveAlarmTriggerOnAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmTriggerOnAscentField.ID),
+            growable=False), 
+        DiveAlarmRepeatingField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmRepeatingField.ID),
+            growable=False), 
+        DiveAlarmSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveAlarmSpeedField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

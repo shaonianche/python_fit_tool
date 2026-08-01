@@ -69,6 +69,33 @@ The generator deletes and rebuilds the entire `fit_tool/profile/` directory. Bef
 
 Keep generator changes and their generated output in the same change. Do not apply broad formatting or lint fixes to generated files; adjust the Jinja templates instead.
 
+### Message construction paths
+
+Generated profile messages have **two explicit construction modes**. Do not
+reintroduce a dual-mode `__init__(definition_message=None, ...)` that switches
+growable/size behavior from a nullable definition argument.
+
+| Path | Call | Purpose |
+| --- | --- | --- |
+| **Create (authoring)** | `RecordMessage()` / `RecordMessage(local_id=..., endian=..., developer_fields=...)` | Blank growable fields for writing new data |
+| **Project (decode)** | `RecordMessage.from_definition(definition, developer_fields=...)` | Wire definition projection; fixed field sizes, not growable |
+
+Decode and factory entry points:
+
+- `MessageFactory.from_definition(definition, developer_fields)` — polymorphic
+  (typed class or `GenericMessage`)
+- `DataMessage.from_definition(...)` — delegates to MessageFactory
+- `MessageClass.from_bytes(definition, developer_fields, bytes, offset)` —
+  uses `from_definition` then reads payload
+
+`GenericMessage` has no blank create path (unknown global IDs only exist as
+definition projections). Prefer `GenericMessage.from_definition(...)`; its
+`__init__(definition_message, ...)` remains an alias.
+
+When changing construction, edit `fit_tool/gen/templates/template_message.jinja`
+and `template_message_factory.jinja`, then regenerate. Document public usage in
+`README.md` if the authoring/decode story changes for application callers.
+
 ## Implementation guidelines
 
 - Preserve the public behavior of FIT parsing, serialization, CRC validation, field scaling, developer fields, and local message definitions unless the change explicitly alters that behavior.

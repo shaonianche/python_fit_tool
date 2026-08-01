@@ -17,141 +17,308 @@ from typing import Dict as dict
 
 
 class DiveSettingsMessage(DataMessage):
+    """DiveSettingsMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``DiveSettingsMessage()`` — create path: growable fields, no wire definition.
+    * ``DiveSettingsMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 258
     NAME = 'dive_settings'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=DiveSettingsMessage.NAME,
                          global_id=DiveSettingsMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsNameField(
-            size=self.__get_field_size(definition_message, DiveSettingsNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsModelField(
-            size=self.__get_field_size(definition_message, DiveSettingsModelField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsGfLowField(
-            size=self.__get_field_size(definition_message, DiveSettingsGfLowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsGfHighField(
-            size=self.__get_field_size(definition_message, DiveSettingsGfHighField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsWaterTypeField(
-            size=self.__get_field_size(definition_message, DiveSettingsWaterTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsWaterDensityField(
-            size=self.__get_field_size(definition_message, DiveSettingsWaterDensityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsPo2WarnField(
-            size=self.__get_field_size(definition_message, DiveSettingsPo2WarnField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsPo2CriticalField(
-            size=self.__get_field_size(definition_message, DiveSettingsPo2CriticalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsPo2DecoField(
-            size=self.__get_field_size(definition_message, DiveSettingsPo2DecoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsSafetyStopEnabledField(
-            size=self.__get_field_size(definition_message, DiveSettingsSafetyStopEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsBottomDepthField(
-            size=self.__get_field_size(definition_message, DiveSettingsBottomDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsBottomTimeField(
-            size=self.__get_field_size(definition_message, DiveSettingsBottomTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsApneaCountdownEnabledField(
-            size=self.__get_field_size(definition_message, DiveSettingsApneaCountdownEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsApneaCountdownTimeField(
-            size=self.__get_field_size(definition_message, DiveSettingsApneaCountdownTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsBacklightModeField(
-            size=self.__get_field_size(definition_message, DiveSettingsBacklightModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsBacklightBrightnessField(
-            size=self.__get_field_size(definition_message, DiveSettingsBacklightBrightnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsBacklightTimeoutField(
-            size=self.__get_field_size(definition_message, DiveSettingsBacklightTimeoutField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsRepeatDiveIntervalField(
-            size=self.__get_field_size(definition_message, DiveSettingsRepeatDiveIntervalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsSafetyStopTimeField(
-            size=self.__get_field_size(definition_message, DiveSettingsSafetyStopTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsHeartRateSourceTypeField(
-            size=self.__get_field_size(definition_message, DiveSettingsHeartRateSourceTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsHeartRateSourceField(
-            size=self.__get_field_size(definition_message, DiveSettingsHeartRateSourceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsTravelGasField(
-            size=self.__get_field_size(definition_message, DiveSettingsTravelGasField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrLowSetpointSwitchModeField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrLowSetpointSwitchModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrLowSetpointField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrLowSetpointField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrLowSetpointDepthField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrLowSetpointDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrHighSetpointSwitchModeField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrHighSetpointSwitchModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrHighSetpointField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrHighSetpointField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsCcrHighSetpointDepthField(
-            size=self.__get_field_size(definition_message, DiveSettingsCcrHighSetpointDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsGasConsumptionDisplayField(
-            size=self.__get_field_size(definition_message, DiveSettingsGasConsumptionDisplayField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsUpKeyEnabledField(
-            size=self.__get_field_size(definition_message, DiveSettingsUpKeyEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsDiveSoundsField(
-            size=self.__get_field_size(definition_message, DiveSettingsDiveSoundsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsLastStopMultipleField(
-            size=self.__get_field_size(definition_message, DiveSettingsLastStopMultipleField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSettingsNoFlyTimeModeField(
-            size=self.__get_field_size(definition_message, DiveSettingsNoFlyTimeModeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        DiveSettingsNameField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsNameField.ID),
+            growable=False), 
+        DiveSettingsModelField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsModelField.ID),
+            growable=False), 
+        DiveSettingsGfLowField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsGfLowField.ID),
+            growable=False), 
+        DiveSettingsGfHighField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsGfHighField.ID),
+            growable=False), 
+        DiveSettingsWaterTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsWaterTypeField.ID),
+            growable=False), 
+        DiveSettingsWaterDensityField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsWaterDensityField.ID),
+            growable=False), 
+        DiveSettingsPo2WarnField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsPo2WarnField.ID),
+            growable=False), 
+        DiveSettingsPo2CriticalField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsPo2CriticalField.ID),
+            growable=False), 
+        DiveSettingsPo2DecoField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsPo2DecoField.ID),
+            growable=False), 
+        DiveSettingsSafetyStopEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsSafetyStopEnabledField.ID),
+            growable=False), 
+        DiveSettingsBottomDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsBottomDepthField.ID),
+            growable=False), 
+        DiveSettingsBottomTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsBottomTimeField.ID),
+            growable=False), 
+        DiveSettingsApneaCountdownEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsApneaCountdownEnabledField.ID),
+            growable=False), 
+        DiveSettingsApneaCountdownTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsApneaCountdownTimeField.ID),
+            growable=False), 
+        DiveSettingsBacklightModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsBacklightModeField.ID),
+            growable=False), 
+        DiveSettingsBacklightBrightnessField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsBacklightBrightnessField.ID),
+            growable=False), 
+        DiveSettingsBacklightTimeoutField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsBacklightTimeoutField.ID),
+            growable=False), 
+        DiveSettingsRepeatDiveIntervalField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsRepeatDiveIntervalField.ID),
+            growable=False), 
+        DiveSettingsSafetyStopTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsSafetyStopTimeField.ID),
+            growable=False), 
+        DiveSettingsHeartRateSourceTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsHeartRateSourceTypeField.ID),
+            growable=False), 
+        DiveSettingsHeartRateSourceField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsHeartRateSourceField.ID),
+            growable=False), 
+        DiveSettingsTravelGasField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsTravelGasField.ID),
+            growable=False), 
+        DiveSettingsCcrLowSetpointSwitchModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrLowSetpointSwitchModeField.ID),
+            growable=False), 
+        DiveSettingsCcrLowSetpointField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrLowSetpointField.ID),
+            growable=False), 
+        DiveSettingsCcrLowSetpointDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrLowSetpointDepthField.ID),
+            growable=False), 
+        DiveSettingsCcrHighSetpointSwitchModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrHighSetpointSwitchModeField.ID),
+            growable=False), 
+        DiveSettingsCcrHighSetpointField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrHighSetpointField.ID),
+            growable=False), 
+        DiveSettingsCcrHighSetpointDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsCcrHighSetpointDepthField.ID),
+            growable=False), 
+        DiveSettingsGasConsumptionDisplayField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsGasConsumptionDisplayField.ID),
+            growable=False), 
+        DiveSettingsUpKeyEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsUpKeyEnabledField.ID),
+            growable=False), 
+        DiveSettingsDiveSoundsField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsDiveSoundsField.ID),
+            growable=False), 
+        DiveSettingsLastStopMultipleField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsLastStopMultipleField.ID),
+            growable=False), 
+        DiveSettingsNoFlyTimeModeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSettingsNoFlyTimeModeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

@@ -17,288 +17,651 @@ from typing import Dict as dict
 
 
 class RecordMessage(DataMessage):
+    """RecordMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``RecordMessage()`` — create path: growable fields, no wire definition.
+    * ``RecordMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 20
     NAME = 'record'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=RecordMessage.NAME,
                          global_id=RecordMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordPositionLatField(
-            size=self.__get_field_size(definition_message, RecordPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordPositionLongField(
-            size=self.__get_field_size(definition_message, RecordPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordAltitudeField(
-            size=self.__get_field_size(definition_message, RecordAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordHeartRateField(
-            size=self.__get_field_size(definition_message, RecordHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCadenceField(
-            size=self.__get_field_size(definition_message, RecordCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordDistanceField(
-            size=self.__get_field_size(definition_message, RecordDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordSpeedField(
-            size=self.__get_field_size(definition_message, RecordSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordPowerField(
-            size=self.__get_field_size(definition_message, RecordPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCompressedSpeedDistanceField(
-            size=self.__get_field_size(definition_message, RecordCompressedSpeedDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordGradeField(
-            size=self.__get_field_size(definition_message, RecordGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordResistanceField(
-            size=self.__get_field_size(definition_message, RecordResistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTimeFromCourseField(
-            size=self.__get_field_size(definition_message, RecordTimeFromCourseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCycleLengthField(
-            size=self.__get_field_size(definition_message, RecordCycleLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTemperatureField(
-            size=self.__get_field_size(definition_message, RecordTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordSpeed1sField(
-            size=self.__get_field_size(definition_message, RecordSpeed1sField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCyclesField(
-            size=self.__get_field_size(definition_message, RecordCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTotalCyclesField(
-            size=self.__get_field_size(definition_message, RecordTotalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCompressedAccumulatedPowerField(
-            size=self.__get_field_size(definition_message, RecordCompressedAccumulatedPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordAccumulatedPowerField(
-            size=self.__get_field_size(definition_message, RecordAccumulatedPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftRightBalanceField(
-            size=self.__get_field_size(definition_message, RecordLeftRightBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordGpsAccuracyField(
-            size=self.__get_field_size(definition_message, RecordGpsAccuracyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordVerticalSpeedField(
-            size=self.__get_field_size(definition_message, RecordVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCaloriesField(
-            size=self.__get_field_size(definition_message, RecordCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordVerticalOscillationField(
-            size=self.__get_field_size(definition_message, RecordVerticalOscillationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordStanceTimePercentField(
-            size=self.__get_field_size(definition_message, RecordStanceTimePercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordStanceTimeField(
-            size=self.__get_field_size(definition_message, RecordStanceTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordActivityTypeField(
-            size=self.__get_field_size(definition_message, RecordActivityTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, RecordLeftTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRightTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, RecordRightTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, RecordLeftPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRightPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, RecordRightPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCombinedPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, RecordCombinedPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTime128Field(
-            size=self.__get_field_size(definition_message, RecordTime128Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordStrokeTypeField(
-            size=self.__get_field_size(definition_message, RecordStrokeTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordZoneField(
-            size=self.__get_field_size(definition_message, RecordZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordBallSpeedField(
-            size=self.__get_field_size(definition_message, RecordBallSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCadence256Field(
-            size=self.__get_field_size(definition_message, RecordCadence256Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordFractionalCadenceField(
-            size=self.__get_field_size(definition_message, RecordFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, RecordTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTotalHemoglobinConcMinField(
-            size=self.__get_field_size(definition_message, RecordTotalHemoglobinConcMinField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTotalHemoglobinConcMaxField(
-            size=self.__get_field_size(definition_message, RecordTotalHemoglobinConcMaxField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, RecordSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordSaturatedHemoglobinPercentMinField(
-            size=self.__get_field_size(definition_message, RecordSaturatedHemoglobinPercentMinField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordSaturatedHemoglobinPercentMaxField(
-            size=self.__get_field_size(definition_message, RecordSaturatedHemoglobinPercentMaxField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordDeviceIndexField(
-            size=self.__get_field_size(definition_message, RecordDeviceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftPcoField(
-            size=self.__get_field_size(definition_message, RecordLeftPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRightPcoField(
-            size=self.__get_field_size(definition_message, RecordRightPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftPowerPhaseField(
-            size=self.__get_field_size(definition_message, RecordLeftPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordLeftPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, RecordLeftPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRightPowerPhaseField(
-            size=self.__get_field_size(definition_message, RecordRightPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRightPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, RecordRightPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEnhancedSpeedField(
-            size=self.__get_field_size(definition_message, RecordEnhancedSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEnhancedAltitudeField(
-            size=self.__get_field_size(definition_message, RecordEnhancedAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordBatterySocField(
-            size=self.__get_field_size(definition_message, RecordBatterySocField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordMotorPowerField(
-            size=self.__get_field_size(definition_message, RecordMotorPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordVerticalRatioField(
-            size=self.__get_field_size(definition_message, RecordVerticalRatioField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordStanceTimeBalanceField(
-            size=self.__get_field_size(definition_message, RecordStanceTimeBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordStepLengthField(
-            size=self.__get_field_size(definition_message, RecordStepLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCycleLength16Field(
-            size=self.__get_field_size(definition_message, RecordCycleLength16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordAbsolutePressureField(
-            size=self.__get_field_size(definition_message, RecordAbsolutePressureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordDepthField(
-            size=self.__get_field_size(definition_message, RecordDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordNextStopDepthField(
-            size=self.__get_field_size(definition_message, RecordNextStopDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordNextStopTimeField(
-            size=self.__get_field_size(definition_message, RecordNextStopTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordTimeToSurfaceField(
-            size=self.__get_field_size(definition_message, RecordTimeToSurfaceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordNdlTimeField(
-            size=self.__get_field_size(definition_message, RecordNdlTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCnsLoadField(
-            size=self.__get_field_size(definition_message, RecordCnsLoadField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordN2LoadField(
-            size=self.__get_field_size(definition_message, RecordN2LoadField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRespirationRateField(
-            size=self.__get_field_size(definition_message, RecordRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEnhancedRespirationRateField(
-            size=self.__get_field_size(definition_message, RecordEnhancedRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordGritField(
-            size=self.__get_field_size(definition_message, RecordGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordFlowField(
-            size=self.__get_field_size(definition_message, RecordFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCurrentStressField(
-            size=self.__get_field_size(definition_message, RecordCurrentStressField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEbikeTravelRangeField(
-            size=self.__get_field_size(definition_message, RecordEbikeTravelRangeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEbikeBatteryLevelField(
-            size=self.__get_field_size(definition_message, RecordEbikeBatteryLevelField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEbikeAssistModeField(
-            size=self.__get_field_size(definition_message, RecordEbikeAssistModeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordEbikeAssistLevelPercentField(
-            size=self.__get_field_size(definition_message, RecordEbikeAssistLevelPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordAirTimeRemainingField(
-            size=self.__get_field_size(definition_message, RecordAirTimeRemainingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordPressureSacField(
-            size=self.__get_field_size(definition_message, RecordPressureSacField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordVolumeSacField(
-            size=self.__get_field_size(definition_message, RecordVolumeSacField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordRmvField(
-            size=self.__get_field_size(definition_message, RecordRmvField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordAscentRateField(
-            size=self.__get_field_size(definition_message, RecordAscentRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordPo2Field(
-            size=self.__get_field_size(definition_message, RecordPo2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         RecordCoreTemperatureField(
-            size=self.__get_field_size(definition_message, RecordCoreTemperatureField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        RecordPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordPositionLatField.ID),
+            growable=False), 
+        RecordPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordPositionLongField.ID),
+            growable=False), 
+        RecordAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordAltitudeField.ID),
+            growable=False), 
+        RecordHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordHeartRateField.ID),
+            growable=False), 
+        RecordCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCadenceField.ID),
+            growable=False), 
+        RecordDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordDistanceField.ID),
+            growable=False), 
+        RecordSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordSpeedField.ID),
+            growable=False), 
+        RecordPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordPowerField.ID),
+            growable=False), 
+        RecordCompressedSpeedDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCompressedSpeedDistanceField.ID),
+            growable=False), 
+        RecordGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordGradeField.ID),
+            growable=False), 
+        RecordResistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordResistanceField.ID),
+            growable=False), 
+        RecordTimeFromCourseField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTimeFromCourseField.ID),
+            growable=False), 
+        RecordCycleLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCycleLengthField.ID),
+            growable=False), 
+        RecordTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTemperatureField.ID),
+            growable=False), 
+        RecordSpeed1sField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordSpeed1sField.ID),
+            growable=False), 
+        RecordCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCyclesField.ID),
+            growable=False), 
+        RecordTotalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTotalCyclesField.ID),
+            growable=False), 
+        RecordCompressedAccumulatedPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCompressedAccumulatedPowerField.ID),
+            growable=False), 
+        RecordAccumulatedPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordAccumulatedPowerField.ID),
+            growable=False), 
+        RecordLeftRightBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftRightBalanceField.ID),
+            growable=False), 
+        RecordGpsAccuracyField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordGpsAccuracyField.ID),
+            growable=False), 
+        RecordVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordVerticalSpeedField.ID),
+            growable=False), 
+        RecordCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCaloriesField.ID),
+            growable=False), 
+        RecordVerticalOscillationField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordVerticalOscillationField.ID),
+            growable=False), 
+        RecordStanceTimePercentField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordStanceTimePercentField.ID),
+            growable=False), 
+        RecordStanceTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordStanceTimeField.ID),
+            growable=False), 
+        RecordActivityTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordActivityTypeField.ID),
+            growable=False), 
+        RecordLeftTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftTorqueEffectivenessField.ID),
+            growable=False), 
+        RecordRightTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRightTorqueEffectivenessField.ID),
+            growable=False), 
+        RecordLeftPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftPedalSmoothnessField.ID),
+            growable=False), 
+        RecordRightPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRightPedalSmoothnessField.ID),
+            growable=False), 
+        RecordCombinedPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCombinedPedalSmoothnessField.ID),
+            growable=False), 
+        RecordTime128Field(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTime128Field.ID),
+            growable=False), 
+        RecordStrokeTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordStrokeTypeField.ID),
+            growable=False), 
+        RecordZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordZoneField.ID),
+            growable=False), 
+        RecordBallSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordBallSpeedField.ID),
+            growable=False), 
+        RecordCadence256Field(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCadence256Field.ID),
+            growable=False), 
+        RecordFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordFractionalCadenceField.ID),
+            growable=False), 
+        RecordTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTotalHemoglobinConcField.ID),
+            growable=False), 
+        RecordTotalHemoglobinConcMinField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTotalHemoglobinConcMinField.ID),
+            growable=False), 
+        RecordTotalHemoglobinConcMaxField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTotalHemoglobinConcMaxField.ID),
+            growable=False), 
+        RecordSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        RecordSaturatedHemoglobinPercentMinField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordSaturatedHemoglobinPercentMinField.ID),
+            growable=False), 
+        RecordSaturatedHemoglobinPercentMaxField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordSaturatedHemoglobinPercentMaxField.ID),
+            growable=False), 
+        RecordDeviceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordDeviceIndexField.ID),
+            growable=False), 
+        RecordLeftPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftPcoField.ID),
+            growable=False), 
+        RecordRightPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRightPcoField.ID),
+            growable=False), 
+        RecordLeftPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftPowerPhaseField.ID),
+            growable=False), 
+        RecordLeftPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordLeftPowerPhasePeakField.ID),
+            growable=False), 
+        RecordRightPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRightPowerPhaseField.ID),
+            growable=False), 
+        RecordRightPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRightPowerPhasePeakField.ID),
+            growable=False), 
+        RecordEnhancedSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEnhancedSpeedField.ID),
+            growable=False), 
+        RecordEnhancedAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEnhancedAltitudeField.ID),
+            growable=False), 
+        RecordBatterySocField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordBatterySocField.ID),
+            growable=False), 
+        RecordMotorPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordMotorPowerField.ID),
+            growable=False), 
+        RecordVerticalRatioField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordVerticalRatioField.ID),
+            growable=False), 
+        RecordStanceTimeBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordStanceTimeBalanceField.ID),
+            growable=False), 
+        RecordStepLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordStepLengthField.ID),
+            growable=False), 
+        RecordCycleLength16Field(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCycleLength16Field.ID),
+            growable=False), 
+        RecordAbsolutePressureField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordAbsolutePressureField.ID),
+            growable=False), 
+        RecordDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordDepthField.ID),
+            growable=False), 
+        RecordNextStopDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordNextStopDepthField.ID),
+            growable=False), 
+        RecordNextStopTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordNextStopTimeField.ID),
+            growable=False), 
+        RecordTimeToSurfaceField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordTimeToSurfaceField.ID),
+            growable=False), 
+        RecordNdlTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordNdlTimeField.ID),
+            growable=False), 
+        RecordCnsLoadField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCnsLoadField.ID),
+            growable=False), 
+        RecordN2LoadField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordN2LoadField.ID),
+            growable=False), 
+        RecordRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRespirationRateField.ID),
+            growable=False), 
+        RecordEnhancedRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEnhancedRespirationRateField.ID),
+            growable=False), 
+        RecordGritField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordGritField.ID),
+            growable=False), 
+        RecordFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordFlowField.ID),
+            growable=False), 
+        RecordCurrentStressField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCurrentStressField.ID),
+            growable=False), 
+        RecordEbikeTravelRangeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEbikeTravelRangeField.ID),
+            growable=False), 
+        RecordEbikeBatteryLevelField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEbikeBatteryLevelField.ID),
+            growable=False), 
+        RecordEbikeAssistModeField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEbikeAssistModeField.ID),
+            growable=False), 
+        RecordEbikeAssistLevelPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordEbikeAssistLevelPercentField.ID),
+            growable=False), 
+        RecordAirTimeRemainingField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordAirTimeRemainingField.ID),
+            growable=False), 
+        RecordPressureSacField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordPressureSacField.ID),
+            growable=False), 
+        RecordVolumeSacField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordVolumeSacField.ID),
+            growable=False), 
+        RecordRmvField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordRmvField.ID),
+            growable=False), 
+        RecordAscentRateField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordAscentRateField.ID),
+            growable=False), 
+        RecordPo2Field(
+            size=cls._field_size_from_definition(
+                definition_message, RecordPo2Field.ID),
+            growable=False), 
+        RecordCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, RecordCoreTemperatureField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

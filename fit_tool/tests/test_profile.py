@@ -97,3 +97,16 @@ class TestMessageFactory(unittest.TestCase):
         message_class = message_factory._get_message_class(19)
         self.assertEqual('LapMessage', message_class.__name__)
         self.assertIn(module_name, sys.modules)
+
+    def test_from_definition_uses_class_factory(self):
+        from fit_tool.definition_message import DefinitionMessage
+        from fit_tool.profile.messages.message_factory import MessageFactory
+        from fit_tool.profile.messages.record_message import RecordMessage
+
+        blank = RecordMessage(local_id=3)
+        definition = DefinitionMessage.from_data_message(blank)
+        projected = MessageFactory.from_definition(definition, [])
+        self.assertIsInstance(projected, RecordMessage)
+        self.assertIs(definition, projected.definition_message)
+        self.assertFalse(projected.growable)
+        self.assertEqual(3, projected.local_id)

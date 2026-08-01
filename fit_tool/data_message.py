@@ -9,6 +9,22 @@ from fit_tool.utils.logging import logger
 
 
 class DataMessage(Message):
+    """Base class for FIT data messages.
+
+    Construction modes for generated subclasses:
+
+    * **Create (authoring):** ``MessageClass()`` or ``MessageClass(local_id=...,
+      endian=..., developer_fields=...)`` — blank growable fields, no wire
+      definition attached.
+    * **Project (decode):** ``MessageClass.from_definition(definition,
+      developer_fields=...)`` — field sizes fixed from the local definition.
+      :class:`~fit_tool.profile.messages.message_factory.MessageFactory` and
+      the wire projection path use this factory.
+
+    Do not pass a definition into ``__init__`` on generated message classes;
+    use :meth:`from_definition` (class method on each generated type) or this
+    base :meth:`from_definition` static method (routes via MessageFactory).
+    """
 
     def __init__(self, local_id: int = 0, global_id: int = 0, endian: Endian = Endian.LITTLE,
                  name: str = '',
@@ -26,6 +42,11 @@ class DataMessage(Message):
 
     @staticmethod
     def from_definition(definition_message: DefinitionMessage, developer_fields: list[DeveloperField]):
+        """Build the typed message for *definition_message* via MessageFactory.
+
+        Prefer ``SomeMessage.from_definition(...)`` when the concrete class is
+        known; use this entry point for polymorphic decode projection.
+        """
         from fit_tool.profile.messages.message_factory import MessageFactory
         return MessageFactory.from_definition(definition_message, developer_fields)
 

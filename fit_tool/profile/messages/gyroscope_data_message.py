@@ -17,63 +17,126 @@ from typing import Dict as dict
 
 
 class GyroscopeDataMessage(DataMessage):
+    """GyroscopeDataMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``GyroscopeDataMessage()`` — create path: growable fields, no wire definition.
+    * ``GyroscopeDataMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 164
     NAME = 'gyroscope_data'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=GyroscopeDataMessage.NAME,
                          global_id=GyroscopeDataMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataTimestampMsField(
-            size=self.__get_field_size(definition_message, GyroscopeDataTimestampMsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataSampleTimeOffsetField(
-            size=self.__get_field_size(definition_message, GyroscopeDataSampleTimeOffsetField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataGyroXField(
-            size=self.__get_field_size(definition_message, GyroscopeDataGyroXField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataGyroYField(
-            size=self.__get_field_size(definition_message, GyroscopeDataGyroYField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataGyroZField(
-            size=self.__get_field_size(definition_message, GyroscopeDataGyroZField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataCalibratedGyroXField(
-            size=self.__get_field_size(definition_message, GyroscopeDataCalibratedGyroXField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataCalibratedGyroYField(
-            size=self.__get_field_size(definition_message, GyroscopeDataCalibratedGyroYField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         GyroscopeDataCalibratedGyroZField(
-            size=self.__get_field_size(definition_message, GyroscopeDataCalibratedGyroZField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        GyroscopeDataTimestampMsField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataTimestampMsField.ID),
+            growable=False), 
+        GyroscopeDataSampleTimeOffsetField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataSampleTimeOffsetField.ID),
+            growable=False), 
+        GyroscopeDataGyroXField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataGyroXField.ID),
+            growable=False), 
+        GyroscopeDataGyroYField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataGyroYField.ID),
+            growable=False), 
+        GyroscopeDataGyroZField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataGyroZField.ID),
+            growable=False), 
+        GyroscopeDataCalibratedGyroXField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataCalibratedGyroXField.ID),
+            growable=False), 
+        GyroscopeDataCalibratedGyroYField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataCalibratedGyroYField.ID),
+            growable=False), 
+        GyroscopeDataCalibratedGyroZField(
+            size=cls._field_size_from_definition(
+                definition_message, GyroscopeDataCalibratedGyroZField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

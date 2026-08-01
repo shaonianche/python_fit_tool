@@ -17,63 +17,126 @@ from typing import Dict as dict
 
 
 class MagnetometerDataMessage(DataMessage):
+    """MagnetometerDataMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``MagnetometerDataMessage()`` — create path: growable fields, no wire definition.
+    * ``MagnetometerDataMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 208
     NAME = 'magnetometer_data'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=MagnetometerDataMessage.NAME,
                          global_id=MagnetometerDataMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataTimestampMsField(
-            size=self.__get_field_size(definition_message, MagnetometerDataTimestampMsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataSampleTimeOffsetField(
-            size=self.__get_field_size(definition_message, MagnetometerDataSampleTimeOffsetField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataMagXField(
-            size=self.__get_field_size(definition_message, MagnetometerDataMagXField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataMagYField(
-            size=self.__get_field_size(definition_message, MagnetometerDataMagYField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataMagZField(
-            size=self.__get_field_size(definition_message, MagnetometerDataMagZField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataCalibratedMagXField(
-            size=self.__get_field_size(definition_message, MagnetometerDataCalibratedMagXField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataCalibratedMagYField(
-            size=self.__get_field_size(definition_message, MagnetometerDataCalibratedMagYField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MagnetometerDataCalibratedMagZField(
-            size=self.__get_field_size(definition_message, MagnetometerDataCalibratedMagZField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        MagnetometerDataTimestampMsField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataTimestampMsField.ID),
+            growable=False), 
+        MagnetometerDataSampleTimeOffsetField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataSampleTimeOffsetField.ID),
+            growable=False), 
+        MagnetometerDataMagXField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataMagXField.ID),
+            growable=False), 
+        MagnetometerDataMagYField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataMagYField.ID),
+            growable=False), 
+        MagnetometerDataMagZField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataMagZField.ID),
+            growable=False), 
+        MagnetometerDataCalibratedMagXField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataCalibratedMagXField.ID),
+            growable=False), 
+        MagnetometerDataCalibratedMagYField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataCalibratedMagYField.ID),
+            growable=False), 
+        MagnetometerDataCalibratedMagZField(
+            size=cls._field_size_from_definition(
+                definition_message, MagnetometerDataCalibratedMagZField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

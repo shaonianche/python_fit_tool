@@ -17,321 +17,728 @@ from typing import Dict as dict
 
 
 class SegmentLapMessage(DataMessage):
+    """SegmentLapMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``SegmentLapMessage()`` — create path: growable fields, no wire definition.
+    * ``SegmentLapMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 142
     NAME = 'segment_lap'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=SegmentLapMessage.NAME,
                          global_id=SegmentLapMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEventField(
-            size=self.__get_field_size(definition_message, SegmentLapEventField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEventTypeField(
-            size=self.__get_field_size(definition_message, SegmentLapEventTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapStartTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapStartTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapStartPositionLatField(
-            size=self.__get_field_size(definition_message, SegmentLapStartPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapStartPositionLongField(
-            size=self.__get_field_size(definition_message, SegmentLapStartPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEndPositionLatField(
-            size=self.__get_field_size(definition_message, SegmentLapEndPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEndPositionLongField(
-            size=self.__get_field_size(definition_message, SegmentLapEndPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalElapsedTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalElapsedTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalTimerTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalTimerTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalDistanceField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalCyclesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalCaloriesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalFatCaloriesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFatCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalAscentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalDescentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapSportField(
-            size=self.__get_field_size(definition_message, SegmentLapSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEventGroupField(
-            size=self.__get_field_size(definition_message, SegmentLapEventGroupField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapNecLatField(
-            size=self.__get_field_size(definition_message, SegmentLapNecLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapNecLongField(
-            size=self.__get_field_size(definition_message, SegmentLapNecLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapSwcLatField(
-            size=self.__get_field_size(definition_message, SegmentLapSwcLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapSwcLongField(
-            size=self.__get_field_size(definition_message, SegmentLapSwcLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapNameField(
-            size=self.__get_field_size(definition_message, SegmentLapNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapNormalizedPowerField(
-            size=self.__get_field_size(definition_message, SegmentLapNormalizedPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapLeftRightBalanceField(
-            size=self.__get_field_size(definition_message, SegmentLapLeftRightBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapSubSportField(
-            size=self.__get_field_size(definition_message, SegmentLapSubSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalWorkField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalWorkField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapGpsAccuracyField(
-            size=self.__get_field_size(definition_message, SegmentLapGpsAccuracyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgPosGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgNegGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxPosGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxNegGradeField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgTemperatureField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxTemperatureField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalMovingTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalMovingTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTimeInHrZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInHrZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTimeInSpeedZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInSpeedZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTimeInCadenceZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInCadenceZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTimeInPowerZoneField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeInPowerZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapRepetitionNumField(
-            size=self.__get_field_size(definition_message, SegmentLapRepetitionNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMinAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapMinAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMinHeartRateField(
-            size=self.__get_field_size(definition_message, SegmentLapMinHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapActiveTimeField(
-            size=self.__get_field_size(definition_message, SegmentLapActiveTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapWorkoutStepIndexField(
-            size=self.__get_field_size(definition_message, SegmentLapWorkoutStepIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapSportEventField(
-            size=self.__get_field_size(definition_message, SegmentLapSportEventField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgLeftTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgRightTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgLeftPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgRightPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgCombinedPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCombinedPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapStatusField(
-            size=self.__get_field_size(definition_message, SegmentLapStatusField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapUuidField(
-            size=self.__get_field_size(definition_message, SegmentLapUuidField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalFractionalCyclesField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapFrontGearShiftCountField(
-            size=self.__get_field_size(definition_message, SegmentLapFrontGearShiftCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapRearGearShiftCountField(
-            size=self.__get_field_size(definition_message, SegmentLapRearGearShiftCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTimeStandingField(
-            size=self.__get_field_size(definition_message, SegmentLapTimeStandingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapStandCountField(
-            size=self.__get_field_size(definition_message, SegmentLapStandCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgLeftPcoField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgRightPcoField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgLeftPowerPhaseField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgLeftPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgLeftPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgRightPowerPhaseField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgRightPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgRightPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgPowerPositionField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxPowerPositionField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgCadencePositionField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapMaxCadencePositionField(
-            size=self.__get_field_size(definition_message, SegmentLapMaxCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapManufacturerField(
-            size=self.__get_field_size(definition_message, SegmentLapManufacturerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalGritField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalFlowField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgGritField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapAvgFlowField(
-            size=self.__get_field_size(definition_message, SegmentLapAvgFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalFractionalAscentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapTotalFractionalDescentField(
-            size=self.__get_field_size(definition_message, SegmentLapTotalFractionalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEnhancedAvgAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapEnhancedAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEnhancedMaxAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapEnhancedMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentLapEnhancedMinAltitudeField(
-            size=self.__get_field_size(definition_message, SegmentLapEnhancedMinAltitudeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        SegmentLapEventField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEventField.ID),
+            growable=False), 
+        SegmentLapEventTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEventTypeField.ID),
+            growable=False), 
+        SegmentLapStartTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapStartTimeField.ID),
+            growable=False), 
+        SegmentLapStartPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapStartPositionLatField.ID),
+            growable=False), 
+        SegmentLapStartPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapStartPositionLongField.ID),
+            growable=False), 
+        SegmentLapEndPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEndPositionLatField.ID),
+            growable=False), 
+        SegmentLapEndPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEndPositionLongField.ID),
+            growable=False), 
+        SegmentLapTotalElapsedTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalElapsedTimeField.ID),
+            growable=False), 
+        SegmentLapTotalTimerTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalTimerTimeField.ID),
+            growable=False), 
+        SegmentLapTotalDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalDistanceField.ID),
+            growable=False), 
+        SegmentLapTotalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalCyclesField.ID),
+            growable=False), 
+        SegmentLapTotalCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalCaloriesField.ID),
+            growable=False), 
+        SegmentLapTotalFatCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalFatCaloriesField.ID),
+            growable=False), 
+        SegmentLapAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgSpeedField.ID),
+            growable=False), 
+        SegmentLapMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxSpeedField.ID),
+            growable=False), 
+        SegmentLapAvgHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgHeartRateField.ID),
+            growable=False), 
+        SegmentLapMaxHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxHeartRateField.ID),
+            growable=False), 
+        SegmentLapAvgCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgCadenceField.ID),
+            growable=False), 
+        SegmentLapMaxCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxCadenceField.ID),
+            growable=False), 
+        SegmentLapAvgPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgPowerField.ID),
+            growable=False), 
+        SegmentLapMaxPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxPowerField.ID),
+            growable=False), 
+        SegmentLapTotalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalAscentField.ID),
+            growable=False), 
+        SegmentLapTotalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalDescentField.ID),
+            growable=False), 
+        SegmentLapSportField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapSportField.ID),
+            growable=False), 
+        SegmentLapEventGroupField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEventGroupField.ID),
+            growable=False), 
+        SegmentLapNecLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapNecLatField.ID),
+            growable=False), 
+        SegmentLapNecLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapNecLongField.ID),
+            growable=False), 
+        SegmentLapSwcLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapSwcLatField.ID),
+            growable=False), 
+        SegmentLapSwcLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapSwcLongField.ID),
+            growable=False), 
+        SegmentLapNameField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapNameField.ID),
+            growable=False), 
+        SegmentLapNormalizedPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapNormalizedPowerField.ID),
+            growable=False), 
+        SegmentLapLeftRightBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapLeftRightBalanceField.ID),
+            growable=False), 
+        SegmentLapSubSportField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapSubSportField.ID),
+            growable=False), 
+        SegmentLapTotalWorkField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalWorkField.ID),
+            growable=False), 
+        SegmentLapAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgAltitudeField.ID),
+            growable=False), 
+        SegmentLapMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxAltitudeField.ID),
+            growable=False), 
+        SegmentLapGpsAccuracyField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapGpsAccuracyField.ID),
+            growable=False), 
+        SegmentLapAvgGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgGradeField.ID),
+            growable=False), 
+        SegmentLapAvgPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgPosGradeField.ID),
+            growable=False), 
+        SegmentLapAvgNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgNegGradeField.ID),
+            growable=False), 
+        SegmentLapMaxPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxPosGradeField.ID),
+            growable=False), 
+        SegmentLapMaxNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxNegGradeField.ID),
+            growable=False), 
+        SegmentLapAvgTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgTemperatureField.ID),
+            growable=False), 
+        SegmentLapMaxTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxTemperatureField.ID),
+            growable=False), 
+        SegmentLapTotalMovingTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalMovingTimeField.ID),
+            growable=False), 
+        SegmentLapAvgPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgPosVerticalSpeedField.ID),
+            growable=False), 
+        SegmentLapAvgNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgNegVerticalSpeedField.ID),
+            growable=False), 
+        SegmentLapMaxPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxPosVerticalSpeedField.ID),
+            growable=False), 
+        SegmentLapMaxNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxNegVerticalSpeedField.ID),
+            growable=False), 
+        SegmentLapTimeInHrZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTimeInHrZoneField.ID),
+            growable=False), 
+        SegmentLapTimeInSpeedZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTimeInSpeedZoneField.ID),
+            growable=False), 
+        SegmentLapTimeInCadenceZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTimeInCadenceZoneField.ID),
+            growable=False), 
+        SegmentLapTimeInPowerZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTimeInPowerZoneField.ID),
+            growable=False), 
+        SegmentLapRepetitionNumField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapRepetitionNumField.ID),
+            growable=False), 
+        SegmentLapMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMinAltitudeField.ID),
+            growable=False), 
+        SegmentLapMinHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMinHeartRateField.ID),
+            growable=False), 
+        SegmentLapActiveTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapActiveTimeField.ID),
+            growable=False), 
+        SegmentLapWorkoutStepIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapWorkoutStepIndexField.ID),
+            growable=False), 
+        SegmentLapSportEventField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapSportEventField.ID),
+            growable=False), 
+        SegmentLapAvgLeftTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgLeftTorqueEffectivenessField.ID),
+            growable=False), 
+        SegmentLapAvgRightTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgRightTorqueEffectivenessField.ID),
+            growable=False), 
+        SegmentLapAvgLeftPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgLeftPedalSmoothnessField.ID),
+            growable=False), 
+        SegmentLapAvgRightPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgRightPedalSmoothnessField.ID),
+            growable=False), 
+        SegmentLapAvgCombinedPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgCombinedPedalSmoothnessField.ID),
+            growable=False), 
+        SegmentLapStatusField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapStatusField.ID),
+            growable=False), 
+        SegmentLapUuidField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapUuidField.ID),
+            growable=False), 
+        SegmentLapAvgFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgFractionalCadenceField.ID),
+            growable=False), 
+        SegmentLapMaxFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxFractionalCadenceField.ID),
+            growable=False), 
+        SegmentLapTotalFractionalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalFractionalCyclesField.ID),
+            growable=False), 
+        SegmentLapFrontGearShiftCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapFrontGearShiftCountField.ID),
+            growable=False), 
+        SegmentLapRearGearShiftCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapRearGearShiftCountField.ID),
+            growable=False), 
+        SegmentLapTimeStandingField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTimeStandingField.ID),
+            growable=False), 
+        SegmentLapStandCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapStandCountField.ID),
+            growable=False), 
+        SegmentLapAvgLeftPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgLeftPcoField.ID),
+            growable=False), 
+        SegmentLapAvgRightPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgRightPcoField.ID),
+            growable=False), 
+        SegmentLapAvgLeftPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgLeftPowerPhaseField.ID),
+            growable=False), 
+        SegmentLapAvgLeftPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgLeftPowerPhasePeakField.ID),
+            growable=False), 
+        SegmentLapAvgRightPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgRightPowerPhaseField.ID),
+            growable=False), 
+        SegmentLapAvgRightPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgRightPowerPhasePeakField.ID),
+            growable=False), 
+        SegmentLapAvgPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgPowerPositionField.ID),
+            growable=False), 
+        SegmentLapMaxPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxPowerPositionField.ID),
+            growable=False), 
+        SegmentLapAvgCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgCadencePositionField.ID),
+            growable=False), 
+        SegmentLapMaxCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapMaxCadencePositionField.ID),
+            growable=False), 
+        SegmentLapManufacturerField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapManufacturerField.ID),
+            growable=False), 
+        SegmentLapTotalGritField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalGritField.ID),
+            growable=False), 
+        SegmentLapTotalFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalFlowField.ID),
+            growable=False), 
+        SegmentLapAvgGritField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgGritField.ID),
+            growable=False), 
+        SegmentLapAvgFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapAvgFlowField.ID),
+            growable=False), 
+        SegmentLapTotalFractionalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalFractionalAscentField.ID),
+            growable=False), 
+        SegmentLapTotalFractionalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapTotalFractionalDescentField.ID),
+            growable=False), 
+        SegmentLapEnhancedAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEnhancedAvgAltitudeField.ID),
+            growable=False), 
+        SegmentLapEnhancedMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEnhancedMaxAltitudeField.ID),
+            growable=False), 
+        SegmentLapEnhancedMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentLapEnhancedMinAltitudeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

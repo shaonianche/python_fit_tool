@@ -63,10 +63,12 @@ Maps known conformance gaps to fixtures or constructive tests. Stage-2 work
 | Compressed timestamp offset + rollover | Supported | Constructive + unit helpers | `test_protocol_high_severity.py` | done |
 | Chained multi-segment FIT | Supported | Constructive (`segment + segment`) | `test_protocol_high_severity.TestChainedAndTrailing` | done |
 | Trailing bytes after last segment | Supported (`allow_trailing_bytes`) | Constructive | same | done |
-| Component: `compressed_speed_distance` | Partial (registry) | Constructive wire + in-memory | `test_protocol_high_severity.TestComponents`, `test_protocol_gap_fixtures` | C |
-| Component: `compressed_accumulated_power` + accumulate | Partial (registry) | In-memory expansion | same | C |
-| Component: 16-bit accumulator **rollover** | Partial | Constructive expansion helper | `test_protocol_gap_fixtures` | C |
-| Nested components / full Profile component set | **Gap** | Constructive / `xfail` | `test_protocol_gap_fixtures` | C |
+| Component: `compressed_speed_distance` | Supported (Profile registry) | Constructive wire + in-memory | `test_protocol_high_severity.TestComponents`, `test_components.py`, `test_protocol_gap_fixtures` | C done |
+| Component: `compressed_accumulated_power` + accumulate | Supported | In-memory expansion | same | C done |
+| Component: 16-bit / 8-bit / 12-bit accumulator **rollover** | Supported | Constructive expansion helper | `test_components.py`, `test_protocol_gap_fixtures` | C done |
+| Nested components (e.g. speed → enhanced_speed) | Supported | Constructive | `test_components.py` | C done |
+| Full Profile **main-field** component set | Supported (37/37 sources, generated registry) | `fit_tool/profile/component_registry.py` | `test_components.TestRegistryCoverage` | C done |
+| Subfield-gated components (event sport_point, etc.) | **Gap** (needs D) | deferred | Stage 2 D | D |
 | Unknown **global** messages | Partial (`GenericMessage`) | Device/SDK files with odd IDs; wire decode | `test_wire.py`, SDK smokes | E |
 | Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes` on decode; unedited preserve ok) | Constructive definition + data | `test_protocol_gap_fixtures` | E |
 | Subfields (e.g. `workout_step.duration_value`) | **Gap** (`SubField.is_valid` matches too broadly) | Constructive workout step | `test_protocol_gap_fixtures`, `test_field.py` | D |

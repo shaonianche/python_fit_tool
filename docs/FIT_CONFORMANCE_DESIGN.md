@@ -1,5 +1,23 @@
 # Garmin FIT Strict Conformance Design
 
+## Current status (implementation vs this document)
+
+**This document is the target architecture and roadmap.** It is not a claim that
+the installed package already meets full Garmin FIT conformance.
+
+For the library as shipped today, use the capability matrix in
+[`README.md`](../README.md#capability-boundary). In short:
+
+| Area | Today | This design |
+| --- | --- | --- |
+| Common Activity / Workout read-write, Builder, file CRC, streaming, developer fields (common cases) | Supported | Baseline to preserve |
+| Unknown messages (`GenericMessage`), Activity-only strict write validation | Partial | Expand into wire preservation + full file-type validators |
+| Compressed timestamps, chained segments, components / accumulators, lossless rewrite, header CRC, non-Activity strict rules | Not supported / incomplete | Phases 1–4 below |
+
+Until Phase exit criteria in §10 are met, do not describe the library as fully
+protocol-conformant. Prefer “supports common Activity/Workout workflows” and
+point readers at the README matrix.
+
 ## 1. Objective
 
 The target is full conformance with the published Garmin FIT protocol and the

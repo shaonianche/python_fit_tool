@@ -71,7 +71,7 @@ Maps known conformance gaps to fixtures or constructive tests. Stage-2 work
 | Subfield-gated components (event sport_point, etc.) | **Gap** (needs D) | deferred | Stage 2 D | D |
 | Unknown **global** messages | Partial (`GenericMessage`) | Device/SDK files with odd IDs; wire decode | `test_wire.py`, SDK smokes | E |
 | Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes` on decode; unedited preserve ok) | Constructive definition + data | `test_protocol_gap_fixtures` | E |
-| Subfields (e.g. `workout_step.duration_value`) | **Gap** (`SubField.is_valid` matches too broadly) | Constructive workout step | `test_protocol_gap_fixtures`, `test_field.py` | D |
+| Subfields (e.g. `workout_step.duration_value`) | **Supported** (ref match + scale/units; multi-ref AND; PROFILE ERROR on ambiguity) | Constructive workout step | `test_subfields`, `test_protocol_gap_fixtures` | D |
 | Developer fields (common patterns) | Supported | `sdk/DeveloperData.fit`, `activity_developerdata.fit` | `test_sdk_files.py`, `test_developer_fields.py` | — |
 | Header CRC (14-byte / extended) | Supported | Constructive | `test_protocol_high_severity.TestHeaderCRC` | done |
 | File CRC | Supported | All CRC-checked loads | suite-wide | done |

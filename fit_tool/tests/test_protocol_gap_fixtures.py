@@ -9,8 +9,6 @@ from __future__ import annotations
 
 import unittest
 
-import pytest
-
 from fit_tool.components import expand_message_components
 from fit_tool.exceptions import FitParseError
 from fit_tool.fit_file import FitFile
@@ -170,7 +168,7 @@ class TestUnknownFieldOnKnownMessage(unittest.TestCase):
 
 
 class TestSubfieldBearingMessage(unittest.TestCase):
-    """Subfield-relevant workout_step samples (Stage 2 D)."""
+    """Subfield-relevant workout_step samples (Stage 2 D — golden)."""
 
     def test_workout_step_with_duration_decodes(self):
         # duration_type DISTANCE = 1; raw duration_value 50000 (wire UINT32)
@@ -184,23 +182,17 @@ class TestSubfieldBearingMessage(unittest.TestCase):
         self.assertIsInstance(message, WorkoutStepMessage)
         self.assertEqual(message.workout_step_name, 'gap-step')
         self.assertEqual(message.duration_type, WorkoutStepDuration.DISTANCE.value)
-        # Smoke: value is readable (scale may be wrong until subfield fix — see xfail).
-        self.assertIsNotNone(message.duration_value)
+        self.assertAlmostEqual(message.duration_value, 500.0)
 
-    def test_subfield_is_valid_matches_all_when_ref_field_present(self):
-        """Characterize SubField.is_valid bug: value checked against map keys, not ref list."""
+    def test_only_matching_subfield_is_valid(self):
+        """SubField.is_valid matches permitted ref values (AND semantics)."""
         message = WorkoutStepMessage()
         message.duration_type = WorkoutStepDuration.DISTANCE
         duration_value = message.get_field(2)
         assert duration_value is not None
         valid = [sf for sf in duration_value.sub_fields if sf.is_valid(message.fields)]
-        # With the bug, every subfield that keys on field 1 reports valid.
-        self.assertGreater(len(valid), 1)
+        self.assertEqual([sf.name for sf in valid], ['duration_distance'])
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason='Stage 2 D: SubField.is_valid must match reference values, not map keys',
-    )
     def test_duration_distance_subfield_is_selected(self):
         message = WorkoutStepMessage()
         message.duration_type = WorkoutStepDuration.DISTANCE
@@ -212,10 +204,6 @@ class TestSubfieldBearingMessage(unittest.TestCase):
         self.assertEqual(selected.scale, 100)
         self.assertEqual(selected.units, 'm')
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason='Stage 2 D: decoded duration_value must use duration_distance scale (100)',
-    )
     def test_duration_distance_scale_applied_on_decode(self):
         # Wire raw 50000 with scale 100 → 500 m when duration_type is DISTANCE.
         raw = build_workout_step_with_duration(
@@ -225,6 +213,24 @@ class TestSubfieldBearingMessage(unittest.TestCase):
         fit = FitFile.from_bytes(raw)
         message = next(r.message for r in fit.records if not r.header.is_definition)
         self.assertAlmostEqual(message.duration_value, 500.0)
+
+    def test_duration_time_scale_applied_on_decode(self):
+        # TIME = 0; wire raw 1500 with scale 1000 → 1.5 s.
+        raw = build_workout_step_with_duration(
+            duration_type=WorkoutStepDuration.TIME.value,
+            duration_value_raw=1500,
+        )
+        fit = FitFile.from_bytes(raw)
+        message = next(r.message for r in fit.records if not r.header.is_definition)
+        self.assertAlmostEqual(message.duration_value, 1.5)
+        self.assertAlmostEqual(message.duration_time, 1.5)
+
+    def test_duration_time_named_property_gated_by_type(self):
+        message = WorkoutStepMessage()
+        message.duration_type = WorkoutStepDuration.DISTANCE
+        message.duration_value = 100.0  # metres via duration_distance scale
+        self.assertIsNone(message.duration_time)
+        self.assertAlmostEqual(message.duration_distance, 100.0)
 
 
 class TestMultiSegmentAndTrailingCorpus(unittest.TestCase):

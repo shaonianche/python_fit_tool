@@ -17,10 +17,12 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Header CRC** (14-byte headers, gated by `check_crc`) | Supported | Keep strict; no silent repair |
 | **Chained multi-segment** FIT decode via `FitFile.from_bytes` / `from_file` (all segments projected into `records`) | Supported | Full `FitDocument` / segment API remains the long-term surface (§4–5) |
 | **Compressed timestamp** reconstruction into field 253 (wire decoder + projection) | Supported | Encode compressed headers still optional / canonical path |
-| **Component expansion** for all Profile **main-field** sources (generated registry, nested expansion, accumulators) | Supported (main fields; subfield-gated components still open) | Subfield-gated components with subfield selection (Phase 3 / Multica D) |
+| **Component expansion** for all Profile **main-field** sources (generated registry, nested expansion, accumulators); also expands components declared on the **active subfield** | Supported (main fields + active-subfield components) | Remaining edge cases only |
+| **Subfield resolution** (ref-field match → type / scale / offset / units; first match wins; multi-ref AND) | Supported | Generated property accessors call `get_valid_sub_field` |
+| **Ambiguous subfields** (more than one match) | PROFILE ERROR (decode still uses first match) | Same policy |
 | **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded, **unedited** files (`wire_document` intact) | Supported | Post-edit PRESERVATION and unknown-field rewrite (Phases 3–4) |
-| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer-field subset) + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile field/enum/units/subfields; Workout/Course FILE_TYPE; PRESERVATION level |
-| Full PROFILE semantics (native required fields, enums, units, **subfields**); post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile field/enum/units rules; Workout/Course FILE_TYPE; PRESERVATION level |
+| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
 | Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; unedited preserve path) | Supported | Post-edit PRESERVATION rewrite (Stage 3 F) still uses projected re-encode |
 
 Until §11 Definition of Done is met, do not describe the library as fully
@@ -37,8 +39,8 @@ stable keys, later letters are stage placeholders until children are created.
 | Gap | Design doc | Multica | Notes |
 | --- | --- | --- | --- |
 | Fixture / golden corpus for remaining protocol edges | Phase 0 | **B** SHA-14 | Stage 1; coordinate with this status table |
-| Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | Stage 2 — main-field registry + nested + rollover done; subfield-gated components remain with D |
-| Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | Stage 2 |
+| Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | **Done** main-field registry + nested + rollover; active-subfield components via D |
+| Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | **Done** runtime match + PROFILE ambiguity ERROR |
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** (SHA-12 stage 3; child TBD) | Unedited preserve path already works |
 | Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** (SHA-12 stage 3; child TBD) | |
@@ -399,7 +401,8 @@ Setting a field to `None` writes the exact invalid bit pattern for its base type
 
 ### 5.6 Subfields
 
-Subfield selection is centralized and deterministic:
+Subfield selection is centralized and deterministic via
+`Field.resolve_sub_field` / `get_valid_sub_field` and `SubField.is_valid`:
 
 ```python
 all(
@@ -408,11 +411,22 @@ all(
 )
 ```
 
-The selected subfield controls type, scale, offset, units, and components.
-Ambiguous matching subfields produce a profile-conformance error.
+Implementation notes (runtime today):
+
+- **AND** across every entry in `reference_map` (multi-ref). A missing or
+  invalid reference field means the subfield is not active.
+- Permitted values are compared to the decoded ref-field value (enums via
+  `.value`).
+- **First match in Profile order** is selected for decode/encode
+  (type, scale, offset, units, and any components on that subfield).
+- **Ambiguity** (two or more matches) is a **PROFILE-level ERROR** in
+  `validate_fit_file`; decode still uses the first match so values remain
+  defined. This is intentional and covered by golden tests.
 
 Generated property accessors must call this shared resolver rather than
-duplicating reference checks.
+duplicating reference checks (named subfield properties may still gate on
+the ref field for `None` vs value, but scale/units come from
+`get_valid_sub_field`).
 
 ### 5.7 Components and accumulation
 

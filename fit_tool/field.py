@@ -8,7 +8,7 @@ from fit_tool.endian import Endian
 from fit_tool.exceptions import FitEncodingError
 from fit_tool.field_component import FieldComponent
 from fit_tool.field_definition import FieldDefinition
-from fit_tool.sub_field import SubField
+from fit_tool.sub_field import SubField, SubFieldResolution
 
 
 class ArrayType(Enum):
@@ -407,15 +407,28 @@ class Field:
 
         return bytes_buffer
 
-    def get_valid_sub_field(self, fields: list) -> SubField | None:
+    def resolve_sub_field(self, fields: list) -> SubFieldResolution:
+        """Resolve active subfield(s) from sibling field values (Profile order).
+
+        Selection is deterministic: the first matching subfield is ``selected``.
+        When more than one subfield matches, ``is_ambiguous`` is True; callers
+        that validate Profile conformance should treat that as an ERROR (see
+        design doc §5.6). Decode still uses the first match so type/scale/units
+        remain defined.
+        """
         if not self.sub_fields:
-            return None
+            return SubFieldResolution(selected=None, matches=())
 
-        for sub_field in self.sub_fields:
-            if sub_field.is_valid(fields):
-                return sub_field
+        matches = tuple(sub_field for sub_field in self.sub_fields if sub_field.is_valid(fields))
+        selected = matches[0] if matches else None
+        return SubFieldResolution(selected=selected, matches=matches)
 
-        return None
+    def get_valid_sub_field(self, fields: list) -> SubField | None:
+        """Return the first Profile-matching subfield, or ``None``.
+
+        Prefer :meth:`resolve_sub_field` when ambiguity must be reported.
+        """
+        return self.resolve_sub_field(fields).selected
 
     def to_row(self, sub_field: SubField = None) -> list:
         row = []

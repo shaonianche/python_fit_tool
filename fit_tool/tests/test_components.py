@@ -29,7 +29,7 @@ class TestRegistryCoverage(unittest.TestCase):
         self.assertEqual(coverage['profile_main_field_sources'], 37)
         self.assertEqual(coverage['registry_entries'], 37)
         self.assertEqual(coverage['coverage_ratio'], 1.0)
-        self.assertIn('Stage 2 D', str(coverage['subfield_components']))
+        self.assertIn('subfield', str(coverage['subfield_components']).lower())
 
     def test_known_record_packed_fields_present(self):
         # compressed_speed_distance and compressed_accumulated_power

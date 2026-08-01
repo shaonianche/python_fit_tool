@@ -9,11 +9,13 @@ For the library as shipped today, use the capability matrix in
 [`README.md`](../README.md#capability-boundary). That matrix is the source of
 truth for user-facing claims; this section must stay aligned with it.
 
-Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
+Baseline after Multica epic **SHA-12** stages 1–4 on `main` (wire #44/#45,
+hygiene, then C–J). **User-facing claims must match**
+[`README.md`](../README.md#capability-boundary); update both together.
 
 | Area | Today | This design |
 | --- | --- | --- |
-| Common Activity / Workout read-write, `FitFileBuilder`, file-level CRC, streaming iterators, developer fields (common declaration patterns), CSV export | Supported | Baseline to preserve |
+| Common Activity / Workout / Course read-write, `FitFileBuilder`, file-level CRC, streaming iterators, developer fields (common declaration patterns), CSV export | Supported | Baseline to preserve |
 | **Header CRC** (14-byte headers, gated by `check_crc`) | Supported | Keep strict; no silent repair |
 | **Chained multi-segment** FIT decode via `FitFile.from_bytes` / `from_file` (all segments projected into `records`) | Supported | Full `FitDocument` / segment API remains the long-term surface (§4–5) |
 | **Compressed timestamp** reconstruction into field 253 (wire decoder + projection) | Supported | Encode compressed headers still optional / canonical path |
@@ -22,36 +24,38 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Ambiguous subfields** (more than one match) | PROFILE ERROR (decode still uses first match) | Same policy |
 | **Preservation encode** (`to_bytes(mode=EncodeMode.PRESERVE)` / `preserve=True`, default) for buffer-decoded files: unedited path bit-identical; **post-edit** path re-encodes dirty records and copies `source_bytes` for the rest | Supported | Aligns with design §6.1 |
 | **Canonical encode** (`to_bytes(mode=EncodeMode.CANONICAL)` / `preserve=False`); optional `strict=True` precheck | Supported | Compressed-header expansion only when field 253 is on the definition; otherwise keep compressed (non-strict) or raise (strict) |
-| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity/Workout FILE_TYPE; opt-in **PRESERVATION** level; Builder `strict=True` wraps default levels only | Partial | Full Profile field/enum/units rules; Course FILE_TYPE |
-| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); Course and other non-Activity/non-Workout FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Unknown global messages (`GenericMessage`); composable validation with WIRE + PROFILE scopes (CORE default; DOMAIN/FULL opt-in native base-type + closed-enum) + Activity/Workout/Course FILE_TYPE; opt-in **PRESERVATION**; Builder `strict=True` wraps default levels at **CORE** only | Partial | Remaining PROFILE rule families (required fields, units); other FILE_TYPE values |
+| Remaining PROFILE rule families (native required fields, units/scale beyond subfield scale/units); FILE_TYPE for types other than Activity/Workout/Course; `repair()` API; public `FitDocument` | Not supported / incomplete | Follow-ups outside closed SHA-12 stages C–J; see residual checklist under §11 |
 | Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; survive post-edit when not mutated) | Supported | Mutating an unknown field clears `raw_bytes` (PRESERVATION ERROR if that level is selected) |
 
 Until §11 Definition of Done is met, do not describe the library as fully
-protocol-conformant. Prefer “supports common Activity/Workout workflows” and
-point readers at the README matrix.
+protocol-conformant. Prefer “supports common Activity/Workout/Course workflows”
+and point readers at the README matrix (including **What this library still
+does not claim**).
 
 ### Remaining gaps (roadmap ↔ Multica)
 
-Tracked under Multica epic **SHA-12** (protocol / capability extension). Stage 1
-(A docs sync · B fixtures) is characterization only; implementation work is
-stage 2+. Identifiers below are Multica issue keys (SHA-N); filed children have
-stable keys, later letters are stage placeholders until children are created.
+Tracked under Multica epic **SHA-12** (protocol / capability extension). Stages
+1–4 children **C–J** are **done** on `main`; Stage 5 (**L** / SHA-23) is the
+public-claims pass that keeps this table and the README matrix honest.
 
 | Gap | Design doc | Multica | Notes |
 | --- | --- | --- | --- |
-| Fixture / golden corpus for remaining protocol edges | Phase 0 | **B** SHA-14 | Stage 1; coordinate with this status table |
+| Docs / status truth vs main | Phase 0 | **A** SHA-13 | **Done** (re-synced at Stage 5 / L) |
+| Fixture / golden corpus for protocol edges | Phase 0 | **B** SHA-14 | **Done** inventory + constructive goldens; expand as follow-up only |
 | Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | **Done** main-field registry + nested + rollover; active-subfield components via D |
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | **Done** runtime match + PROFILE ambiguity ERROR |
-| Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
-| Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done**: per-record dirty + mixed encode; opt-in PRESERVATION findings |
-| Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** SHA-19 | **Done**: `EncodeMode` + policy matrix; no silent invalid clamp; `repair()` API still future |
-| Full PROFILE validation from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE | **H** (SHA-12 stage 4; child TBD) | Slice by message family / rule kind |
-| Workout FILE_TYPE rules | Phase 4 §7 | **I** SHA-21 | **Done**: required messages/fields for Workout; SDK Workout*.fit fixtures pass FILE_TYPE |
-| Course FILE_TYPE rules | Phase 4 §7 | **J** (SHA-12 stage 4; child TBD) | Not in first batch; still fail-closed |
-| Public capability matrix / release-note pass at claim flip | Phase 5 | **L** (SHA-12 stage 5; child TBD) | Update README + this section together |
+| Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** `UnknownField` + `raw_bytes` on main path |
+| Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done** per-record dirty + mixed encode; opt-in PRESERVATION findings |
+| Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** SHA-19 | **Done** `EncodeMode` + policy matrix; no silent invalid clamp; `repair()` still future |
+| PROFILE scopes from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE / §3.1 | **H** SHA-20 | **Done** CORE/DOMAIN/FULL + gen `field_catalog`; default remains CORE; native required fields / units still residual |
+| Workout FILE_TYPE rules | Phase 4 §7 | **I** SHA-21 | **Done** required messages/fields; SDK Workout*.fit pass FILE_TYPE |
+| Course FILE_TYPE rules | Phase 4 §7 | **J** SHA-22 | **Done** Course required messages/fields; Activity + Workout unchanged |
+| Public capability matrix / release-note pass | Phase 5 | **L** SHA-23 | **This pass** — README + this section + §11 residual checklist + Towncrier epic notes |
 
-Letter **A** is this status-truth pass (Multica **SHA-13**). Do not claim gaps
-closed until the matching child is `done` and README status rows flip.
+Letter **A** (SHA-13) was the first status-truth pass. After Stage 5, gaps
+C–J are closed for the epic’s staged scope; residuals below §11 are **follow-up
+work**, not silent “Supported” claims.
 
 ## 1. Objective
 
@@ -141,16 +145,16 @@ Three layers must not be conflated:
 | **B. Runtime semantics** | Subfields, components, accumulators, native overrides | Design for full metadata; implement incrementally |
 | **C. `ConformanceLevel.PROFILE` validation** | Required fields, base types, enums, units consistency | Full catalog is an **opt-in scope**, not the default strict set |
 
-#### Scopes (target API shape)
+#### Scopes (shipped API)
 
-When `ConformanceLevel.PROFILE` is selected, validation applies a **scope**
-(name may land as `profile_scope`, `ProfileRuleSet`, or equivalent):
+When `ConformanceLevel.PROFILE` is selected, validation applies
+`profile_scope=` / `ProfileScope`:
 
-| Scope | Intent | Default for `strict=True` / DEFAULT_LEVELS |
-| --- | --- | --- |
-| **CORE** | Developer-field rules + structural Profile consistency that does not depend on full field catalogs | **Yes** (current behavior grows into CORE) |
-| **DOMAIN** | High-frequency Activity / Workout native rules (required fields, common enums) | Optional later inclusion after coverage is solid |
-| **FULL** | Rules derived from the entire bundled Profile.xlsx | **No** — explicit opt-in (or primarily WARNING until stable) |
+| Scope | Intent | Default for `strict=True` / DEFAULT_LEVELS | Status |
+| --- | --- | --- | --- |
+| **CORE** | Developer-field rules + ambiguous native subfield ERROR | **Yes** | Shipped |
+| **DOMAIN** | CORE + native base-type and closed-enum checks on high-frequency Activity/Workout messages | No | Shipped (required-field / units families still residual) |
+| **FULL** | CORE + same native base-type / closed-enum rules for the entire gen-exported catalog from Profile.xlsx | **No** — explicit opt-in | Shipped for those rule families only; not “full Profile semantics” |
 
 Principles:
 
@@ -168,14 +172,14 @@ Principles:
 
 #### Implementation milestones (for Multica H / related stages)
 
-| Milestone | Meaning |
-| --- | --- |
-| M1 | Gen exports subfield / component / required / enum tables from xlsx |
-| M2 | Runtime applies those tables (semantics) |
-| M3 | PROFILE CORE validation (today’s developer subset, evolved) |
-| M4 | PROFILE DOMAIN (Activity/Workout high-frequency messages) |
-| M5 | PROFILE FULL catalog; default remains CORE (and maybe DOMAIN) |
-| M6 | Marketing / §11 DoD only with WIRE + scoped PROFILE + FILE_TYPE + PRESERVATION |
+| Milestone | Meaning | Status |
+| --- | --- | --- |
+| M1 | Gen exports field / enum catalog (and related) from xlsx | **Done** (`field_catalog`, component registry; required-field table still residual) |
+| M2 | Runtime applies those tables (semantics) | **Partial** (components, subfields, accumulators; not all rule families) |
+| M3 | PROFILE CORE validation (developer subset + ambiguous subfields) | **Done** |
+| M4 | PROFILE DOMAIN (Activity/Workout high-frequency messages) | **Done** for base-type + closed-enum |
+| M5 | PROFILE FULL catalog; default remains CORE | **Done** for base-type + closed-enum on full catalog; default still CORE |
+| M6 | Marketing / §11 DoD only with WIRE + scoped PROFILE + FILE_TYPE + PRESERVATION | **Blocked** by residual checklist under §11 (honest Partial claims only) |
 
 ## 4. Architectural principle: separate wire data from semantic projection
 
@@ -685,8 +689,9 @@ allocation based solely on untrusted lengths.
 
 Exit: every known conformance gap has a fixture and issue.
 
-**Progress:** status table and README matrix aligned with `main` after #44/#45;
-fixture expansion continues under SHA-14.
+**Progress:** status table and README matrix aligned after #44/#45 (SHA-13) and
+re-synced at Stage 5 (SHA-23). Fixture inventory and constructive goldens
+landed under SHA-14; further corpus growth is optional follow-up.
 
 ### Phase 1: lossless wire layer
 
@@ -698,9 +703,9 @@ Exit: all structural fixtures preserve exact bytes.
 
 **Progress (partial):** `fit_tool/wire` decoder/encoder models, immutable
 definition snapshots, header + file CRC, chained multi-segment decode, and
-unedited preservation rewrite of source segment bytes are on `main`. Public
-`FitDocument` API and full structural golden corpus remain incomplete relative
-to the exit criteria above.
+unedited / post-edit preservation rewrite of source segment bytes are on
+`main`. Public `FitDocument` API and a full structural golden corpus remain
+incomplete relative to the exit criteria above.
 
 ### Phase 2: compressed timestamps
 
@@ -721,11 +726,12 @@ Compressed encode and full Garmin bidirectional golden coverage remain.
 
 Exit: Profile-level golden corpus and Garmin cross-validation pass.
 
-**Progress (partial):** generated Profile main-field component registry (37/37
-sources) expands packed fields with nested components and accumulator rollover
-at decode time. Unknown field ids on known messages are retained as
-`UnknownField` with `raw_bytes` (Stage 2 E). Subfield-gated components,
-subfields, and full PROFILE validation remain Multica D / H (stages 2 and 4).
+**Progress (partial):** main-field component registry (37/37 sources) with
+nested expansion and accumulator rollover; active-subfield components via
+subfield resolution (C/D); unknown field ids retained as `UnknownField` +
+`raw_bytes` (E); PROFILE scopes CORE/DOMAIN/FULL with gen `field_catalog` for
+native base-type + closed-enum (H / O1). Remaining: native required-field and
+units rule families, broader Profile golden / Garmin cross-validation.
 
 ### Phase 4: strict encoder and file validators
 
@@ -736,19 +742,25 @@ subfields, and full PROFILE validation remain Multica D / H (stages 2 and 4).
 Exit: all produced standard files pass the selected Garmin and repository
 validators without repair.
 
-**Progress (partial):** unedited and **post-edit** PRESERVE paths exist; explicit
-`EncodeMode` / `strict` / policy matrix landed (G / SHA-19). Activity and
-Workout FILE_TYPE exist (I / SHA-21); other types (including Course / J) fail
-closed. `repair()` API is still future.
+**Progress (partial):** unedited and **post-edit** PRESERVE paths; explicit
+`EncodeMode` / `strict` / policy matrix (G / SHA-19). FILE_TYPE for
+**Activity**, **Workout**, and **Course** (I / SHA-21, J / SHA-22); other
+`file_id.type` values still fail closed. `repair()` API is still future.
 
 ### Phase 5: API migration and performance
 
 - Route legacy APIs through the conformance core.
 - Add compatibility shims and deprecation warnings.
 - Re-establish parse, encode, and streaming-memory budgets.
+- Publish accurate public capability claims (README matrix + this status table).
 
 Exit: no undocumented breaking changes and performance is no worse than the
-current optimized branch by more than the agreed budget.
+current optimized branch by more than the agreed budget; public claims match
+code.
+
+**Progress (partial):** Stage 5 / **L** (SHA-23) lands the public capability
+matrix and release-note rollup for SHA-12. Full API migration and performance
+budgets remain follow-up work outside the protocol epic’s staged children.
 
 ## 11. Definition of done
 
@@ -763,3 +775,23 @@ The project may claim strict Garmin FIT conformance only when:
   invalid values, and chained files have non-`xfail` tests;
 - strict mode performs no silent repair;
 - the exact supported Garmin SDK/Profile version is published.
+
+### §11 residual checklist (after SHA-12 stages 1–4)
+
+Honest status vs the bullets above. **None** of these residuals re-open C–J as
+“undone”; they bound marketing claims until a future epic closes them.
+
+| §11 requirement | Status after SHA-12 C–J | Evidence / residual |
+| --- | --- | --- |
+| All published FIT wire constructs | **Partial** | Header/file CRC, chained decode, compressed-ts **decode**, definitions/data path on `main`; public `FitDocument`, full structural goldens, compressed-ts **encode** parity incomplete |
+| Bundled Profile semantics | **Partial** | Subfields, main-field + active-subfield components, accumulators, developer fields (common patterns), PROFILE CORE/DOMAIN/FULL (base-type + closed-enum). Missing: native required fields, units/scale consistency rules, full developer native-override matrix |
+| Every legal unknown field preserved | **Mostly met** | `UnknownField` + `raw_bytes`; unedited + post-edit PRESERVE when not mutated; PRESERVATION level reports loss. Structural edit / full re-project still drops wire snapshot (documented) |
+| Standard file-type rules (caller-selected) | **Partial** | Activity + Workout + Course implemented; other types fail closed intentionally |
+| Garmin cross-validation | **Incomplete** | SDK samples used as smokes/fixtures; not a release gate for full interop |
+| Non-`xfail` tests for listed constructs | **Partial** | Strong constructive coverage for C–J; expand goldens / remove any remaining known-gap xfails as follow-up |
+| Strict mode no silent repair | **Met** | `strict=True` / DEFAULT_LEVELS never clamp or auto-repair; no `repair()` on strict path |
+| Published SDK/Profile version | **Met** | Profile / SDK `21.205.0` (`fit_tool/gen/`, `SDK_VERSION`) |
+
+**Bottom line:** SHA-12 may move to `done` / `in_review` with the residuals
+above explicit. Do **not** flip public marketing to “full Garmin FIT
+conformance” until this checklist is actually green.

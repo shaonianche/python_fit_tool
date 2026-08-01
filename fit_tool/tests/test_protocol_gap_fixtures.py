@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import unittest
 
-import pytest
 
 from fit_tool.components import expand_message_components
 from fit_tool.exceptions import FitParseError

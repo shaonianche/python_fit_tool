@@ -20,7 +20,8 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Component expansion** for known packed fields (hand-maintained registry, e.g. `compressed_speed_distance`) | Partial | Full Profile components, nested components, accumulators (Phase 3) |
 | **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded, **unedited** files (`wire_document` intact) | Supported | Post-edit PRESERVATION and unknown-field rewrite (Phases 3–4) |
 | Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer-field subset) + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile field/enum/units/subfields; Workout/Course FILE_TYPE; PRESERVATION level |
-| Full PROFILE semantics (native required fields, enums, units, **subfields**); unknown field ids on known messages; post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Full PROFILE semantics (native required fields, enums, units, **subfields**); post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; unedited preserve path) | Supported | Post-edit PRESERVATION rewrite (Stage 3 F) still uses projected re-encode |
 
 Until §11 Definition of Done is met, do not describe the library as fully
 protocol-conformant. Prefer “supports common Activity/Workout workflows” and
@@ -38,7 +39,7 @@ stable keys, later letters are stage placeholders until children are created.
 | Fixture / golden corpus for remaining protocol edges | Phase 0 | **B** SHA-14 | Stage 1; coordinate with this status table |
 | Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | Stage 2 |
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | Stage 2 |
-| Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | Stage 2; prerequisite for post-edit preserve |
+| Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** (SHA-12 stage 3; child TBD) | Unedited preserve path already works |
 | Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** (SHA-12 stage 3; child TBD) | |
 | Full PROFILE validation from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE | **H** (SHA-12 stage 4; child TBD) | Slice by message family / rule kind |
@@ -677,9 +678,10 @@ Compressed encode and full Garmin bidirectional golden coverage remain.
 Exit: Profile-level golden corpus and Garmin cross-validation pass.
 
 **Progress (partial):** small hand-maintained component registry expands a few
-record packed fields. Subfields, full components/accumulators, unknown fields
-on known messages, and full PROFILE validation are Multica C–E / H (stages 2
-and 4).
+record packed fields. Unknown field ids on known messages are retained as
+`UnknownField` with `raw_bytes` (Stage 2 E). Subfields, full
+components/accumulators, and full PROFILE validation remain Multica C–D / H
+(stages 2 and 4).
 
 ### Phase 4: strict encoder and file validators
 

@@ -4,7 +4,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.exceptions import FitEncodingError, FitRecordError
-from fit_tool.field import Field
+from fit_tool.field import Field, UnknownField
 from fit_tool.message import Message
 from fit_tool.utils.logging import logger
 
@@ -124,11 +124,33 @@ class DataMessage(Message):
     def get_developer_field_by_name(self, name: str) -> DeveloperField | None:
         return next((x for x in self.developer_fields if x.name == name), None)
 
+    def retain_unknown_fields(self) -> None:
+        """Append :class:`UnknownField` slots for definition ids not in the Profile.
+
+        Called during decode projection so known messages keep unknown field ids
+        and their payloads (design Phase 3 / Multica Stage 2 E). Safe to call
+        more than once; already-present field ids are left unchanged.
+        """
+        if not self.definition_message:
+            return
+
+        known_ids = {field.field_id for field in self.fields}
+        for field_definition in self.definition_message.field_definitions:
+            if field_definition.field_id in known_ids:
+                continue
+            if field_definition.size <= 0:
+                continue
+            self.fields.append(UnknownField.from_field_definition(field_definition))
+            known_ids.add(field_definition.field_id)
+
     def read_from_bytes(self, bytes_buffer: bytes, offset: int = 0):
         start = offset
 
         if not self.definition_message:
             raise FitRecordError('DefinitionMessage cannot be null.')
+
+        # Project unknown native field ids onto this known message before reading.
+        self.retain_unknown_fields()
 
         fields_by_id = {field.field_id: field for field in reversed(self.fields)}
         developer_fields_by_id = {
@@ -139,8 +161,11 @@ class DataMessage(Message):
             field = fields_by_id.get(field_definition.field_id)
 
             if not field:
+                # Developer-only or zero-size edge: skip with a warning (rare after retain).
                 logger.warning(
-                    f'Field id: {field_definition.field_id} is not defined for message {self.name}:{self.global_id}. Skipping this field')
+                    f'Field id: {field_definition.field_id} is not defined for message '
+                    f'{self.name}:{self.global_id}. Skipping this field'
+                )
                 start += field_definition.size
                 continue
 
@@ -157,7 +182,9 @@ class DataMessage(Message):
 
             if not field:
                 logger.warning(
-                    f'Developer Field id: {developer_field_definition.field_id} is not defined for message {self.name}:{self.global_id}. Skipping this field')
+                    f'Developer Field id: {developer_field_definition.field_id} is not defined for message '
+                    f'{self.name}:{self.global_id}. Skipping this field'
+                )
                 start += developer_field_definition.size
                 continue
 

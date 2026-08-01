@@ -29,9 +29,11 @@ from fit_tool.api import (  # noqa: E402
     FitParseError,
     FitRecordError,
     FitValidationError,
+    ProfileScope,
     Severity,
     ValidationFinding,
     ValidationReport,
+    profile_rule_coverage,
     validate_fit_file,
 )
 
@@ -51,8 +53,10 @@ __all__ = [
     'EncodeMode',
     'EncodeOptions',
     'ConformanceLevel',
+    'ProfileScope',
     'Severity',
     'ValidationFinding',
     'ValidationReport',
+    'profile_rule_coverage',
     'validate_fit_file',
 ]

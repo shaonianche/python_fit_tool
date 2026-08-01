@@ -6,10 +6,10 @@ Builder ``strict=True`` is a thin wrapper that runs the same checks and raises o
 Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
 
 * **WIRE** — local IDs, definition layout, data-record size vs definition
-* **PROFILE** — *developer-field subset only*: ``developer_data_id`` /
-  ``field_description`` declaration order and base-type consistency.
+* **PROFILE** — developer-field declarations (``developer_data_id`` /
+  ``field_description``) plus **ambiguous native subfield** matches.
   This is **not** full Garmin Profile validation (enums, units, required
-  native fields per message, subfields, etc. remain deferred).
+  native fields per message, and broader subfield rule families remain deferred).
 * **FILE_TYPE** — ``file_id`` rules and Activity required messages/fields
 
 File-type rules are implemented only for **Activity**. Other ``file_id.type``
@@ -362,6 +362,38 @@ def _collect_profile_findings(
                     f'field_description declares {described_base_type.name}.',
                     record_index,
                 )
+
+        _collect_subfield_ambiguity_findings(message, findings, record_index)
+
+
+def _collect_subfield_ambiguity_findings(
+    message: DataMessage,
+    findings: list[ValidationFinding],
+    record_index: int | None,
+) -> None:
+    """PROFILE ERROR when more than one subfield matches the same ref values.
+
+    Decode still picks the first match (see :meth:`Field.resolve_sub_field`);
+    ambiguity is reported only at the PROFILE level.
+    """
+    fields = getattr(message, 'fields', None) or []
+    if not fields:
+        return
+    for field in fields:
+        if not getattr(field, 'sub_fields', None):
+            continue
+        if not field.is_valid():
+            continue
+        resolution = field.resolve_sub_field(fields)
+        if not resolution.is_ambiguous:
+            continue
+        names = ', '.join(sub.name for sub in resolution.matches)
+        _error(
+            findings,
+            ConformanceLevel.PROFILE,
+            f'Ambiguous subfields for {message.name}.{field.name}: {names}.',
+            record_index,
+        )
 
 
 def _require_fields_findings(

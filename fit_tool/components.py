@@ -5,8 +5,8 @@ Decode-time expansion uses the generated Profile main-field registry
 :class:`~fit_tool.field_component.FieldComponent` entries already attached to a
 :class:`~fit_tool.field.Field` (for tests and future codegen).
 
-Subfield-gated components are not registered here — they require subfield
-selection (Stage 2 D). Nested components (a destination that is itself a
+Active-subfield components are selected via ``components_for_field`` when
+sibling fields are provided. Nested components (a destination that is itself a
 component source) are expanded recursively.
 """
 
@@ -26,10 +26,34 @@ from fit_tool.profile.component_registry import (
 _KNOWN_COMPONENTS = PROFILE_COMPONENTS
 
 
-def components_for_field(global_id: int, field: Field) -> tuple[FieldComponent, ...]:
-    """Return components declared on the field or known for this profile message."""
+def components_for_field(
+        global_id: int,
+        field: Field,
+        sibling_fields: Mapping[int, Field] | list[Field] | None = None,
+) -> tuple[FieldComponent, ...]:
+    """Return components for expansion of *field*.
+
+    Preference order:
+
+    1. Components on the active Profile subfield (when *sibling_fields* allow
+       resolution) — subfield controls components per design doc.
+    2. Components declared on the main field.
+    3. Generated Profile main-field registry.
+    """
+    # Prefer active subfield components (Codex P2 / design: subfield controls
+    # type/scale/units/components), then main-field components, then registry.
+    if sibling_fields is not None and field.sub_fields:
+        if isinstance(sibling_fields, Mapping):
+            fields_list = list(sibling_fields.values())
+        else:
+            fields_list = list(sibling_fields)
+        selected = field.get_valid_sub_field(fields_list)
+        if selected is not None and selected.components:
+            return tuple(selected.components)
+
     if field.components:
         return tuple(field.components)
+
     return PROFILE_COMPONENTS.get((global_id, field.field_id), ())
 
 
@@ -42,7 +66,7 @@ def registry_coverage() -> dict[str, object]:
             'profile_main_field_sources': 37,
             'registry_entries': 37,
             'coverage_ratio': 1.0,
-            'subfield_components': 'deferred (Stage 2 D)',
+            'subfield_components': 'via active subfield when sibling_fields given',
         }
     """
     registry_entries = len(PROFILE_COMPONENTS)
@@ -54,7 +78,7 @@ def registry_coverage() -> dict[str, object]:
         'profile_main_field_sources': profile_sources,
         'registry_entries': registry_entries,
         'coverage_ratio': ratio,
-        'subfield_components': 'deferred (Stage 2 D)',
+        'subfield_components': 'via active subfield when sibling_fields given',
     }
 
 
@@ -136,8 +160,9 @@ def expand_message_components(
         accumulators = {}
 
     global_id = message.global_id
+    fields_list = list(getattr(message, 'fields', []))
     fields_by_id: Mapping[int, Field] = {
-        field.field_id: field for field in getattr(message, 'fields', [])
+        field.field_id: field for field in fields_list
     }
     expanded_sources: set[int] = set()
     # Next write index for multi-component array destinations within one message.
@@ -146,7 +171,7 @@ def expand_message_components(
     def expand_field(source: Field) -> None:
         if source.field_id in expanded_sources:
             return
-        components = components_for_field(global_id, source)
+        components = components_for_field(global_id, source, fields_by_id)
         if not components:
             return
         raw = _field_raw_as_int(source)

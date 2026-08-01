@@ -326,15 +326,28 @@ class TestFieldSubFieldsAndHelpers(unittest.TestCase):
         ref = Field(name='duration_type', field_id=1, base_type=BaseType.ENUM, size=1)
         ref.set_encoded_value(0, 1, check_validity=False)
         sub = SubField(name='distance', base_type=BaseType.UINT32, reference_map={1: [1]})
-        # is_valid checks field.get_value() in reference_map keys (field ids), which is a quirk;
-        # exercise the method path either way
         field = Field(name='duration_value', field_id=2, base_type=BaseType.UINT32, size=4, sub_fields=[sub])
         result = field.get_valid_sub_field([ref, field])
-        # May be None or SubField depending on is_valid logic; just call it
-        self.assertTrue(result is None or result is sub)
+        self.assertIs(result, sub)
+
+        ref.set_encoded_value(0, 0, check_validity=False)
+        self.assertIsNone(field.get_valid_sub_field([ref, field]))
 
         empty = Field(name='plain', base_type=BaseType.UINT8, size=1)
         self.assertIsNone(empty.get_valid_sub_field([]))
+
+    def test_resolve_sub_field_ambiguity(self):
+        from fit_tool.sub_field import SubField
+
+        ref = Field(name='type', field_id=1, base_type=BaseType.ENUM, size=1)
+        ref.set_encoded_value(0, 1, check_validity=False)
+        a = SubField(name='a', base_type=BaseType.UINT32, reference_map={1: [1]})
+        b = SubField(name='b', base_type=BaseType.UINT32, reference_map={1: [1]})
+        field = Field(name='value', field_id=2, base_type=BaseType.UINT32, size=4, sub_fields=[a, b])
+        resolution = field.resolve_sub_field([ref, field])
+        self.assertTrue(resolution.is_ambiguous)
+        self.assertIs(resolution.selected, a)
+        self.assertEqual([sf.name for sf in resolution.matches], ['a', 'b'])
 
     def test_to_row_multi_value(self):
         field = Field(name='hrv', base_type=BaseType.UINT16, size=4, growable=True)

@@ -114,12 +114,19 @@ class TestRecordHelpers(unittest.TestCase):
 
 class TestSubFieldHelpers(unittest.TestCase):
     def test_add_component_and_is_valid_paths(self):
+        from fit_tool.field_component import FieldComponent
+
         sub = SubField(name='x', reference_map={1: [2]})
         ref = Field(field_id=1, name='ref', base_type=BaseType.ENUM, size=1)
-        ref.set_encoded_value(0, 1, check_validity=False)
-        # is_valid returns True when field value is a key in reference_map
+        ref.set_encoded_value(0, 2, check_validity=False)
         self.assertTrue(sub.is_valid([ref]))
+        ref.set_encoded_value(0, 1, check_validity=False)
+        self.assertFalse(sub.is_valid([ref]))
         self.assertFalse(sub.is_valid([]))
+
+        component = FieldComponent(field_id=9, accumulate=False, bits=8, scale=1.0, offset=0.0)
+        sub.add_component(component)
+        self.assertEqual(len(sub.components), 1)
 
 
 class TestWireModelProperties(unittest.TestCase):

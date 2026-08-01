@@ -14,7 +14,8 @@ Built on the wire layer. One control loop owns:
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator, Union
+from collections.abc import Iterator
+from typing import BinaryIO, Union
 
 from fit_tool.compatibility import (
     project_data_record,

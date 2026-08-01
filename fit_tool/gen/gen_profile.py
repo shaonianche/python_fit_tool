@@ -7,6 +7,7 @@ from pathlib import Path
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType
 from fit_tool.field import Field
+from fit_tool.gen.component_registry import write_component_registry
 from fit_tool.gen.profile import Message, Profile
 
 DEFAULT_BUILD_PATH = str(Path(__file__).resolve().parents[1])
@@ -305,6 +306,17 @@ def main():
     filename = os.path.join(messages_path, "common_fields.py")
     with (open(filename, 'w')) as file_out:
         file_out.write(rendering)
+
+    # Main-field component registry for decode-time expansion (Stage 2 C).
+    xlsx_filename = os.path.join(
+        os.path.dirname(__file__), f'Profile_{SDK_VERSION}.xlsx'
+    )
+    component_registry_path = os.path.join(profile_path, 'component_registry.py')
+    write_component_registry(
+        component_registry_path,
+        xlsx_path=xlsx_filename,
+        sdk_version=SDK_VERSION,
+    )
 
 
 if __name__ == "__main__":

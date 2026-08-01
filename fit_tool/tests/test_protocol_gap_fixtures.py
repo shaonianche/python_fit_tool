@@ -63,19 +63,17 @@ class TestComponentExpansionEdges(unittest.TestCase):
         self.assertEqual(acc[(20, 29)], 65537)
         self.assertEqual(power.get_value(), 65537)
 
-    def test_nested_components_not_in_registry(self):
-        """Document that nested component graphs are not expanded yet (Stage 2 C)."""
+    def test_nested_components_expanded(self):
+        """Nested component graph (compressed_speed_distance → speed → enhanced)."""
         from fit_tool.components import components_for_field
         from fit_tool.field_component import FieldComponent
 
         message = RecordMessage()
-        # No nested entries in _KNOWN_COMPONENTS; field without components returns ().
         empty = message.get_field(0)  # position_lat — no components
         assert empty is not None
         self.assertEqual(components_for_field(20, empty), ())
 
-        # Explicit nested-style metadata is accepted on the Field but expansion is
-        # single-level only (no recursive expand of destinations as sources).
+        # Field-attached components still override the registry for that field.
         source = message.get_field(8)
         assert source is not None
         source.components = [
@@ -83,6 +81,8 @@ class TestComponentExpansionEdges(unittest.TestCase):
             FieldComponent(field_id=5, accumulate=False, bits=12, scale=16.0, offset=0.0),
         ]
         self.assertEqual(len(components_for_field(20, source)), 2)
+
+        # Registry path: nested expansion is covered in test_components.py (SHA-15).
 
 
 class TestUnknownFieldOnKnownMessage(unittest.TestCase):

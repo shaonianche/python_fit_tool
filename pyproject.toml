@@ -86,6 +86,7 @@ omit = [
     "fit_tool/gen/*",
     "fit_tool/profile/messages/*",
     "fit_tool/profile/profile_type.py",
+    "fit_tool/profile/component_registry.py",
 ]
 
 [tool.coverage.report]

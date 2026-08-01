@@ -22,8 +22,8 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Ambiguous subfields** (more than one match) | PROFILE ERROR (decode still uses first match) | Same policy |
 | **Preservation encode** (`to_bytes(mode=EncodeMode.PRESERVE)` / `preserve=True`, default) for buffer-decoded files: unedited path bit-identical; **post-edit** path re-encodes dirty records and copies `source_bytes` for the rest | Supported | Aligns with design §6.1 |
 | **Canonical encode** (`to_bytes(mode=EncodeMode.CANONICAL)` / `preserve=False`); optional `strict=True` precheck | Supported | Compressed-header expansion only when field 253 is on the definition; otherwise keep compressed (non-strict) or raise (strict) |
-| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity FILE_TYPE; opt-in **PRESERVATION** level; Builder `strict=True` wraps default levels only | Partial | Full Profile field/enum/units rules; Workout/Course FILE_TYPE |
-| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity/Workout FILE_TYPE; opt-in **PRESERVATION** level; Builder `strict=True` wraps default levels only | Partial | Full Profile field/enum/units rules; Course FILE_TYPE |
+| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); Course and other non-Activity/non-Workout FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
 | Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; survive post-edit when not mutated) | Supported | Mutating an unknown field clears `raw_bytes` (PRESERVATION ERROR if that level is selected) |
 
 Until §11 Definition of Done is met, do not describe the library as fully
@@ -46,8 +46,8 @@ stable keys, later letters are stage placeholders until children are created.
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done**: per-record dirty + mixed encode; opt-in PRESERVATION findings |
 | Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** SHA-19 | **Done**: `EncodeMode` + policy matrix; no silent invalid clamp; `repair()` API still future |
 | Full PROFILE validation from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE | **H** (SHA-12 stage 4; child TBD) | Slice by message family / rule kind |
-| Workout FILE_TYPE rules | Phase 4 §7 | **I** (SHA-12 stage 4; child TBD) | Not in first batch |
-| Course FILE_TYPE rules | Phase 4 §7 | **J** (SHA-12 stage 4; child TBD) | Not in first batch |
+| Workout FILE_TYPE rules | Phase 4 §7 | **I** SHA-21 | **Done**: required messages/fields for Workout; SDK Workout*.fit fixtures pass FILE_TYPE |
+| Course FILE_TYPE rules | Phase 4 §7 | **J** (SHA-12 stage 4; child TBD) | Not in first batch; still fail-closed |
 | Public capability matrix / release-note pass at claim flip | Phase 5 | **L** (SHA-12 stage 5; child TBD) | Update README + this section together |
 
 Letter **A** is this status-truth pass (Multica **SHA-13**). Do not claim gaps
@@ -539,7 +539,8 @@ report.raise_for_errors()
 
 `FitFileBuilder(strict=True)` is a thin wrapper over the same API (all default
 levels, raise on error). Wire-range and Definition Message checks still run on
-every `add`. FILE_TYPE rules cover Activity and fail closed for other types.
+every `add`. FILE_TYPE rules cover Activity and Workout; other `file_id.type`
+values (e.g. Course) fail closed.
 
 **Already on the wire / compatibility path** (see Current status): layered
 decode (`fit_tool/wire`), chained multi-segment load, header + file CRC,
@@ -550,9 +551,9 @@ messages, and preservation encode via `to_bytes(preserve=True)` for unedited
 re-project).
 
 This still does **not** complete the conformance claim. Remaining work includes
-full Profile validation scopes (DOMAIN/FULL) and Workout/Course FILE_TYPE
-validators — see **Remaining gaps** and Phases 3–5. Encode modes (G) are on the
-compatibility path; the long-term `FitDocument` encode surface remains future.
+full Profile validation scopes (DOMAIN/FULL) and Course FILE_TYPE validators —
+see **Remaining gaps** and Phases 3–5. Encode modes (G) are on the compatibility
+path; the long-term `FitDocument` encode surface remains future.
 
 ## 7. File-type validators
 
@@ -736,9 +737,9 @@ Exit: all produced standard files pass the selected Garmin and repository
 validators without repair.
 
 **Progress (partial):** unedited and **post-edit** PRESERVE paths exist; explicit
-`EncodeMode` / `strict` / policy matrix landed (G / SHA-19). Activity FILE_TYPE
-(fail-closed other types) exists. Workout/Course validators remain Multica I–J.
-`repair()` API is still future.
+`EncodeMode` / `strict` / policy matrix landed (G / SHA-19). Activity and
+Workout FILE_TYPE exist (I / SHA-21); other types (including Course / J) fail
+closed. `repair()` API is still future.
 
 ### Phase 5: API migration and performance
 

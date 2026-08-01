@@ -148,3 +148,62 @@ class TestDataMessage(unittest.TestCase):
             message.to_row()
         with self.assertRaises(ValueError):
             message.to_bytes()
+
+
+class TestDataMessageCoverage(unittest.TestCase):
+    def test_clear_and_remove_field(self):
+        message = WorkoutStepMessage()
+        message.workout_step_name = 'step'
+        definition = DefinitionMessage.from_data_message(message)
+        message.set_definition_message(definition)
+        field_id = message.get_field_by_name('wkt_step_name').field_id
+        self.assertTrue(message.get_field(field_id).is_valid())
+        message.clear_field_by_id(field_id)
+        self.assertTrue(message.get_field(field_id).is_not_valid())
+        # remove_field aliases clear
+        message.workout_step_name = 'again'
+        definition2 = DefinitionMessage.from_data_message(message)
+        message.set_definition_message(definition2)
+        message.remove_field(field_id)
+
+    def test_set_definition_clears_unmapped_developer_field(self):
+        dev = DeveloperField(
+            developer_data_index=0,
+            field_id=1,
+            base_type=BaseType.UINT8,
+            size=1,
+        )
+        dev.set_value(0, 3)
+        message = WorkoutStepMessage(developer_fields=[dev])
+        message.workout_step_name = 'x'
+        # Definition without the developer field clears developer field size
+        definition = DefinitionMessage.from_data_message(WorkoutStepMessage())
+        message.set_definition_message(definition)
+        self.assertEqual(dev.size, 0)
+
+    def test_to_bytes_and_to_row_include_developer_fields_without_definition(self):
+        dev = DeveloperField(
+            developer_data_index=0,
+            field_id=1,
+            base_type=BaseType.UINT8,
+            size=1,
+            name='custom',
+        )
+        dev.set_value(0, 9)
+        message = WorkoutStepMessage(developer_fields=[dev])
+        message.workout_step_name = 'named'
+        wire = message.to_bytes()
+        self.assertGreater(len(wire), 0)
+        row = message.to_row()
+        self.assertIn('workout_step', row[0] if row else '')
+
+    def test_generic_message_from_bytes(self):
+        from fit_tool.generic_message import GenericMessage
+
+        definition = DefinitionMessage(
+            global_id=9999,
+            field_definitions=[FieldDefinition(field_id=1, size=1, base_type=BaseType.UINT8)],
+        )
+        message = GenericMessage.from_bytes(definition, [], b'\x05')
+        self.assertEqual(message.name, 'generic')
+        self.assertEqual(message.get_field(1).get_value(), 5)

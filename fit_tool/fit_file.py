@@ -26,6 +26,10 @@ from fit_tool.wire.model import FitDocument
 if TYPE_CHECKING:
     from fit_tool.validation import ConformanceLevel, ValidationReport
 
+# Sentinel so explicit ``check_crc=True`` can override ``options.check_crc=False``
+# (a bare default of True is indistinguishable from "caller omitted the kwarg").
+_CHECK_CRC_UNSET: object = object()
+
 
 class FitFile:
     """Public FIT file facade.
@@ -179,7 +183,7 @@ class FitFile:
 
     def to_bytes(
             self,
-            check_crc: bool = True,
+            check_crc: bool | object = _CHECK_CRC_UNSET,
             *,
             preserve: bool | None = None,
             mode: EncodeMode | str | None = None,
@@ -207,22 +211,34 @@ class FitFile:
         data or mismatched overridden CRCs (when ``check_crc`` is true).
 
         Prefer ``mode=`` / ``strict=`` for new code; ``preserve=`` remains the
-        boolean compatibility alias.
+        boolean compatibility alias. Explicit kwargs win over a partial
+        ``options=`` object (including ``check_crc=True`` vs
+        ``EncodeOptions(check_crc=False)``).
         """
+        check_crc_explicit = check_crc is not _CHECK_CRC_UNSET
+        check_crc_value = True if not check_crc_explicit else bool(check_crc)
+
         if options is None:
             options = resolve_encode_options(
                 mode=mode,
                 preserve=preserve,
                 strict=strict,
-                check_crc=check_crc,
+                check_crc=check_crc_value,
             )
-        elif preserve is not None or mode is not None or strict or check_crc is not True:
+        elif (
+            preserve is not None
+            or mode is not None
+            or strict
+            or check_crc_explicit
+        ):
             # Explicit kwargs win over a partial options object when both given.
             options = resolve_encode_options(
                 mode=mode if mode is not None else options.mode,
                 preserve=preserve,
                 strict=strict or options.strict,
-                check_crc=check_crc if check_crc is not True else options.check_crc,
+                check_crc=(
+                    check_crc_value if check_crc_explicit else options.check_crc
+                ),
             )
 
         if options.strict:

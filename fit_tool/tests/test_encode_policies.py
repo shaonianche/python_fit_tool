@@ -137,6 +137,22 @@ class TestCanonicalModeInvariants(unittest.TestCase):
         out = fit.to_bytes(options=EncodeOptions(mode=EncodeMode.CANONICAL))
         FitFile.from_bytes(out)
 
+    def test_explicit_check_crc_true_overrides_options_false(self):
+        """Codex P2: explicit check_crc=True must win over EncodeOptions(check_crc=False)."""
+        from fit_tool.exceptions import FitCRCError
+
+        raw = build_record_with_unknown_field(heart_rate=42)
+        fit = FitFile.from_bytes(raw)
+        # Force mismatched overridden CRC on the projected path.
+        fit.crc = 0x1234
+        opts = EncodeOptions(mode=EncodeMode.CANONICAL, check_crc=False)
+        # options alone: log + emit invalid CRC (no raise).
+        out = fit.to_bytes(options=opts)
+        self.assertEqual(out[-2:], (0x1234).to_bytes(2, 'little'))
+        # Explicit kwarg True must raise despite options.check_crc=False.
+        with self.assertRaises(FitCRCError):
+            fit.to_bytes(options=opts, check_crc=True)
+
 
 class TestInvalidValuePolicy(unittest.TestCase):
     def test_out_of_range_rejected_at_set_not_clamped(self):

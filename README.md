@@ -257,6 +257,20 @@ fit_bytes = builder.build_bytes()
 Non-strict builders remain unchanged. Prefer `validate_fit_file` / `FitFile.validate`
 when you need a report, level selection, or validation on the read path.
 
+### Protocol fixture corpus and gap inventory
+
+Committed samples live under [`fit_tool/tests/data/`](fit_tool/tests/data/). See
+[`fit_tool/tests/data/README.md`](fit_tool/tests/data/README.md) for:
+
+- layout of `sdk/`, `interop/`, and device smokes;
+- a **gap inventory** mapping Stage-2 topics (components, subfields, unknown fields,
+  multi-segment) to constructive helpers or fixtures;
+- how to obtain additional Garmin SDK samples when licensing allows.
+
+Prefer constructive builders in `fit_tool/tests/protocol_fixture_helpers.py` over
+new large binary dumps. Known incomplete semantics are pinned with explicit
+`xfail` in `fit_tool/tests/test_protocol_gap_fixtures.py` (no silent skips).
+
 ### Run Garmin SDK interoperability tests
 
 The normal test suite includes committed Garmin SDK golden bytes. A live bidirectional test additionally generates the

@@ -17,123 +17,266 @@ from typing import Dict as dict
 
 
 class UserProfileMessage(DataMessage):
+    """UserProfileMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``UserProfileMessage()`` — create path: growable fields, no wire definition.
+    * ``UserProfileMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 3
     NAME = 'user_profile'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=UserProfileMessage.NAME,
                          global_id=UserProfileMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileFriendlyNameField(
-            size=self.__get_field_size(definition_message, UserProfileFriendlyNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileGenderField(
-            size=self.__get_field_size(definition_message, UserProfileGenderField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileAgeField(
-            size=self.__get_field_size(definition_message, UserProfileAgeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileHeightField(
-            size=self.__get_field_size(definition_message, UserProfileHeightField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileWeightField(
-            size=self.__get_field_size(definition_message, UserProfileWeightField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileLanguageField(
-            size=self.__get_field_size(definition_message, UserProfileLanguageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileElevSettingField(
-            size=self.__get_field_size(definition_message, UserProfileElevSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileWeightSettingField(
-            size=self.__get_field_size(definition_message, UserProfileWeightSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileRestingHeartRateField(
-            size=self.__get_field_size(definition_message, UserProfileRestingHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDefaultMaxRunningHeartRateField(
-            size=self.__get_field_size(definition_message, UserProfileDefaultMaxRunningHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDefaultMaxBikingHeartRateField(
-            size=self.__get_field_size(definition_message, UserProfileDefaultMaxBikingHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDefaultMaxHeartRateField(
-            size=self.__get_field_size(definition_message, UserProfileDefaultMaxHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileHrSettingField(
-            size=self.__get_field_size(definition_message, UserProfileHrSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileSpeedSettingField(
-            size=self.__get_field_size(definition_message, UserProfileSpeedSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDistSettingField(
-            size=self.__get_field_size(definition_message, UserProfileDistSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfilePowerSettingField(
-            size=self.__get_field_size(definition_message, UserProfilePowerSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileActivityClassField(
-            size=self.__get_field_size(definition_message, UserProfileActivityClassField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfilePositionSettingField(
-            size=self.__get_field_size(definition_message, UserProfilePositionSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileTemperatureSettingField(
-            size=self.__get_field_size(definition_message, UserProfileTemperatureSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileLocalIdField(
-            size=self.__get_field_size(definition_message, UserProfileLocalIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileGlobalIdField(
-            size=self.__get_field_size(definition_message, UserProfileGlobalIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileWakeTimeField(
-            size=self.__get_field_size(definition_message, UserProfileWakeTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileSleepTimeField(
-            size=self.__get_field_size(definition_message, UserProfileSleepTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileHeightSettingField(
-            size=self.__get_field_size(definition_message, UserProfileHeightSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileUserRunningStepLengthField(
-            size=self.__get_field_size(definition_message, UserProfileUserRunningStepLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileUserWalkingStepLengthField(
-            size=self.__get_field_size(definition_message, UserProfileUserWalkingStepLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDepthSettingField(
-            size=self.__get_field_size(definition_message, UserProfileDepthSettingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         UserProfileDiveCountField(
-            size=self.__get_field_size(definition_message, UserProfileDiveCountField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        UserProfileFriendlyNameField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileFriendlyNameField.ID),
+            growable=False), 
+        UserProfileGenderField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileGenderField.ID),
+            growable=False), 
+        UserProfileAgeField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileAgeField.ID),
+            growable=False), 
+        UserProfileHeightField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileHeightField.ID),
+            growable=False), 
+        UserProfileWeightField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileWeightField.ID),
+            growable=False), 
+        UserProfileLanguageField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileLanguageField.ID),
+            growable=False), 
+        UserProfileElevSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileElevSettingField.ID),
+            growable=False), 
+        UserProfileWeightSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileWeightSettingField.ID),
+            growable=False), 
+        UserProfileRestingHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileRestingHeartRateField.ID),
+            growable=False), 
+        UserProfileDefaultMaxRunningHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDefaultMaxRunningHeartRateField.ID),
+            growable=False), 
+        UserProfileDefaultMaxBikingHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDefaultMaxBikingHeartRateField.ID),
+            growable=False), 
+        UserProfileDefaultMaxHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDefaultMaxHeartRateField.ID),
+            growable=False), 
+        UserProfileHrSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileHrSettingField.ID),
+            growable=False), 
+        UserProfileSpeedSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileSpeedSettingField.ID),
+            growable=False), 
+        UserProfileDistSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDistSettingField.ID),
+            growable=False), 
+        UserProfilePowerSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfilePowerSettingField.ID),
+            growable=False), 
+        UserProfileActivityClassField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileActivityClassField.ID),
+            growable=False), 
+        UserProfilePositionSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfilePositionSettingField.ID),
+            growable=False), 
+        UserProfileTemperatureSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileTemperatureSettingField.ID),
+            growable=False), 
+        UserProfileLocalIdField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileLocalIdField.ID),
+            growable=False), 
+        UserProfileGlobalIdField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileGlobalIdField.ID),
+            growable=False), 
+        UserProfileWakeTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileWakeTimeField.ID),
+            growable=False), 
+        UserProfileSleepTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileSleepTimeField.ID),
+            growable=False), 
+        UserProfileHeightSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileHeightSettingField.ID),
+            growable=False), 
+        UserProfileUserRunningStepLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileUserRunningStepLengthField.ID),
+            growable=False), 
+        UserProfileUserWalkingStepLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileUserWalkingStepLengthField.ID),
+            growable=False), 
+        UserProfileDepthSettingField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDepthSettingField.ID),
+            growable=False), 
+        UserProfileDiveCountField(
+            size=cls._field_size_from_definition(
+                definition_message, UserProfileDiveCountField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

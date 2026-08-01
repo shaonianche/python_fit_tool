@@ -17,510 +17,1169 @@ from typing import Dict as dict
 
 
 class SessionMessage(DataMessage):
+    """SessionMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``SessionMessage()`` — create path: growable fields, no wire definition.
+    * ``SessionMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 18
     NAME = 'session'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=SessionMessage.NAME,
                          global_id=SessionMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEventField(
-            size=self.__get_field_size(definition_message, SessionEventField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEventTypeField(
-            size=self.__get_field_size(definition_message, SessionEventTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStartTimeField(
-            size=self.__get_field_size(definition_message, SessionStartTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStartPositionLatField(
-            size=self.__get_field_size(definition_message, SessionStartPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStartPositionLongField(
-            size=self.__get_field_size(definition_message, SessionStartPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSportField(
-            size=self.__get_field_size(definition_message, SessionSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSubSportField(
-            size=self.__get_field_size(definition_message, SessionSubSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalElapsedTimeField(
-            size=self.__get_field_size(definition_message, SessionTotalElapsedTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalTimerTimeField(
-            size=self.__get_field_size(definition_message, SessionTotalTimerTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalDistanceField(
-            size=self.__get_field_size(definition_message, SessionTotalDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalCyclesField(
-            size=self.__get_field_size(definition_message, SessionTotalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalCaloriesField(
-            size=self.__get_field_size(definition_message, SessionTotalCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalFatCaloriesField(
-            size=self.__get_field_size(definition_message, SessionTotalFatCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgSpeedField(
-            size=self.__get_field_size(definition_message, SessionAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxSpeedField(
-            size=self.__get_field_size(definition_message, SessionMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgHeartRateField(
-            size=self.__get_field_size(definition_message, SessionAvgHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxHeartRateField(
-            size=self.__get_field_size(definition_message, SessionMaxHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgCadenceField(
-            size=self.__get_field_size(definition_message, SessionAvgCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxCadenceField(
-            size=self.__get_field_size(definition_message, SessionMaxCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgPowerField(
-            size=self.__get_field_size(definition_message, SessionAvgPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxPowerField(
-            size=self.__get_field_size(definition_message, SessionMaxPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalAscentField(
-            size=self.__get_field_size(definition_message, SessionTotalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalDescentField(
-            size=self.__get_field_size(definition_message, SessionTotalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalTrainingEffectField(
-            size=self.__get_field_size(definition_message, SessionTotalTrainingEffectField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionFirstLapIndexField(
-            size=self.__get_field_size(definition_message, SessionFirstLapIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNumLapsField(
-            size=self.__get_field_size(definition_message, SessionNumLapsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEventGroupField(
-            size=self.__get_field_size(definition_message, SessionEventGroupField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTriggerField(
-            size=self.__get_field_size(definition_message, SessionTriggerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNecLatField(
-            size=self.__get_field_size(definition_message, SessionNecLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNecLongField(
-            size=self.__get_field_size(definition_message, SessionNecLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSwcLatField(
-            size=self.__get_field_size(definition_message, SessionSwcLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSwcLongField(
-            size=self.__get_field_size(definition_message, SessionSwcLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNumLengthsField(
-            size=self.__get_field_size(definition_message, SessionNumLengthsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNormalizedPowerField(
-            size=self.__get_field_size(definition_message, SessionNormalizedPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTrainingStressScoreField(
-            size=self.__get_field_size(definition_message, SessionTrainingStressScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionIntensityFactorField(
-            size=self.__get_field_size(definition_message, SessionIntensityFactorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionLeftRightBalanceField(
-            size=self.__get_field_size(definition_message, SessionLeftRightBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEndPositionLatField(
-            size=self.__get_field_size(definition_message, SessionEndPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEndPositionLongField(
-            size=self.__get_field_size(definition_message, SessionEndPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStrokeCountField(
-            size=self.__get_field_size(definition_message, SessionAvgStrokeCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStrokeDistanceField(
-            size=self.__get_field_size(definition_message, SessionAvgStrokeDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSwimStrokeField(
-            size=self.__get_field_size(definition_message, SessionSwimStrokeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionPoolLengthField(
-            size=self.__get_field_size(definition_message, SessionPoolLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionThresholdPowerField(
-            size=self.__get_field_size(definition_message, SessionThresholdPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionPoolLengthUnitField(
-            size=self.__get_field_size(definition_message, SessionPoolLengthUnitField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionNumActiveLengthsField(
-            size=self.__get_field_size(definition_message, SessionNumActiveLengthsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalWorkField(
-            size=self.__get_field_size(definition_message, SessionTotalWorkField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgAltitudeField(
-            size=self.__get_field_size(definition_message, SessionAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxAltitudeField(
-            size=self.__get_field_size(definition_message, SessionMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionGpsAccuracyField(
-            size=self.__get_field_size(definition_message, SessionGpsAccuracyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgGradeField(
-            size=self.__get_field_size(definition_message, SessionAvgGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgPosGradeField(
-            size=self.__get_field_size(definition_message, SessionAvgPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgNegGradeField(
-            size=self.__get_field_size(definition_message, SessionAvgNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxPosGradeField(
-            size=self.__get_field_size(definition_message, SessionMaxPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxNegGradeField(
-            size=self.__get_field_size(definition_message, SessionMaxNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgTemperatureField(
-            size=self.__get_field_size(definition_message, SessionAvgTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxTemperatureField(
-            size=self.__get_field_size(definition_message, SessionMaxTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalMovingTimeField(
-            size=self.__get_field_size(definition_message, SessionTotalMovingTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SessionAvgPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SessionAvgNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SessionMaxPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, SessionMaxNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinHeartRateField(
-            size=self.__get_field_size(definition_message, SessionMinHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTimeInHrZoneField(
-            size=self.__get_field_size(definition_message, SessionTimeInHrZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTimeInSpeedZoneField(
-            size=self.__get_field_size(definition_message, SessionTimeInSpeedZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTimeInCadenceZoneField(
-            size=self.__get_field_size(definition_message, SessionTimeInCadenceZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTimeInPowerZoneField(
-            size=self.__get_field_size(definition_message, SessionTimeInPowerZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLapTimeField(
-            size=self.__get_field_size(definition_message, SessionAvgLapTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionBestLapIndexField(
-            size=self.__get_field_size(definition_message, SessionBestLapIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinAltitudeField(
-            size=self.__get_field_size(definition_message, SessionMinAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionActiveTimeField(
-            size=self.__get_field_size(definition_message, SessionActiveTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionPlayerScoreField(
-            size=self.__get_field_size(definition_message, SessionPlayerScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionOpponentScoreField(
-            size=self.__get_field_size(definition_message, SessionOpponentScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionOpponentNameField(
-            size=self.__get_field_size(definition_message, SessionOpponentNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStrokeCountField(
-            size=self.__get_field_size(definition_message, SessionStrokeCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionZoneCountField(
-            size=self.__get_field_size(definition_message, SessionZoneCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxBallSpeedField(
-            size=self.__get_field_size(definition_message, SessionMaxBallSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgBallSpeedField(
-            size=self.__get_field_size(definition_message, SessionAvgBallSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgVerticalOscillationField(
-            size=self.__get_field_size(definition_message, SessionAvgVerticalOscillationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStanceTimePercentField(
-            size=self.__get_field_size(definition_message, SessionAvgStanceTimePercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStanceTimeField(
-            size=self.__get_field_size(definition_message, SessionAvgStanceTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SessionAvgFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxFractionalCadenceField(
-            size=self.__get_field_size(definition_message, SessionMaxFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalFractionalCyclesField(
-            size=self.__get_field_size(definition_message, SessionTotalFractionalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, SessionAvgTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, SessionMinTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, SessionMaxTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, SessionAvgSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, SessionMinSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, SessionMaxSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLeftTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SessionAvgLeftTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRightTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, SessionAvgRightTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLeftPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SessionAvgLeftPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRightPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SessionAvgRightPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgCombinedPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, SessionAvgCombinedPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSportProfileNameField(
-            size=self.__get_field_size(definition_message, SessionSportProfileNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSportIndexField(
-            size=self.__get_field_size(definition_message, SessionSportIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTimeStandingField(
-            size=self.__get_field_size(definition_message, SessionTimeStandingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStandCountField(
-            size=self.__get_field_size(definition_message, SessionStandCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLeftPcoField(
-            size=self.__get_field_size(definition_message, SessionAvgLeftPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRightPcoField(
-            size=self.__get_field_size(definition_message, SessionAvgRightPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLeftPowerPhaseField(
-            size=self.__get_field_size(definition_message, SessionAvgLeftPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLeftPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SessionAvgLeftPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRightPowerPhaseField(
-            size=self.__get_field_size(definition_message, SessionAvgRightPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRightPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, SessionAvgRightPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgPowerPositionField(
-            size=self.__get_field_size(definition_message, SessionAvgPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxPowerPositionField(
-            size=self.__get_field_size(definition_message, SessionMaxPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgCadencePositionField(
-            size=self.__get_field_size(definition_message, SessionAvgCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxCadencePositionField(
-            size=self.__get_field_size(definition_message, SessionMaxCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedAvgSpeedField(
-            size=self.__get_field_size(definition_message, SessionEnhancedAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedMaxSpeedField(
-            size=self.__get_field_size(definition_message, SessionEnhancedMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedAvgAltitudeField(
-            size=self.__get_field_size(definition_message, SessionEnhancedAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedMinAltitudeField(
-            size=self.__get_field_size(definition_message, SessionEnhancedMinAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedMaxAltitudeField(
-            size=self.__get_field_size(definition_message, SessionEnhancedMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgLevMotorPowerField(
-            size=self.__get_field_size(definition_message, SessionAvgLevMotorPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxLevMotorPowerField(
-            size=self.__get_field_size(definition_message, SessionMaxLevMotorPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionLevBatteryConsumptionField(
-            size=self.__get_field_size(definition_message, SessionLevBatteryConsumptionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgVerticalRatioField(
-            size=self.__get_field_size(definition_message, SessionAvgVerticalRatioField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStanceTimeBalanceField(
-            size=self.__get_field_size(definition_message, SessionAvgStanceTimeBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStepLengthField(
-            size=self.__get_field_size(definition_message, SessionAvgStepLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalAnaerobicTrainingEffectField(
-            size=self.__get_field_size(definition_message, SessionTotalAnaerobicTrainingEffectField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgVamField(
-            size=self.__get_field_size(definition_message, SessionAvgVamField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgDepthField(
-            size=self.__get_field_size(definition_message, SessionAvgDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxDepthField(
-            size=self.__get_field_size(definition_message, SessionMaxDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSurfaceIntervalField(
-            size=self.__get_field_size(definition_message, SessionSurfaceIntervalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStartCnsField(
-            size=self.__get_field_size(definition_message, SessionStartCnsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEndCnsField(
-            size=self.__get_field_size(definition_message, SessionEndCnsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionStartN2Field(
-            size=self.__get_field_size(definition_message, SessionStartN2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEndN2Field(
-            size=self.__get_field_size(definition_message, SessionEndN2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionAvgRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionMaxRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionMinRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinTemperatureField(
-            size=self.__get_field_size(definition_message, SessionMinTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionO2ToxicityField(
-            size=self.__get_field_size(definition_message, SessionO2ToxicityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionDiveNumberField(
-            size=self.__get_field_size(definition_message, SessionDiveNumberField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTrainingLoadPeakField(
-            size=self.__get_field_size(definition_message, SessionTrainingLoadPeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedAvgRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionEnhancedAvgRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedMaxRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionEnhancedMaxRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionEnhancedMinRespirationRateField(
-            size=self.__get_field_size(definition_message, SessionEnhancedMinRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalGritField(
-            size=self.__get_field_size(definition_message, SessionTotalGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalFlowField(
-            size=self.__get_field_size(definition_message, SessionTotalFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionJumpCountField(
-            size=self.__get_field_size(definition_message, SessionJumpCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgGritField(
-            size=self.__get_field_size(definition_message, SessionAvgGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgFlowField(
-            size=self.__get_field_size(definition_message, SessionAvgFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionWorkoutFeelField(
-            size=self.__get_field_size(definition_message, SessionWorkoutFeelField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionWorkoutRpeField(
-            size=self.__get_field_size(definition_message, SessionWorkoutRpeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgSpo2Field(
-            size=self.__get_field_size(definition_message, SessionAvgSpo2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgStressField(
-            size=self.__get_field_size(definition_message, SessionAvgStressField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMetabolicCaloriesField(
-            size=self.__get_field_size(definition_message, SessionMetabolicCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionSdrrHrvField(
-            size=self.__get_field_size(definition_message, SessionSdrrHrvField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionRmssdHrvField(
-            size=self.__get_field_size(definition_message, SessionRmssdHrvField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalFractionalAscentField(
-            size=self.__get_field_size(definition_message, SessionTotalFractionalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionTotalFractionalDescentField(
-            size=self.__get_field_size(definition_message, SessionTotalFractionalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionAvgCoreTemperatureField(
-            size=self.__get_field_size(definition_message, SessionAvgCoreTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMinCoreTemperatureField(
-            size=self.__get_field_size(definition_message, SessionMinCoreTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SessionMaxCoreTemperatureField(
-            size=self.__get_field_size(definition_message, SessionMaxCoreTemperatureField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        SessionEventField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEventField.ID),
+            growable=False), 
+        SessionEventTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEventTypeField.ID),
+            growable=False), 
+        SessionStartTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStartTimeField.ID),
+            growable=False), 
+        SessionStartPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStartPositionLatField.ID),
+            growable=False), 
+        SessionStartPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStartPositionLongField.ID),
+            growable=False), 
+        SessionSportField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSportField.ID),
+            growable=False), 
+        SessionSubSportField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSubSportField.ID),
+            growable=False), 
+        SessionTotalElapsedTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalElapsedTimeField.ID),
+            growable=False), 
+        SessionTotalTimerTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalTimerTimeField.ID),
+            growable=False), 
+        SessionTotalDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalDistanceField.ID),
+            growable=False), 
+        SessionTotalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalCyclesField.ID),
+            growable=False), 
+        SessionTotalCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalCaloriesField.ID),
+            growable=False), 
+        SessionTotalFatCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalFatCaloriesField.ID),
+            growable=False), 
+        SessionAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgSpeedField.ID),
+            growable=False), 
+        SessionMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxSpeedField.ID),
+            growable=False), 
+        SessionAvgHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgHeartRateField.ID),
+            growable=False), 
+        SessionMaxHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxHeartRateField.ID),
+            growable=False), 
+        SessionAvgCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgCadenceField.ID),
+            growable=False), 
+        SessionMaxCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxCadenceField.ID),
+            growable=False), 
+        SessionAvgPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgPowerField.ID),
+            growable=False), 
+        SessionMaxPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxPowerField.ID),
+            growable=False), 
+        SessionTotalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalAscentField.ID),
+            growable=False), 
+        SessionTotalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalDescentField.ID),
+            growable=False), 
+        SessionTotalTrainingEffectField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalTrainingEffectField.ID),
+            growable=False), 
+        SessionFirstLapIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionFirstLapIndexField.ID),
+            growable=False), 
+        SessionNumLapsField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNumLapsField.ID),
+            growable=False), 
+        SessionEventGroupField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEventGroupField.ID),
+            growable=False), 
+        SessionTriggerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTriggerField.ID),
+            growable=False), 
+        SessionNecLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNecLatField.ID),
+            growable=False), 
+        SessionNecLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNecLongField.ID),
+            growable=False), 
+        SessionSwcLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSwcLatField.ID),
+            growable=False), 
+        SessionSwcLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSwcLongField.ID),
+            growable=False), 
+        SessionNumLengthsField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNumLengthsField.ID),
+            growable=False), 
+        SessionNormalizedPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNormalizedPowerField.ID),
+            growable=False), 
+        SessionTrainingStressScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTrainingStressScoreField.ID),
+            growable=False), 
+        SessionIntensityFactorField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionIntensityFactorField.ID),
+            growable=False), 
+        SessionLeftRightBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionLeftRightBalanceField.ID),
+            growable=False), 
+        SessionEndPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEndPositionLatField.ID),
+            growable=False), 
+        SessionEndPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEndPositionLongField.ID),
+            growable=False), 
+        SessionAvgStrokeCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStrokeCountField.ID),
+            growable=False), 
+        SessionAvgStrokeDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStrokeDistanceField.ID),
+            growable=False), 
+        SessionSwimStrokeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSwimStrokeField.ID),
+            growable=False), 
+        SessionPoolLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionPoolLengthField.ID),
+            growable=False), 
+        SessionThresholdPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionThresholdPowerField.ID),
+            growable=False), 
+        SessionPoolLengthUnitField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionPoolLengthUnitField.ID),
+            growable=False), 
+        SessionNumActiveLengthsField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionNumActiveLengthsField.ID),
+            growable=False), 
+        SessionTotalWorkField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalWorkField.ID),
+            growable=False), 
+        SessionAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgAltitudeField.ID),
+            growable=False), 
+        SessionMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxAltitudeField.ID),
+            growable=False), 
+        SessionGpsAccuracyField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionGpsAccuracyField.ID),
+            growable=False), 
+        SessionAvgGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgGradeField.ID),
+            growable=False), 
+        SessionAvgPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgPosGradeField.ID),
+            growable=False), 
+        SessionAvgNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgNegGradeField.ID),
+            growable=False), 
+        SessionMaxPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxPosGradeField.ID),
+            growable=False), 
+        SessionMaxNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxNegGradeField.ID),
+            growable=False), 
+        SessionAvgTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgTemperatureField.ID),
+            growable=False), 
+        SessionMaxTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxTemperatureField.ID),
+            growable=False), 
+        SessionTotalMovingTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalMovingTimeField.ID),
+            growable=False), 
+        SessionAvgPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgPosVerticalSpeedField.ID),
+            growable=False), 
+        SessionAvgNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgNegVerticalSpeedField.ID),
+            growable=False), 
+        SessionMaxPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxPosVerticalSpeedField.ID),
+            growable=False), 
+        SessionMaxNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxNegVerticalSpeedField.ID),
+            growable=False), 
+        SessionMinHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinHeartRateField.ID),
+            growable=False), 
+        SessionTimeInHrZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTimeInHrZoneField.ID),
+            growable=False), 
+        SessionTimeInSpeedZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTimeInSpeedZoneField.ID),
+            growable=False), 
+        SessionTimeInCadenceZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTimeInCadenceZoneField.ID),
+            growable=False), 
+        SessionTimeInPowerZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTimeInPowerZoneField.ID),
+            growable=False), 
+        SessionAvgLapTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLapTimeField.ID),
+            growable=False), 
+        SessionBestLapIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionBestLapIndexField.ID),
+            growable=False), 
+        SessionMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinAltitudeField.ID),
+            growable=False), 
+        SessionActiveTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionActiveTimeField.ID),
+            growable=False), 
+        SessionPlayerScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionPlayerScoreField.ID),
+            growable=False), 
+        SessionOpponentScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionOpponentScoreField.ID),
+            growable=False), 
+        SessionOpponentNameField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionOpponentNameField.ID),
+            growable=False), 
+        SessionStrokeCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStrokeCountField.ID),
+            growable=False), 
+        SessionZoneCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionZoneCountField.ID),
+            growable=False), 
+        SessionMaxBallSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxBallSpeedField.ID),
+            growable=False), 
+        SessionAvgBallSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgBallSpeedField.ID),
+            growable=False), 
+        SessionAvgVerticalOscillationField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgVerticalOscillationField.ID),
+            growable=False), 
+        SessionAvgStanceTimePercentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStanceTimePercentField.ID),
+            growable=False), 
+        SessionAvgStanceTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStanceTimeField.ID),
+            growable=False), 
+        SessionAvgFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgFractionalCadenceField.ID),
+            growable=False), 
+        SessionMaxFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxFractionalCadenceField.ID),
+            growable=False), 
+        SessionTotalFractionalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalFractionalCyclesField.ID),
+            growable=False), 
+        SessionAvgTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgTotalHemoglobinConcField.ID),
+            growable=False), 
+        SessionMinTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinTotalHemoglobinConcField.ID),
+            growable=False), 
+        SessionMaxTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxTotalHemoglobinConcField.ID),
+            growable=False), 
+        SessionAvgSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        SessionMinSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        SessionMaxSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        SessionAvgLeftTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLeftTorqueEffectivenessField.ID),
+            growable=False), 
+        SessionAvgRightTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRightTorqueEffectivenessField.ID),
+            growable=False), 
+        SessionAvgLeftPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLeftPedalSmoothnessField.ID),
+            growable=False), 
+        SessionAvgRightPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRightPedalSmoothnessField.ID),
+            growable=False), 
+        SessionAvgCombinedPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgCombinedPedalSmoothnessField.ID),
+            growable=False), 
+        SessionSportProfileNameField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSportProfileNameField.ID),
+            growable=False), 
+        SessionSportIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSportIndexField.ID),
+            growable=False), 
+        SessionTimeStandingField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTimeStandingField.ID),
+            growable=False), 
+        SessionStandCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStandCountField.ID),
+            growable=False), 
+        SessionAvgLeftPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLeftPcoField.ID),
+            growable=False), 
+        SessionAvgRightPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRightPcoField.ID),
+            growable=False), 
+        SessionAvgLeftPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLeftPowerPhaseField.ID),
+            growable=False), 
+        SessionAvgLeftPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLeftPowerPhasePeakField.ID),
+            growable=False), 
+        SessionAvgRightPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRightPowerPhaseField.ID),
+            growable=False), 
+        SessionAvgRightPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRightPowerPhasePeakField.ID),
+            growable=False), 
+        SessionAvgPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgPowerPositionField.ID),
+            growable=False), 
+        SessionMaxPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxPowerPositionField.ID),
+            growable=False), 
+        SessionAvgCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgCadencePositionField.ID),
+            growable=False), 
+        SessionMaxCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxCadencePositionField.ID),
+            growable=False), 
+        SessionEnhancedAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedAvgSpeedField.ID),
+            growable=False), 
+        SessionEnhancedMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedMaxSpeedField.ID),
+            growable=False), 
+        SessionEnhancedAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedAvgAltitudeField.ID),
+            growable=False), 
+        SessionEnhancedMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedMinAltitudeField.ID),
+            growable=False), 
+        SessionEnhancedMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedMaxAltitudeField.ID),
+            growable=False), 
+        SessionAvgLevMotorPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgLevMotorPowerField.ID),
+            growable=False), 
+        SessionMaxLevMotorPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxLevMotorPowerField.ID),
+            growable=False), 
+        SessionLevBatteryConsumptionField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionLevBatteryConsumptionField.ID),
+            growable=False), 
+        SessionAvgVerticalRatioField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgVerticalRatioField.ID),
+            growable=False), 
+        SessionAvgStanceTimeBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStanceTimeBalanceField.ID),
+            growable=False), 
+        SessionAvgStepLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStepLengthField.ID),
+            growable=False), 
+        SessionTotalAnaerobicTrainingEffectField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalAnaerobicTrainingEffectField.ID),
+            growable=False), 
+        SessionAvgVamField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgVamField.ID),
+            growable=False), 
+        SessionAvgDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgDepthField.ID),
+            growable=False), 
+        SessionMaxDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxDepthField.ID),
+            growable=False), 
+        SessionSurfaceIntervalField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSurfaceIntervalField.ID),
+            growable=False), 
+        SessionStartCnsField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStartCnsField.ID),
+            growable=False), 
+        SessionEndCnsField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEndCnsField.ID),
+            growable=False), 
+        SessionStartN2Field(
+            size=cls._field_size_from_definition(
+                definition_message, SessionStartN2Field.ID),
+            growable=False), 
+        SessionEndN2Field(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEndN2Field.ID),
+            growable=False), 
+        SessionAvgRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgRespirationRateField.ID),
+            growable=False), 
+        SessionMaxRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxRespirationRateField.ID),
+            growable=False), 
+        SessionMinRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinRespirationRateField.ID),
+            growable=False), 
+        SessionMinTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinTemperatureField.ID),
+            growable=False), 
+        SessionO2ToxicityField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionO2ToxicityField.ID),
+            growable=False), 
+        SessionDiveNumberField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionDiveNumberField.ID),
+            growable=False), 
+        SessionTrainingLoadPeakField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTrainingLoadPeakField.ID),
+            growable=False), 
+        SessionEnhancedAvgRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedAvgRespirationRateField.ID),
+            growable=False), 
+        SessionEnhancedMaxRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedMaxRespirationRateField.ID),
+            growable=False), 
+        SessionEnhancedMinRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionEnhancedMinRespirationRateField.ID),
+            growable=False), 
+        SessionTotalGritField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalGritField.ID),
+            growable=False), 
+        SessionTotalFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalFlowField.ID),
+            growable=False), 
+        SessionJumpCountField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionJumpCountField.ID),
+            growable=False), 
+        SessionAvgGritField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgGritField.ID),
+            growable=False), 
+        SessionAvgFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgFlowField.ID),
+            growable=False), 
+        SessionWorkoutFeelField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionWorkoutFeelField.ID),
+            growable=False), 
+        SessionWorkoutRpeField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionWorkoutRpeField.ID),
+            growable=False), 
+        SessionAvgSpo2Field(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgSpo2Field.ID),
+            growable=False), 
+        SessionAvgStressField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgStressField.ID),
+            growable=False), 
+        SessionMetabolicCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMetabolicCaloriesField.ID),
+            growable=False), 
+        SessionSdrrHrvField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionSdrrHrvField.ID),
+            growable=False), 
+        SessionRmssdHrvField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionRmssdHrvField.ID),
+            growable=False), 
+        SessionTotalFractionalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalFractionalAscentField.ID),
+            growable=False), 
+        SessionTotalFractionalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionTotalFractionalDescentField.ID),
+            growable=False), 
+        SessionAvgCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionAvgCoreTemperatureField.ID),
+            growable=False), 
+        SessionMinCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMinCoreTemperatureField.ID),
+            growable=False), 
+        SessionMaxCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, SessionMaxCoreTemperatureField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

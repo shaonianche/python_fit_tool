@@ -17,93 +17,196 @@ from typing import Dict as dict
 
 
 class DeviceInfoMessage(DataMessage):
+    """DeviceInfoMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``DeviceInfoMessage()`` — create path: growable fields, no wire definition.
+    * ``DeviceInfoMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 23
     NAME = 'device_info'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=DeviceInfoMessage.NAME,
                          global_id=DeviceInfoMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoDeviceIndexField(
-            size=self.__get_field_size(definition_message, DeviceInfoDeviceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoDeviceTypeField(
-            size=self.__get_field_size(definition_message, DeviceInfoDeviceTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoManufacturerField(
-            size=self.__get_field_size(definition_message, DeviceInfoManufacturerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoSerialNumberField(
-            size=self.__get_field_size(definition_message, DeviceInfoSerialNumberField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoProductField(
-            size=self.__get_field_size(definition_message, DeviceInfoProductField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoSoftwareVersionField(
-            size=self.__get_field_size(definition_message, DeviceInfoSoftwareVersionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoHardwareVersionField(
-            size=self.__get_field_size(definition_message, DeviceInfoHardwareVersionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoCumOperatingTimeField(
-            size=self.__get_field_size(definition_message, DeviceInfoCumOperatingTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoBatteryVoltageField(
-            size=self.__get_field_size(definition_message, DeviceInfoBatteryVoltageField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoBatteryStatusField(
-            size=self.__get_field_size(definition_message, DeviceInfoBatteryStatusField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoSensorPositionField(
-            size=self.__get_field_size(definition_message, DeviceInfoSensorPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoDescriptorField(
-            size=self.__get_field_size(definition_message, DeviceInfoDescriptorField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoAntTransmissionTypeField(
-            size=self.__get_field_size(definition_message, DeviceInfoAntTransmissionTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoAntDeviceNumberField(
-            size=self.__get_field_size(definition_message, DeviceInfoAntDeviceNumberField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoAntNetworkField(
-            size=self.__get_field_size(definition_message, DeviceInfoAntNetworkField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoSourceTypeField(
-            size=self.__get_field_size(definition_message, DeviceInfoSourceTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoProductNameField(
-            size=self.__get_field_size(definition_message, DeviceInfoProductNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DeviceInfoBatteryLevelField(
-            size=self.__get_field_size(definition_message, DeviceInfoBatteryLevelField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        DeviceInfoDeviceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoDeviceIndexField.ID),
+            growable=False), 
+        DeviceInfoDeviceTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoDeviceTypeField.ID),
+            growable=False), 
+        DeviceInfoManufacturerField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoManufacturerField.ID),
+            growable=False), 
+        DeviceInfoSerialNumberField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoSerialNumberField.ID),
+            growable=False), 
+        DeviceInfoProductField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoProductField.ID),
+            growable=False), 
+        DeviceInfoSoftwareVersionField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoSoftwareVersionField.ID),
+            growable=False), 
+        DeviceInfoHardwareVersionField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoHardwareVersionField.ID),
+            growable=False), 
+        DeviceInfoCumOperatingTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoCumOperatingTimeField.ID),
+            growable=False), 
+        DeviceInfoBatteryVoltageField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoBatteryVoltageField.ID),
+            growable=False), 
+        DeviceInfoBatteryStatusField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoBatteryStatusField.ID),
+            growable=False), 
+        DeviceInfoSensorPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoSensorPositionField.ID),
+            growable=False), 
+        DeviceInfoDescriptorField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoDescriptorField.ID),
+            growable=False), 
+        DeviceInfoAntTransmissionTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoAntTransmissionTypeField.ID),
+            growable=False), 
+        DeviceInfoAntDeviceNumberField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoAntDeviceNumberField.ID),
+            growable=False), 
+        DeviceInfoAntNetworkField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoAntNetworkField.ID),
+            growable=False), 
+        DeviceInfoSourceTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoSourceTypeField.ID),
+            growable=False), 
+        DeviceInfoProductNameField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoProductNameField.ID),
+            growable=False), 
+        DeviceInfoBatteryLevelField(
+            size=cls._field_size_from_definition(
+                definition_message, DeviceInfoBatteryLevelField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

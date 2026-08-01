@@ -57,6 +57,22 @@ class TestFitFile(unittest.TestCase):
 
         self.assertEqual(len(fit_file.records), 3)
 
+    def test_from_bytes_preserves_non_zero_local_id_on_messages(self):
+        """Parsed messages must keep the local_id from the record header (P0)."""
+        local_id = 5
+        mesg = WorkoutStepMessage(local_id=local_id)
+        mesg.workout_step_name = '1st step'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+
+        builder = FitFileBuilder(auto_define=True)
+        builder.add(mesg)
+        fit_bytes = builder.build().to_bytes()
+
+        fit_file = FitFile.from_bytes(fit_bytes)
+        for record in fit_file.records:
+            self.assertEqual(record.header.local_id, local_id)
+            self.assertEqual(record.message.local_id, local_id)
+
     def test_from_bytes_invalid_crc_raises_value_error(self):
         mesg = WorkoutStepMessage(local_id=0)
         mesg.workout_step_name = '1st step'

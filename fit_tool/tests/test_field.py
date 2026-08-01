@@ -66,6 +66,67 @@ class TestField(unittest.TestCase):
         self.assertAlmostEqual(value, value_from_bytes, 3)
         self.assertEqual(bytes2, bytes_buffer)
 
+    def test_float_set_value_preserves_fractional_component(self):
+        """FLOAT fields must not truncate via int() when scale/offset are identity (P0)."""
+        field = Field(name='grit', base_type=BaseType.FLOAT32, size=4, scale=1.0, offset=0.0)
+        field.set_value(0, 3.14)
+
+        self.assertIsInstance(field.encoded_values[0], float)
+        self.assertAlmostEqual(field.get_value(), 3.14, places=5)
+
+    def test_float_invalid_value_uses_all_ones_bit_pattern(self):
+        """FIT invalid floats are all-ones bits, represented as None in Python (P0)."""
+        for base_type, expected_bytes in (
+            (BaseType.FLOAT32, b'\xff\xff\xff\xff'),
+            (BaseType.FLOAT64, b'\xff\xff\xff\xff\xff\xff\xff\xff'),
+        ):
+            field = Field(name='x', base_type=base_type, size=base_type.size)
+            field.set_value(0, None)
+
+            self.assertIsNone(field.encoded_values[0])
+            self.assertEqual(field.to_bytes(), expected_bytes)
+
+            decoded = Field(name='x', base_type=base_type, size=base_type.size)
+            decoded.read_all_from_bytes(expected_bytes)
+            self.assertIsNone(decoded.get_value())
+            self.assertEqual(decoded.to_bytes(), expected_bytes)
+
+    def test_float_set_value_round_trips_through_bytes(self):
+        field = Field(name='flow', base_type=BaseType.FLOAT32, size=4, scale=1.0)
+        field.set_value(0, 2.5)
+        wire = field.to_bytes()
+
+        restored = Field(name='flow', base_type=BaseType.FLOAT32, size=4, scale=1.0)
+        restored.read_all_from_bytes(wire)
+        self.assertAlmostEqual(restored.get_value(), 2.5, places=5)
+
+    def test_set_encoded_value_rejects_none_for_integer_fields(self):
+        """Codex P2: integer fields must not silently accept None as an encoded value."""
+        field = Field(name='heart_rate', base_type=BaseType.UINT8, size=1)
+        with self.assertRaises(ValueError):
+            field.set_encoded_value(0, None)
+
+        enum_field = Field(name='sport', base_type=BaseType.ENUM, size=1)
+        with self.assertRaises(ValueError):
+            enum_field.set_encoded_value(0, None)
+
+    def test_set_encoded_value_allows_none_for_float_fields(self):
+        field = Field(name='grit', base_type=BaseType.FLOAT32, size=4)
+        field.set_encoded_value(0, None)
+        self.assertIsNone(field.encoded_values[0])
+        self.assertEqual(field.to_bytes(), b'\xff\xff\xff\xff')
+
+    def test_float_encode_value_applies_scale_and_offset(self):
+        field = Field(name='scaled', base_type=BaseType.FLOAT32, size=4, scale=2.0, offset=1.0)
+        field.set_value(0, 3.0)  # (3 + 1) * 2 = 8
+        self.assertAlmostEqual(field.encoded_values[0], 8.0, places=5)
+
+    def test_float_legacy_invalid_raw_int_still_packs_all_ones(self):
+        """Integer invalid markers left from pre-fix code still encode correctly."""
+        field = Field(name='x', base_type=BaseType.FLOAT32, size=4)
+        field.set_encoded_value(0, BaseType.FLOAT32.invalid_raw_value(), check_validity=False)
+        self.assertEqual(field.to_bytes(), b'\xff\xff\xff\xff')
+
     def test_field_string_to_row(self):
         field = Field(name='title', base_type=BaseType.STRING, growable=True)
         value = 'test12345'

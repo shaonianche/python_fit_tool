@@ -140,6 +140,10 @@ class Record:
                 developer_fields = []
             message = DataMessage.from_bytes(definition_message, developer_fields, bytes_buffer, offset=offset)
 
+        # Local message type lives only in the record header on the wire; copy it onto the
+        # message so callers and rebuild paths see the same local_id as the header.
+        message.local_id = header.local_id
+
         return cls(header, message)
 
     def to_bytes(self):

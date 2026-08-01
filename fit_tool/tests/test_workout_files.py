@@ -103,3 +103,56 @@ class TestWorkoutFileTypeValidation(unittest.TestCase):
             levels={ConformanceLevel.FILE_TYPE},
         )
         self.assertFalse(report.has_errors)
+
+    def _minimal_workout_builder(self):
+        builder = FitFileBuilder(auto_define=True, min_string_size=50)
+        file_id = FileIdMessage()
+        file_id.type = FileType.WORKOUT
+        file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+        file_id.product = 0
+        file_id.serial_number = 0x12345678
+        file_id.time_created = 1_700_000_000_000
+        builder.add(file_id)
+        return builder
+
+    def test_num_valid_steps_mismatch_errors(self):
+        """Codex P2: num_valid_steps must match non-repeat step count."""
+        builder = self._minimal_workout_builder()
+        workout = WorkoutMessage()
+        workout.workout_name = 'Bad count'
+        workout.sport = Sport.CYCLING
+        workout.num_valid_steps = 0  # wrong — one ordinary step present
+        builder.add(workout)
+        step = WorkoutStepMessage()
+        step.message_index = 0
+        step.duration_type = WorkoutStepDuration.TIME
+        step.duration_time = 60.0
+        step.target_type = WorkoutStepTarget.OPEN
+        builder.add(step)
+        report = validate_fit_file(builder.build(), levels={ConformanceLevel.FILE_TYPE})
+        self.assertTrue(report.has_errors)
+        self.assertTrue(
+            any('num_valid_steps' in f.message for f in report.errors),
+            [f.message for f in report.errors],
+        )
+
+    def test_value_duration_without_duration_value_errors(self):
+        """Codex P2: TIME (and other non-OPEN) requires duration_value."""
+        builder = self._minimal_workout_builder()
+        workout = WorkoutMessage()
+        workout.workout_name = 'No duration'
+        workout.sport = Sport.CYCLING
+        workout.num_valid_steps = 1
+        builder.add(workout)
+        step = WorkoutStepMessage()
+        step.message_index = 0
+        step.duration_type = WorkoutStepDuration.TIME
+        # intentionally no duration_time / duration_value
+        step.target_type = WorkoutStepTarget.OPEN
+        builder.add(step)
+        report = validate_fit_file(builder.build(), levels={ConformanceLevel.FILE_TYPE})
+        self.assertTrue(report.has_errors)
+        self.assertTrue(
+            any('duration_value' in f.message for f in report.errors),
+            [f.message for f in report.errors],
+        )

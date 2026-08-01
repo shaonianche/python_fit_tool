@@ -11,7 +11,7 @@ For the library as shipped today, use the capability matrix in
 | Area | Today | This design |
 | --- | --- | --- |
 | Common Activity / Workout read-write, Builder, file CRC, streaming, developer fields (common cases) | Supported | Baseline to preserve |
-| Unknown messages (`GenericMessage`), Activity-only strict write validation | Partial | Expand into wire preservation + full file-type validators |
+| Unknown messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile semantics, remaining file types, PRESERVATION level |
 | Compressed timestamps, chained segments, components / accumulators, lossless rewrite, header CRC, non-Activity strict rules | Not supported / incomplete | Phases 1–4 below |
 
 Until Phase exit criteria in §10 are met, do not describe the library as fully
@@ -401,16 +401,24 @@ every repair.
 
 ### 6.1 Compatibility-layer implementation status
 
-`FitFileBuilder(strict=True)` now provides the first additive strict-encoding
-slice: wire-range and Definition Message checks, ordered Developer Field
-declaration checks, common `file_id` rules, and Activity required-message and
-required-field checks. It fails closed for file types whose rule set has not
-yet been implemented.
+Composable validation is available independently of the Builder:
 
-This compatibility validator does not complete the conformance claim. The
-lossless wire model, compressed timestamps, generated Profile constraints,
-components and accumulation, native overrides, chained files, and the remaining
-file-type validators still follow the phases below.
+```python
+from fit_tool import ConformanceLevel, validate_fit_file
+
+report = validate_fit_file(fit_file)  # WIRE + PROFILE + FILE_TYPE
+report = fit_file.validate(levels={ConformanceLevel.WIRE})
+report.raise_for_errors()
+```
+
+`FitFileBuilder(strict=True)` is a thin wrapper over the same API (all default
+levels, raise on error). Wire-range and Definition Message checks still run on
+every `add`. FILE_TYPE rules cover Activity and fail closed for other types.
+
+This does not complete the conformance claim. Full Profile field semantics,
+compressed timestamps, components and accumulation, native overrides, chained
+files, PRESERVATION, and remaining file-type validators still follow the phases
+below.
 
 ## 7. File-type validators
 

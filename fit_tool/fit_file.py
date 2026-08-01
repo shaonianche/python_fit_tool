@@ -4,7 +4,7 @@ import csv
 import shutil
 import struct
 import tempfile
-from typing import BinaryIO, Iterator
+from typing import TYPE_CHECKING, BinaryIO, Iterable, Iterator, Optional
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.exceptions import FitCRCError, FitEncodingError
@@ -12,6 +12,9 @@ from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
 from fit_tool.utils.logging import logger
+
+if TYPE_CHECKING:
+    from fit_tool.validation import ConformanceLevel, ValidationReport
 
 
 class FitFile:
@@ -156,3 +159,21 @@ class FitFile:
     def to_file(self, path: str) -> None:
         with open(path, 'wb') as file_object:
             file_object.write(self.to_bytes())
+
+    def validate(
+        self,
+        levels: Optional[Iterable[ConformanceLevel]] = None,
+        *,
+        raise_on_error: bool = False,
+    ) -> ValidationReport:
+        """Validate this file at selected conformance levels.
+
+        Independent of :class:`~fit_tool.fit_file_builder.FitFileBuilder`.
+        Defaults to all implemented levels (WIRE, PROFILE, FILE_TYPE). Use
+        ``levels={ConformanceLevel.WIRE}`` for structure-only checks after decode.
+
+        See :func:`~fit_tool.validation.validate_fit_file` for details.
+        """
+        from fit_tool.validation import validate_fit_file
+
+        return validate_fit_file(self, levels=levels, raise_on_error=raise_on_error)

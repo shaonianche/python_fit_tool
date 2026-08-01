@@ -6,22 +6,21 @@ import struct
 import tempfile
 from typing import BinaryIO, Iterator
 
-from fit_tool.compatibility import project_header, project_segment
+from fit_tool.decoder import FitDecoder
 from fit_tool.exceptions import FitCRCError, FitEncodingError
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
 from fit_tool.utils.logging import logger
-from fit_tool.wire.decoder import WireDecoder
 
 
 class FitFile:
     """Public FIT file facade.
 
-    Decode goes through the wire layer (:class:`~fit_tool.wire.decoder.WireDecoder`)
-    and projects raw records to typed messages. Encode still serializes the
-    projected :class:`~fit_tool.record.Record` list (lossless unknown-field
-    rewrite is deferred).
+    Decode uses the unified :class:`~fit_tool.decoder.FitDecoder` state machine
+    (wire layer + projection) shared with streaming APIs. Encode still
+    serializes the projected :class:`~fit_tool.record.Record` list (lossless
+    unknown-field rewrite is deferred).
     """
 
     def __init__(self, header: FitFileHeader, records: list[Record], crc: int | None = None):
@@ -71,30 +70,15 @@ class FitFile:
 
     @classmethod
     def from_bytes(cls, bytes_buffer: bytes, check_crc: bool = True) -> FitFile:
-        """Parse FIT bytes via the wire decoder, then project to typed records."""
-        document = WireDecoder(check_crc=check_crc).decode(bytes_buffer)
-        segment = document.first_segment
-        if segment is None:
-            raise FitEncodingError('Wire decoder returned an empty document.')
+        """Parse FIT bytes via the shared FitDecoder state machine.
 
-        if segment.calculated_crc != segment.stored_crc and not check_crc:
-            logger.warning(
-                f'Calculated crc ({hex(segment.calculated_crc)}) does not match '
-                f'crc in file ({hex(segment.stored_crc)}).'
-            )
-
-        header = project_header(segment.header)
-        records = project_segment(segment)
-
-        for record_index, (record, raw) in enumerate(zip(records, segment.records)):
-            defined_size = raw.size
-            if record.size != defined_size:
-                logger.warning(
-                    f'Record {record_index}, {record.message}: size ({record.size}) != '
-                    f'defined size ({defined_size}). Some fields were not read correctly.'
-                )
-
-        return cls(header, records, segment.calculated_crc)
+        Collects the same projected records that :meth:`iter_stream` would yield
+        from an equivalent stream, so CRC handling and developer-field
+        registration stay aligned between full-load and streaming paths.
+        """
+        decoder = FitDecoder(check_crc=check_crc)
+        header, records, calculated_crc = decoder.decode(bytes_buffer)
+        return cls(header, records, calculated_crc)
 
     def to_bytes(self, check_crc: bool = True) -> bytes:
         try:

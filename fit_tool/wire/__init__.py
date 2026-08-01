@@ -5,7 +5,7 @@ package must not import generated message classes.
 """
 
 from fit_tool.wire.crc import crc16
-from fit_tool.wire.decoder import WireDecoder, decode_bytes
+from fit_tool.wire.decoder import ByteSourceInput, WireDecoder, decode_bytes
 from fit_tool.wire.model import (
     FitDocument,
     FitSegment,
@@ -19,6 +19,7 @@ from fit_tool.wire.model import (
 )
 
 __all__ = [
+    'ByteSourceInput',
     'FitDocument',
     'FitSegment',
     'RawDataRecord',

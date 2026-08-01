@@ -242,3 +242,79 @@ class TestFitFile(unittest.TestCase):
 
         self.assertNotEqual(fit_file.crc, original_crc)
         self.assertEqual(FitFile.from_bytes(encoded).to_bytes(), encoded)
+
+
+class TestFitFileMutationAndStream(unittest.TestCase):
+    def _simple_fit(self):
+        mesg = WorkoutStepMessage(local_id=0)
+        mesg.workout_step_name = 'step'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+        builder = FitFileBuilder(auto_define=True)
+        builder.add(mesg)
+        return builder.build()
+
+    def test_mark_dirty_add_and_remove_record(self):
+        fit = self._simple_fit()
+        fit.mark_dirty()
+        self.assertIsNone(fit.crc)
+
+        fit = self._simple_fit()
+        record = fit.records[-1]
+        count = len(fit.records)
+        fit.add_record(record)
+        self.assertEqual(len(fit.records), count + 1)
+        self.assertIsNone(fit.crc)
+
+        fit = self._simple_fit()
+        target = fit.records[-1]
+        fit.remove_record(target)
+        self.assertNotIn(target, fit.records)
+        self.assertIsNone(fit.crc)
+        # restore for encoding
+        fit.add_record(target)
+        self.assertIsNotNone(fit.to_bytes())
+
+    def test_crc_setter_marks_override(self):
+        fit = self._simple_fit()
+        fit.crc = 12345
+        self.assertEqual(fit.crc, 12345)
+        with self.assertRaises(FitCRCError):
+            fit.to_bytes(check_crc=True)
+
+    def test_iter_file_and_from_file(self):
+        fit = self._simple_fit()
+        with tempfile.NamedTemporaryFile(suffix='.fit', delete=False) as tmp:
+            path = tmp.name
+            tmp.write(fit.to_bytes())
+        try:
+            loaded = FitFile.from_file(path)
+            self.assertEqual(len(loaded.records), len(fit.records))
+            records = list(FitFile.iter_file(path))
+            self.assertEqual(len(records), len(fit.records))
+        finally:
+            import os
+            os.unlink(path)
+
+    def test_to_bytes_encoding_error(self):
+        from fit_tool.exceptions import FitEncodingError
+        from fit_tool.record import Record
+
+        fit = self._simple_fit()
+        # Force a message that fails to_bytes
+        bad = mock.Mock()
+        bad.to_bytes.side_effect = ValueError('boom')
+        fit.records = [Record.from_message(WorkoutStepMessage())]
+        # Replace message to_bytes on the last record message path via mock of record.to_bytes
+        with mock.patch.object(fit.records[0], 'to_bytes', side_effect=ValueError('boom')):
+            with self.assertRaises(FitEncodingError):
+                fit.to_bytes()
+
+    def test_builder_add_all(self):
+        mesg = WorkoutStepMessage(local_id=0)
+        mesg.workout_step_name = 'step'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+        definition = DefinitionMessage.from_data_message(mesg)
+        builder = FitFileBuilder(auto_define=False)
+        builder.add_all([definition, mesg])
+        fit = builder.build()
+        self.assertEqual(len(fit.records), 2)

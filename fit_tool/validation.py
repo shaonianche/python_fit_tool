@@ -10,14 +10,14 @@ Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
   ``field_description``) plus **ambiguous native subfield** matches.
   This is **not** full Garmin Profile validation (enums, units, required
   native fields per message, and broader subfield rule families remain deferred).
-* **FILE_TYPE** — ``file_id`` rules plus Activity and Workout required
-  messages/fields
+* **FILE_TYPE** — ``file_id`` rules plus Activity, Workout, and Course
+  required messages/fields
 * **PRESERVATION** — opt-in checks for post-edit rewrite loss (e.g. unknown
   field ``raw_bytes`` cleared). Not part of default / strict levels.
 
-File-type rules are implemented for **Activity** and **Workout**. Other
-``file_id.type`` values fail closed at the FILE_TYPE level (intentional until
-more validators exist, e.g. Course).
+File-type rules are implemented for **Activity**, **Workout**, and **Course**.
+Other ``file_id.type`` values fail closed at the FILE_TYPE level (intentional
+until more validators exist).
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.exceptions import FitValidationError
 from fit_tool.field import UnknownField
 from fit_tool.message import Message
-from fit_tool.profile.profile_type import FileType, MesgNum, WorkoutStepDuration
+from fit_tool.profile.profile_type import Event, EventType, FileType, MesgNum, WorkoutStepDuration
 from fit_tool.record import Record
 
 if TYPE_CHECKING:
@@ -50,6 +50,15 @@ MAX_FIELD_COUNT = 255
 IMPLEMENTED_FILE_TYPES = frozenset({
     FileType.ACTIVITY.value,
     FileType.WORKOUT.value,
+    FileType.COURSE.value,
+})
+
+# Course timer stop event types accepted by FILE_TYPE (Garmin devices vary).
+_COURSE_TIMER_STOP_TYPES = frozenset({
+    EventType.STOP.value,
+    EventType.STOP_ALL.value,
+    EventType.STOP_DISABLE.value,
+    EventType.STOP_DISABLE_ALL.value,
 })
 
 
@@ -460,15 +469,14 @@ def _collect_file_type_findings(
         _error(findings, ConformanceLevel.FILE_TYPE, 'file_id.type is required.', file_id_index)
         return
 
-    _require_fields_findings(
-        findings,
-        file_id,
-        ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
-        file_id_index,
-    )
-
     message_counts = Counter(message.global_id for message in data_messages)
     if file_type == FileType.ACTIVITY.value:
+        _require_fields_findings(
+            findings,
+            file_id,
+            ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
+            file_id_index,
+        )
         if message_counts[MesgNum.RECORD.value] < 1:
             _error(
                 findings,
@@ -496,6 +504,12 @@ def _collect_file_type_findings(
             )
         _collect_activity_field_findings(data_messages, findings, data_message_indices)
     elif file_type == FileType.WORKOUT.value:
+        _require_fields_findings(
+            findings,
+            file_id,
+            ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
+            file_id_index,
+        )
         workout_count = message_counts[MesgNum.WORKOUT.value]
         if workout_count != 1:
             _error(
@@ -510,6 +524,16 @@ def _collect_file_type_findings(
                 'A workout FIT file requires at least one workout_step message.',
             )
         _collect_workout_field_findings(data_messages, findings, data_message_indices)
+    elif file_type == FileType.COURSE.value:
+        # Product is optional on real Course exports (e.g. Stages Link).
+        _require_fields_findings(
+            findings,
+            file_id,
+            ('type', 'manufacturer', 'serial_number', 'time_created'),
+            file_id_index,
+        )
+        _collect_course_structure_findings(data_messages, findings, message_counts)
+        _collect_course_field_findings(data_messages, findings, data_message_indices)
     else:
         _error(
             findings,
@@ -660,6 +684,138 @@ def _collect_workout_field_findings(
                 ),
                 data_message_indices.get(message_pos),
             )
+
+
+def _is_course_timer_event(message: DataMessage, event_types: frozenset) -> bool:
+    """True when message is Event.TIMER with an event_type in ``event_types``."""
+    if message.global_id != MesgNum.EVENT.value:
+        return False
+    if _enum_value(getattr(message, 'event', None)) != Event.TIMER.value:
+        return False
+    return _enum_value(getattr(message, 'event_type', None)) in event_types
+
+
+def _collect_course_structure_findings(
+    data_messages: Sequence[DataMessage],
+    findings: list[ValidationFinding],
+    message_counts: Counter,
+) -> None:
+    """Required messages for Course files (Garmin FIT Course file type).
+
+    Must include: exactly one ``course``, ≥1 ``lap``, ≥1 ``record``, a timer
+    start event, and a timer stop event. ``course_point`` is optional.
+    """
+    course_count = message_counts[MesgNum.COURSE.value]
+    if course_count != 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            f'A course FIT file requires exactly one course message; found {course_count}.',
+        )
+    if message_counts[MesgNum.LAP.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'A course FIT file requires at least one lap message.',
+        )
+    if message_counts[MesgNum.RECORD.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'A course FIT file requires at least one record message.',
+        )
+
+    start_positions = [
+        pos for pos, message in enumerate(data_messages)
+        if _is_course_timer_event(message, frozenset({EventType.START.value}))
+    ]
+    stop_positions = [
+        pos for pos, message in enumerate(data_messages)
+        if _is_course_timer_event(message, _COURSE_TIMER_STOP_TYPES)
+    ]
+    record_positions = [
+        pos for pos, message in enumerate(data_messages)
+        if message.global_id == MesgNum.RECORD.value
+    ]
+
+    if not start_positions:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'A course FIT file requires a timer start event message.',
+        )
+    if not stop_positions:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'A course FIT file requires a timer stop event message.',
+        )
+
+    # Ordering: timer start before track records and before terminal timer stop
+    # (message order; timestamps may be equal in real Garmin exports).
+    if start_positions and stop_positions:
+        first_start = min(start_positions)
+        last_stop = max(stop_positions)
+        if first_start >= last_stop:
+            _error(
+                findings,
+                ConformanceLevel.FILE_TYPE,
+                'A course FIT file requires the timer start event to precede '
+                'the timer stop event.',
+            )
+    if start_positions and record_positions:
+        if min(start_positions) > min(record_positions):
+            _error(
+                findings,
+                ConformanceLevel.FILE_TYPE,
+                'A course FIT file requires the timer start event to precede '
+                'track record messages.',
+            )
+    if stop_positions and record_positions:
+        if max(stop_positions) < max(record_positions):
+            _error(
+                findings,
+                ConformanceLevel.FILE_TYPE,
+                'A course FIT file requires the timer stop event to follow '
+                'track record messages.',
+            )
+
+
+def _collect_course_field_findings(
+    data_messages: Sequence[DataMessage],
+    findings: list[ValidationFinding],
+    data_message_indices: Mapping[int, int],
+) -> None:
+    """Required fields on Course file messages.
+
+    Lap requirements follow summary-message practice used by real Course
+    exports (timestamp / start_time / total_elapsed_time). ``total_timer_time``
+    and ``message_index`` are not required — Garmin-exported courses often omit
+    them. Course track ``record`` messages are geometric (position) and often
+    omit timestamps. Course name is the ``course_name`` property (field ``name``);
+    ``sport`` is required Course metadata.
+    """
+    required_fields = {
+        MesgNum.COURSE.value: ('course_name', 'sport'),
+        MesgNum.RECORD.value: ('position_lat', 'position_long'),
+        MesgNum.LAP.value: (
+            'timestamp',
+            'start_time',
+            'total_elapsed_time',
+        ),
+        MesgNum.EVENT.value: ('timestamp', 'event', 'event_type'),
+    }
+    for message_pos, message in enumerate(data_messages):
+        field_names = required_fields.get(message.global_id)
+        if field_names is not None:
+            _require_fields_findings(
+                findings,
+                message,
+                field_names,
+                data_message_indices.get(message_pos),
+            )
+
+
 
 
 def _collect_preservation_findings(

@@ -27,6 +27,13 @@ from fit_tool.exceptions import (
 )
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
+from fit_tool.validation import (
+    ConformanceLevel,
+    Severity,
+    ValidationFinding,
+    ValidationReport,
+    validate_fit_file,
+)
 
 __all__ = [
     'FitFile',
@@ -38,4 +45,9 @@ __all__ = [
     'FitCRCError',
     'FitEncodingError',
     'FitValidationError',
+    'ConformanceLevel',
+    'Severity',
+    'ValidationFinding',
+    'ValidationReport',
+    'validate_fit_file',
 ]

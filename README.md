@@ -24,8 +24,8 @@ package already implements. Profile version in use: `21.205.0` (see
 | Status | Capabilities |
 | --- | --- |
 | **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; file-level CRC check on load / stream exhaustion; developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself |
-| **Partial** | Unknown global messages via `GenericMessage` (readable and rewritable as structured fields, not lossless wire preservation); strict Activity validation on write only (`FitFileBuilder(strict=True)` — wire limits always apply; profile/file-type rules are opt-in and Activity-focused) |
-| **Not supported / incomplete** | Compressed timestamp header reconstruction (5-bit offset / rollover); chained multi-segment FIT files (only the first segment is consumed); component expansion and accumulators (e.g. `compressed_speed_distance`, enhanced fields); lossless byte-for-byte rewrite of unknown fields / header extensions; header CRC validation on 14-byte headers; strict file-type rules for non-Activity types (strict mode fails closed) |
+| **Partial** | Unknown global messages via `GenericMessage` (readable and rewritable as structured fields, not lossless wire preservation); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE levels; Builder `strict=True` is a thin wrapper over the same checks |
+| **Not supported / incomplete** | Compressed timestamp header reconstruction (5-bit offset / rollover); chained multi-segment FIT files (only the first segment is consumed); component expansion and accumulators (e.g. `compressed_speed_distance`, enhanced fields); lossless byte-for-byte rewrite of unknown fields / header extensions; header CRC validation on 14-byte headers; file-type rules for non-Activity types (FILE_TYPE level fails closed); PRESERVATION conformance level |
 
 If you need a construct listed as incomplete, prefer an official Garmin SDK or
 wait for the phased work in the design doc. Architecture reviews should judge
@@ -126,6 +126,8 @@ from fit_tool import (
     FitParseError,
     FitCRCError,
     FitValidationError,
+    ConformanceLevel,
+    validate_fit_file,
     PROTOCOL_VERSION,
     SDK_VERSION,
 )
@@ -133,8 +135,9 @@ from fit_tool import (
 
 | Symbol | Role |
 | --- | --- |
-| `FitFile` | Load, inspect, stream, and serialize FIT files |
+| `FitFile` | Load, inspect, stream, serialize, and validate FIT files |
 | `FitFileBuilder` | Build FIT files from messages |
+| `validate_fit_file`, `ConformanceLevel`, `ValidationReport` | Composable validation (independent of Builder) |
 | `FitError` and subclasses | Typed errors for parse, CRC, encode, and validation failures |
 | `PROTOCOL_VERSION`, `SDK_VERSION`, `FIT_DATA_TYPE` | Bundled protocol/profile version metadata |
 
@@ -187,11 +190,40 @@ for record in FitFile.iter_file("activity.fit"):
 CRC validation is performed when the iterator is fully exhausted. `FitFile.iter_stream()` accepts an already-open
 binary stream. Builders can serialize directly with `FitFileBuilder.build_bytes()` when a `FitFile` object is not needed.
 
-### Validate generated FIT files
+### Validate FIT files
 
-`FitFileBuilder` always validates wire-level limits such as local message numbers and Definition Message field sizes.
-Use strict mode to additionally validate Developer Field declarations, `file_id` ordering, and Activity file message
-cardinality before bytes are produced:
+Validation is a first-class API. Levels match the design doc
+([`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3):
+
+| Level | What it checks | Status |
+| --- | --- | --- |
+| `ConformanceLevel.WIRE` | Local IDs, definition field layout/sizes, data records vs active definition | Implemented |
+| `ConformanceLevel.PROFILE` | Developer field declarations (`developer_data_id` / `field_description`) and base-type consistency | Implemented (developer-field subset; full Profile semantics deferred) |
+| `ConformanceLevel.FILE_TYPE` | `file_id` first/unique + required fields; Activity required messages and fields | **Activity only**; other `file_id.type` values **fail closed** (intentional until more validators exist) |
+
+Call validation on any `FitFile` or record list — after decode or before encode:
+
+```python
+from fit_tool import ConformanceLevel, FitFile, validate_fit_file
+
+fit_file = FitFile.from_file("activity.fit")
+
+# Report mode (default: all implemented levels)
+report = fit_file.validate()
+if report.has_errors:
+    for finding in report.errors:
+        print(finding.level, finding.message)
+
+# Raise on first error
+fit_file.validate(raise_on_error=True)
+
+# Wire-only (e.g. after decode, without file-type rules)
+validate_fit_file(fit_file, levels={ConformanceLevel.WIRE})
+```
+
+`FitFileBuilder` always checks wire limits on `add` (local message numbers, definition
+sizes). `strict=True` is a thin wrapper over the same API with all levels and
+`raise_on_error=True`:
 
 ```python
 from fit_tool import FitFileBuilder
@@ -201,8 +233,8 @@ builder.add_all(messages)
 fit_bytes = builder.build_bytes()
 ```
 
-Strict file-type rules currently cover Activity files and fail closed for other file types. Existing builder calls remain
-compatible because profile-level strict validation is opt-in.
+Non-strict builders remain unchanged. Prefer `validate_fit_file` / `FitFile.validate`
+when you need a report, level selection, or validation on the read path.
 
 ### Run Garmin SDK interoperability tests
 

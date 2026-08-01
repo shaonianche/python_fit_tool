@@ -1,0 +1,1 @@
+Document PROFILE depth decision **O1**: bundled Profile.xlsx is the single source of truth; validation scopes CORE / DOMAIN / FULL with FULL opt-in (not default strict). See ``docs/FIT_CONFORMANCE_DESIGN.md`` §3.1.

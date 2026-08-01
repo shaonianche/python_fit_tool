@@ -1,6 +1,7 @@
-Stage 5 capability-matrix and release-note pass (Multica SHA-12 / L): README
-Supported/Partial/Not-supported rows and “what we still do not claim” aligned
-with code after C–J; design-doc current status, remaining-gaps table, phase
-progress, and §11 residual checklist re-synced; protocol fixture gap inventory
-updated. Towncrier fragments for stages 1–4 remain the epic’s user-visible
-capability changelog; do not claim full Garmin FIT conformance until §11 is met.
+Document the current capability boundary for readers: README Supported /
+Partial / Not-supported matrix and a short “what this library still does not
+claim” section now match the shipped code (PROFILE scopes CORE/DOMAIN/FULL,
+Activity/Workout/Course FILE_TYPE validation, post-edit PRESERVE/CANONICAL
+encode). The conformance design doc and residual checklist are re-synced so
+public claims stay honest — full Garmin FIT / Profile conformance is still
+not advertised until every Definition of Done item is met.

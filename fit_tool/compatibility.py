@@ -102,18 +102,25 @@ def project_data_record(
     # redefinition of the same local_id cannot mutate earlier projections.
     definition_message = definition_from_raw(raw.definition)
 
-    if developer_fields_by_data_index and definition_message.developer_field_definitions:
-        developer_fields = definition_message.get_developer_fields(developer_fields_by_data_index)
-    else:
-        developer_fields = []
-
     try:
+        # Always resolve developer fields when the definition declares them so
+        # missing Field Description registration fails the same way on stream
+        # and full-load paths (empty registry is not treated as "no fields").
+        if definition_message.developer_field_definitions:
+            developer_fields = definition_message.get_developer_fields(
+                developer_fields_by_data_index
+            )
+        else:
+            developer_fields = []
+
         message = DataMessage.from_bytes(
             definition_message,
             developer_fields,
             raw.payload,
             offset=0,
         )
+    except FitRecordError:
+        raise
     except (IndexError, struct.error, UnicodeError, ValueError) as exc:
         raise FitRecordError(
             f'Could not project data record at byte offset {raw.source_offset}: {exc}'
@@ -123,10 +130,15 @@ def project_data_record(
     return Record(header, message)
 
 
-def _register_developer_field(
+def register_developer_field(
         record: Record,
         developer_fields_by_data_index: dict[int, dict[int, DeveloperField]],
 ) -> None:
+    """Register Field Description metadata into the developer-field registry.
+
+    Stream and full-load paths share this registration so validation strictness
+    stays aligned (missing required metadata raises :class:`FitRecordError`).
+    """
     if not isinstance(record.message, FieldDescriptionMessage):
         return
 
@@ -151,6 +163,10 @@ def _register_developer_field(
     fields_by_id[developer_field.field_id] = developer_field
 
 
+# Backward-compatible private alias used by earlier Stage 2 code / tests.
+_register_developer_field = register_developer_field
+
+
 def project_segment(segment: FitSegment) -> list[Record]:
     """Project all wire records in a segment to compatibility Records."""
     records: list[Record] = []
@@ -161,7 +177,7 @@ def project_segment(segment: FitSegment) -> list[Record]:
             record = project_definition_record(raw)
         elif isinstance(raw, RawDataRecord):
             record = project_data_record(raw, developer_fields_by_data_index)
-            _register_developer_field(record, developer_fields_by_data_index)
+            register_developer_field(record, developer_fields_by_data_index)
         else:
             raise FitRecordError(f'Unsupported wire record type: {type(raw)!r}')
         records.append(record)

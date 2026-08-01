@@ -227,7 +227,8 @@ class Field:
         if index < 0:
             return
 
-        if check_validity and self.base_type != BaseType.STRING:
+        # None is the public representation of a FIT invalid value for floating-point fields.
+        if check_validity and self.base_type != BaseType.STRING and encoded_value is not None:
             if not self.base_type.is_valid(encoded_value):
                 raise ValueError(
                     f'{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
@@ -254,17 +255,28 @@ class Field:
             return value
 
         if value is None:
-            encoded_value = self.base_type.invalid_raw_value()
-        else:
-            scale = self.get_scale(sub_field=sub_field)
-            offset = self.get_offset(sub_field=sub_field)
-            if isinstance(value, Enum):
-                encoded_value = value.value
-            elif (scale is None or scale == 1.0) and (offset is None or offset == 0.0):
-                encoded_value = int(value)
-            else:
-                encoded_value = self.scale_offset_value(value, scale, offset)
-        return encoded_value
+            # Float invalid values are represented as None until packed to the FIT bit pattern.
+            # Integer/enum types keep the protocol invalid raw integer for encoding.
+            if self.base_type.is_float():
+                return None
+            return self.base_type.invalid_raw_value()
+
+        scale = self.get_scale(sub_field=sub_field)
+        offset = self.get_offset(sub_field=sub_field)
+        if isinstance(value, Enum):
+            return value.value
+
+        if self.base_type.is_float():
+            if (scale is None or scale == 1.0) and (offset is None or offset == 0.0):
+                return float(value)
+            scale = scale if scale is not None else 1.0
+            offset = offset if offset is not None else 0.0
+            return (float(value) + offset) * scale
+
+        if (scale is None or scale == 1.0) and (offset is None or offset == 0.0):
+            return int(value)
+
+        return self.scale_offset_value(value, scale, offset)
 
     def read_all_from_bytes(self, bytes_buffer: bytes, endian: Endian = Endian.LITTLE, offset: int = 0):
         if self.base_type == BaseType.STRING:
@@ -323,19 +335,55 @@ class Field:
             return value.decode('utf-8')
 
         endian_symbol = '<' if endian == Endian.LITTLE else '>'
+
+        # FIT float invalid values are a specific all-ones bit pattern, not an ordinary NaN.
+        if self.base_type.is_float():
+            unsigned_format = 'I' if self.base_type == BaseType.FLOAT32 else 'Q'
+            raw_bits, = struct.unpack_from(f'{endian_symbol}{unsigned_format}', bytes_buffer, offset)
+            if raw_bits == self.base_type.invalid_raw_value():
+                return None
+            value, = struct.unpack_from(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, offset)
+            return value
+
         value, = struct.unpack_from(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, offset)
 
         return value
 
     def encoded_value_to_bytes(self, encoded_value, endian: Endian = Endian.LITTLE) -> bytes:
-        if encoded_value is None:
-            raise ValueError('Value cannot be None')
-
         if self.base_type == BaseType.STRING:
+            if encoded_value is None:
+                raise ValueError('Value cannot be None')
             return encoded_value.encode('utf-8') + b'\0'
 
         endian_symbol = '<' if endian == Endian.LITTLE else '>'
         bytes_buffer = bytearray(b'\0' * self.base_type.size)
+
+        if self.base_type.is_float():
+            # None (and legacy integer invalid markers) encode to the FIT invalid bit pattern.
+            if encoded_value is None or (
+                isinstance(encoded_value, int)
+                and encoded_value == self.base_type.invalid_raw_value()
+            ):
+                unsigned_format = 'I' if self.base_type == BaseType.FLOAT32 else 'Q'
+                struct.pack_into(
+                    f'{endian_symbol}{unsigned_format}',
+                    bytes_buffer,
+                    0,
+                    self.base_type.invalid_raw_value(),
+                )
+                return bytes_buffer
+
+            struct.pack_into(
+                f'{endian_symbol}{self.base_type.struct_format}',
+                bytes_buffer,
+                0,
+                float(encoded_value),
+            )
+            return bytes_buffer
+
+        if encoded_value is None:
+            raise ValueError('Value cannot be None')
+
         struct.pack_into(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, 0, encoded_value)
 
         return bytes_buffer

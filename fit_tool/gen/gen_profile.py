@@ -1,10 +1,8 @@
 import argparse
 import os
 import shutil
+import sys
 from pathlib import Path
-
-import inflection
-import jinja2
 
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType
@@ -12,6 +10,40 @@ from fit_tool.field import Field
 from fit_tool.gen.profile import Message, Profile
 
 DEFAULT_BUILD_PATH = str(Path(__file__).resolve().parents[1])
+
+_GEN_INSTALL_HINT = (
+    "gen-profile requires the optional gen dependencies "
+    "(openpyxl, inflection, jinja2).\n"
+    "Install with: pip install 'fit-tool[gen]'  or  uv sync --extra gen --group dev"
+)
+
+try:
+    import inflection
+    import jinja2
+except ImportError:
+    # Allow the module (and console entry point) to load without gen extras;
+    # main() exits with a clear install hint.
+    inflection = None  # type: ignore[assignment]
+    jinja2 = None  # type: ignore[assignment]
+
+
+def _require_gen_dependencies():
+    """Exit with a clear install hint if gen-only deps are missing."""
+    missing = []
+    for module_name, module in (
+        ("inflection", inflection),
+        ("jinja2", jinja2),
+    ):
+        if module is None:
+            missing.append(module_name)
+    try:
+        import openpyxl  # noqa: F401
+    except ImportError:
+        missing.append("openpyxl")
+    if missing:
+        print(_GEN_INSTALL_HINT, file=sys.stderr)
+        print(f"Missing: {', '.join(missing)}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 def parse_args():
@@ -176,6 +208,8 @@ def get_field_property_type_name(profile: Profile, field: Field) -> str:
 
 
 def main():
+    _require_gen_dependencies()
+
     build_path = DEFAULT_BUILD_PATH
     profile_path = os.path.join(build_path, 'profile')
     messages_path = os.path.join(profile_path, 'messages')

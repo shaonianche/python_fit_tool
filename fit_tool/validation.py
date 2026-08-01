@@ -6,18 +6,18 @@ Builder ``strict=True`` is a thin wrapper that runs the same checks and raises o
 Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
 
 * **WIRE** — local IDs, definition layout, data-record size vs definition
-* **PROFILE** — developer-field declarations (``developer_data_id`` /
-  ``field_description``) plus **ambiguous native subfield** matches.
-  This is **not** full Garmin Profile validation (enums, units, required
-  native fields per message, and broader subfield rule families remain deferred).
-* **FILE_TYPE** — ``file_id`` rules plus Activity, Workout, and Course
-  required messages/fields
+* **PROFILE** — Profile semantics under a selectable :class:`ProfileScope`
+  (CORE / DOMAIN / FULL). Default scope is **CORE** (developer-field rules +
+  ambiguous native subfields). DOMAIN and FULL add data-driven native base-type
+  and closed-enum checks from the gen-exported field catalog (design doc §3.1 O1).
+  FULL is **opt-in**, never the default for ``strict=True`` / :data:`DEFAULT_LEVELS`.
+* **FILE_TYPE** — ``file_id`` rules and Activity required messages/fields
 * **PRESERVATION** — opt-in checks for post-edit rewrite loss (e.g. unknown
   field ``raw_bytes`` cleared). Not part of default / strict levels.
 
-File-type rules are implemented for **Activity**, **Workout**, and **Course**.
-Other ``file_id.type`` values fail closed at the FILE_TYPE level (intentional
-until more validators exist).
+File-type rules are implemented only for **Activity**. Other ``file_id.type``
+values fail closed at the FILE_TYPE level (intentional until more validators
+exist).
 """
 
 from __future__ import annotations
@@ -34,6 +34,15 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.exceptions import FitValidationError
 from fit_tool.field import UnknownField
 from fit_tool.message import Message
+from fit_tool.profile.field_catalog import (
+    PROFILE_ENUM_FIELD_COUNT,
+    PROFILE_ENUM_TYPE_COUNT,
+    PROFILE_ENUM_VALUES,
+    PROFILE_FIELD_COUNT,
+    PROFILE_FIELDS,
+    PROFILE_MESSAGE_COUNT,
+    PROFILE_SDK_VERSION,
+)
 from fit_tool.profile.profile_type import Event, EventType, FileType, MesgNum, WorkoutStepDuration
 from fit_tool.record import Record
 
@@ -61,6 +70,19 @@ _COURSE_TIMER_STOP_TYPES = frozenset({
     EventType.STOP_DISABLE_ALL.value,
 })
 
+# High-frequency Activity / Workout messages for PROFILE DOMAIN scope (§3.1 M4).
+DOMAIN_MESSAGE_IDS: frozenset[int] = frozenset({
+    MesgNum.FILE_ID.value,       # 0
+    MesgNum.SESSION.value,       # 18
+    MesgNum.LAP.value,           # 19
+    MesgNum.RECORD.value,        # 20
+    MesgNum.EVENT.value,         # 21
+    MesgNum.DEVICE_INFO.value,   # 23
+    MesgNum.WORKOUT.value,       # 26
+    MesgNum.WORKOUT_STEP.value,  # 27
+    MesgNum.ACTIVITY.value,      # 34
+})
+
 
 class ConformanceLevel(Enum):
     """Independently selectable validation dimensions."""
@@ -69,6 +91,22 @@ class ConformanceLevel(Enum):
     PROFILE = 'profile'
     FILE_TYPE = 'file_type'
     PRESERVATION = 'preservation'
+
+
+class ProfileScope(Enum):
+    """Depth of :attr:`ConformanceLevel.PROFILE` rules (design doc §3.1 O1).
+
+    * **CORE** — developer-field declarations + ambiguous subfield ERROR.
+      Default for :data:`DEFAULT_LEVELS` / Builder ``strict=True``.
+    * **DOMAIN** — CORE plus native base-type and closed-enum checks on
+      high-frequency Activity/Workout messages (:data:`DOMAIN_MESSAGE_IDS`).
+    * **FULL** — CORE plus the same native rules for **all** messages in the
+      bundled Profile field catalog. Explicit opt-in only.
+    """
+
+    CORE = 'core'
+    DOMAIN = 'domain'
+    FULL = 'full'
 
 
 class Severity(Enum):
@@ -88,6 +126,9 @@ DEFAULT_LEVELS = frozenset({
 
 # Builder(strict=True) and FitFileValidator().validate() use all default levels.
 STRICT_LEVELS = DEFAULT_LEVELS
+
+# PROFILE scope for DEFAULT_LEVELS / strict. FULL must never be the default.
+DEFAULT_PROFILE_SCOPE = ProfileScope.CORE
 
 
 @dataclass(frozen=True)
@@ -254,6 +295,83 @@ def _error(
     )
 
 
+def _normalize_profile_scope(scope: ProfileScope | None) -> ProfileScope:
+    if scope is None:
+        return DEFAULT_PROFILE_SCOPE
+    if not isinstance(scope, ProfileScope):
+        raise FitValidationError(
+            f'profile_scope must be a ProfileScope, got {type(scope).__name__}'
+        )
+    return scope
+
+
+def _message_ids_for_scope(scope: ProfileScope) -> frozenset[int] | None:
+    """Return global message ids in scope, or ``None`` when scope is CORE (no native catalog)."""
+    if scope is ProfileScope.CORE:
+        return None
+    if scope is ProfileScope.DOMAIN:
+        return DOMAIN_MESSAGE_IDS
+    # FULL: every message that appears in the catalog.
+    return frozenset(global_id for global_id, _field_id in PROFILE_FIELDS)
+
+
+def profile_rule_coverage(scope: ProfileScope | None = None) -> dict[str, Any]:
+    """Publish PROFILE validation coverage metrics for *scope*.
+
+    Used by docs/tests and release notes. Percentages are relative to the full
+    bundled Profile field catalog (``PROFILE_*`` constants from gen export).
+    """
+    selected = _normalize_profile_scope(scope)
+    message_ids = _message_ids_for_scope(selected)
+
+    if message_ids is None:
+        native_messages = 0
+        native_fields = 0
+        enum_fields = 0
+        rule_families = (
+            'developer_fields',
+            'subfield_ambiguity',
+        )
+    else:
+        native_messages = len({gid for gid in message_ids if any(
+            key[0] == gid for key in PROFILE_FIELDS
+        )})
+        native_fields = sum(1 for key in PROFILE_FIELDS if key[0] in message_ids)
+        enum_fields = sum(
+            1
+            for key, meta in PROFILE_FIELDS.items()
+            if key[0] in message_ids and meta[2] in PROFILE_ENUM_VALUES
+        )
+        rule_families = (
+            'developer_fields',
+            'subfield_ambiguity',
+            'native_base_type',
+            'closed_enum_values',
+        )
+
+    def _pct(part: int, whole: int) -> float:
+        if whole <= 0:
+            return 0.0
+        return round(100.0 * part / whole, 2)
+
+    return {
+        'scope': selected.value,
+        'profile_sdk_version': PROFILE_SDK_VERSION,
+        'rule_families': list(rule_families),
+        'full_messages': PROFILE_MESSAGE_COUNT,
+        'full_fields': PROFILE_FIELD_COUNT,
+        'full_enum_types': PROFILE_ENUM_TYPE_COUNT,
+        'full_enum_fields': PROFILE_ENUM_FIELD_COUNT,
+        'native_messages_in_scope': native_messages,
+        'native_fields_in_scope': native_fields,
+        'enum_fields_in_scope': enum_fields,
+        'message_coverage_pct': _pct(native_messages, PROFILE_MESSAGE_COUNT),
+        'field_coverage_pct': _pct(native_fields, PROFILE_FIELD_COUNT),
+        'enum_field_coverage_pct': _pct(enum_fields, PROFILE_ENUM_FIELD_COUNT),
+        'default_for_strict': selected is DEFAULT_PROFILE_SCOPE,
+    }
+
+
 def _collect_wire_findings(records: Sequence[Record], findings: list[ValidationFinding]) -> None:
     active_definitions = {}
     for record_index, record in enumerate(records):
@@ -289,6 +407,36 @@ def _collect_wire_findings(records: Sequence[Record], findings: list[ValidationF
 
 
 def _collect_profile_findings(
+    records: Sequence[Record],
+    data_messages: Sequence[DataMessage],
+    findings: list[ValidationFinding],
+    data_message_indices: Mapping[int, int],
+    profile_scope: ProfileScope,
+) -> None:
+    # CORE (always when PROFILE is selected).
+    _collect_developer_field_findings(data_messages, findings, data_message_indices)
+    for message_pos, message in enumerate(data_messages):
+        _collect_subfield_ambiguity_findings(
+            message,
+            findings,
+            data_message_indices.get(message_pos),
+        )
+
+    message_ids = _message_ids_for_scope(profile_scope)
+    if message_ids is None:
+        return
+
+    # DOMAIN / FULL: data-driven native rules from gen-exported field catalog.
+    _collect_native_base_type_findings(records, findings, message_ids)
+    _collect_closed_enum_findings(
+        data_messages,
+        findings,
+        data_message_indices,
+        message_ids,
+    )
+
+
+def _collect_developer_field_findings(
     data_messages: Sequence[DataMessage],
     findings: list[ValidationFinding],
     data_message_indices: Mapping[int, int],
@@ -384,8 +532,6 @@ def _collect_profile_findings(
                     record_index,
                 )
 
-        _collect_subfield_ambiguity_findings(message, findings, record_index)
-
 
 def _collect_subfield_ambiguity_findings(
     message: DataMessage,
@@ -415,6 +561,90 @@ def _collect_subfield_ambiguity_findings(
             f'Ambiguous subfields for {message.name}.{field.name}: {names}.',
             record_index,
         )
+
+
+def _collect_native_base_type_findings(
+    records: Sequence[Record],
+    findings: list[ValidationFinding],
+    message_ids: frozenset[int],
+) -> None:
+    """ERROR when a definition declares a base type that differs from Profile.
+
+    Only main fields present in the gen-exported catalog are checked. Unknown
+    field ids (not in Profile for that message) are ignored here — they belong
+    to unknown-field / PRESERVATION work.
+    """
+    for record_index, record in enumerate(records):
+        message = record.message
+        if not isinstance(message, DefinitionMessage):
+            continue
+        if message.global_id not in message_ids:
+            continue
+        for field_def in message.field_definitions:
+            key = (message.global_id, field_def.field_id)
+            catalog_entry = PROFILE_FIELDS.get(key)
+            if catalog_entry is None:
+                continue
+            field_name, expected_base_type, _type_name, _units, _scale, _offset = catalog_entry
+            if field_def.base_type is expected_base_type:
+                continue
+            _error(
+                findings,
+                ConformanceLevel.PROFILE,
+                (
+                    f'Native field {field_name!r} (id {field_def.field_id}) on global '
+                    f'message {message.global_id} declares base type '
+                    f'{field_def.base_type.name}, but Profile requires '
+                    f'{expected_base_type.name}.'
+                ),
+                record_index,
+            )
+
+
+def _collect_closed_enum_findings(
+    data_messages: Sequence[DataMessage],
+    findings: list[ValidationFinding],
+    data_message_indices: Mapping[int, int],
+    message_ids: frozenset[int],
+) -> None:
+    """ERROR when a closed Profile enum field holds an unknown value.
+
+    Only Types-sheet entries with base type ``enum`` are checked (closed sets).
+    Open lists (manufacturer, garmin_product, …) and bitfields are excluded from
+    the catalog. Invalid FIT sentinels are skipped.
+    """
+    for message_pos, message in enumerate(data_messages):
+        if message.global_id not in message_ids:
+            continue
+        record_index = data_message_indices.get(message_pos)
+        for field in getattr(message, 'fields', None) or []:
+            if not field.is_valid():
+                continue
+            key = (message.global_id, field.field_id)
+            catalog_entry = PROFILE_FIELDS.get(key)
+            if catalog_entry is None:
+                continue
+            field_name, _base_type, type_name, _units, _scale, _offset = catalog_entry
+            if not type_name:
+                continue
+            allowed = PROFILE_ENUM_VALUES.get(type_name)
+            if allowed is None:
+                continue
+            invalid_raw = field.base_type.invalid_raw_value()
+            for encoded in field.encoded_values:
+                if encoded is None or encoded == invalid_raw:
+                    continue
+                if encoded in allowed:
+                    continue
+                _error(
+                    findings,
+                    ConformanceLevel.PROFILE,
+                    (
+                        f'Native field {message.name}.{field_name} has value '
+                        f'{encoded!r} outside Profile enum {type_name!r}.'
+                    ),
+                    record_index,
+                )
 
 
 def _require_fields_findings(
@@ -870,6 +1100,7 @@ def validate_fit_file(
     source: FitFile | Sequence[Record],
     levels: Iterable[ConformanceLevel] | None = None,
     *,
+    profile_scope: ProfileScope | None = None,
     raise_on_error: bool = False,
 ) -> ValidationReport:
     """Validate a :class:`~fit_tool.fit_file.FitFile` or ordered record list.
@@ -882,6 +1113,12 @@ def validate_fit_file(
         Conformance levels to run. Defaults to WIRE + PROFILE + FILE_TYPE.
         Pass ``{ConformanceLevel.PRESERVATION}`` (or include it) for opt-in
         post-edit loss checks. PRESERVATION is **not** in the default set.
+    profile_scope:
+        Depth of PROFILE rules when :attr:`ConformanceLevel.PROFILE` is selected.
+        Defaults to :data:`DEFAULT_PROFILE_SCOPE` (**CORE**). Pass
+        :attr:`ProfileScope.DOMAIN` or :attr:`ProfileScope.FULL` for native
+        field/enum checks from the gen-exported Profile catalog. FULL is never
+        the default for Builder ``strict=True``.
     raise_on_error:
         If true, raise :class:`FitValidationError` when any ERROR findings exist
         (first error message is used, matching historical Builder strict behavior).
@@ -892,6 +1129,7 @@ def validate_fit_file(
         Collected findings. Truthy when there are no errors.
     """
     selected = _normalize_levels(levels)
+    selected_scope = _normalize_profile_scope(profile_scope)
     records = _records_from_source(source)
     findings: list[ValidationFinding] = []
 
@@ -905,7 +1143,13 @@ def validate_fit_file(
     if ConformanceLevel.WIRE in selected:
         _collect_wire_findings(records, findings)
     if ConformanceLevel.PROFILE in selected:
-        _collect_profile_findings(data_messages, findings, data_message_indices)
+        _collect_profile_findings(
+            records,
+            data_messages,
+            findings,
+            data_message_indices,
+            selected_scope,
+        )
     if ConformanceLevel.FILE_TYPE in selected:
         _collect_file_type_findings(data_messages, findings, data_message_indices)
     if ConformanceLevel.PRESERVATION in selected:

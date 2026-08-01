@@ -140,7 +140,7 @@ from fit_tool import (
 | `FitFile` | Load, inspect, stream, serialize, and validate FIT files |
 | `FitFileBuilder` | Build FIT files from messages |
 | `EncodeMode`, `EncodeOptions` | Explicit encode policies (PRESERVE vs CANONICAL) for `to_bytes` |
-| `validate_fit_file`, `ConformanceLevel`, `ValidationReport` | Composable validation (independent of Builder) |
+| `validate_fit_file`, `ConformanceLevel`, `ProfileScope`, `ValidationReport`, `profile_rule_coverage` | Composable validation (independent of Builder) |
 | `FitError` and subclasses | Typed errors for parse, CRC, encode, and validation failures |
 | `PROTOCOL_VERSION`, `SDK_VERSION`, `FIT_DATA_TYPE` | Bundled protocol/profile version metadata |
 
@@ -220,7 +220,7 @@ Validation is a first-class API. Levels match the design doc
 | Level | What it checks | Status |
 | --- | --- | --- |
 | `ConformanceLevel.WIRE` | Local IDs, definition field layout/sizes, data records vs active definition | Implemented |
-| `ConformanceLevel.PROFILE` | Developer field declarations (`developer_data_id` / `field_description`) and base-type consistency; **ambiguous native subfields** (more than one Profile match) as ERROR | **CORE scope today** (+ ambiguous-subfield ERROR). Roadmap: DOMAIN then FULL rules from Profile.xlsx; FULL is opt-in, not default `strict` — design doc §3.1 (O1). Subfield *resolution* for decode/encode is separate and supported |
+| `ConformanceLevel.PROFILE` | Scoped Profile semantics via `profile_scope=` / `ProfileScope` | **CORE (default):** developer-field declarations + **ambiguous native subfields** as ERROR. **DOMAIN (opt-in):** CORE + native base-type and closed-enum checks on high-frequency Activity/Workout messages. **FULL (opt-in):** same native rules for the entire gen-exported catalog from Profile.xlsx `21.205.0`. FULL is never default `strict` — design doc §3.1 (O1). Open/ranged enums (e.g. `activity_class`) are excluded from closed-enum checks. |
 | `ConformanceLevel.FILE_TYPE` | `file_id` first/unique + required fields; Activity, Workout, and Course required messages and fields | **Activity + Workout + Course**; other `file_id.type` values **fail closed** (intentional until more validators exist) |
 | `ConformanceLevel.PRESERVATION` | Post-edit rewrite loss (e.g. `UnknownField.raw_bytes` cleared by mutation) | **Opt-in** — not in default levels / Builder `strict=True` |
 

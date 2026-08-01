@@ -227,11 +227,15 @@ class Field:
         if index < 0:
             return
 
-        # None is the public representation of a FIT invalid value for floating-point fields.
-        if check_validity and self.base_type != BaseType.STRING and encoded_value is not None:
-            if not self.base_type.is_valid(encoded_value):
+        # None is only a valid encoded form for floating-point fields (FIT invalid bit pattern).
+        # Integer/enum fields must keep rejecting None at the setter so they cannot enter an
+        # unserializable state that only fails later in to_bytes().
+        if check_validity and self.base_type != BaseType.STRING:
+            is_float_invalid = encoded_value is None and self.base_type.is_float()
+            if not is_float_invalid and not self.base_type.is_valid(encoded_value):
                 raise ValueError(
-                    f'{self.name} encoded value {encoded_value} is not in valid range [{self.base_type.min}, {self.base_type.max}]')
+                    f'{self.name} encoded value {encoded_value} is not in valid range '
+                    f'[{self.base_type.min}, {self.base_type.max}]')
 
         size_changed = False
         while index >= self.length:

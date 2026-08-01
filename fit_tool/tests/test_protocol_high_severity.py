@@ -1,16 +1,24 @@
-"""Tests for high-severity protocol fixes: timestamps, chained FIT, components, preserve."""
+"""Tests for high-severity protocol fixes: timestamps, chained FIT, components, preserve.
+
+Also covers medium-severity follow-ups: header CRC validation on 14-byte headers.
+"""
 
 from __future__ import annotations
 
+import struct
 import unittest
+import warnings
 
 from fit_tool.components import expand_message_components
-from fit_tool.exceptions import FitParseError, FitRecordError
+from fit_tool.exceptions import FitCRCError, FitParseError, FitRecordError
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
+from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
 from fit_tool.profile.profile_type import WorkoutStepDuration
+from fit_tool.record import Record
+from fit_tool.utils.crc import crc16
 from fit_tool.wire.decoder import WireDecoder, decode_bytes
 from fit_tool.wire.timestamp import apply_compressed_time_offset
 
@@ -213,6 +221,83 @@ class TestPreservationEncode(unittest.TestCase):
         # Still valid FIT (CRC ok)
         again = FitFile.from_bytes(rebuilt)
         self.assertGreaterEqual(len(again.records), 1)
+
+
+class TestHeaderCRC(unittest.TestCase):
+    """14-byte header CRC (CRC-16 of first 12 header bytes)."""
+
+    def _build_file_with_header_crc(self) -> bytes:
+        mesg = WorkoutStepMessage(local_id=0)
+        mesg.workout_step_name = 'hdr'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+        builder = FitFileBuilder(auto_define=True)
+        builder.add(mesg)
+        fit = builder.build()
+        # Force a 14-byte header so encode regenerates header CRC + file CRC.
+        fit.header.crc = 0
+        return fit.to_bytes()
+
+    def test_valid_header_crc_decodes(self):
+        raw = self._build_file_with_header_crc()
+        self.assertEqual(raw[0], 14)
+        stored = struct.unpack_from('<H', raw, 12)[0]
+        self.assertEqual(crc16(raw[:12]), stored)
+
+        document = decode_bytes(raw, check_crc=True)
+        self.assertEqual(len(document.segments), 1)
+        fit = FitFile.from_bytes(raw)
+        self.assertGreaterEqual(len(fit.records), 1)
+
+    def test_bad_header_crc_raises_when_check_enabled(self):
+        raw = bytearray(self._build_file_with_header_crc())
+        # Corrupt header CRC only (bytes 12-13); leave records + file CRC intact.
+        raw[12] ^= 0xFF
+        with self.assertRaises(FitCRCError) as ctx:
+            decode_bytes(bytes(raw), check_crc=True)
+        self.assertIn('header crc', str(ctx.exception).lower())
+
+        with self.assertRaises(FitCRCError):
+            FitFile.from_bytes(bytes(raw), check_crc=True)
+
+    def test_bad_header_crc_allowed_when_check_disabled(self):
+        raw = bytearray(self._build_file_with_header_crc())
+        raw[12] ^= 0xFF
+        document = decode_bytes(bytes(raw), check_crc=False)
+        self.assertEqual(len(document.segments), 1)
+        # File CRC may also fail because header bytes participate in the running CRC;
+        # check_crc=False must still return a document without raising.
+        fit = FitFile.from_bytes(bytes(raw), check_crc=False)
+        self.assertGreaterEqual(len(fit.records), 1)
+
+    def test_twelve_byte_header_skips_header_crc(self):
+        mesg = WorkoutStepMessage(local_id=0)
+        mesg.workout_step_name = 'nohdr'
+        mesg.duration_type = WorkoutStepDuration.DISTANCE
+        builder = FitFileBuilder(auto_define=True)
+        builder.add(mesg)
+        raw = builder.build().to_bytes()
+        self.assertEqual(raw[0], 12)
+        document = decode_bytes(raw, check_crc=True)
+        self.assertIsNone(document.first_segment.header.crc)
+
+
+class TestRecordFromBytesDeprecation(unittest.TestCase):
+    def test_from_bytes_emits_deprecation_warning(self):
+        mesg = WorkoutStepMessage(local_id=3)
+        mesg.workout_step_name = 'dep'
+        record = Record.from_message(mesg)
+        from fit_tool.definition_message import DefinitionMessage
+
+        definition = DefinitionMessage.from_data_message(mesg)
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter('always')
+            Record.from_bytes(
+                definition_messages={3: definition},
+                bytes_buffer=record.to_bytes(),
+            )
+        deprecations = [w for w in caught if issubclass(w.category, DeprecationWarning)]
+        self.assertTrue(deprecations)
+        self.assertIn('legacy', str(deprecations[0].message).lower())
 
 
 if __name__ == '__main__':

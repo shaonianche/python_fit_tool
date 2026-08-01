@@ -6,7 +6,10 @@ Builder ``strict=True`` is a thin wrapper that runs the same checks and raises o
 Levels (aligned with ``docs/FIT_CONFORMANCE_DESIGN.md``):
 
 * **WIRE** — local IDs, definition layout, data-record size vs definition
-* **PROFILE** — developer-field declaration order and base-type consistency
+* **PROFILE** — *developer-field subset only*: ``developer_data_id`` /
+  ``field_description`` declaration order and base-type consistency.
+  This is **not** full Garmin Profile validation (enums, units, required
+  native fields per message, subfields, etc. remain deferred).
 * **FILE_TYPE** — ``file_id`` rules and Activity required messages/fields
 
 File-type rules are implemented only for **Activity**. Other ``file_id.type``

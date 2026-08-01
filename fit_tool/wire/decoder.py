@@ -348,6 +348,18 @@ class WireDecoder:
         except (IndexError, struct.error, ValueError) as exc:
             raise FitHeaderError(f'Invalid FIT header: {exc}') from exc
 
+        # 14-byte headers store CRC-16 of the first 12 header bytes at offset 12.
+        # Same check_crc gate as the trailing file CRC.
+        if header_size >= 14 and crc is not None:
+            calculated_header_crc = crc16(source_bytes[:12])
+            if calculated_header_crc != crc:
+                message = (
+                    f'Calculated header crc ({hex(calculated_header_crc)}) does not match '
+                    f'crc in header ({hex(crc)}).'
+                )
+                if self.check_crc:
+                    raise FitCRCError(message)
+
         return RawFileHeader(
             header_size=header_size,
             protocol_version=protocol_version,

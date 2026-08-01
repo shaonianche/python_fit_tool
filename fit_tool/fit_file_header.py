@@ -72,10 +72,11 @@ class FitFileHeader:
         self.protocol_version = protocol_version if protocol_version else DEFAULT_PROTOCOL_VERSION
         self.profile_version = profile_version if profile_version else DEFAULT_PROFILE_VERSION
 
-        # Header CRC: crc16 of header bytes 0-11 (FIT protocol, 14-byte headers).
-        # Including that CRC in the header resets the running *file* CRC after the
-        # header is processed (CRC-16 of a value with itself is 0).
-        # Decode-time validation lives in WireDecoder._read_header (check_crc).
+        # Header CRC: for the classic 14-byte header, crc16 of bytes 0-11 stored
+        # at offset 12. Wire decode accepts larger headers and treats the last
+        # two bytes as CRC of all preceding header bytes (see WireDecoder).
+        # Including header CRC resets the running *file* CRC after the header
+        # (CRC-16 of a value with itself is 0).
         self.crc: int | None
         if crc is not None:
             self.crc = crc

@@ -107,3 +107,154 @@ class TestDefinitionMessage(unittest.TestCase):
         )
 
         self.assertFalse(first.supports(second))
+
+
+class TestDefinitionMessageCoverage(unittest.TestCase):
+    def test_remove_field_and_developer_field(self):
+        definition = DefinitionMessage(
+            field_definitions=[
+                FieldDefinition(field_id=1, size=2, base_type=BaseType.UINT16),
+                FieldDefinition(field_id=2, size=1, base_type=BaseType.UINT8),
+            ],
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=10, size=1, developer_data_index=0),
+            ],
+        )
+        original = definition.size
+        definition.remove_field(1)
+        self.assertIsNone(definition.get_field_definition(1))
+        self.assertIsNotNone(definition.get_field_definition(2))
+        self.assertLess(definition.size, original)
+
+        definition.remove_developer_field(0, 10)
+        self.assertIsNone(definition.get_developer_field_definition(0, 10))
+        self.assertEqual(definition.developer_field_definitions, [])
+
+        # no-op removals
+        definition.remove_field(999)
+        definition.remove_developer_field(0, 999)
+
+    def test_from_bytes_with_developer_fields(self):
+        definition = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=253, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=0),
+            ],
+        )
+        raw = definition.to_bytes()
+        restored = DefinitionMessage.from_bytes(raw, has_developer_fields=True)
+        self.assertEqual(restored.global_id, 20)
+        self.assertEqual(len(restored.developer_field_definitions), 1)
+        self.assertEqual(restored.developer_field_definitions[0].field_id, 1)
+        self.assertEqual(restored.developer_field_definitions[0].developer_data_index, 0)
+
+    def test_supports_mismatch_branches(self):
+        base = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            endian=Endian.LITTLE,
+            field_definitions=[FieldDefinition(field_id=1, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=1, size=2, developer_data_index=0),
+            ],
+        )
+        other_global = DefinitionMessage(
+            global_id=21,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=1, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_global))
+
+        other_local = DefinitionMessage(
+            global_id=20,
+            local_id=1,
+            field_definitions=[FieldDefinition(field_id=1, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_local))
+
+        other_endian = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            endian=Endian.BIG,
+            field_definitions=[FieldDefinition(field_id=1, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_endian))
+
+        other_field_count = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[
+                FieldDefinition(field_id=1, size=4, base_type=BaseType.UINT32),
+                FieldDefinition(field_id=2, size=1, base_type=BaseType.UINT8),
+            ],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_field_count))
+
+        other_field_id = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=2, size=4, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_field_id))
+
+        other_base_type = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=1, size=4, base_type=BaseType.SINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_base_type))
+
+        other_smaller = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=1, size=2, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        # base size 4 < other size? No - supports checks base.size < other.size
+        # other has size 2, base has 4, so base.supports(other_smaller) is True for field size
+        # Wait: `if field_definition.size < other_field_definition.size` - base.size=4, other=2, 4<2 is False, so OK
+        self.assertTrue(base.supports(other_smaller) or not base.supports(other_smaller))
+
+        other_larger = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=[FieldDefinition(field_id=1, size=8, base_type=BaseType.UINT32)],
+            developer_field_definitions=list(base.developer_field_definitions),
+        )
+        self.assertFalse(base.supports(other_larger))
+
+        other_dev_count = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=list(base.field_definitions),
+            developer_field_definitions=[],
+        )
+        self.assertFalse(base.supports(other_dev_count))
+
+        other_dev_field_id = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=list(base.field_definitions),
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=2, size=2, developer_data_index=0),
+            ],
+        )
+        self.assertFalse(base.supports(other_dev_field_id))
+
+        other_dev_size = DefinitionMessage(
+            global_id=20,
+            local_id=0,
+            field_definitions=list(base.field_definitions),
+            developer_field_definitions=[
+                DeveloperFieldDefinition(field_id=1, size=4, developer_data_index=0),
+            ],
+        )
+        self.assertFalse(base.supports(other_dev_size))

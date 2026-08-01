@@ -22,7 +22,7 @@ from fit_tool.wire import (
     WireDecoder,
     decode_bytes,
 )
-from fit_tool.wire.model import RawFieldDefinition
+from fit_tool.wire.model import RawDeveloperFieldDefinition, RawFieldDefinition, RawRecordHeader
 
 DATA_DIR = Path(__file__).resolve().parent / 'data'
 
@@ -224,3 +224,69 @@ class TestRawModelBasics(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TestWireDecoderEdgeCases(unittest.TestCase):
+    def test_invalid_architecture_raises(self):
+        # Craft a definition with architecture=2
+        # 14-byte header + definition with bad architecture
+        header = bytearray(14)
+        header[0] = 14
+        header[1] = 0x20
+        header[8:12] = b'.FIT'
+        # records_size: 1 header + 5 prefix + 0 fields = 6, plus we'll set carefully
+        # Minimal: normal definition header 0x40, reserved, arch=2, global_id, field_count=0
+        definition = bytes([0x40, 0x00, 0x02, 0x00, 0x00, 0x00])  # arch=2 invalid
+        records_size = len(definition)
+        struct.pack_into('<I', header, 4, records_size)
+        body = bytes(header) + definition
+        # append dummy CRC (won't be reached if architecture fails first)
+        body = body + struct.pack('<H', 0)
+        with self.assertRaises(FitRecordError):
+            WireDecoder(check_crc=False).decode(body)
+
+    def test_header_too_small_raises(self):
+        with self.assertRaises(FitHeaderError):
+            WireDecoder(check_crc=False).decode(bytes([8]) + b'\x00' * 20)
+
+    def test_raw_definition_defined_data_size(self):
+        header = RawRecordHeader(
+            is_time_compressed=False,
+            is_definition=True,
+            has_developer_fields=True,
+            local_id=0,
+            time_offset_seconds=0,
+            source_offset=0,
+            source_bytes=b'\x60',
+        )
+        definition = RawDefinitionRecord(
+            header=header,
+            reserved=0,
+            architecture=0,
+            global_id=20,
+            field_definitions=(RawFieldDefinition(1, 4, 132),),
+            developer_field_definitions=(RawDeveloperFieldDefinition(1, 2, 0),),
+            source_offset=0,
+            source_bytes=b'\x60' + b'\x00' * 10,
+        )
+        self.assertEqual(definition.defined_data_size, 6)
+        self.assertEqual(definition.size, len(definition.source_bytes))
+        self.assertEqual(definition.local_id, 0)
+
+        data = RawDataRecord(
+            header=RawRecordHeader(
+                is_time_compressed=False,
+                is_definition=False,
+                has_developer_fields=False,
+                local_id=0,
+                time_offset_seconds=0,
+                source_offset=0,
+                source_bytes=b'\x00\x01\x02',
+            ),
+            definition=definition,
+            payload=b'\x01\x02',
+            source_offset=0,
+            source_bytes=b'\x00\x01\x02',
+        )
+        self.assertEqual(data.size, 3)
+        self.assertEqual(data.local_id, 0)

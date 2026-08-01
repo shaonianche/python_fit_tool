@@ -255,7 +255,11 @@ class TestFitValidation(unittest.TestCase):
     def test_public_api_exports_validation_symbols(self):
         from fit_tool import (
             ConformanceLevel as RootLevel,
+        )
+        from fit_tool import (
             ValidationReport,
+        )
+        from fit_tool import (
             validate_fit_file as root_validate,
         )
 

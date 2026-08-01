@@ -19,7 +19,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Iterable, List, Mapping, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Iterable, Mapping, Sequence
 
 from fit_tool.base_type import BaseType
 from fit_tool.data_message import DataMessage
@@ -76,7 +76,7 @@ class ValidationFinding:
     level: ConformanceLevel
     severity: Severity
     message: str
-    record_index: Optional[int] = None
+    record_index: int | None = None
 
     def __str__(self) -> str:
         location = f' @ record {self.record_index}' if self.record_index is not None else ''
@@ -86,15 +86,15 @@ class ValidationFinding:
 class ValidationReport:
     """Collected findings from :func:`validate_fit_file`."""
 
-    def __init__(self, findings: Optional[Sequence[ValidationFinding]] = None):
-        self.findings: List[ValidationFinding] = list(findings or ())
+    def __init__(self, findings: Sequence[ValidationFinding] | None = None):
+        self.findings: list[ValidationFinding] = list(findings or ())
 
     @property
-    def errors(self) -> List[ValidationFinding]:
+    def errors(self) -> list[ValidationFinding]:
         return [finding for finding in self.findings if finding.severity is Severity.ERROR]
 
     @property
-    def warnings(self) -> List[ValidationFinding]:
+    def warnings(self) -> list[ValidationFinding]:
         return [finding for finding in self.findings if finding.severity is Severity.WARNING]
 
     @property
@@ -119,7 +119,7 @@ def _enum_value(value: Any) -> Any:
     return value.value if hasattr(value, 'value') else value
 
 
-def _normalize_levels(levels: Optional[Iterable[ConformanceLevel]]) -> frozenset:
+def _normalize_levels(levels: Iterable[ConformanceLevel] | None) -> frozenset:
     if levels is None:
         return DEFAULT_LEVELS
     normalized = frozenset(levels)
@@ -132,7 +132,7 @@ def _normalize_levels(levels: Optional[Iterable[ConformanceLevel]]) -> frozenset
     return normalized
 
 
-def _records_from_source(source: Union[FitFile, Sequence[Record]]) -> List[Record]:
+def _records_from_source(source: FitFile | Sequence[Record]) -> list[Record]:
     if hasattr(source, 'records'):
         return list(source.records)
     return list(source)
@@ -214,10 +214,10 @@ def validate_data_message(message: DataMessage, definition: DefinitionMessage) -
 
 
 def _error(
-    findings: List[ValidationFinding],
+    findings: list[ValidationFinding],
     level: ConformanceLevel,
     message: str,
-    record_index: Optional[int] = None,
+    record_index: int | None = None,
 ) -> None:
     findings.append(
         ValidationFinding(
@@ -229,7 +229,7 @@ def _error(
     )
 
 
-def _collect_wire_findings(records: Sequence[Record], findings: List[ValidationFinding]) -> None:
+def _collect_wire_findings(records: Sequence[Record], findings: list[ValidationFinding]) -> None:
     active_definitions = {}
     for record_index, record in enumerate(records):
         message = record.message
@@ -265,7 +265,7 @@ def _collect_wire_findings(records: Sequence[Record], findings: List[ValidationF
 
 def _collect_profile_findings(
     data_messages: Sequence[DataMessage],
-    findings: List[ValidationFinding],
+    findings: list[ValidationFinding],
     data_message_indices: Mapping[int, int],
 ) -> None:
     developer_data_indices = set()
@@ -361,10 +361,10 @@ def _collect_profile_findings(
 
 
 def _require_fields_findings(
-    findings: List[ValidationFinding],
+    findings: list[ValidationFinding],
     message: DataMessage,
     field_names: tuple,
-    record_index: Optional[int],
+    record_index: int | None,
 ) -> None:
     missing = [name for name in field_names if getattr(message, name, None) is None]
     if missing:
@@ -378,7 +378,7 @@ def _require_fields_findings(
 
 def _collect_file_type_findings(
     data_messages: Sequence[DataMessage],
-    findings: List[ValidationFinding],
+    findings: list[ValidationFinding],
     data_message_indices: Mapping[int, int],
 ) -> None:
     if not data_messages:
@@ -458,7 +458,7 @@ def _collect_file_type_findings(
 
 def _collect_activity_field_findings(
     data_messages: Sequence[DataMessage],
-    findings: List[ValidationFinding],
+    findings: list[ValidationFinding],
     data_message_indices: Mapping[int, int],
 ) -> None:
     required_fields = {
@@ -494,8 +494,8 @@ def _collect_activity_field_findings(
 
 
 def validate_fit_file(
-    source: Union[FitFile, Sequence[Record]],
-    levels: Optional[Iterable[ConformanceLevel]] = None,
+    source: FitFile | Sequence[Record],
+    levels: Iterable[ConformanceLevel] | None = None,
     *,
     raise_on_error: bool = False,
 ) -> ValidationReport:
@@ -520,9 +520,9 @@ def validate_fit_file(
     """
     selected = _normalize_levels(levels)
     records = _records_from_source(source)
-    findings: List[ValidationFinding] = []
+    findings: list[ValidationFinding] = []
 
-    data_messages: List[DataMessage] = []
+    data_messages: list[DataMessage] = []
     data_message_indices: dict = {}
     for record_index, record in enumerate(records):
         if not record.is_definition and isinstance(record.message, DataMessage):

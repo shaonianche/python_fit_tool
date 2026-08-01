@@ -101,10 +101,47 @@ class RecordHeader:
 
 
 class Record:
+    """One definition or data record in a FIT file.
 
-    def __init__(self, header: RecordHeader, message: Message):
+    When projected from the wire layer, :attr:`source_bytes` holds the original
+    on-wire bytes for that record. :attr:`dirty` is set when in-memory edits
+    invalidate those bytes so :meth:`~fit_tool.fit_file.FitFile.to_bytes` can
+    re-encode only edited records while copying untouched ``source_bytes``
+    (post-edit PRESERVATION).
+    """
+
+    def __init__(
+            self,
+            header: RecordHeader,
+            message: Message,
+            *,
+            source_bytes: bytes | None = None,
+            dirty: bool = False,
+    ):
         self.header = header
         self.message = message
+        self.source_bytes = source_bytes
+        self.dirty = dirty
+
+    def mark_dirty(self) -> None:
+        """Mark this record as edited (drop reliance on :attr:`source_bytes`)."""
+        self.dirty = True
+
+    def bind_mutation_hooks(self) -> None:
+        """Wire field setters so API mutations set :attr:`dirty`.
+
+        Decode paths use ``check_validity=False`` on field writes and do not
+        mark dirty. Authoring mutations (``check_validity=True``, the default)
+        call :meth:`mark_dirty`.
+        """
+        message = self.message
+        if not isinstance(message, DataMessage):
+            return
+        host = self.mark_dirty
+        for field in message.fields:
+            field._dirty_host = host  # noqa: SLF001 — intentional host binding
+        for field in message.developer_fields:
+            field._dirty_host = host  # noqa: SLF001
 
     @property
     def local_id(self) -> int:

@@ -1,7 +1,8 @@
 """CRC helpers for the wire layer.
 
-Reuses the FIT CRC-16 implementation from :mod:`fit_tool.utils.crc` so the
-wire package does not duplicate the table or algorithm.
+Thin re-export of :mod:`fit_tool.utils.crc` — the **single** FIT CRC-16
+implementation in this package. Prefer importing ``crc16`` from
+``fit_tool.utils.crc`` or this module; never copy the table/algorithm.
 """
 
 from __future__ import annotations

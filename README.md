@@ -25,11 +25,13 @@ package already implements. Profile version in use: `21.205.0` (see
 | --- | --- |
 | **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **component expansion** for known packed fields (e.g. `compressed_speed_distance`); **preservation encode** (`to_bytes(preserve=True)`, default) when the file was buffer-decoded and not edited |
 | **Partial** | Unknown global messages via `GenericMessage` (readable; preservation rewrite keeps original bytes only while `wire_document` is intact); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE levels — **PROFILE is a developer-field subset**, not full Garmin Profile field/enum checks; Builder `strict=True` is a thin wrapper over the same checks; component registry covers common record packed fields (not every Profile component until codegen re-enables full metadata) |
-| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units, subfields); file-type rules for non-Activity types (FILE_TYPE level fails closed); full PRESERVATION conformance level after in-memory edits (edited files re-encode from projected messages); every Profile component/accumulator not yet listed in the runtime registry |
+| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units, subfields); file-type rules for non-Activity types (FILE_TYPE level fails closed); full PRESERVATION conformance level after in-memory edits (edited files re-encode from projected messages); every Profile component/accumulator not yet listed in the runtime registry; unknown field ids on known messages |
 
 If you need a construct listed as incomplete, prefer an official Garmin SDK or
-wait for the phased work in the design doc. Architecture reviews should judge
-this package against the matrix above, not against full protocol conformance.
+wait for the phased work in the design doc (including the **Remaining gaps**
+table in [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md)).
+Architecture reviews should judge this package against the matrix above, not
+against full protocol conformance.
 
 Installation
 ==================

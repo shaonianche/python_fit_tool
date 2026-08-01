@@ -23,9 +23,9 @@ package already implements. Profile version in use: `21.205.0` (see
 
 | Status | Capabilities |
 | --- | --- |
-| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile **main-field** sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **preservation encode** (`to_bytes(preserve=True)`, default) when the file was buffer-decoded and not edited |
-| **Partial** | Unknown global messages via `GenericMessage` (readable; preservation rewrite keeps original bytes only while `wire_document` is intact); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE levels — **PROFILE validation is CORE today** (developer-field subset + **ambiguous subfield** ERROR); architecture decision **O1** keeps bundled `Profile.xlsx` as the full metadata source of truth with future DOMAIN/FULL scopes (FULL opt-in, not default strict) — see [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3.1; Builder `strict=True` is a thin wrapper over the same checks |
-| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units beyond subfield scale/units); file-type rules for non-Activity types (FILE_TYPE level fails closed); full PRESERVATION conformance level after in-memory edits (edited files re-encode from projected messages) |
+| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself; **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **preservation encode** (`to_bytes(preserve=True)`, default) for unedited files **and post-edit** (dirty records re-projected; untouched records keep `source_bytes`) |
+| **Partial** | Unknown global messages via `GenericMessage` (readable; unedited preserve keeps wire bytes; post-edit re-encodes dirty records only); composable validation API (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE + Activity FILE_TYPE levels — **PROFILE validation is CORE today** (developer-field subset + **ambiguous subfield** ERROR); opt-in **PRESERVATION** level reports unknown-field `raw_bytes` loss after edits; architecture decision **O1** keeps bundled `Profile.xlsx` as the full metadata source of truth with future DOMAIN/FULL scopes (FULL opt-in, not default strict) — see [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3.1; Builder `strict=True` is a thin wrapper over the same checks (WIRE+PROFILE+FILE_TYPE only) |
+| **Not supported / incomplete** | Full PROFILE semantics (native field requirements, enums, units beyond subfield scale/units); file-type rules for non-Activity types (FILE_TYPE level fails closed); canonical encode policies (Stage 3 G); bit-identical rewrite of compressed-timestamp dirty records (re-encode may expand to normal headers) |
 
 If you need a construct listed as incomplete, prefer an official Garmin SDK or
 wait for the phased work in the design doc (including the **Remaining gaps**
@@ -221,6 +221,7 @@ Validation is a first-class API. Levels match the design doc
 | `ConformanceLevel.WIRE` | Local IDs, definition field layout/sizes, data records vs active definition | Implemented |
 | `ConformanceLevel.PROFILE` | Developer field declarations (`developer_data_id` / `field_description`) and base-type consistency; **ambiguous native subfields** (more than one Profile match) as ERROR | **CORE scope today** (+ ambiguous-subfield ERROR). Roadmap: DOMAIN then FULL rules from Profile.xlsx; FULL is opt-in, not default `strict` — design doc §3.1 (O1). Subfield *resolution* for decode/encode is separate and supported |
 | `ConformanceLevel.FILE_TYPE` | `file_id` first/unique + required fields; Activity required messages and fields | **Activity only**; other `file_id.type` values **fail closed** (intentional until more validators exist) |
+| `ConformanceLevel.PRESERVATION` | Post-edit rewrite loss (e.g. `UnknownField.raw_bytes` cleared by mutation) | **Opt-in** — not in default levels / Builder `strict=True` |
 
 Call validation on any `FitFile` or record list — after decode or before encode:
 
@@ -240,11 +241,36 @@ fit_file.validate(raise_on_error=True)
 
 # Wire-only (e.g. after decode, without file-type rules)
 validate_fit_file(fit_file, levels={ConformanceLevel.WIRE})
+
+# Opt-in post-edit rewrite-loss checks (unknown field raw_bytes, etc.)
+validate_fit_file(fit_file, levels={ConformanceLevel.PRESERVATION})
+```
+
+### Post-edit preservation
+
+After `FitFile.from_bytes` / `from_file`, field mutations mark the owning
+`Record` dirty. `to_bytes(preserve=True)` (default) re-encodes only dirty
+records and copies original wire bytes for the rest (including unknown fields
+on untouched records). Structural edits (`add_record` / `remove_record` /
+`mark_dirty()`) drop the wire snapshot and fully re-project:
+
+```python
+from fit_tool import FitFile
+from fit_tool.profile.messages.record_message import RecordMessage
+
+fit = FitFile.from_bytes(raw_bytes)
+for record in fit.records:
+    if not record.is_definition and isinstance(record.message, RecordMessage):
+        record.message.heart_rate = 140  # marks this record dirty
+        break
+
+# Untouched records keep source_bytes; edited record is re-projected.
+out = fit.to_bytes(preserve=True)
 ```
 
 `FitFileBuilder` always checks wire limits on `add` (local message numbers, definition
-sizes). `strict=True` is a thin wrapper over the same API with all levels and
-`raise_on_error=True`:
+sizes). `strict=True` is a thin wrapper over the same API with default levels
+(WIRE + PROFILE + FILE_TYPE) and `raise_on_error=True`:
 
 ```python
 from fit_tool import FitFileBuilder

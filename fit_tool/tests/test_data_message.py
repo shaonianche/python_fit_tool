@@ -105,17 +105,19 @@ class TestDataMessage(unittest.TestCase):
         with self.assertRaises(ValueError):
             message.read_from_bytes(b'\x00')
 
-    def test_to_row_and_to_bytes_raise_for_invalid_regular_field(self):
+    def test_to_row_and_to_bytes_tolerate_cleared_regular_field(self):
+        """Cleared fields still listed on the definition encode as protocol-invalid."""
         definition = DefinitionMessage(field_definitions=[FieldDefinition(field_id=1, size=1, base_type=BaseType.UINT8)])
         message = DataMessage(
             name='sample',
             definition_message=definition,
             fields=[Field(field_id=1, name='sample_field', base_type=BaseType.UINT8, size=0)],
         )
-        with self.assertRaises(ValueError):
-            message.to_row()
-        with self.assertRaises(ValueError):
-            message.to_bytes()
+        row = message.to_row()
+        self.assertEqual(row[0], 'sample')
+        self.assertEqual(row[1], '')
+        out = message.to_bytes()
+        self.assertEqual(out, bytes([0xFF]))
 
     def test_to_row_and_to_bytes_raise_for_missing_developer_field(self):
         definition = DefinitionMessage(
@@ -127,7 +129,7 @@ class TestDataMessage(unittest.TestCase):
         with self.assertRaises(ValueError):
             message.to_bytes()
 
-    def test_to_row_and_to_bytes_raise_for_invalid_developer_field(self):
+    def test_to_row_and_to_bytes_tolerate_cleared_developer_field(self):
         definition = DefinitionMessage(
             developer_field_definitions=[DeveloperFieldDefinition(field_id=1, size=1, developer_data_index=0)]
         )
@@ -144,10 +146,11 @@ class TestDataMessage(unittest.TestCase):
                 )
             ],
         )
-        with self.assertRaises(ValueError):
-            message.to_row()
-        with self.assertRaises(ValueError):
-            message.to_bytes()
+        row = message.to_row()
+        self.assertEqual(row[0], 'sample')
+        self.assertEqual(row[1], '')
+        out = message.to_bytes()
+        self.assertEqual(out, bytes([0xFF]))
 
 
 class TestDataMessageCoverage(unittest.TestCase):

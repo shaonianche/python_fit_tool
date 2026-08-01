@@ -20,10 +20,10 @@ Baseline after wire-layer work (#44 / #45 and follow-ups on `main`):
 | **Component expansion** for all Profile **main-field** sources (generated registry, nested expansion, accumulators); also expands components declared on the **active subfield** | Supported (main fields + active-subfield components) | Remaining edge cases only |
 | **Subfield resolution** (ref-field match → type / scale / offset / units; first match wins; multi-ref AND) | Supported | Generated property accessors call `get_valid_sub_field` |
 | **Ambiguous subfields** (more than one match) | PROFILE ERROR (decode still uses first match) | Same policy |
-| **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded, **unedited** files (`wire_document` intact) | Supported | Post-edit PRESERVATION and unknown-field rewrite (Phases 3–4) |
-| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity FILE_TYPE; Builder `strict=True` wraps the same API | Partial | Full Profile field/enum/units rules; Workout/Course FILE_TYPE; PRESERVATION level |
-| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); post-edit preservation; non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
-| Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; unedited preserve path) | Supported | Post-edit PRESERVATION rewrite (Stage 3 F) still uses projected re-encode |
+| **Preservation encode** (`to_bytes(preserve=True)`, default) for buffer-decoded files: unedited path bit-identical; **post-edit** path re-encodes dirty records and copies `source_bytes` for the rest | Supported | Canonical encode policies (Stage 3 G); compressed-header dirty rewrite may expand to normal headers |
+| Unknown global messages (`GenericMessage`); composable validation (`validate_fit_file` / `FitFile.validate`) with WIRE + PROFILE (developer fields + ambiguous-subfield ERROR) + Activity FILE_TYPE; opt-in **PRESERVATION** level; Builder `strict=True` wraps default levels only | Partial | Full Profile field/enum/units rules; Workout/Course FILE_TYPE |
+| Full PROFILE semantics (native required fields, enums, units beyond subfield scale/units); non-Activity FILE_TYPE rules | Not supported / incomplete | Phases 3–4 and remaining-gaps table below |
+| Unknown field ids on known messages (`UnknownField` + `raw_bytes` on decode; survive post-edit when not mutated) | Supported | Mutating an unknown field clears `raw_bytes` (PRESERVATION ERROR if that level is selected) |
 
 Until §11 Definition of Done is met, do not describe the library as fully
 protocol-conformant. Prefer “supports common Activity/Workout workflows” and
@@ -42,7 +42,7 @@ stable keys, later letters are stage placeholders until children are created.
 | Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | **Done** main-field registry + nested + rollover; active-subfield components via D |
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | **Done** runtime match + PROFILE ambiguity ERROR |
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** on main path: `UnknownField` + `raw_bytes`; prerequisite for post-edit preserve |
-| Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** (SHA-12 stage 3; child TBD) | Unedited preserve path already works |
+| Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done**: per-record dirty + mixed encode; opt-in PRESERVATION findings |
 | Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** (SHA-12 stage 3; child TBD) | |
 | Full PROFILE validation from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE | **H** (SHA-12 stage 4; child TBD) | Slice by message family / rule kind |
 | Workout FILE_TYPE rules | Phase 4 §7 | **I** (SHA-12 stage 4; child TBD) | Not in first batch |
@@ -515,15 +515,15 @@ every `add`. FILE_TYPE rules cover Activity and fail closed for other types.
 
 **Already on the wire / compatibility path** (see Current status): layered
 decode (`fit_tool/wire`), chained multi-segment load, header + file CRC,
-compressed-timestamp reconstruction into field 253, partial component
-expansion from a hand-maintained registry, and unedited preservation encode
-via `to_bytes(preserve=True)` when `wire_document` is intact.
+compressed-timestamp reconstruction into field 253, component/subfield runtime
+semantics (main-field registry + active subfield), unknown fields on known
+messages, and preservation encode via `to_bytes(preserve=True)` for unedited
+**and post-edit** files (per-record dirty tracking; mixed `source_bytes` /
+re-project).
 
 This still does **not** complete the conformance claim. Remaining work includes
-full Profile field/enum/units/**subfield** semantics, complete components and
-accumulators, unknown fields on known messages, post-edit PRESERVATION,
-canonical encode policies, and Workout/Course FILE_TYPE validators — see
-**Remaining gaps** and Phases 3–5 below.
+full Profile validation scopes (DOMAIN/FULL), canonical encode policies, and
+Workout/Course FILE_TYPE validators — see **Remaining gaps** and Phases 3–5.
 
 ## 7. File-type validators
 
@@ -706,9 +706,10 @@ subfields, and full PROFILE validation remain Multica D / H (stages 2 and 4).
 Exit: all produced standard files pass the selected Garmin and repository
 validators without repair.
 
-**Progress (partial):** unedited `preserve=True` path and Activity FILE_TYPE
-(with fail-closed other types) exist. Post-edit PRESERVATION, encode policies,
-and Workout/Course validators are Multica F–G / I–J (stages 3–4).
+**Progress (partial):** unedited and **post-edit** `preserve=True` paths exist
+(dirty records re-projected; untouched records keep `source_bytes`; opt-in
+`ConformanceLevel.PRESERVATION`). Activity FILE_TYPE (fail-closed other types)
+exists. Encode policies and Workout/Course validators remain Multica G / I–J.
 
 ### Phase 5: API migration and performance
 

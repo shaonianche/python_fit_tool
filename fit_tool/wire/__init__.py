@@ -6,7 +6,13 @@ package must not import generated message classes.
 
 from fit_tool.wire.crc import crc16
 from fit_tool.wire.decoder import ByteSourceInput, WireDecoder, decode_bytes
-from fit_tool.wire.encoder import encode_document, encode_segment
+from fit_tool.wire.encoder import (
+    encode_document,
+    encode_document_mixed,
+    encode_segment,
+    encode_segment_mixed,
+    rewrite_header_source_bytes,
+)
 from fit_tool.wire.model import (
     FitDocument,
     FitSegment,
@@ -36,5 +42,8 @@ __all__ = [
     'crc16',
     'decode_bytes',
     'encode_document',
+    'encode_document_mixed',
     'encode_segment',
+    'encode_segment_mixed',
+    'rewrite_header_source_bytes',
 ]

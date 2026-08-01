@@ -16,6 +16,7 @@ Import them by module path, for example::
     from fit_tool.profile.profile_type import Sport, FileType
 """
 
+from fit_tool.encode import EncodeMode, EncodeOptions
 from fit_tool.exceptions import (
     FitCRCError,
     FitEncodingError,
@@ -45,6 +46,8 @@ __all__ = [
     'FitCRCError',
     'FitEncodingError',
     'FitValidationError',
+    'EncodeMode',
+    'EncodeOptions',
     'ConformanceLevel',
     'Severity',
     'ValidationFinding',

@@ -18,6 +18,8 @@ FIT_DATA_TYPE = b'.FIT'
 
 from fit_tool.api import (  # noqa: E402
     ConformanceLevel,
+    EncodeMode,
+    EncodeOptions,
     FitCRCError,
     FitEncodingError,
     FitError,
@@ -46,6 +48,8 @@ __all__ = [
     'FitCRCError',
     'FitEncodingError',
     'FitValidationError',
+    'EncodeMode',
+    'EncodeOptions',
     'ConformanceLevel',
     'Severity',
     'ValidationFinding',

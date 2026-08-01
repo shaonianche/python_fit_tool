@@ -1,6 +1,7 @@
 # nosetests --nocapture  tests/test_record.py
 
 import unittest
+import warnings
 
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
@@ -52,7 +53,9 @@ class TestRecord(unittest.TestCase):
         bytes1 = record1.to_bytes()
 
         definition_message = DefinitionMessage.from_data_message(dm1)
-        record2 = Record.from_bytes(definition_messages={local_id: definition_message}, bytes_buffer=bytes1)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            record2 = Record.from_bytes(definition_messages={local_id: definition_message}, bytes_buffer=bytes1)
         bytes2 = record2.to_bytes()
 
         self.assertEqual(bytes2, bytes1)
@@ -74,8 +77,10 @@ class TestRecord(unittest.TestCase):
         data_message.workout_step_name = 'test'
         record = Record.from_message(data_message)
 
-        with self.assertRaises(ValueError):
-            Record.from_bytes(definition_messages={}, bytes_buffer=record.to_bytes())
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            with self.assertRaises(ValueError):
+                Record.from_bytes(definition_messages={}, bytes_buffer=record.to_bytes())
 
     def test_from_bytes_preserves_local_id_on_definition_and_data_messages(self):
         """Record header local_id must be copied onto parsed messages (P0)."""
@@ -87,16 +92,20 @@ class TestRecord(unittest.TestCase):
         definition_record = Record.from_message(definition_message)
         data_record = Record.from_message(data_message)
 
-        parsed_definition = Record.from_bytes(
-            definition_messages={},
-            bytes_buffer=definition_record.to_bytes(),
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            parsed_definition = Record.from_bytes(
+                definition_messages={},
+                bytes_buffer=definition_record.to_bytes(),
+            )
         self.assertEqual(parsed_definition.header.local_id, local_id)
         self.assertEqual(parsed_definition.message.local_id, local_id)
 
-        parsed_data = Record.from_bytes(
-            definition_messages={local_id: parsed_definition.message},
-            bytes_buffer=data_record.to_bytes(),
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', DeprecationWarning)
+            parsed_data = Record.from_bytes(
+                definition_messages={local_id: parsed_definition.message},
+                bytes_buffer=data_record.to_bytes(),
+            )
         self.assertEqual(parsed_data.header.local_id, local_id)
         self.assertEqual(parsed_data.message.local_id, local_id)

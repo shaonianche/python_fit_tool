@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import warnings
+
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
@@ -121,8 +123,33 @@ class Record:
         return cls(header, message)
 
     @classmethod
-    def from_bytes(cls, definition_messages: dict[int, DefinitionMessage], bytes_buffer: bytes, offset: int = 0,
-                   developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = None):
+    def from_bytes(
+            cls,
+            definition_messages: dict[int, DefinitionMessage],
+            bytes_buffer: bytes,
+            offset: int = 0,
+            developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = None,
+    ):
+        """Parse a single record from a buffer (legacy / unit-test helper).
+
+        **Production decode path** is the wire layer, not this method:
+
+        * :meth:`fit_tool.fit_file.FitFile.from_bytes` / :meth:`FitFile.from_file`
+        * :class:`fit_tool.wire.decoder.WireDecoder` →
+          :mod:`fit_tool.compatibility` projection
+
+        This helper does not handle file headers, file CRC, chained segments,
+        compressed timestamps, or component expansion. Prefer the APIs above
+        for real FIT files; keep using this for isolated record pack/unpack
+        tests and builder-style round-trips.
+        """
+        warnings.warn(
+            'Record.from_bytes is a legacy single-record helper. '
+            'For full FIT files use FitFile.from_bytes / WireDecoder + compatibility. '
+            'This method remains for unit tests and low-level pack/unpack.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         header = RecordHeader.from_bytes(bytes_buffer, offset=offset)
         offset += header.size
 

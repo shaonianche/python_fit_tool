@@ -342,11 +342,24 @@ class WireDecoder:
             data_type = source_bytes[8:12]
             if data_type != _FIT_TAG:
                 raise ValueError('".FIT" not in header.')
+            # When header_size > 12, FIT stores CRC-16 of the preceding header
+            # bytes in the *last* two bytes (classic 14-byte headers: CRC of
+            # bytes 0–11 at offset 12; larger headers may pad before the CRC).
             crc: int | None = None
-            if header_size >= 14:
-                crc, = struct.unpack_from('<H', source_bytes, 12)
+            if header_size > _MIN_HEADER_SIZE:
+                crc, = struct.unpack_from('<H', source_bytes, header_size - 2)
         except (IndexError, struct.error, ValueError) as exc:
             raise FitHeaderError(f'Invalid FIT header: {exc}') from exc
+
+        if header_size > _MIN_HEADER_SIZE and crc is not None:
+            calculated_header_crc = crc16(source_bytes[: header_size - 2])
+            if calculated_header_crc != crc:
+                message = (
+                    f'Calculated header crc ({hex(calculated_header_crc)}) does not match '
+                    f'crc in header ({hex(crc)}).'
+                )
+                if self.check_crc:
+                    raise FitCRCError(message)
 
         return RawFileHeader(
             header_size=header_size,

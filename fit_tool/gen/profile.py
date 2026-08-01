@@ -1,12 +1,22 @@
 import os.path
 import re
 
-from openpyxl import load_workbook
-
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType, FieldType
 from fit_tool.field import ArrayType, Field
 from fit_tool.utils.logging import logger
+
+
+def _load_workbook(filename):
+    """Load a profile spreadsheet; requires the optional [gen] extra."""
+    try:
+        from openpyxl import load_workbook
+    except ImportError as exc:
+        raise ImportError(
+            "Reading Garmin Profile spreadsheets requires the optional gen dependencies. "
+            "Install with: pip install 'fit-tool[gen]'  or  uv sync --extra gen --group dev"
+        ) from exc
+    return load_workbook(filename=filename, read_only=True, data_only=True)
 
 
 class Message:
@@ -142,7 +152,7 @@ class Profile:
     @classmethod
     def load(cls, filename):
         profile = cls()
-        wb = load_workbook(filename=filename, read_only=True, data_only=True)
+        wb = _load_workbook(filename)
 
         def is_blank(value):
             return value is None or (isinstance(value, str) and value.strip() == '')

@@ -31,6 +31,12 @@ uv run pytest --cov=fit_tool --cov-report=term
 uv build
 ```
 
+Runtime install of `fit-tool` has no third-party dependencies. Profile generation
+uses the optional `[gen]` extra (`openpyxl`, `inflection`, `jinja2`). The `dev`
+dependency group already includes those packages so `uv sync --group dev` supports
+the full suite and `uv run gen-profile`. For a published package, install with
+`pip install 'fit-tool[gen]'` or `uv add 'fit-tool[gen]'`.
+
 The CI baseline is a package build plus the full test suite on Python 3.9 through 3.14. Before finishing a normal code change, run the narrowest relevant tests and then the full suite when practical. Run `uv build` for packaging, entry-point, dependency, or metadata changes.
 
 Ruff and mypy settings live in `pyproject.toml`, but those tools are not part of the locked development dependency group and are not currently CI gates. If they are already available in the development environment, useful checks are:
@@ -54,6 +60,10 @@ Change the generator inputs or templates under `fit_tool/gen/`, update `fit_tool
 ```bash
 uv run gen-profile
 ```
+
+`gen-profile` requires the gen extra (or an equivalent `uv sync --group dev`).
+Without those packages it exits with a clear install hint rather than a raw
+import traceback.
 
 The generator deletes and rebuilds the entire `fit_tool/profile/` directory. Before running it, make sure the intended spreadsheet is present in `fit_tool/gen/` and the working tree contains no uncommitted manual work in the generated directory. Review the complete generated diff and run at least `fit_tool/tests/test_profile.py` followed by the full test suite.
 

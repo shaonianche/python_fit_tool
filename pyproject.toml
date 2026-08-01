@@ -26,13 +26,16 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 requires-python = ">=3.8"
-dependencies = [
-    "openpyxl>=2.5.12",
-    "bitstruct>=8.11.1",
-    "inflection>=0.5.1",
-]
+# Runtime library and fit-tool CLI need no third-party packages.
+# Profile generation tooling lives under the optional [gen] extra.
+dependencies = []
 
 [project.optional-dependencies]
+gen = [
+    "openpyxl>=2.5.12",
+    "inflection>=0.5.1",
+    "jinja2>=3.0",
+]
 test = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
@@ -69,6 +72,10 @@ dev = [
     "pytest-cov>=4.0",
     "ruff>=0.15.22",
     "towncrier>=24.8.0",
+    # Gen tooling (also published as the [gen] extra) so full suite / gen-profile work.
+    "openpyxl>=2.5.12",
+    "inflection>=0.5.1",
+    "jinja2>=3.0",
 ]
 
 [tool.coverage.run]

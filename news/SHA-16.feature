@@ -1,0 +1,1 @@
+Fix Profile **subfield resolution**: match reference field *values* (AND across multi-ref maps), apply the active subfield's type/scale/offset/units, expand components declared on that subfield, and report **ambiguous** multi-matches as PROFILE validation errors (decode still uses the first match).

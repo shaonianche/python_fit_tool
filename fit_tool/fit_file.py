@@ -6,18 +6,24 @@ import struct
 import tempfile
 from typing import BinaryIO, Iterator
 
-from fit_tool.base_type import BaseType
-from fit_tool.definition_message import DefinitionMessage
-from fit_tool.developer_field import DeveloperField
-from fit_tool.exceptions import FitCRCError, FitEncodingError, FitHeaderError, FitRecordError
+from fit_tool.compatibility import project_header, project_segment
+from fit_tool.exceptions import FitCRCError, FitEncodingError
 from fit_tool.fit_file_header import FitFileHeader
-from fit_tool.profile.messages.field_description_message import FieldDescriptionMessage
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
 from fit_tool.utils.logging import logger
+from fit_tool.wire.decoder import WireDecoder
 
 
 class FitFile:
+    """Public FIT file facade.
+
+    Decode goes through the wire layer (:class:`~fit_tool.wire.decoder.WireDecoder`)
+    and projects raw records to typed messages. Encode still serializes the
+    projected :class:`~fit_tool.record.Record` list (lossless unknown-field
+    rewrite is deferred).
+    """
+
     def __init__(self, header: FitFileHeader, records: list[Record], crc: int | None = None):
         self.header = header
         self.records = records
@@ -46,27 +52,6 @@ class FitFile:
         self.records.remove(record)
         self.mark_dirty()
 
-    @staticmethod
-    def _parse_record(
-            definition_messages: dict[int, DefinitionMessage],
-            bytes_buffer: bytes | memoryview,
-            offset: int,
-            developer_fields_by_data_index: dict[int, dict[int, DeveloperField]],
-            record_index: int) -> Record:
-        try:
-            return Record.from_bytes(
-                definition_messages=definition_messages,
-                bytes_buffer=bytes_buffer,
-                offset=offset,
-                developer_fields_by_data_index=developer_fields_by_data_index,
-            )
-        except FitRecordError:
-            raise
-        except (IndexError, struct.error, UnicodeError, ValueError) as exc:
-            raise FitRecordError(
-                f'Could not parse record {record_index} at byte offset {offset}: {exc}'
-            ) from exc
-
     @classmethod
     def from_file(cls, path: str) -> FitFile:
         with open(path, 'rb') as file_object:
@@ -86,92 +71,30 @@ class FitFile:
 
     @classmethod
     def from_bytes(cls, bytes_buffer: bytes, check_crc: bool = True) -> FitFile:
-        if len(bytes_buffer) < 1:
-            raise FitHeaderError('FIT data is empty; expected at least a header-size byte.')
+        """Parse FIT bytes via the wire decoder, then project to typed records."""
+        document = WireDecoder(check_crc=check_crc).decode(bytes_buffer)
+        segment = document.first_segment
+        if segment is None:
+            raise FitEncodingError('Wire decoder returned an empty document.')
 
-        crc = 0
-        buffer_view = memoryview(bytes_buffer)
-        offset = 0
-
-        header_size = bytes_buffer[0]
-        if header_size < 12:
-            raise FitHeaderError(f'FIT header size must be at least 12 bytes, got {header_size}.')
-        if len(bytes_buffer) < header_size:
-            raise FitHeaderError(f'FIT header declares {header_size} bytes but only {len(bytes_buffer)} are available.')
-
-        try:
-            header_bytes = buffer_view[:header_size]
-            header = FitFileHeader.from_bytes(header_bytes)
-        except (IndexError, struct.error, ValueError) as exc:
-            raise FitHeaderError(f'Invalid FIT header: {exc}') from exc
-        crc = crc16(header_bytes, crc=crc)
-        offset += header_size
-        records_end = offset + header.records_size
-        if records_end + 2 > len(bytes_buffer):
-            raise FitHeaderError('FIT data is truncated before the declared records and file CRC.')
-        records_view = buffer_view[:records_end]
-
-        records = []
-        definition_messages: dict[int, DefinitionMessage] = {}
-        developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = {}
-
-        record_index = 0
-        record_bytes_remaining_count = header.records_size
-        while record_bytes_remaining_count > 0:
-            record = cls._parse_record(
-                definition_messages,
-                records_view,
-                offset,
-                developer_fields_by_data_index,
-                record_index,
+        if segment.calculated_crc != segment.stored_crc and not check_crc:
+            logger.warning(
+                f'Calculated crc ({hex(segment.calculated_crc)}) does not match '
+                f'crc in file ({hex(segment.stored_crc)}).'
             )
 
-            if record.is_definition:
-                definition_messages[record.local_id] = record.message
-            elif isinstance(record.message, FieldDescriptionMessage):
-                message = record.message
-                developer_field = DeveloperField(developer_data_index=message.developer_data_index,
-                                                 field_id=message.field_definition_number,
-                                                 base_type=BaseType(message.fit_base_type_id),
-                                                 name=message.field_name,
-                                                 scale=message.scale,
-                                                 offset=message.offset,
-                                                 units=message.units)
-                if developer_field.developer_data_index not in developer_fields_by_data_index:
-                    developer_fields_by_data_index[developer_field.developer_data_index] = {}
+        header = project_header(segment.header)
+        records = project_segment(segment)
 
-                developer_fields_by_data_index[developer_field.developer_data_index][
-                    developer_field.field_id] = developer_field
-
-            records.append(record)
-            definition_message = definition_messages[record.local_id]
-            record_size = record.size
-            defined_size = record.defined_size(definition_message)
-            if defined_size <= 0 or defined_size > record_bytes_remaining_count:
-                raise FitRecordError(
-                    f'Record {record_index} at byte offset {offset} exceeds the declared records section.'
-                )
-            crc = crc16(records_view[offset:offset + defined_size], crc=crc)
-
-            if record_size != defined_size:
+        for record_index, (record, raw) in enumerate(zip(records, segment.records)):
+            defined_size = raw.size
+            if record.size != defined_size:
                 logger.warning(
-                    f'Record {record_index}, {record.message}: size ({record_size}) != defined size ({defined_size}). Some fields were not read correctly.')
+                    f'Record {record_index}, {record.message}: size ({record.size}) != '
+                    f'defined size ({defined_size}). Some fields were not read correctly.'
+                )
 
-            record_bytes_remaining_count -= defined_size
-            offset += defined_size
-            record_index += 1
-
-        file_crc, = struct.unpack_from('<H', buffer_view, offset)
-
-        if crc != file_crc:
-            message = f'Calculated crc ({hex(crc)}) does not match crc in file ({hex(file_crc)}).'
-
-            if check_crc:
-                raise FitCRCError(message)
-            else:
-                logger.warning(message)
-
-        return cls(header, records, crc)
+        return cls(header, records, segment.calculated_crc)
 
     def to_bytes(self, check_crc: bool = True) -> bytes:
         try:

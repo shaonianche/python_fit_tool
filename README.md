@@ -1,12 +1,35 @@
 > **Note**: This is a community-maintained fork. The original package was removed from PyPI by its author and cannot be restored. This repository continues development and publishing under the same package name.
 
-A library for reading and writing Garmin FIT files.
+A library for reading and writing Garmin FIT files — strong for common Activity
+and Workout workflows, not a full Garmin FIT protocol implementation.
 
 ## Background
 
 > The Flexible and Interoperable Data Transfer (FIT) protocol is designed specifically for the storing and sharing of data that originates from sport, fitness and health devices. The FIT protocol defines a set of data storage templates (FIT messages) that can be used to store information such as user profiles, activity data, courses, and workouts. It is specifically designed to be compact, interoperable and extensible.
 
 [More info...](https://developer.garmin.com/fit/overview/)
+
+## Capability boundary
+
+This library is suitable for everyday Activity / Workout / Course read-write,
+CSV export, and typed message editing. It does **not** claim full Garmin FIT
+protocol or Profile conformance.
+
+The long-term architecture and strict-conformance roadmap live in
+[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md). That document
+describes the **target** design; it is not a guarantee of what the current
+package already implements. Profile version in use: `21.205.0` (see
+`fit_tool/gen/`).
+
+| Status | Capabilities |
+| --- | --- |
+| **Supported** | Common Activity and Workout read/write via typed profile messages; `FitFileBuilder` encode path; file-level CRC check on load / stream exhaustion; developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); Course and similar message types when you construct them yourself |
+| **Partial** | Unknown global messages via `GenericMessage` (readable and rewritable as structured fields, not lossless wire preservation); strict Activity validation on write only (`FitFileBuilder(strict=True)` — wire limits always apply; profile/file-type rules are opt-in and Activity-focused) |
+| **Not supported / incomplete** | Compressed timestamp header reconstruction (5-bit offset / rollover); chained multi-segment FIT files (only the first segment is consumed); component expansion and accumulators (e.g. `compressed_speed_distance`, enhanced fields); lossless byte-for-byte rewrite of unknown fields / header extensions; header CRC validation on 14-byte headers; strict file-type rules for non-Activity types (strict mode fails closed) |
+
+If you need a construct listed as incomplete, prefer an official Garmin SDK or
+wait for the phased work in the design doc. Architecture reviews should judge
+this package against the matrix above, not against full protocol conformance.
 
 Installation
 ==================
@@ -56,8 +79,9 @@ fit-tool oldstage.fit
 Library Usage
 =======================
 
-The protocol-conformance architecture and implementation roadmap are documented
-in [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
+See [Capability boundary](#capability-boundary) for what works today. The
+strict-conformance roadmap (target architecture, not current guarantees) is in
+[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
 
 ### Minimal read/convert example
 

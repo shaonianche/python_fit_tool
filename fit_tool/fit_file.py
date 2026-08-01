@@ -4,7 +4,7 @@ import csv
 import shutil
 import struct
 import tempfile
-from typing import TYPE_CHECKING, BinaryIO, Iterable, Iterator, Optional
+from typing import TYPE_CHECKING, BinaryIO, Iterable, Iterator
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.exceptions import FitCRCError, FitEncodingError
@@ -162,7 +162,7 @@ class FitFile:
 
     def validate(
         self,
-        levels: Optional[Iterable[ConformanceLevel]] = None,
+        levels: Iterable[ConformanceLevel] | None = None,
         *,
         raise_on_error: bool = False,
     ) -> ValidationReport:

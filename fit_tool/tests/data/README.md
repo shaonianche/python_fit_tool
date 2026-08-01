@@ -68,7 +68,7 @@ Maps known conformance gaps to fixtures or constructive tests. Stage-2 work
 | Component: 16-bit accumulator **rollover** | Partial | Constructive expansion helper | `test_protocol_gap_fixtures` | C |
 | Nested components / full Profile component set | **Gap** | Constructive / `xfail` | `test_protocol_gap_fixtures` | C |
 | Unknown **global** messages | Partial (`GenericMessage`) | Device/SDK files with odd IDs; wire decode | `test_wire.py`, SDK smokes | E |
-| Unknown **field ids** on known messages | **Gap** (bytes skipped on project; wire preserve ok) | Constructive definition + data | `test_protocol_gap_fixtures` | E |
+| Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes` on decode; unedited preserve ok) | Constructive definition + data | `test_protocol_gap_fixtures` | E |
 | Subfields (e.g. `workout_step.duration_value`) | **Gap** (`SubField.is_valid` matches too broadly) | Constructive workout step | `test_protocol_gap_fixtures`, `test_field.py` | D |
 | Developer fields (common patterns) | Supported | `sdk/DeveloperData.fit`, `activity_developerdata.fit` | `test_sdk_files.py`, `test_developer_fields.py` | — |
 | Header CRC (14-byte / extended) | Supported | Constructive | `test_protocol_high_severity.TestHeaderCRC` | done |

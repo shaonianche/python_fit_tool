@@ -435,3 +435,56 @@ class Field:
         row.append(sub_field.units if sub_field else self.units)
 
         return row
+
+
+class UnknownField(Field):
+    """Native field id present on the wire but not in the Profile schema.
+
+    Used when a known global message definition includes field numbers the
+    bundled Profile does not declare for that message. Decoded values use the
+    definition's base type; :attr:`raw_bytes` holds the original payload slice
+    for bit-preserving rewrite (post-edit PRESERVATION, Stage 3 F).
+    """
+
+    def __init__(self, definition: FieldDefinition):
+        super().__init__(
+            field_id=definition.field_id,
+            name=f'unknown_{definition.field_id}',
+            base_type=definition.base_type,
+            size=definition.size,
+            growable=False,
+            type_name='unknown',
+        )
+        self.raw_bytes: bytes | None = None
+
+    @property
+    def is_unknown(self) -> bool:
+        return True
+
+    @classmethod
+    def from_field_definition(cls, definition: FieldDefinition) -> UnknownField:
+        return cls(definition)
+
+    def read_all_from_bytes(
+            self,
+            bytes_buffer: bytes,
+            endian: Endian = Endian.LITTLE,
+            offset: int = 0,
+    ) -> None:
+        end = offset + self.size
+        # Capture wire slice first; super() may call set_encoded_value.
+        wire_slice = bytes(bytes_buffer[offset:end])
+        super().read_all_from_bytes(bytes_buffer, endian=endian, offset=offset)
+        self.raw_bytes = wire_slice
+
+    def set_encoded_value(self, index: int, encoded_value, check_validity: bool = True):
+        # API mutations (check_validity=True) invalidate the captured wire slice.
+        # Decode uses check_validity=False and restores raw_bytes after the read.
+        if check_validity:
+            self.raw_bytes = None
+        super().set_encoded_value(index, encoded_value, check_validity=check_validity)
+
+    def to_bytes(self, endian: Endian = Endian.LITTLE) -> bytes:
+        if self.raw_bytes is not None and len(self.raw_bytes) == self.size:
+            return self.raw_bytes
+        return super().to_bytes(endian=endian)

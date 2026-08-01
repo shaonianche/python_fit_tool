@@ -5,6 +5,7 @@ import warnings
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
+from fit_tool.exceptions import FitRecordError
 from fit_tool.message import Message
 
 
@@ -159,7 +160,7 @@ class Record:
         else:
             definition_message = definition_messages.get(header.local_id)
             if definition_message is None:
-                raise ValueError(f'DefinitionMessage not defined for local_id: {header.local_id}')
+                raise FitRecordError(f'DefinitionMessage not defined for local_id: {header.local_id}')
 
             if developer_fields_by_data_index:
                 developer_fields = definition_message.get_developer_fields(developer_fields_by_data_index)

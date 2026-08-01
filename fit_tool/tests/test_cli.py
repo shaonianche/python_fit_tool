@@ -95,8 +95,16 @@ class TestMain(unittest.TestCase):
     def test_main_rejects_unsupported_output_extension(self):
         output_file = os.path.join(self.test_dir, 'output.bad')
         with patch('sys.argv', ['fit-tool', self.test_fit_file, '-o', output_file]):
-            with self.assertRaises(ValueError):
+            with self.assertRaises(SystemExit) as ctx:
                 main()
+            self.assertEqual(ctx.exception.code, 1)
+
+    def test_main_missing_file_exits_without_traceback(self):
+        missing = os.path.join(self.test_dir, 'does-not-exist.fit')
+        with patch('sys.argv', ['fit-tool', missing, '-o', os.path.join(self.test_dir, 'out.csv')]):
+            with self.assertRaises(SystemExit) as ctx:
+                main()
+            self.assertEqual(ctx.exception.code, 1)
 
 
 if __name__ == '__main__':

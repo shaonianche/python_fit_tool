@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
+from fit_tool.exceptions import FitEncodingError
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.message import Message
@@ -50,7 +51,9 @@ class FitFileBuilder:
                     self.definition_map[message.local_id] = new_definition
                     self.records.append(Record.from_message(new_definition))
                 else:
-                    raise ValueError(f'Message has not been defined: {message.name} local_id: {message.local_id}')
+                    raise FitEncodingError(
+                        f'Message has not been defined: {message.name} local_id: {message.local_id}'
+                    )
             else:
                 new_definition = DefinitionMessage.from_data_message(message, min_string_size=self.min_string_size)
                 validate_definition(new_definition)
@@ -59,8 +62,10 @@ class FitFileBuilder:
                         self.definition_map[new_definition.local_id] = new_definition
                         self.records.append(Record.from_message(new_definition))
                     else:
-                        raise ValueError(
-                            f'The definition does not support this message. record:{len(self.records) + 1} name:{message.name} local_id:{message.local_id}')
+                        raise FitEncodingError(
+                            f'The definition does not support this message. record:{len(self.records) + 1} '
+                            f'name:{message.name} local_id:{message.local_id}'
+                        )
 
             message.set_definition_message(self.definition_map[message.local_id])
         elif isinstance(message, DefinitionMessage):

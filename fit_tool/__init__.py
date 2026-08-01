@@ -17,6 +17,7 @@ SDK_VERSION = '21.205.0'
 FIT_DATA_TYPE = b'.FIT'
 
 from fit_tool.api import (  # noqa: E402
+    ConformanceLevel,
     FitCRCError,
     FitEncodingError,
     FitError,
@@ -26,6 +27,10 @@ from fit_tool.api import (  # noqa: E402
     FitParseError,
     FitRecordError,
     FitValidationError,
+    Severity,
+    ValidationFinding,
+    ValidationReport,
+    validate_fit_file,
 )
 
 __all__ = [
@@ -41,4 +46,9 @@ __all__ = [
     'FitCRCError',
     'FitEncodingError',
     'FitValidationError',
+    'ConformanceLevel',
+    'Severity',
+    'ValidationFinding',
+    'ValidationReport',
+    'validate_fit_file',
 ]

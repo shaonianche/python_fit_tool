@@ -7,7 +7,12 @@ from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.message import Message
 from fit_tool.record import Record
 from fit_tool.utils.crc import crc16
-from fit_tool.validation import FitFileValidator, validate_definition, validate_message_header
+from fit_tool.validation import (
+    STRICT_LEVELS,
+    validate_definition,
+    validate_fit_file,
+    validate_message_header,
+)
 
 
 def calc_records_size(records: list[Record]) -> int:
@@ -85,6 +90,11 @@ class FitFileBuilder:
         return FitFile(header, self.records).to_bytes()
 
     def validate(self) -> None:
-        """Validate profile-level ordering and cardinality rules when strict mode is enabled."""
+        """When ``strict=True``, run the composable validation API and raise on errors.
+
+        Wire limits are always checked on :meth:`add`. Strict mode additionally
+        runs WIRE + PROFILE + FILE_TYPE via :func:`~fit_tool.validation.validate_fit_file`
+        (same behavior as calling that API with ``raise_on_error=True``).
+        """
         if self.strict:
-            FitFileValidator(self.records).validate()
+            validate_fit_file(self.records, levels=STRICT_LEVELS, raise_on_error=True)

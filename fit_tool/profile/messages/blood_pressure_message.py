@@ -17,69 +17,140 @@ from typing import Dict as dict
 
 
 class BloodPressureMessage(DataMessage):
+    """BloodPressureMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``BloodPressureMessage()`` — create path: growable fields, no wire definition.
+    * ``BloodPressureMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 51
     NAME = 'blood_pressure'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=BloodPressureMessage.NAME,
                          global_id=BloodPressureMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureSystolicPressureField(
-            size=self.__get_field_size(definition_message, BloodPressureSystolicPressureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureDiastolicPressureField(
-            size=self.__get_field_size(definition_message, BloodPressureDiastolicPressureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureMeanArterialPressureField(
-            size=self.__get_field_size(definition_message, BloodPressureMeanArterialPressureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureMap3SampleMeanField(
-            size=self.__get_field_size(definition_message, BloodPressureMap3SampleMeanField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureMapMorningValuesField(
-            size=self.__get_field_size(definition_message, BloodPressureMapMorningValuesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureMapEveningValuesField(
-            size=self.__get_field_size(definition_message, BloodPressureMapEveningValuesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureHeartRateField(
-            size=self.__get_field_size(definition_message, BloodPressureHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureHeartRateTypeField(
-            size=self.__get_field_size(definition_message, BloodPressureHeartRateTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureStatusField(
-            size=self.__get_field_size(definition_message, BloodPressureStatusField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         BloodPressureUserProfileIndexField(
-            size=self.__get_field_size(definition_message, BloodPressureUserProfileIndexField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        BloodPressureSystolicPressureField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureSystolicPressureField.ID),
+            growable=False), 
+        BloodPressureDiastolicPressureField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureDiastolicPressureField.ID),
+            growable=False), 
+        BloodPressureMeanArterialPressureField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureMeanArterialPressureField.ID),
+            growable=False), 
+        BloodPressureMap3SampleMeanField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureMap3SampleMeanField.ID),
+            growable=False), 
+        BloodPressureMapMorningValuesField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureMapMorningValuesField.ID),
+            growable=False), 
+        BloodPressureMapEveningValuesField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureMapEveningValuesField.ID),
+            growable=False), 
+        BloodPressureHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureHeartRateField.ID),
+            growable=False), 
+        BloodPressureHeartRateTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureHeartRateTypeField.ID),
+            growable=False), 
+        BloodPressureStatusField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureStatusField.ID),
+            growable=False), 
+        BloodPressureUserProfileIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, BloodPressureUserProfileIndexField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

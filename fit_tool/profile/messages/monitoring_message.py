@@ -17,123 +17,266 @@ from typing import Dict as dict
 
 
 class MonitoringMessage(DataMessage):
+    """MonitoringMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``MonitoringMessage()`` — create path: growable fields, no wire definition.
+    * ``MonitoringMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 55
     NAME = 'monitoring'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=MonitoringMessage.NAME,
                          global_id=MonitoringMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDeviceIndexField(
-            size=self.__get_field_size(definition_message, MonitoringDeviceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringCaloriesField(
-            size=self.__get_field_size(definition_message, MonitoringCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDistanceField(
-            size=self.__get_field_size(definition_message, MonitoringDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringCyclesField(
-            size=self.__get_field_size(definition_message, MonitoringCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActiveTimeField(
-            size=self.__get_field_size(definition_message, MonitoringActiveTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActivityTypeField(
-            size=self.__get_field_size(definition_message, MonitoringActivityTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActivitySubtypeField(
-            size=self.__get_field_size(definition_message, MonitoringActivitySubtypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActivityLevelField(
-            size=self.__get_field_size(definition_message, MonitoringActivityLevelField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDistance16Field(
-            size=self.__get_field_size(definition_message, MonitoringDistance16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringCycles16Field(
-            size=self.__get_field_size(definition_message, MonitoringCycles16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActiveTime16Field(
-            size=self.__get_field_size(definition_message, MonitoringActiveTime16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringLocalTimestampField(
-            size=self.__get_field_size(definition_message, MonitoringLocalTimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringTemperatureField(
-            size=self.__get_field_size(definition_message, MonitoringTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringTemperatureMinField(
-            size=self.__get_field_size(definition_message, MonitoringTemperatureMinField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringTemperatureMaxField(
-            size=self.__get_field_size(definition_message, MonitoringTemperatureMaxField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActivityTimeField(
-            size=self.__get_field_size(definition_message, MonitoringActivityTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringActiveCaloriesField(
-            size=self.__get_field_size(definition_message, MonitoringActiveCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringCurrentActivityTypeIntensityField(
-            size=self.__get_field_size(definition_message, MonitoringCurrentActivityTypeIntensityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringTimestampMin8Field(
-            size=self.__get_field_size(definition_message, MonitoringTimestampMin8Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringTimestamp16Field(
-            size=self.__get_field_size(definition_message, MonitoringTimestamp16Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringHeartRateField(
-            size=self.__get_field_size(definition_message, MonitoringHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringIntensityField(
-            size=self.__get_field_size(definition_message, MonitoringIntensityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDurationMinField(
-            size=self.__get_field_size(definition_message, MonitoringDurationMinField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDurationField(
-            size=self.__get_field_size(definition_message, MonitoringDurationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringAscentField(
-            size=self.__get_field_size(definition_message, MonitoringAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringDescentField(
-            size=self.__get_field_size(definition_message, MonitoringDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringModerateActivityMinutesField(
-            size=self.__get_field_size(definition_message, MonitoringModerateActivityMinutesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         MonitoringVigorousActivityMinutesField(
-            size=self.__get_field_size(definition_message, MonitoringVigorousActivityMinutesField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        MonitoringDeviceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDeviceIndexField.ID),
+            growable=False), 
+        MonitoringCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringCaloriesField.ID),
+            growable=False), 
+        MonitoringDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDistanceField.ID),
+            growable=False), 
+        MonitoringCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringCyclesField.ID),
+            growable=False), 
+        MonitoringActiveTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActiveTimeField.ID),
+            growable=False), 
+        MonitoringActivityTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActivityTypeField.ID),
+            growable=False), 
+        MonitoringActivitySubtypeField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActivitySubtypeField.ID),
+            growable=False), 
+        MonitoringActivityLevelField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActivityLevelField.ID),
+            growable=False), 
+        MonitoringDistance16Field(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDistance16Field.ID),
+            growable=False), 
+        MonitoringCycles16Field(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringCycles16Field.ID),
+            growable=False), 
+        MonitoringActiveTime16Field(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActiveTime16Field.ID),
+            growable=False), 
+        MonitoringLocalTimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringLocalTimestampField.ID),
+            growable=False), 
+        MonitoringTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringTemperatureField.ID),
+            growable=False), 
+        MonitoringTemperatureMinField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringTemperatureMinField.ID),
+            growable=False), 
+        MonitoringTemperatureMaxField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringTemperatureMaxField.ID),
+            growable=False), 
+        MonitoringActivityTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActivityTimeField.ID),
+            growable=False), 
+        MonitoringActiveCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringActiveCaloriesField.ID),
+            growable=False), 
+        MonitoringCurrentActivityTypeIntensityField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringCurrentActivityTypeIntensityField.ID),
+            growable=False), 
+        MonitoringTimestampMin8Field(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringTimestampMin8Field.ID),
+            growable=False), 
+        MonitoringTimestamp16Field(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringTimestamp16Field.ID),
+            growable=False), 
+        MonitoringHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringHeartRateField.ID),
+            growable=False), 
+        MonitoringIntensityField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringIntensityField.ID),
+            growable=False), 
+        MonitoringDurationMinField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDurationMinField.ID),
+            growable=False), 
+        MonitoringDurationField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDurationField.ID),
+            growable=False), 
+        MonitoringAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringAscentField.ID),
+            growable=False), 
+        MonitoringDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringDescentField.ID),
+            growable=False), 
+        MonitoringModerateActivityMinutesField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringModerateActivityMinutesField.ID),
+            growable=False), 
+        MonitoringVigorousActivityMinutesField(
+            size=cls._field_size_from_definition(
+                definition_message, MonitoringVigorousActivityMinutesField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

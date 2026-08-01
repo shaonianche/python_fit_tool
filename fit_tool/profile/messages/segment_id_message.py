@@ -17,63 +17,126 @@ from typing import Dict as dict
 
 
 class SegmentIdMessage(DataMessage):
+    """SegmentIdMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``SegmentIdMessage()`` — create path: growable fields, no wire definition.
+    * ``SegmentIdMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 148
     NAME = 'segment_id'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=SegmentIdMessage.NAME,
                          global_id=SegmentIdMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         SegmentIdNameField(
-            size=self.__get_field_size(definition_message, SegmentIdNameField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdUuidField(
-            size=self.__get_field_size(definition_message, SegmentIdUuidField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdSportField(
-            size=self.__get_field_size(definition_message, SegmentIdSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdEnabledField(
-            size=self.__get_field_size(definition_message, SegmentIdEnabledField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdUserProfilePrimaryKeyField(
-            size=self.__get_field_size(definition_message, SegmentIdUserProfilePrimaryKeyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdDeviceIdField(
-            size=self.__get_field_size(definition_message, SegmentIdDeviceIdField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdDefaultRaceLeaderField(
-            size=self.__get_field_size(definition_message, SegmentIdDefaultRaceLeaderField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdDeleteStatusField(
-            size=self.__get_field_size(definition_message, SegmentIdDeleteStatusField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         SegmentIdSelectionTypeField(
-            size=self.__get_field_size(definition_message, SegmentIdSelectionTypeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        SegmentIdNameField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdNameField.ID),
+            growable=False), 
+        SegmentIdUuidField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdUuidField.ID),
+            growable=False), 
+        SegmentIdSportField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdSportField.ID),
+            growable=False), 
+        SegmentIdEnabledField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdEnabledField.ID),
+            growable=False), 
+        SegmentIdUserProfilePrimaryKeyField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdUserProfilePrimaryKeyField.ID),
+            growable=False), 
+        SegmentIdDeviceIdField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdDeviceIdField.ID),
+            growable=False), 
+        SegmentIdDefaultRaceLeaderField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdDefaultRaceLeaderField.ID),
+            growable=False), 
+        SegmentIdDeleteStatusField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdDeleteStatusField.ID),
+            growable=False), 
+        SegmentIdSelectionTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, SegmentIdSelectionTypeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

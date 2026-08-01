@@ -17,105 +17,224 @@ from typing import Dict as dict
 
 
 class DiveSummaryMessage(DataMessage):
+    """DiveSummaryMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``DiveSummaryMessage()`` — create path: growable fields, no wire definition.
+    * ``DiveSummaryMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 268
     NAME = 'dive_summary'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=DiveSummaryMessage.NAME,
                          global_id=DiveSummaryMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryReferenceMesgField(
-            size=self.__get_field_size(definition_message, DiveSummaryReferenceMesgField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryReferenceIndexField(
-            size=self.__get_field_size(definition_message, DiveSummaryReferenceIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgDepthField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryMaxDepthField(
-            size=self.__get_field_size(definition_message, DiveSummaryMaxDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummarySurfaceIntervalField(
-            size=self.__get_field_size(definition_message, DiveSummarySurfaceIntervalField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryStartCnsField(
-            size=self.__get_field_size(definition_message, DiveSummaryStartCnsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryEndCnsField(
-            size=self.__get_field_size(definition_message, DiveSummaryEndCnsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryStartN2Field(
-            size=self.__get_field_size(definition_message, DiveSummaryStartN2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryEndN2Field(
-            size=self.__get_field_size(definition_message, DiveSummaryEndN2Field.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryO2ToxicityField(
-            size=self.__get_field_size(definition_message, DiveSummaryO2ToxicityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryDiveNumberField(
-            size=self.__get_field_size(definition_message, DiveSummaryDiveNumberField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryBottomTimeField(
-            size=self.__get_field_size(definition_message, DiveSummaryBottomTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgPressureSacField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgPressureSacField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgVolumeSacField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgVolumeSacField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgRmvField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgRmvField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryDescentTimeField(
-            size=self.__get_field_size(definition_message, DiveSummaryDescentTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAscentTimeField(
-            size=self.__get_field_size(definition_message, DiveSummaryAscentTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgAscentRateField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgAscentRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryAvgDescentRateField(
-            size=self.__get_field_size(definition_message, DiveSummaryAvgDescentRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryMaxAscentRateField(
-            size=self.__get_field_size(definition_message, DiveSummaryMaxAscentRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryMaxDescentRateField(
-            size=self.__get_field_size(definition_message, DiveSummaryMaxDescentRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         DiveSummaryHangTimeField(
-            size=self.__get_field_size(definition_message, DiveSummaryHangTimeField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        DiveSummaryReferenceMesgField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryReferenceMesgField.ID),
+            growable=False), 
+        DiveSummaryReferenceIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryReferenceIndexField.ID),
+            growable=False), 
+        DiveSummaryAvgDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgDepthField.ID),
+            growable=False), 
+        DiveSummaryMaxDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryMaxDepthField.ID),
+            growable=False), 
+        DiveSummarySurfaceIntervalField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummarySurfaceIntervalField.ID),
+            growable=False), 
+        DiveSummaryStartCnsField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryStartCnsField.ID),
+            growable=False), 
+        DiveSummaryEndCnsField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryEndCnsField.ID),
+            growable=False), 
+        DiveSummaryStartN2Field(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryStartN2Field.ID),
+            growable=False), 
+        DiveSummaryEndN2Field(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryEndN2Field.ID),
+            growable=False), 
+        DiveSummaryO2ToxicityField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryO2ToxicityField.ID),
+            growable=False), 
+        DiveSummaryDiveNumberField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryDiveNumberField.ID),
+            growable=False), 
+        DiveSummaryBottomTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryBottomTimeField.ID),
+            growable=False), 
+        DiveSummaryAvgPressureSacField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgPressureSacField.ID),
+            growable=False), 
+        DiveSummaryAvgVolumeSacField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgVolumeSacField.ID),
+            growable=False), 
+        DiveSummaryAvgRmvField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgRmvField.ID),
+            growable=False), 
+        DiveSummaryDescentTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryDescentTimeField.ID),
+            growable=False), 
+        DiveSummaryAscentTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAscentTimeField.ID),
+            growable=False), 
+        DiveSummaryAvgAscentRateField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgAscentRateField.ID),
+            growable=False), 
+        DiveSummaryAvgDescentRateField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryAvgDescentRateField.ID),
+            growable=False), 
+        DiveSummaryMaxAscentRateField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryMaxAscentRateField.ID),
+            growable=False), 
+        DiveSummaryMaxDescentRateField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryMaxDescentRateField.ID),
+            growable=False), 
+        DiveSummaryHangTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, DiveSummaryHangTimeField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

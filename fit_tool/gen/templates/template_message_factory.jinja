@@ -30,6 +30,7 @@ def _get_message_class(global_id: int) -> Optional[Type[DataMessage]]:
 
 
 class MessageFactory:
+    """Build typed data messages from wire definitions (decode projection)."""
 
     @staticmethod
     def from_definition(
@@ -37,6 +38,8 @@ class MessageFactory:
             developer_fields: List[DeveloperField]) -> DataMessage:
         message_class = _get_message_class(definition_message.global_id)
         if message_class is None:
-            return GenericMessage(definition_message=definition_message, developer_fields=developer_fields)
+            return GenericMessage.from_definition(
+                definition_message, developer_fields=developer_fields)
 
-        return message_class(definition_message=definition_message, developer_fields=developer_fields)
+        return message_class.from_definition(
+            definition_message, developer_fields=developer_fields)

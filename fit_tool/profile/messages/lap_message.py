@@ -17,408 +17,931 @@ from typing import Dict as dict
 
 
 class LapMessage(DataMessage):
+    """LapMessage — use blank construct for authoring, ``from_definition`` for decode.
+
+    * ``LapMessage()`` — create path: growable fields, no wire definition.
+    * ``LapMessage.from_definition(definition, developer_fields=...)`` —
+      project a local definition onto this type (decode / MessageFactory path).
+    """
+
     ID = 19
     NAME = 'lap'
 
     @staticmethod
-    def __get_field_size(definition_message: DefinitionMessage, field_id: int) -> int:
-        size = 0
-        if definition_message:
-            field_definition = definition_message.get_field_definition(field_id)
-            if field_definition:
-                size = field_definition.size
+    def _field_size_from_definition(definition_message: DefinitionMessage, field_id: int) -> int:
+        field_definition = definition_message.get_field_definition(field_id)
+        if field_definition:
+            return field_definition.size
+        return 0
 
-        return size
-
-    def __init__(self, definition_message=None, developer_fields=None, local_id: int = 0,
+    def __init__(self, developer_fields=None, local_id: int = 0,
                  endian: Endian = Endian.LITTLE):
+        """Create a blank message for authoring (growable fields, no definition)."""
         super().__init__(name=LapMessage.NAME,
                          global_id=LapMessage.ID,
-                         local_id=definition_message.local_id if definition_message else local_id,
-                         endian=definition_message.endian if definition_message else endian,
-                         definition_message=definition_message,
+                         local_id=local_id,
+                         endian=endian,
+                         definition_message=None,
                          developer_fields=developer_fields,
                          fields=[
         MessageIndexField(
-            size=self.__get_field_size(definition_message, MessageIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         TimestampField(
-            size=self.__get_field_size(definition_message, TimestampField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEventField(
-            size=self.__get_field_size(definition_message, LapEventField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEventTypeField(
-            size=self.__get_field_size(definition_message, LapEventTypeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapStartTimeField(
-            size=self.__get_field_size(definition_message, LapStartTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapStartPositionLatField(
-            size=self.__get_field_size(definition_message, LapStartPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapStartPositionLongField(
-            size=self.__get_field_size(definition_message, LapStartPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEndPositionLatField(
-            size=self.__get_field_size(definition_message, LapEndPositionLatField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEndPositionLongField(
-            size=self.__get_field_size(definition_message, LapEndPositionLongField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalElapsedTimeField(
-            size=self.__get_field_size(definition_message, LapTotalElapsedTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalTimerTimeField(
-            size=self.__get_field_size(definition_message, LapTotalTimerTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalDistanceField(
-            size=self.__get_field_size(definition_message, LapTotalDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalCyclesField(
-            size=self.__get_field_size(definition_message, LapTotalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalCaloriesField(
-            size=self.__get_field_size(definition_message, LapTotalCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalFatCaloriesField(
-            size=self.__get_field_size(definition_message, LapTotalFatCaloriesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgSpeedField(
-            size=self.__get_field_size(definition_message, LapAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxSpeedField(
-            size=self.__get_field_size(definition_message, LapMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgHeartRateField(
-            size=self.__get_field_size(definition_message, LapAvgHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxHeartRateField(
-            size=self.__get_field_size(definition_message, LapMaxHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgCadenceField(
-            size=self.__get_field_size(definition_message, LapAvgCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxCadenceField(
-            size=self.__get_field_size(definition_message, LapMaxCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgPowerField(
-            size=self.__get_field_size(definition_message, LapAvgPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxPowerField(
-            size=self.__get_field_size(definition_message, LapMaxPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalAscentField(
-            size=self.__get_field_size(definition_message, LapTotalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalDescentField(
-            size=self.__get_field_size(definition_message, LapTotalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapIntensityField(
-            size=self.__get_field_size(definition_message, LapIntensityField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapLapTriggerField(
-            size=self.__get_field_size(definition_message, LapLapTriggerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapSportField(
-            size=self.__get_field_size(definition_message, LapSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEventGroupField(
-            size=self.__get_field_size(definition_message, LapEventGroupField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapNumLengthsField(
-            size=self.__get_field_size(definition_message, LapNumLengthsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapNormalizedPowerField(
-            size=self.__get_field_size(definition_message, LapNormalizedPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapLeftRightBalanceField(
-            size=self.__get_field_size(definition_message, LapLeftRightBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapFirstLengthIndexField(
-            size=self.__get_field_size(definition_message, LapFirstLengthIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgStrokeDistanceField(
-            size=self.__get_field_size(definition_message, LapAvgStrokeDistanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapSwimStrokeField(
-            size=self.__get_field_size(definition_message, LapSwimStrokeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapSubSportField(
-            size=self.__get_field_size(definition_message, LapSubSportField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapNumActiveLengthsField(
-            size=self.__get_field_size(definition_message, LapNumActiveLengthsField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalWorkField(
-            size=self.__get_field_size(definition_message, LapTotalWorkField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgAltitudeField(
-            size=self.__get_field_size(definition_message, LapAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxAltitudeField(
-            size=self.__get_field_size(definition_message, LapMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapGpsAccuracyField(
-            size=self.__get_field_size(definition_message, LapGpsAccuracyField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgGradeField(
-            size=self.__get_field_size(definition_message, LapAvgGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgPosGradeField(
-            size=self.__get_field_size(definition_message, LapAvgPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgNegGradeField(
-            size=self.__get_field_size(definition_message, LapAvgNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxPosGradeField(
-            size=self.__get_field_size(definition_message, LapMaxPosGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxNegGradeField(
-            size=self.__get_field_size(definition_message, LapMaxNegGradeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgTemperatureField(
-            size=self.__get_field_size(definition_message, LapAvgTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxTemperatureField(
-            size=self.__get_field_size(definition_message, LapMaxTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalMovingTimeField(
-            size=self.__get_field_size(definition_message, LapTotalMovingTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, LapAvgPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, LapAvgNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxPosVerticalSpeedField(
-            size=self.__get_field_size(definition_message, LapMaxPosVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxNegVerticalSpeedField(
-            size=self.__get_field_size(definition_message, LapMaxNegVerticalSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTimeInHrZoneField(
-            size=self.__get_field_size(definition_message, LapTimeInHrZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTimeInSpeedZoneField(
-            size=self.__get_field_size(definition_message, LapTimeInSpeedZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTimeInCadenceZoneField(
-            size=self.__get_field_size(definition_message, LapTimeInCadenceZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTimeInPowerZoneField(
-            size=self.__get_field_size(definition_message, LapTimeInPowerZoneField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapRepetitionNumField(
-            size=self.__get_field_size(definition_message, LapRepetitionNumField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinAltitudeField(
-            size=self.__get_field_size(definition_message, LapMinAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinHeartRateField(
-            size=self.__get_field_size(definition_message, LapMinHeartRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapActiveTimeField(
-            size=self.__get_field_size(definition_message, LapActiveTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapWorkoutStepIndexField(
-            size=self.__get_field_size(definition_message, LapWorkoutStepIndexField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapOpponentScoreField(
-            size=self.__get_field_size(definition_message, LapOpponentScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapStrokeCountField(
-            size=self.__get_field_size(definition_message, LapStrokeCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapZoneCountField(
-            size=self.__get_field_size(definition_message, LapZoneCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgVerticalOscillationField(
-            size=self.__get_field_size(definition_message, LapAvgVerticalOscillationField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgStanceTimePercentField(
-            size=self.__get_field_size(definition_message, LapAvgStanceTimePercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgStanceTimeField(
-            size=self.__get_field_size(definition_message, LapAvgStanceTimeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgFractionalCadenceField(
-            size=self.__get_field_size(definition_message, LapAvgFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxFractionalCadenceField(
-            size=self.__get_field_size(definition_message, LapMaxFractionalCadenceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalFractionalCyclesField(
-            size=self.__get_field_size(definition_message, LapTotalFractionalCyclesField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapPlayerScoreField(
-            size=self.__get_field_size(definition_message, LapPlayerScoreField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, LapAvgTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, LapMinTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxTotalHemoglobinConcField(
-            size=self.__get_field_size(definition_message, LapMaxTotalHemoglobinConcField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, LapAvgSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, LapMinSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxSaturatedHemoglobinPercentField(
-            size=self.__get_field_size(definition_message, LapMaxSaturatedHemoglobinPercentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLeftTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, LapAvgLeftTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRightTorqueEffectivenessField(
-            size=self.__get_field_size(definition_message, LapAvgRightTorqueEffectivenessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLeftPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, LapAvgLeftPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRightPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, LapAvgRightPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgCombinedPedalSmoothnessField(
-            size=self.__get_field_size(definition_message, LapAvgCombinedPedalSmoothnessField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTimeStandingField(
-            size=self.__get_field_size(definition_message, LapTimeStandingField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapStandCountField(
-            size=self.__get_field_size(definition_message, LapStandCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLeftPcoField(
-            size=self.__get_field_size(definition_message, LapAvgLeftPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRightPcoField(
-            size=self.__get_field_size(definition_message, LapAvgRightPcoField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLeftPowerPhaseField(
-            size=self.__get_field_size(definition_message, LapAvgLeftPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLeftPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, LapAvgLeftPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRightPowerPhaseField(
-            size=self.__get_field_size(definition_message, LapAvgRightPowerPhaseField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRightPowerPhasePeakField(
-            size=self.__get_field_size(definition_message, LapAvgRightPowerPhasePeakField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgPowerPositionField(
-            size=self.__get_field_size(definition_message, LapAvgPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxPowerPositionField(
-            size=self.__get_field_size(definition_message, LapMaxPowerPositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgCadencePositionField(
-            size=self.__get_field_size(definition_message, LapAvgCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxCadencePositionField(
-            size=self.__get_field_size(definition_message, LapMaxCadencePositionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedAvgSpeedField(
-            size=self.__get_field_size(definition_message, LapEnhancedAvgSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedMaxSpeedField(
-            size=self.__get_field_size(definition_message, LapEnhancedMaxSpeedField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedAvgAltitudeField(
-            size=self.__get_field_size(definition_message, LapEnhancedAvgAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedMinAltitudeField(
-            size=self.__get_field_size(definition_message, LapEnhancedMinAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedMaxAltitudeField(
-            size=self.__get_field_size(definition_message, LapEnhancedMaxAltitudeField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgLevMotorPowerField(
-            size=self.__get_field_size(definition_message, LapAvgLevMotorPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxLevMotorPowerField(
-            size=self.__get_field_size(definition_message, LapMaxLevMotorPowerField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapLevBatteryConsumptionField(
-            size=self.__get_field_size(definition_message, LapLevBatteryConsumptionField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgVerticalRatioField(
-            size=self.__get_field_size(definition_message, LapAvgVerticalRatioField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgStanceTimeBalanceField(
-            size=self.__get_field_size(definition_message, LapAvgStanceTimeBalanceField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgStepLengthField(
-            size=self.__get_field_size(definition_message, LapAvgStepLengthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgVamField(
-            size=self.__get_field_size(definition_message, LapAvgVamField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgDepthField(
-            size=self.__get_field_size(definition_message, LapAvgDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxDepthField(
-            size=self.__get_field_size(definition_message, LapMaxDepthField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinTemperatureField(
-            size=self.__get_field_size(definition_message, LapMinTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedAvgRespirationRateField(
-            size=self.__get_field_size(definition_message, LapEnhancedAvgRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapEnhancedMaxRespirationRateField(
-            size=self.__get_field_size(definition_message, LapEnhancedMaxRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgRespirationRateField(
-            size=self.__get_field_size(definition_message, LapAvgRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxRespirationRateField(
-            size=self.__get_field_size(definition_message, LapMaxRespirationRateField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalGritField(
-            size=self.__get_field_size(definition_message, LapTotalGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalFlowField(
-            size=self.__get_field_size(definition_message, LapTotalFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapJumpCountField(
-            size=self.__get_field_size(definition_message, LapJumpCountField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgGritField(
-            size=self.__get_field_size(definition_message, LapAvgGritField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgFlowField(
-            size=self.__get_field_size(definition_message, LapAvgFlowField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalFractionalAscentField(
-            size=self.__get_field_size(definition_message, LapTotalFractionalAscentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapTotalFractionalDescentField(
-            size=self.__get_field_size(definition_message, LapTotalFractionalDescentField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapAvgCoreTemperatureField(
-            size=self.__get_field_size(definition_message, LapAvgCoreTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMinCoreTemperatureField(
-            size=self.__get_field_size(definition_message, LapMinCoreTemperatureField.ID),
-            growable=definition_message is None), 
+            size=0,
+            growable=True), 
         LapMaxCoreTemperatureField(
-            size=self.__get_field_size(definition_message, LapMaxCoreTemperatureField.ID),
-            growable=definition_message is None)
+            size=0,
+            growable=True)
         ])
 
-        self.growable = self.definition_message is None
+        self.growable = True
+
+    @classmethod
+    def from_definition(cls, definition_message: DefinitionMessage,
+                        developer_fields: list[DeveloperField] = None):
+        """Project a wire definition onto this message type (decode path).
+
+        Field sizes come from the definition; fields are not growable. Prefer this
+        over passing a definition into ``__init__``.
+        """
+        message = cls.__new__(cls)
+        DataMessage.__init__(
+            message,
+            name=cls.NAME,
+            global_id=cls.ID,
+            local_id=definition_message.local_id,
+            endian=definition_message.endian,
+            definition_message=definition_message,
+            developer_fields=developer_fields,
+            fields=[
+        MessageIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, MessageIndexField.ID),
+            growable=False), 
+        TimestampField(
+            size=cls._field_size_from_definition(
+                definition_message, TimestampField.ID),
+            growable=False), 
+        LapEventField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEventField.ID),
+            growable=False), 
+        LapEventTypeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEventTypeField.ID),
+            growable=False), 
+        LapStartTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapStartTimeField.ID),
+            growable=False), 
+        LapStartPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, LapStartPositionLatField.ID),
+            growable=False), 
+        LapStartPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, LapStartPositionLongField.ID),
+            growable=False), 
+        LapEndPositionLatField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEndPositionLatField.ID),
+            growable=False), 
+        LapEndPositionLongField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEndPositionLongField.ID),
+            growable=False), 
+        LapTotalElapsedTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalElapsedTimeField.ID),
+            growable=False), 
+        LapTotalTimerTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalTimerTimeField.ID),
+            growable=False), 
+        LapTotalDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalDistanceField.ID),
+            growable=False), 
+        LapTotalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalCyclesField.ID),
+            growable=False), 
+        LapTotalCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalCaloriesField.ID),
+            growable=False), 
+        LapTotalFatCaloriesField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalFatCaloriesField.ID),
+            growable=False), 
+        LapAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgSpeedField.ID),
+            growable=False), 
+        LapMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxSpeedField.ID),
+            growable=False), 
+        LapAvgHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgHeartRateField.ID),
+            growable=False), 
+        LapMaxHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxHeartRateField.ID),
+            growable=False), 
+        LapAvgCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgCadenceField.ID),
+            growable=False), 
+        LapMaxCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxCadenceField.ID),
+            growable=False), 
+        LapAvgPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgPowerField.ID),
+            growable=False), 
+        LapMaxPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxPowerField.ID),
+            growable=False), 
+        LapTotalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalAscentField.ID),
+            growable=False), 
+        LapTotalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalDescentField.ID),
+            growable=False), 
+        LapIntensityField(
+            size=cls._field_size_from_definition(
+                definition_message, LapIntensityField.ID),
+            growable=False), 
+        LapLapTriggerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapLapTriggerField.ID),
+            growable=False), 
+        LapSportField(
+            size=cls._field_size_from_definition(
+                definition_message, LapSportField.ID),
+            growable=False), 
+        LapEventGroupField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEventGroupField.ID),
+            growable=False), 
+        LapNumLengthsField(
+            size=cls._field_size_from_definition(
+                definition_message, LapNumLengthsField.ID),
+            growable=False), 
+        LapNormalizedPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapNormalizedPowerField.ID),
+            growable=False), 
+        LapLeftRightBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapLeftRightBalanceField.ID),
+            growable=False), 
+        LapFirstLengthIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, LapFirstLengthIndexField.ID),
+            growable=False), 
+        LapAvgStrokeDistanceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgStrokeDistanceField.ID),
+            growable=False), 
+        LapSwimStrokeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapSwimStrokeField.ID),
+            growable=False), 
+        LapSubSportField(
+            size=cls._field_size_from_definition(
+                definition_message, LapSubSportField.ID),
+            growable=False), 
+        LapNumActiveLengthsField(
+            size=cls._field_size_from_definition(
+                definition_message, LapNumActiveLengthsField.ID),
+            growable=False), 
+        LapTotalWorkField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalWorkField.ID),
+            growable=False), 
+        LapAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgAltitudeField.ID),
+            growable=False), 
+        LapMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxAltitudeField.ID),
+            growable=False), 
+        LapGpsAccuracyField(
+            size=cls._field_size_from_definition(
+                definition_message, LapGpsAccuracyField.ID),
+            growable=False), 
+        LapAvgGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgGradeField.ID),
+            growable=False), 
+        LapAvgPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgPosGradeField.ID),
+            growable=False), 
+        LapAvgNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgNegGradeField.ID),
+            growable=False), 
+        LapMaxPosGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxPosGradeField.ID),
+            growable=False), 
+        LapMaxNegGradeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxNegGradeField.ID),
+            growable=False), 
+        LapAvgTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgTemperatureField.ID),
+            growable=False), 
+        LapMaxTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxTemperatureField.ID),
+            growable=False), 
+        LapTotalMovingTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalMovingTimeField.ID),
+            growable=False), 
+        LapAvgPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgPosVerticalSpeedField.ID),
+            growable=False), 
+        LapAvgNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgNegVerticalSpeedField.ID),
+            growable=False), 
+        LapMaxPosVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxPosVerticalSpeedField.ID),
+            growable=False), 
+        LapMaxNegVerticalSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxNegVerticalSpeedField.ID),
+            growable=False), 
+        LapTimeInHrZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTimeInHrZoneField.ID),
+            growable=False), 
+        LapTimeInSpeedZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTimeInSpeedZoneField.ID),
+            growable=False), 
+        LapTimeInCadenceZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTimeInCadenceZoneField.ID),
+            growable=False), 
+        LapTimeInPowerZoneField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTimeInPowerZoneField.ID),
+            growable=False), 
+        LapRepetitionNumField(
+            size=cls._field_size_from_definition(
+                definition_message, LapRepetitionNumField.ID),
+            growable=False), 
+        LapMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinAltitudeField.ID),
+            growable=False), 
+        LapMinHeartRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinHeartRateField.ID),
+            growable=False), 
+        LapActiveTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapActiveTimeField.ID),
+            growable=False), 
+        LapWorkoutStepIndexField(
+            size=cls._field_size_from_definition(
+                definition_message, LapWorkoutStepIndexField.ID),
+            growable=False), 
+        LapOpponentScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, LapOpponentScoreField.ID),
+            growable=False), 
+        LapStrokeCountField(
+            size=cls._field_size_from_definition(
+                definition_message, LapStrokeCountField.ID),
+            growable=False), 
+        LapZoneCountField(
+            size=cls._field_size_from_definition(
+                definition_message, LapZoneCountField.ID),
+            growable=False), 
+        LapAvgVerticalOscillationField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgVerticalOscillationField.ID),
+            growable=False), 
+        LapAvgStanceTimePercentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgStanceTimePercentField.ID),
+            growable=False), 
+        LapAvgStanceTimeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgStanceTimeField.ID),
+            growable=False), 
+        LapAvgFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgFractionalCadenceField.ID),
+            growable=False), 
+        LapMaxFractionalCadenceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxFractionalCadenceField.ID),
+            growable=False), 
+        LapTotalFractionalCyclesField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalFractionalCyclesField.ID),
+            growable=False), 
+        LapPlayerScoreField(
+            size=cls._field_size_from_definition(
+                definition_message, LapPlayerScoreField.ID),
+            growable=False), 
+        LapAvgTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgTotalHemoglobinConcField.ID),
+            growable=False), 
+        LapMinTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinTotalHemoglobinConcField.ID),
+            growable=False), 
+        LapMaxTotalHemoglobinConcField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxTotalHemoglobinConcField.ID),
+            growable=False), 
+        LapAvgSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        LapMinSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        LapMaxSaturatedHemoglobinPercentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxSaturatedHemoglobinPercentField.ID),
+            growable=False), 
+        LapAvgLeftTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLeftTorqueEffectivenessField.ID),
+            growable=False), 
+        LapAvgRightTorqueEffectivenessField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRightTorqueEffectivenessField.ID),
+            growable=False), 
+        LapAvgLeftPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLeftPedalSmoothnessField.ID),
+            growable=False), 
+        LapAvgRightPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRightPedalSmoothnessField.ID),
+            growable=False), 
+        LapAvgCombinedPedalSmoothnessField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgCombinedPedalSmoothnessField.ID),
+            growable=False), 
+        LapTimeStandingField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTimeStandingField.ID),
+            growable=False), 
+        LapStandCountField(
+            size=cls._field_size_from_definition(
+                definition_message, LapStandCountField.ID),
+            growable=False), 
+        LapAvgLeftPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLeftPcoField.ID),
+            growable=False), 
+        LapAvgRightPcoField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRightPcoField.ID),
+            growable=False), 
+        LapAvgLeftPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLeftPowerPhaseField.ID),
+            growable=False), 
+        LapAvgLeftPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLeftPowerPhasePeakField.ID),
+            growable=False), 
+        LapAvgRightPowerPhaseField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRightPowerPhaseField.ID),
+            growable=False), 
+        LapAvgRightPowerPhasePeakField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRightPowerPhasePeakField.ID),
+            growable=False), 
+        LapAvgPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgPowerPositionField.ID),
+            growable=False), 
+        LapMaxPowerPositionField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxPowerPositionField.ID),
+            growable=False), 
+        LapAvgCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgCadencePositionField.ID),
+            growable=False), 
+        LapMaxCadencePositionField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxCadencePositionField.ID),
+            growable=False), 
+        LapEnhancedAvgSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedAvgSpeedField.ID),
+            growable=False), 
+        LapEnhancedMaxSpeedField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedMaxSpeedField.ID),
+            growable=False), 
+        LapEnhancedAvgAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedAvgAltitudeField.ID),
+            growable=False), 
+        LapEnhancedMinAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedMinAltitudeField.ID),
+            growable=False), 
+        LapEnhancedMaxAltitudeField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedMaxAltitudeField.ID),
+            growable=False), 
+        LapAvgLevMotorPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgLevMotorPowerField.ID),
+            growable=False), 
+        LapMaxLevMotorPowerField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxLevMotorPowerField.ID),
+            growable=False), 
+        LapLevBatteryConsumptionField(
+            size=cls._field_size_from_definition(
+                definition_message, LapLevBatteryConsumptionField.ID),
+            growable=False), 
+        LapAvgVerticalRatioField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgVerticalRatioField.ID),
+            growable=False), 
+        LapAvgStanceTimeBalanceField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgStanceTimeBalanceField.ID),
+            growable=False), 
+        LapAvgStepLengthField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgStepLengthField.ID),
+            growable=False), 
+        LapAvgVamField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgVamField.ID),
+            growable=False), 
+        LapAvgDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgDepthField.ID),
+            growable=False), 
+        LapMaxDepthField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxDepthField.ID),
+            growable=False), 
+        LapMinTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinTemperatureField.ID),
+            growable=False), 
+        LapEnhancedAvgRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedAvgRespirationRateField.ID),
+            growable=False), 
+        LapEnhancedMaxRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapEnhancedMaxRespirationRateField.ID),
+            growable=False), 
+        LapAvgRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgRespirationRateField.ID),
+            growable=False), 
+        LapMaxRespirationRateField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxRespirationRateField.ID),
+            growable=False), 
+        LapTotalGritField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalGritField.ID),
+            growable=False), 
+        LapTotalFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalFlowField.ID),
+            growable=False), 
+        LapJumpCountField(
+            size=cls._field_size_from_definition(
+                definition_message, LapJumpCountField.ID),
+            growable=False), 
+        LapAvgGritField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgGritField.ID),
+            growable=False), 
+        LapAvgFlowField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgFlowField.ID),
+            growable=False), 
+        LapTotalFractionalAscentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalFractionalAscentField.ID),
+            growable=False), 
+        LapTotalFractionalDescentField(
+            size=cls._field_size_from_definition(
+                definition_message, LapTotalFractionalDescentField.ID),
+            growable=False), 
+        LapAvgCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapAvgCoreTemperatureField.ID),
+            growable=False), 
+        LapMinCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMinCoreTemperatureField.ID),
+            growable=False), 
+        LapMaxCoreTemperatureField(
+            size=cls._field_size_from_definition(
+                definition_message, LapMaxCoreTemperatureField.ID),
+            growable=False)
+        ])
+        message.growable = False
+        return message
 
     @classmethod
     def from_bytes(cls, definition_message: DefinitionMessage, developer_fields: list[DeveloperField],
                    bytes_buffer: bytes, offset: int = 0):
-        message = cls(definition_message=definition_message, developer_fields=developer_fields)
+        message = cls.from_definition(definition_message, developer_fields=developer_fields)
         message.read_from_bytes(bytes_buffer, offset)
         return message
 

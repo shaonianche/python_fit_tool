@@ -11,8 +11,9 @@ from fit_tool.profile.messages.file_id_message import FileIdMessage
 from fit_tool.profile.messages.lap_message import LapMessage
 from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.messages.session_message import SessionMessage
+from fit_tool.profile.messages.workout_message import WorkoutMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer, Sport
+from fit_tool.profile.profile_type import FileType, Manufacturer, Sport, WorkoutStepDuration, WorkoutStepTarget
 from fit_tool.validation import (
     ConformanceLevel,
     FitFileValidator,
@@ -60,6 +61,29 @@ def add_minimal_activity_messages(builder, record_message=None):
     builder.add(activity)
 
 
+def add_minimal_workout_messages(builder, step_message=None):
+    file_id = FileIdMessage()
+    file_id.type = FileType.WORKOUT
+    file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+    file_id.product = 0
+    file_id.serial_number = 1234
+    file_id.time_created = 1_700_000_000_000
+    builder.add(file_id)
+
+    workout = WorkoutMessage()
+    workout.num_valid_steps = 1
+    workout.sport = Sport.CYCLING
+    builder.add(workout)
+
+    step = step_message if step_message is not None else WorkoutStepMessage()
+    step.message_index = 0
+    step.duration_type = WorkoutStepDuration.TIME
+    step.duration_time = 600.0
+    step.target_type = WorkoutStepTarget.OPEN
+    step.target_value = 0
+    builder.add(step)
+
+
 class TestFitValidation(unittest.TestCase):
 
     def test_builder_rejects_local_id_outside_wire_range(self):
@@ -98,6 +122,28 @@ class TestFitValidation(unittest.TestCase):
         self.assertGreater(len(encoded), 0)
 
     def test_strict_validation_fails_closed_for_unsupported_file_type(self):
+        # Course (and other non-Activity/non-Workout types) still fail closed.
+        builder = FitFileBuilder(strict=True)
+        file_id = FileIdMessage()
+        file_id.type = FileType.COURSE
+        file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+        file_id.product = 0
+        file_id.serial_number = 1234
+        file_id.time_created = 1_700_000_000_000
+        builder.add(file_id)
+
+        with self.assertRaisesRegex(FitValidationError, 'not implemented'):
+            builder.build_bytes()
+
+    def test_strict_workout_accepts_required_message_structure(self):
+        builder = FitFileBuilder(strict=True, auto_define=True, min_string_size=50)
+        add_minimal_workout_messages(builder)
+
+        encoded = builder.build_bytes()
+
+        self.assertGreater(len(encoded), 0)
+
+    def test_strict_workout_requires_workout_and_steps(self):
         builder = FitFileBuilder(strict=True)
         file_id = FileIdMessage()
         file_id.type = FileType.WORKOUT
@@ -107,7 +153,7 @@ class TestFitValidation(unittest.TestCase):
         file_id.time_created = 1_700_000_000_000
         builder.add(file_id)
 
-        with self.assertRaisesRegex(FitValidationError, 'not implemented'):
+        with self.assertRaisesRegex(FitValidationError, 'workout'):
             builder.build_bytes()
 
     def test_strict_validation_rejects_undeclared_developer_field(self):
@@ -218,7 +264,7 @@ class TestFitValidation(unittest.TestCase):
     def test_validate_wire_only_skips_file_type_rules(self):
         builder = FitFileBuilder()
         file_id = FileIdMessage()
-        file_id.type = FileType.WORKOUT
+        file_id.type = FileType.COURSE
         file_id.manufacturer = Manufacturer.DEVELOPMENT.value
         file_id.product = 0
         file_id.serial_number = 1234
@@ -234,6 +280,15 @@ class TestFitValidation(unittest.TestCase):
         self.assertTrue(
             any('not implemented' in finding.message for finding in full_report.errors)
         )
+
+    def test_validate_workout_file_type_report(self):
+        builder = FitFileBuilder(auto_define=True, min_string_size=50)
+        add_minimal_workout_messages(builder)
+        fit_file = builder.build()
+
+        report = validate_fit_file(fit_file, levels={ConformanceLevel.FILE_TYPE})
+        self.assertFalse(report.has_errors)
+        self.assertEqual(report.findings, [])
 
     def test_fit_file_validator_legacy_facade(self):
         builder = FitFileBuilder()
@@ -661,6 +716,27 @@ class TestValidationCoverage(unittest.TestCase):
         report5 = validate_fit_file(fit, levels={ConformanceLevel.FILE_TYPE})
         self.assertTrue(report5.has_errors)
         self.assertTrue(any('missing required field' in f.message for f in report5.errors))
+
+        # Workout: missing required step fields
+        w_builder = FitFileBuilder(auto_define=True, min_string_size=20)
+        w_file_id = FileIdMessage()
+        w_file_id.type = FileType.WORKOUT
+        w_file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+        w_file_id.product = 0
+        w_file_id.serial_number = 1
+        w_file_id.time_created = 1_700_000_000_000
+        w_builder.add(w_file_id)
+        w_msg = WorkoutMessage()
+        # num_valid_steps intentionally unset
+        w_builder.add(w_msg)
+        bare_step = WorkoutStepMessage()
+        bare_step.workout_step_name = 'x'
+        # message_index / duration_type / target_type unset
+        w_builder.add(bare_step)
+        w_fit = w_builder.build()
+        report6 = validate_fit_file(w_fit, levels={ConformanceLevel.FILE_TYPE})
+        self.assertTrue(report6.has_errors)
+        self.assertTrue(any('missing required field' in f.message for f in report6.errors))
 
     def test_legacy_validator_helpers(self):
         builder = FitFileBuilder()

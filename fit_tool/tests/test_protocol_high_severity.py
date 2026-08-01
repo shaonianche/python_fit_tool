@@ -13,7 +13,6 @@ from fit_tool.components import expand_message_components
 from fit_tool.exceptions import FitCRCError, FitParseError, FitRecordError
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
-from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
 from fit_tool.profile.profile_type import WorkoutStepDuration

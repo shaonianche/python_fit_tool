@@ -62,7 +62,8 @@ dimensions:
    encoded byte sequence follows the FIT binary protocol.
 2. **Profile conformance**: fields, subfields, components, accumulated values,
    invalid values, developer fields, and native overrides follow the bundled
-   `Profile.xlsx`.
+   `Profile.xlsx` (see §3.1: full xlsx as metadata ceiling; validation **scopes**
+   CORE / DOMAIN / FULL — FULL is not the default strict set).
 3. **File-type conformance**: Activity, Workout, Course, and other standard file
    types follow Garmin's required-message and ordering rules.
 4. **Forward-compatible preservation**: unknown messages and fields can be
@@ -120,6 +121,57 @@ report = document.validate(
 )
 report.raise_for_errors()
 ```
+
+### 3.1 PROFILE depth decision (O1 — confirmed)
+
+**Decision (SHA-3 architecture review, accepted):** treat the bundled
+`Profile.xlsx` as the **single source of truth** and design for full-table
+capability, but **do not** make full-table ERROR validation the default product
+behavior.
+
+Three layers must not be conflated:
+
+| Layer | Role | Full xlsx? |
+| --- | --- | --- |
+| **A. Typed API / codegen** | Generated messages and enums from Profile | Already near-complete message coverage |
+| **B. Runtime semantics** | Subfields, components, accumulators, native overrides | Design for full metadata; implement incrementally |
+| **C. `ConformanceLevel.PROFILE` validation** | Required fields, base types, enums, units consistency | Full catalog is an **opt-in scope**, not the default strict set |
+
+#### Scopes (target API shape)
+
+When `ConformanceLevel.PROFILE` is selected, validation applies a **scope**
+(name may land as `profile_scope`, `ProfileRuleSet`, or equivalent):
+
+| Scope | Intent | Default for `strict=True` / DEFAULT_LEVELS |
+| --- | --- | --- |
+| **CORE** | Developer-field rules + structural Profile consistency that does not depend on full field catalogs | **Yes** (current behavior grows into CORE) |
+| **DOMAIN** | High-frequency Activity / Workout native rules (required fields, common enums) | Optional later inclusion after coverage is solid |
+| **FULL** | Rules derived from the entire bundled Profile.xlsx | **No** — explicit opt-in (or primarily WARNING until stable) |
+
+Principles:
+
+1. **Metadata is one-way:** `Profile.xlsx` → gen artifacts → runtime tables and
+   validation catalogs. Do not hand-maintain a second full rule book.
+2. **Semantics before strict validation:** subfields/components (B) must be
+   correct enough that FULL validation does not flood false positives.
+3. **Severity:** MUST-level wire/profile requirements → ERROR; best-practice or
+   rare messages → WARNING/INFO.
+4. **Orthogonal dimensions:** FULL PROFILE field rules do **not** replace
+   FILE_TYPE (Workout/Course) or PRESERVATION.
+5. **Public claims:** the library may claim “Profile.xlsx is the source of
+   truth” and “FULL scope available” only when the corresponding milestone is
+   implemented; it must not imply default strict equals FULL.
+
+#### Implementation milestones (for Multica H / related stages)
+
+| Milestone | Meaning |
+| --- | --- |
+| M1 | Gen exports subfield / component / required / enum tables from xlsx |
+| M2 | Runtime applies those tables (semantics) |
+| M3 | PROFILE CORE validation (today’s developer subset, evolved) |
+| M4 | PROFILE DOMAIN (Activity/Workout high-frequency messages) |
+| M5 | PROFILE FULL catalog; default remains CORE (and maybe DOMAIN) |
+| M6 | Marketing / §11 DoD only with WIRE + scoped PROFILE + FILE_TYPE + PRESERVATION |
 
 ## 4. Architectural principle: separate wire data from semantic projection
 

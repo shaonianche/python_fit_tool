@@ -5,6 +5,7 @@ import struct
 from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
 from fit_tool.endian import Endian
+from fit_tool.exceptions import FitRecordError
 from fit_tool.field_definition import FieldDefinition
 from fit_tool.message import Message
 from fit_tool.utils.logging import logger
@@ -92,7 +93,6 @@ class DefinitionMessage(Message):
 
             values.append(f'[{field.developer_data_index},{field.field_id}]')
             values.append(field.size)
-            ''
             values.append('bytes')
 
         return values
@@ -134,14 +134,14 @@ class DefinitionMessage(Message):
         for field_definition in self.developer_field_definitions:
             developer_fields_by_index = developer_fields_by_data_index.get(field_definition.developer_data_index)
             if developer_fields_by_index is None:
-                raise ValueError(
+                raise FitRecordError(
                     f'Developer field definition refers to missing developer_data_index: '
                     f'{field_definition.developer_data_index}'
                 )
 
             developer_field = developer_fields_by_index.get(field_definition.field_id)
             if developer_field is None:
-                raise ValueError(
+                raise FitRecordError(
                     f'Developer field definition refers to missing field id '
                     f'{field_definition.field_id} for developer_data_index '
                     f'{field_definition.developer_data_index}'

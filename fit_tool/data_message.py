@@ -3,6 +3,7 @@ from __future__ import annotations
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
+from fit_tool.exceptions import FitEncodingError, FitRecordError
 from fit_tool.field import Field
 from fit_tool.message import Message
 from fit_tool.utils.logging import logger
@@ -127,7 +128,7 @@ class DataMessage(Message):
         start = offset
 
         if not self.definition_message:
-            raise ValueError('DefinitionMessage cannot be null.')
+            raise FitRecordError('DefinitionMessage cannot be null.')
 
         fields_by_id = {field.field_id: field for field in reversed(self.fields)}
         developer_fields_by_id = {
@@ -147,7 +148,7 @@ class DataMessage(Message):
                 field.read_all_from_bytes(bytes_buffer, endian=self.endian, offset=start)
                 start += field.size
             else:
-                raise ValueError(f'Field {field.name} is empty')
+                raise FitRecordError(f'Field {field.name} is empty')
 
         for developer_field_definition in self.definition_message.developer_field_definitions:
             field = developer_fields_by_id.get(
@@ -164,7 +165,7 @@ class DataMessage(Message):
                 field.read_all_from_bytes(bytes_buffer, endian=self.endian, offset=start)
                 start += field.size
             else:
-                raise ValueError(f'Developer Field {field.name} is empty')
+                raise FitRecordError(f'Developer Field {field.name} is empty')
 
     def to_row(self) -> list:
         row = [self.name]
@@ -185,7 +186,7 @@ class DataMessage(Message):
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise ValueError(f'Field for id: {field_definition.field_id} is not valid.')
+                    raise FitEncodingError(f'Field for id: {field_definition.field_id} is not valid.')
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = developer_fields_by_id.get(
@@ -193,14 +194,14 @@ class DataMessage(Message):
                 )
 
                 if field is None:
-                    raise ValueError(
+                    raise FitEncodingError(
                         f'Developer field for id: {field_definition.developer_data_index}:{field_definition.field_id} not found.')
 
                 if field.is_valid():
                     sub_field = field.get_valid_sub_field(self.fields)
                     row.extend(field.to_row(sub_field=sub_field))
                 else:
-                    raise ValueError(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    raise FitEncodingError(f'Developer Field for id: {field_definition.field_id} is not valid.')
 
         else:
             for field in self.fields:
@@ -233,7 +234,7 @@ class DataMessage(Message):
                 if field.is_valid():
                     bytes_buffer.extend(field.to_bytes(endian=self.endian))
                 else:
-                    raise ValueError(f'Field for id: {field_definition.field_id} is not valid.')
+                    raise FitEncodingError(f'Field for id: {field_definition.field_id} is not valid.')
 
             for field_definition in self.definition_message.developer_field_definitions:
                 field = developer_fields_by_id.get(
@@ -241,13 +242,13 @@ class DataMessage(Message):
                 )
 
                 if field is None:
-                    raise ValueError(
+                    raise FitEncodingError(
                         f'Developer field for id: {field_definition.developer_data_index}:{field_definition.field_id} not found.')
 
                 if field.is_valid():
                     bytes_buffer.extend(field.to_bytes(endian=self.endian))
                 else:
-                    raise ValueError(f'Developer Field for id: {field_definition.field_id} is not valid.')
+                    raise FitEncodingError(f'Developer Field for id: {field_definition.field_id} is not valid.')
 
         else:
             for field in self.fields:

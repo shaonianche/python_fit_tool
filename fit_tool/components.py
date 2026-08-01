@@ -8,7 +8,7 @@ attached to a :class:`~fit_tool.field.Field`.
 
 from __future__ import annotations
 
-from typing import Mapping
+from collections.abc import Mapping
 
 from fit_tool.field import Field
 from fit_tool.field_component import FieldComponent

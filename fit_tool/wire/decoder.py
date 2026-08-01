@@ -11,7 +11,8 @@ lives on the decoder instance for the duration of a segment decode.
 from __future__ import annotations
 
 import struct
-from typing import BinaryIO, Iterator, Protocol, Union
+from collections.abc import Iterator
+from typing import BinaryIO, Protocol, Union
 
 from fit_tool.exceptions import FitCRCError, FitHeaderError, FitParseError, FitRecordError
 from fit_tool.wire.crc import crc16

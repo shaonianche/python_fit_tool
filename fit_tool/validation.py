@@ -20,9 +20,10 @@ exist). PRESERVATION level is not implemented yet.
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Iterable, Mapping, Sequence
+from typing import TYPE_CHECKING, Any
 
 from fit_tool.base_type import BaseType
 from fit_tool.data_message import DataMessage
@@ -127,11 +128,11 @@ def _normalize_levels(levels: Iterable[ConformanceLevel] | None) -> frozenset:
         return DEFAULT_LEVELS
     normalized = frozenset(levels)
     if not normalized:
-        raise ValueError('levels must contain at least one ConformanceLevel')
+        raise FitValidationError('levels must contain at least one ConformanceLevel')
     unknown = normalized - DEFAULT_LEVELS
     if unknown:
         names = ', '.join(sorted(level.value for level in unknown))
-        raise ValueError(f'Unsupported conformance level(s): {names}')
+        raise FitValidationError(f'Unsupported conformance level(s): {names}')
     return normalized
 
 

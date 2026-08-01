@@ -2,7 +2,7 @@
 
 ## Repository overview
 
-This repository contains `fit-tool`, a Python library and command-line tool for reading, writing, and converting Garmin FIT files. The package supports Python 3.8 and newer; keep all handwritten code compatible with Python 3.8 even when developing on a newer interpreter.
+This repository contains `fit-tool`, a Python library and command-line tool for reading, writing, and converting Garmin FIT files. The package supports Python 3.9 and newer (`requires-python = ">=3.9"`); keep handwritten code compatible with 3.9 even when developing on a newer interpreter.
 
 The project uses setuptools through `pyproject.toml`, `uv` for dependency and lock-file management, pytest for tests, and Towncrier news fragments for release notes.
 
@@ -39,11 +39,11 @@ the full suite and `uv run gen-profile`. For a published package, install with
 
 The CI baseline is a package build plus the full test suite on Python 3.9 through 3.14. Before finishing a normal code change, run the narrowest relevant tests and then the full suite when practical. Run `uv build` for packaging, entry-point, dependency, or metadata changes.
 
-Ruff and mypy settings live in `pyproject.toml`, but those tools are not part of the locked development dependency group and are not currently CI gates. If they are already available in the development environment, useful checks are:
+**Ruff is a CI gate** on the Python 3.12 job (`ruff check fit_tool`). Mypy is configured in `pyproject.toml` and runs in a limited form in CI; core modules are not all under strict mypy yet. Locally:
 
 ```bash
-ruff check fit_tool
-mypy fit_tool
+uv run ruff check fit_tool
+uv run mypy fit_tool
 ```
 
 Do not update `uv.lock` unless dependencies or dependency groups intentionally changed. Use `uv lock` or an appropriate `uv add`/`uv remove` command for intentional dependency changes; never edit the lock file by hand.
@@ -101,8 +101,8 @@ and `template_message_factory.jinja`, then regenerate. Document public usage in
 - Preserve the public behavior of FIT parsing, serialization, CRC validation, field scaling, developer fields, and local message definitions unless the change explicitly alters that behavior.
 - Treat FIT byte layout and round-trip fidelity as core invariants. For parser or writer changes, add tests that cover both decoding and encoding, and compare serialized bytes where appropriate.
 - Use existing abstractions such as `FitFile`, `FitFileBuilder`, `Record`, `DefinitionMessage`, `DataMessage`, and the generated message classes instead of duplicating protocol logic.
-- Match the style of the surrounding handwritten module. New code should satisfy the repository's Ruff configuration (120-character line limit and Python 3.8 target) without sweeping unrelated cleanup.
-- Add type annotations to new or substantially changed handwritten functions. Avoid syntax or standard-library APIs unavailable on Python 3.8.
+- Match the style of the surrounding handwritten module. New code should satisfy the repository's Ruff configuration (120-character line limit and Python 3.9 target) without sweeping unrelated cleanup.
+- Add type annotations to new or substantially changed handwritten functions. Avoid syntax or standard-library APIs unavailable on Python 3.9.
 - Use `pathlib.Path` for new filesystem code where it makes the code clearer, but do not rewrite stable code solely to change path style.
 - Keep optional example-only dependencies out of the core dependency list unless the library itself starts importing them.
 - Do not commit generated artifacts from `dist/`, coverage reports, egg metadata, virtual environments, or `fit_tool/tests/out/`.

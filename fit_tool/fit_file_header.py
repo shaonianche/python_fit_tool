@@ -3,6 +3,7 @@ from __future__ import annotations
 import struct
 
 from fit_tool import SDK_VERSION
+from fit_tool.exceptions import FitHeaderError
 from fit_tool.utils.crc import crc16
 
 
@@ -125,7 +126,7 @@ class FitFileHeader:
         offset = 0
         size, = struct.unpack('B', bytes_buffer[0:1])
         if size != len(bytes_buffer):
-            raise ValueError(f'Size {size} does not match bytes length: {len(bytes_buffer)}')
+            raise FitHeaderError(f'Size {size} does not match bytes length: {len(bytes_buffer)}')
         offset += 1
 
         protocol_version = ProtocolVersion.from_bytes(bytes_buffer[offset: offset + 1])
@@ -141,7 +142,7 @@ class FitFileHeader:
         tag_value, = struct.unpack('4s', bytes_buffer[offset:offset + 4])
         offset += 4
         if tag_value != b'.FIT':
-            raise ValueError('".FIT" not in header.')
+            raise FitHeaderError('".FIT" not in header.')
 
         crc = None
         if len(bytes_buffer) == 14:

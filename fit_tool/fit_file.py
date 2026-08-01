@@ -4,7 +4,8 @@ import csv
 import shutil
 import struct
 import tempfile
-from typing import TYPE_CHECKING, BinaryIO, Iterable, Iterator
+from collections.abc import Iterable, Iterator
+from typing import TYPE_CHECKING, BinaryIO
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.exceptions import FitCRCError, FitEncodingError

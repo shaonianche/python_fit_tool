@@ -1,0 +1,1 @@
+Code hygiene: remove dead ``to_row`` statement, drop mutable ``Field.encoded_values`` class default, raise typed ``Fit*`` errors on core parse/encode paths, improve CLI error exits, align package metadata and AGENTS.md with Python 3.9+ and Ruff as a CI gate.

@@ -8,7 +8,8 @@ compressed timestamps, component expansion).
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterator
+from collections.abc import Iterator
+from typing import BinaryIO
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.record import Record

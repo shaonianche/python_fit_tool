@@ -133,6 +133,17 @@ class TestField(unittest.TestCase):
         field.set_encoded_value(0, value)
         field.to_row()
 
+    def test_field_has_no_shared_class_level_encoded_values(self):
+        """Hygiene: avoid mutable class default for encoded_values."""
+        self.assertFalse(hasattr(Field, 'encoded_values') and isinstance(getattr(Field, 'encoded_values', None), list))
+        a = Field(name='a', base_type=BaseType.UINT8, size=1)
+        b = Field(name='b', base_type=BaseType.UINT8, size=1)
+        a.set_encoded_value(0, 1, check_validity=False)
+        b.set_encoded_value(0, 2, check_validity=False)
+        self.assertEqual(a.encoded_values[0], 1)
+        self.assertEqual(b.encoded_values[0], 2)
+        self.assertIsNot(a.encoded_values, b.encoded_values)
+
     def test_from_field_does_not_share_encoded_values(self):
         original = Field(name='speed', base_type=BaseType.UINT8, size=1)
         original.set_encoded_value(0, 7, check_validity=False)

@@ -5,6 +5,7 @@ from enum import Enum
 
 from fit_tool.base_type import BaseType
 from fit_tool.endian import Endian
+from fit_tool.exceptions import FitEncodingError
 from fit_tool.field_component import FieldComponent
 from fit_tool.field_definition import FieldDefinition
 from fit_tool.sub_field import SubField
@@ -16,8 +17,6 @@ class ArrayType(Enum):
 
 
 class Field:
-    encoded_values = []
-
     def __init__(self, field_id: int = 0, name: str = '', base_type: BaseType = BaseType.ENUM,
                  offset: float = None,
                  scale: float = None,
@@ -233,14 +232,14 @@ class Field:
         if check_validity and self.base_type != BaseType.STRING:
             is_float_invalid = encoded_value is None and self.base_type.is_float()
             if not is_float_invalid and not self.base_type.is_valid(encoded_value):
-                raise ValueError(
+                raise FitEncodingError(
                     f'{self.name} encoded value {encoded_value} is not in valid range '
                     f'[{self.base_type.min}, {self.base_type.max}]')
 
         size_changed = False
         while index >= self.length:
             if (self.base_type != BaseType.STRING or self.array_type is not None) and not self.growable:
-                raise ValueError('Field is not growable')
+                raise FitEncodingError('Field is not growable')
 
             self.encoded_values.append(None)
             size_changed = True
@@ -251,7 +250,9 @@ class Field:
             new_size = self.calculate_size()
             if new_size > self.size:
                 if not self.growable:
-                    raise ValueError(f'Size exceeds fixed field size of {self.size} bytes. Consider making field growable.')
+                    raise FitEncodingError(
+                        f'Size exceeds fixed field size of {self.size} bytes. Consider making field growable.'
+                    )
                 self.size = new_size
 
     def encode_value(self, value, sub_field: SubField = None):
@@ -318,7 +319,9 @@ class Field:
             length = size // base_type.size
 
             if length * base_type.size != size:
-                raise ValueError(f'Size is not a multiple of type: size: {size}, type: {base_type}')
+                raise FitEncodingError(
+                    f'Size is not a multiple of type: size: {size}, type: {base_type}'
+                )
 
             return length
 
@@ -356,7 +359,7 @@ class Field:
     def encoded_value_to_bytes(self, encoded_value, endian: Endian = Endian.LITTLE) -> bytes:
         if self.base_type == BaseType.STRING:
             if encoded_value is None:
-                raise ValueError('Value cannot be None')
+                raise FitEncodingError('Value cannot be None')
             return encoded_value.encode('utf-8') + b'\0'
 
         endian_symbol = '<' if endian == Endian.LITTLE else '>'
@@ -386,7 +389,7 @@ class Field:
             return bytes_buffer
 
         if encoded_value is None:
-            raise ValueError('Value cannot be None')
+            raise FitEncodingError('Value cannot be None')
 
         struct.pack_into(f'{endian_symbol}{self.base_type.struct_format}', bytes_buffer, 0, encoded_value)
 

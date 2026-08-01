@@ -11,6 +11,7 @@ class TestPublicApi(unittest.TestCase):
             FIT_DATA_TYPE,
             PROTOCOL_VERSION,
             SDK_VERSION,
+            ConformanceLevel,
             FitCRCError,
             FitEncodingError,
             FitError,
@@ -20,6 +21,10 @@ class TestPublicApi(unittest.TestCase):
             FitParseError,
             FitRecordError,
             FitValidationError,
+            Severity,
+            ValidationFinding,
+            ValidationReport,
+            validate_fit_file,
         )
 
         self.assertEqual(SDK_VERSION, '21.205.0')
@@ -33,6 +38,12 @@ class TestPublicApi(unittest.TestCase):
         self.assertTrue(issubclass(FitRecordError, FitParseError))
         self.assertTrue(callable(FitFile.from_file))
         self.assertTrue(callable(FitFileBuilder))
+        self.assertTrue(callable(validate_fit_file))
+        self.assertTrue(callable(FitFile.validate))
+        self.assertEqual(ConformanceLevel.WIRE.value, 'wire')
+        self.assertEqual(Severity.ERROR.value, 'error')
+        self.assertTrue(issubclass(ValidationFinding, object))
+        self.assertTrue(callable(ValidationReport))
 
     def test_package_all_matches_api_surface(self) -> None:
         import fit_tool

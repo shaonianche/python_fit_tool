@@ -6,7 +6,7 @@ this document is the human rollup for product claims.
 
 **Do not** market “full Garmin FIT / Profile conformance.” See
 [`FIT_CONFORMANCE_DESIGN.md`](FIT_CONFORMANCE_DESIGN.md) §11 residual checklist
-and the README [capability boundary](../README.md#capability-boundary).
+and the [capability boundary](CAPABILITY_BOUNDARY.md) document.
 
 ## Epic outcome
 

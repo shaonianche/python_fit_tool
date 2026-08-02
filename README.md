@@ -1,150 +1,58 @@
 > **Note**: This is a community-maintained fork. The original package was removed from PyPI by its author and cannot be restored. This repository continues development and publishing under the same package name.
 
-A library for reading and writing Garmin FIT files — strong for common Activity
-and Workout workflows, not a full Garmin FIT protocol implementation.
+A Python library for reading and writing Garmin FIT files — practical for
+common Activity, Workout, and Course workflows.
 
-## Background
+**What works / what we do not claim** (capability matrix, validation levels,
+encode policies): [`docs/CAPABILITY_BOUNDARY.md`](docs/CAPABILITY_BOUNDARY.md).
 
-> The Flexible and Interoperable Data Transfer (FIT) protocol is designed specifically for the storing and sharing of data that originates from sport, fitness and health devices. The FIT protocol defines a set of data storage templates (FIT messages) that can be used to store information such as user profiles, activity data, courses, and workouts. It is specifically designed to be compact, interoperable and extensible.
+Long-term strict-conformance **roadmap** (target architecture, not current
+guarantees): [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
 
-[More info...](https://developer.garmin.com/fit/overview/)
+Profile in use: `21.205.0` (`fit_tool.SDK_VERSION`).
 
-## Capability boundary
+## Installation
 
-This library is suitable for everyday Activity / Workout / Course read-write,
-CSV export, and typed message editing. It does **not** claim full Garmin FIT
-protocol or Profile conformance.
-
-The long-term architecture and strict-conformance roadmap live in
-[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md). That document
-describes the **target** design; it is not a guarantee of what the current
-package already implements. Profile version in use: `21.205.0` (see
-`fit_tool/gen/`).
-
-| Status | Capabilities |
-| --- | --- |
-| **Supported** | Common Activity / Workout / Course read-write via typed profile messages; `FitFileBuilder` encode path; **header CRC** (14-byte headers) and **file-level CRC** on load / stream exhaustion (`check_crc=True` default); developer fields for common declaration patterns; streaming iterators (`FitFile.iter_file` / `iter_stream`); CSV export (`to_csv` / `to_rows`); **chained multi-segment** FIT decode via `from_bytes` / `from_file` (all segments projected into `records`); **compressed timestamp** reconstruction into field 253; **subfield resolution** (ref-field match → type / scale / offset / units; multi-ref AND; first match wins); **component expansion** for all Profile main-field sources (generated registry) **and** components on the active subfield; nested expansion + accumulator rollover; **unknown field ids** on known messages as `UnknownField` (decoded values + `raw_bytes`); **encode modes** `EncodeMode.PRESERVE` (default; unedited bit-identical + post-edit dirty re-project) and `EncodeMode.CANONICAL` (full re-project, normalized sizes/CRCs; optional `strict=True` precheck) — see [Encode policies](#encode-policies) |
-| **Partial** | Unknown global messages via `GenericMessage` (readable; unedited preserve keeps wire bytes; post-edit re-encodes dirty records only); composable validation (`validate_fit_file` / `FitFile.validate`) with **WIRE** + **PROFILE** + **FILE_TYPE** (Activity / Workout / Course) and opt-in **PRESERVATION**; **PROFILE scopes** under O1 (`ProfileScope.CORE` default for `strict` / `DEFAULT_LEVELS`: developer-field rules + ambiguous-subfield ERROR; **DOMAIN** / **FULL** opt-in: native base-type + closed-enum checks from gen-exported `field_catalog` for high-frequency vs entire Profile.xlsx `21.205.0` catalog) — see [Validate FIT files](#validate-fit-files) and design doc §3.1; Builder `strict=True` wraps WIRE+PROFILE+FILE_TYPE at **CORE** only |
-| **Not supported / incomplete** | Remaining PROFILE rule families (native **required** fields, units/scale consistency beyond subfield scale/units, open/ranged enums as ERROR); FILE_TYPE for types other than Activity/Workout/Course (fails closed); intentional `repair()` API (strict path never silent-repairs); bit-identical rewrite of compressed-timestamp dirty records when field 253 is not on the definition (strict raises; non-strict keeps compressed header); public `FitDocument` / multi-segment encode API; full Garmin SDK cross-validation as a release gate |
-
-### What this library still does not claim
-
-Until design-doc [§11 Definition of Done](docs/FIT_CONFORMANCE_DESIGN.md#11-definition-of-done) is met with evidence, do **not** describe the package as “full Garmin FIT / Profile conformant.” Prefer:
-
-- “Supports common Activity / Workout / Course workflows”
-- “PROFILE validation defaults to CORE; DOMAIN/FULL are opt-in”
-- “FILE_TYPE validates Activity, Workout, and Course only”
-
-**Non-goals** (by design, not just unfinished work):
-
-- Reproducing undocumented Garmin Connect acceptance heuristics
-- Silent repair of corrupt files on the strict path
-- Treating every Garmin best-practice note as a wire ERROR
-- Replacing generated typed message classes as the ergonomic public API
-
-**Residuals** that still block §11 marketing claims (honest backlog, not this matrix’s “Supported” row): other standard file types, remaining PROFILE rule families, broader interop/golden corpus, compressed-timestamp encode parity, and performance/API migration items in design-doc Phases 1–5. See the design doc **Remaining gaps** / §11 residual checklist.
-
-If you need a construct listed as incomplete, prefer an official Garmin SDK or
-track follow-up work against the design doc. Architecture reviews should judge
-this package against the matrix above, not against full protocol conformance.
-
-Installation
-==================
-
-The runtime library and `fit-tool` CLI have no third-party dependencies.
-Optional packages are only needed for profile generation (maintainers regenerating
-code from the Garmin Profile spreadsheet).
-
-### Using uv (recommended)
+Runtime has **no** third-party dependencies.
 
 ```bash
 uv add fit-tool
-```
-
-### Using pip
-
-```bash
-python3 -m pip install --upgrade pip
+# or
 python3 -m pip install --upgrade fit-tool
 ```
 
-### Profile generation tooling (optional)
-
-Regenerating `fit_tool/profile/` from the Garmin Profile spreadsheet requires the
-`gen` extra (`openpyxl`, `inflection`, `jinja2`):
+Optional profile regeneration (maintainers only):
 
 ```bash
-# pip
-python3 -m pip install 'fit-tool[gen]'
-
-# uv (published package)
-uv add 'fit-tool[gen]'
-
-# local checkout (dev group already includes gen deps for the full test suite)
-uv sync --group dev
-# or, without the full dev toolchain:
-uv sync --extra gen
-```
-
-Then run:
-
-```bash
+uv add 'fit-tool[gen]'   # openpyxl, inflection, jinja2
 uv run gen-profile
 ```
 
-Without the gen extra, `gen-profile` exits with an install hint. End users who
-only read/write FIT files do not need these packages.
-
-Command line interface
-=======================
-
-```console
-usage: fit-tool [-h] [-v] [-o OUTPUT] [-l LOG] [-t {csv,fit}] FILE
-
-Tool for managing FIT files.
-
-positional arguments:
-  FILE                  FIT file to process
-
-options:
-  -h, --help            show this help message and exit
-  -v, --verbose         specify verbose output
-  -o, --output OUTPUT   Output filename.
-  -l, --log LOG         Log filename.
-  -t, --type {csv,fit}  Output format type. Options: csv, fit.
-```
-
-### Convert file to CSV
+## CLI
 
 ```bash
-# Using uvx
-uvx fit-tool oldstage.fit
-
-# Or after installation
-fit-tool oldstage.fit
+fit-tool activity.fit                 # → CSV
+fit-tool -t fit -o out.fit in.fit
+fit-tool -h
 ```
 
-Library Usage
-=======================
+## Public API
 
-See [Capability boundary](#capability-boundary) for what works today. The
-strict-conformance roadmap (target architecture, not current guarantees) is in
-[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
-
-### Public API
-
-Application code should import the stable surface from the package root:
+Import the stable surface from the package root:
 
 ```python
 from fit_tool import (
     FitFile,
     FitFileBuilder,
+    EncodeMode,
+    EncodeOptions,
+    ConformanceLevel,
+    ProfileScope,
+    validate_fit_file,
     FitError,
     FitParseError,
     FitCRCError,
     FitValidationError,
-    ConformanceLevel,
-    validate_fit_file,
     PROTOCOL_VERSION,
     SDK_VERSION,
 )
@@ -152,17 +60,14 @@ from fit_tool import (
 
 | Symbol | Role |
 | --- | --- |
-| `FitFile` | Load, inspect, stream, serialize, and validate FIT files |
+| `FitFile` | Load, inspect, stream, serialize, validate |
 | `FitFileBuilder` | Build FIT files from messages |
-| `EncodeMode`, `EncodeOptions` | Explicit encode policies (PRESERVE vs CANONICAL) for `to_bytes` |
-| `validate_fit_file`, `ConformanceLevel`, `ProfileScope`, `ValidationReport`, `profile_rule_coverage` | Composable validation (independent of Builder) |
-| `FitError` and subclasses | Typed errors for parse, CRC, encode, and validation failures |
-| `PROTOCOL_VERSION`, `SDK_VERSION`, `FIT_DATA_TYPE` | Bundled protocol/profile version metadata |
+| `EncodeMode` / `EncodeOptions` | PRESERVE vs CANONICAL encode policies |
+| `validate_fit_file` / `ConformanceLevel` / `ProfileScope` | Composable validation |
+| `FitError` and subclasses | Typed parse / CRC / encode / validation errors |
+| `PROTOCOL_VERSION` / `SDK_VERSION` | Bundled protocol and Profile version strings |
 
-The same symbols are defined in `fit_tool.api` and re-exported by `fit_tool`.
-
-**Profile messages** (generated types such as `RecordMessage`, `FileIdMessage`) are
-not re-exported at the package root. Import them by module path:
+Profile messages are **not** re-exported at the root:
 
 ```python
 from fit_tool.profile.messages.file_id_message import FileIdMessage
@@ -170,210 +75,89 @@ from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.profile_type import FileType, Sport
 ```
 
-Naming convention: message module is the snake_case form of the class
-(`record_message` → `RecordMessage`), under `fit_tool.profile.messages`.
+| Mode | API |
+| --- | --- |
+| Create | `RecordMessage()` |
+| Decode projection | `RecordMessage.from_definition(definition, ...)` |
 
-**Construction paths** (do not pass a definition into `__init__`):
+Deep imports (`from fit_tool.fit_file import FitFile`) still work; prefer the
+package root for new code.
 
-| Mode | API | Use when |
-| --- | --- | --- |
-| Create / author | `RecordMessage()` | Writing new messages in a builder |
-| Project / decode | `RecordMessage.from_definition(definition, developer_fields=...)` | Applying a local definition (decode path) |
+## Examples
 
-`MessageFactory.from_definition` and the FitFile/wire projection path use the
-definition factory. Example authoring:
-
-```python
-from fit_tool.profile.messages.file_id_message import FileIdMessage
-from fit_tool.profile.profile_type import FileType, Manufacturer
-
-msg = FileIdMessage()
-msg.type = FileType.ACTIVITY
-msg.manufacturer = Manufacturer.DEVELOPMENT
-```
-
-**Compatibility:** deep imports such as `from fit_tool.fit_file import FitFile`
-remain supported. Prefer the package-root form for new code. No deep-import paths
-are removed in this release; future deprecations will be announced in the changelog.
-
-### Minimal read/convert example
+### Read and convert to CSV
 
 ```python
-from pathlib import Path
-
 from fit_tool import FitFile
 
-root = Path.cwd()
-in_file = root / "fit_tool" / "tests" / "data" / "sdk" / "Activity.fit"
-out_file = root / "fit_tool" / "tests" / "out" / "Activity.csv"
-out_file.parent.mkdir(parents=True, exist_ok=True)
-
-fit_file = FitFile.from_file(str(in_file))
-fit_file.to_csv(str(out_file))
+fit = FitFile.from_file("activity.fit")
+fit.to_csv("activity.csv")
 ```
 
-### Stream records from large FIT files
-
-`FitFile.from_file()` loads a complete file and is convenient when records must be edited. For read-only,
-record-by-record processing, use the streaming iterator to keep memory usage bounded:
+### Stream large files (bounded memory)
 
 ```python
 from fit_tool import FitFile
 
 for record in FitFile.iter_file("activity.fit"):
-    process(record)
+    process(record)  # CRC checked when the iterator is exhausted
 ```
 
-CRC validation is performed when the iterator is fully exhausted. `FitFile.iter_stream()` accepts an already-open
-binary stream. Builders can serialize directly with `FitFileBuilder.build_bytes()` when a `FitFile` object is not needed.
-
-### Validate FIT files
-
-Validation is a first-class API. Levels match the design doc
-([`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §3):
-
-| Level | What it checks | Status |
-| --- | --- | --- |
-| `ConformanceLevel.WIRE` | Local IDs, definition field layout/sizes, data records vs active definition | Implemented |
-| `ConformanceLevel.PROFILE` | Scoped Profile semantics via `profile_scope=` / `ProfileScope` | **CORE (default):** developer-field declarations + **ambiguous native subfields** as ERROR. **DOMAIN (opt-in):** CORE + native base-type and closed-enum checks on high-frequency Activity/Workout messages. **FULL (opt-in):** same native rules for the entire gen-exported catalog from Profile.xlsx `21.205.0`. FULL is never default `strict` — design doc §3.1 (O1). Open/ranged enums (e.g. `activity_class`) are excluded from closed-enum checks. |
-| `ConformanceLevel.FILE_TYPE` | `file_id` first/unique + required fields; Activity, Workout, and Course required messages and fields | **Activity + Workout + Course**; other `file_id.type` values **fail closed** (intentional until more validators exist) |
-| `ConformanceLevel.PRESERVATION` | Post-edit rewrite loss (e.g. `UnknownField.raw_bytes` cleared by mutation) | **Opt-in** — not in default levels / Builder `strict=True` |
-
-Call validation on any `FitFile` or record list — after decode or before encode:
-
-```python
-from fit_tool import ConformanceLevel, FitFile, validate_fit_file
-
-fit_file = FitFile.from_file("activity.fit")
-
-# Report mode (default: all implemented levels)
-report = fit_file.validate()
-if report.has_errors:
-    for finding in report.errors:
-        print(finding.level, finding.message)
-
-# Raise on first error
-fit_file.validate(raise_on_error=True)
-
-# Wire-only (e.g. after decode, without file-type rules)
-validate_fit_file(fit_file, levels={ConformanceLevel.WIRE})
-
-# Opt-in PROFILE DOMAIN / FULL (native base-type + closed-enum; never default strict)
-from fit_tool import ProfileScope
-validate_fit_file(fit_file, profile_scope=ProfileScope.FULL)
-
-# Opt-in post-edit rewrite-loss checks (unknown field raw_bytes, etc.)
-validate_fit_file(fit_file, levels={ConformanceLevel.PRESERVATION})
-```
-
-### Encode policies
-
-`FitFile.to_bytes` supports two explicit modes (`EncodeMode`), with the legacy
-`preserve=` boolean as an alias. Defaults: **PRESERVE**, non-strict.
-
-```python
-from fit_tool import EncodeMode, FitFile
-
-fit = FitFile.from_bytes(raw_bytes)
-fit.to_bytes()                                   # PRESERVE (default)
-fit.to_bytes(mode=EncodeMode.PRESERVE)           # same
-fit.to_bytes(mode=EncodeMode.CANONICAL)          # full re-project
-fit.to_bytes(mode=EncodeMode.CANONICAL, strict=True)  # validate first
-fit.to_bytes(preserve=False)                     # alias → CANONICAL
-```
-
-| Concern | PRESERVE (default) | CANONICAL | + `strict=True` |
-| --- | --- | --- | --- |
-| Untouched records | copy `source_bytes` | re-project all | re-project all |
-| Dirty records | re-project | re-project | re-project |
-| Out-of-range values | reject at set (no clamp) | same | same + pre-encode validation |
-| Cleared field still on definition | protocol-invalid fill | same | same |
-| Scale / offset | `round((v+offset)*scale)` | same | same |
-| Expanded components | only definition fields on wire | same | same |
-| Compressed timestamp headers | keep if untouched; dirty may expand when field 253 is on the definition | expand when 253 on def; else keep compressed | expand when 253 on def; else **raise** |
-| CRC / sizes | recompute dirty segments only | recompute all | recompute; bad override raises |
-
-`strict=True` forces CANONICAL and runs WIRE + PROFILE + FILE_TYPE before encode.
-It never clamps invalid values or silently “fixes” bad caller data. Prefer
-`validate_fit_file` when you need a report without encoding.
-
-Full matrix and design notes:
-[`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) §6.
-
-### Post-edit preservation
-
-After `FitFile.from_bytes` / `from_file`, field mutations mark the owning
-`Record` dirty. PRESERVE mode re-encodes only dirty records and copies original
-wire bytes for the rest (including unknown fields on untouched records).
-Structural edits (`add_record` / `remove_record` / `mark_dirty()`) drop the wire
-snapshot and fully re-project:
-
-```python
-from fit_tool import EncodeMode, FitFile
-from fit_tool.profile.messages.record_message import RecordMessage
-
-fit = FitFile.from_bytes(raw_bytes)
-for record in fit.records:
-    if not record.is_definition and isinstance(record.message, RecordMessage):
-        record.message.heart_rate = 140  # marks this record dirty
-        break
-
-# Untouched records keep source_bytes; edited record is re-projected.
-out = fit.to_bytes(mode=EncodeMode.PRESERVE)
-```
-
-`FitFileBuilder` always checks wire limits on `add` (local message numbers, definition
-sizes). `strict=True` is a thin wrapper over the same API with default levels
-(WIRE + PROFILE + FILE_TYPE) and `raise_on_error=True`:
+### Build a small Activity
 
 ```python
 from fit_tool import FitFileBuilder
+from fit_tool.profile.messages.file_id_message import FileIdMessage
+from fit_tool.profile.messages.record_message import RecordMessage
+from fit_tool.profile.profile_type import FileType, Manufacturer
 
-builder = FitFileBuilder(strict=True)
-builder.add_all(messages)
-fit_bytes = builder.build_bytes()
+builder = FitFileBuilder(auto_define=True)
+file_id = FileIdMessage()
+file_id.type = FileType.ACTIVITY
+file_id.manufacturer = Manufacturer.DEVELOPMENT
+file_id.product = 0
+file_id.serial_number = 1
+file_id.time_created = 1_700_000_000_000
+builder.add(file_id)
+
+record = RecordMessage()
+record.timestamp = 1_700_000_000_000
+record.heart_rate = 120
+builder.add(record)
+
+data = builder.build_bytes()
+# FitFileBuilder(strict=True) also runs WIRE + PROFILE(CORE) + FILE_TYPE
+# (Activity needs lap/session/activity messages — see examples/).
 ```
 
-Non-strict builders remain unchanged. Prefer `validate_fit_file` / `FitFile.validate`
-when you need a report, level selection, or validation on the read path.
+### Validate
 
-### Protocol fixture corpus and gap inventory
+```python
+from fit_tool import FitFile, ProfileScope, validate_fit_file, ConformanceLevel
 
-Committed samples live under [`fit_tool/tests/data/`](fit_tool/tests/data/). See
-[`fit_tool/tests/data/README.md`](fit_tool/tests/data/README.md) for:
+fit = FitFile.from_file("activity.fit")
+report = fit.validate()
+if report.has_errors:
+    print(report.errors)
 
-- layout of `sdk/`, `interop/`, and device smokes;
-- a **gap inventory** mapping protocol topics (components, subfields, unknown
-  fields, encode/FILE_TYPE/PROFILE scopes) to constructive helpers or fixtures;
-- how to obtain additional Garmin SDK samples when licensing allows.
-
-Epic-level release narrative (next version bump):  
-[`docs/EPIC_SHA12_RELEASE_NOTES.md`](docs/EPIC_SHA12_RELEASE_NOTES.md).
-
-Prefer constructive builders in `fit_tool/tests/protocol_fixture_helpers.py` over
-new large binary dumps. Known incomplete semantics are pinned with explicit
-`xfail` in `fit_tool/tests/test_protocol_gap_fixtures.py` (no silent skips).
-
-### Run Garmin SDK interoperability tests
-
-The normal test suite includes committed Garmin SDK golden bytes. A live bidirectional test additionally generates the
-same Activity with this library and the `fit-javascript-sdk` release matching `fit_tool.SDK_VERSION`, cross-decodes both
-files, runs Garmin's integrity check, and compares normalized semantics:
-
-```bash
-fit_profile_version=$(uv run python -c 'from fit_tool import SDK_VERSION; print(SDK_VERSION)')
-git clone --depth 1 --branch "$fit_profile_version" \
-  https://github.com/garmin/fit-javascript-sdk.git ../fit-javascript-sdk
-FIT_JS_SDK_PATH=../fit-javascript-sdk \
-  uv run pytest fit_tool/tests/test_garmin_sdk_interop.py -q
+# Opt-in deeper PROFILE rules (never the default for strict)
+validate_fit_file(fit, profile_scope=ProfileScope.FULL)
 ```
 
-CI resolves and checks out the matching official SDK tag in a dedicated interoperability job. The test intentionally
-does not require the two legal FIT encodings to be byte-for-byte identical.
+### Encode modes
 
-### Runnable examples in this repository
+```python
+from fit_tool import EncodeMode, FitFile
 
-These examples are synchronized with the current codebase and are runnable from the repository root:
+fit = FitFile.from_bytes(raw)
+fit.to_bytes()                              # PRESERVE (default)
+fit.to_bytes(mode=EncodeMode.CANONICAL)
+fit.to_bytes(mode=EncodeMode.CANONICAL, strict=True)
+```
+
+Details: [capability boundary — encode policies](docs/CAPABILITY_BOUNDARY.md#encode-policies).
+
+### Repository examples
 
 ```bash
 uv run python fit_tool/examples/read_activity_example.py
@@ -381,17 +165,14 @@ uv run python fit_tool/examples/modify_activity_example.py
 uv run python fit_tool/examples/write_workout_example.py
 ```
 
-Output files are written to `fit_tool/tests/out/`.
+`write_activity_example.py` / `write_course_example.py` need extra packages
+(`gpxpy`, `geopy`, …).
 
-### Optional examples that require extra packages
+## Further documentation
 
-`write_activity_example.py` and `write_course_example.py` depend on `gpxpy` and `geopy`.
-The plotting workflow depends on `numpy` and `matplotlib`.
-
-Install extras first, then run:
-
-```bash
-uv add gpxpy geopy numpy matplotlib
-uv run python fit_tool/examples/write_activity_example.py
-uv run python fit_tool/examples/write_course_example.py
-```
+| Doc | Contents |
+| --- | --- |
+| [`docs/CAPABILITY_BOUNDARY.md`](docs/CAPABILITY_BOUNDARY.md) | Supported / partial / incomplete matrix; validation & encode details |
+| [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) | Target architecture and roadmap |
+| [`docs/EPIC_SHA12_RELEASE_NOTES.md`](docs/EPIC_SHA12_RELEASE_NOTES.md) | Protocol-capability epic rollup notes |
+| [`fit_tool/tests/data/README.md`](fit_tool/tests/data/README.md) | Fixture inventory and gap map |

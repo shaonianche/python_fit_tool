@@ -6,12 +6,12 @@
 the installed package already meets full Garmin FIT conformance.
 
 For the library as shipped today, use the capability matrix in
-[`README.md`](../README.md#capability-boundary). That matrix is the source of
+[`docs/CAPABILITY_BOUNDARY.md`](CAPABILITY_BOUNDARY.md). That matrix is the source of
 truth for user-facing claims; this section must stay aligned with it.
 
 Baseline after Multica epic **SHA-12** stages 1–4 on `main` (wire #44/#45,
 hygiene, then C–J). **User-facing claims must match**
-[`README.md`](../README.md#capability-boundary); update both together.
+[`docs/CAPABILITY_BOUNDARY.md`](CAPABILITY_BOUNDARY.md); update both together.
 
 | Area | Today | This design |
 | --- | --- | --- |
@@ -30,14 +30,15 @@ hygiene, then C–J). **User-facing claims must match**
 
 Until §11 Definition of Done is met, do not describe the library as fully
 protocol-conformant. Prefer “supports common Activity/Workout/Course workflows”
-and point readers at the README matrix (including **What this library still
-does not claim**).
+and point readers at
+[`docs/CAPABILITY_BOUNDARY.md`](CAPABILITY_BOUNDARY.md) (including **What this
+library still does not claim**).
 
 ### Remaining gaps (roadmap ↔ Multica)
 
 Tracked under Multica epic **SHA-12** (protocol / capability extension). Stages
 1–4 children **C–J** are **done** on `main`; Stage 5 (**L** / SHA-23) is the
-public-claims pass that keeps this table and the README matrix honest.
+public-claims pass that keeps this table and `docs/CAPABILITY_BOUNDARY.md` honest.
 
 | Gap | Design doc | Multica | Notes |
 | --- | --- | --- | --- |
@@ -689,8 +690,8 @@ allocation based solely on untrusted lengths.
 
 Exit: every known conformance gap has a fixture and issue.
 
-**Progress:** status table and README matrix aligned after #44/#45 (SHA-13) and
-re-synced at Stage 5 (SHA-23). Fixture inventory and constructive goldens
+**Progress:** status table and capability-boundary matrix aligned after #44/#45
+(SHA-13) and re-synced at Stage 5 (SHA-23). Fixture inventory and constructive goldens
 landed under SHA-14; further corpus growth is optional follow-up.
 
 ### Phase 1: lossless wire layer
@@ -752,7 +753,7 @@ validators without repair.
 - Route legacy APIs through the conformance core.
 - Add compatibility shims and deprecation warnings.
 - Re-establish parse, encode, and streaming-memory budgets.
-- Publish accurate public capability claims (README matrix + this status table).
+- Publish accurate public capability claims (`docs/CAPABILITY_BOUNDARY.md` + this status table).
 
 Exit: no undocumented breaking changes and performance is no worse than the
 current optimized branch by more than the agreed budget; public claims match

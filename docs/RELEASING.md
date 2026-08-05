@@ -47,7 +47,7 @@ checks that they match. If they differ, the job fails before publish.
    git tag v0.9.16
    git push origin v0.9.16
    ```
-9. **Watch** Actions → workflow **Release**. Expect: version gate → `uv build` → dist version check → PyPI publish → GitHub Release with changelog body and `prerelease=false` for stable tags.
+9. **Watch** Actions → workflow **Release**. Expect: version gate → `uv build` → dist version check → **changelog section gate** → PyPI publish → GitHub Release with changelog body and `prerelease=false` for stable tags. (Changelog is validated *before* PyPI so a missing Towncrier section cannot leave an orphan upload.)
 10. **Verify**:
     - https://pypi.org/project/fit-tool/ shows the new version
     - `pip install fit-tool==X.Y.Z` (or `uv add fit-tool==X.Y.Z`) works

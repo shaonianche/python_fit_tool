@@ -175,4 +175,5 @@ uv run python fit_tool/examples/write_workout_example.py
 | [`docs/CAPABILITY_BOUNDARY.md`](docs/CAPABILITY_BOUNDARY.md) | Supported / partial / incomplete matrix; validation & encode details |
 | [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md) | Target architecture and roadmap |
 | [`docs/EPIC_SHA12_RELEASE_NOTES.md`](docs/EPIC_SHA12_RELEASE_NOTES.md) | Protocol-capability epic rollup notes |
+| [`docs/RELEASING.md`](docs/RELEASING.md) | Maintainer checklist for PyPI / GitHub releases |
 | [`fit_tool/tests/data/README.md`](fit_tool/tests/data/README.md) | Fixture inventory and gap map |

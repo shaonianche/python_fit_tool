@@ -17,6 +17,7 @@ The project uses setuptools through `pyproject.toml`, `uv` for dependency and lo
 - `fit_tool/profile/profile_type.py` and `fit_tool/profile/messages/`: generated profile code.
 - `news/`: Towncrier fragments named `<issue>.<type>`.
 - `.github/workflows/`: CI and PyPI release workflows.
+- `docs/RELEASING.md`: maintainer checklist for tagging and publishing a new version.
 
 ## Setup and common commands
 
@@ -138,6 +139,12 @@ User-visible fixes, features, deprecations, removals, and dependency changes sho
 Write fragments as concise, user-facing descriptions. Do not edit a released section of `CHANGELOG.md` for an unreleased change, and do not build/finalize the Towncrier changelog unless preparing a release.
 
 Update `README.md` when installation, CLI usage, supported workflows, or runnable examples change. Keep packaging metadata and console entry points in `pyproject.toml` aligned with the code and documentation.
+
+## Releasing
+
+Package version is static in `pyproject.toml` (`[project].version`). Git tags use a `v` prefix (`v0.9.15`) and must match that version (without `v`). Pushing a matching `v*` tag runs the Release workflow (PyPI via Trusted Publishing + GitHub Release from `CHANGELOG.md`).
+
+Full checklist, tag rules, and failure notes: [`docs/RELEASING.md`](docs/RELEASING.md).
 
 ## Change discipline
 

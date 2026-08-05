@@ -1,4 +1,0 @@
-Document the protocol fixture corpus and gap inventory under
-`fit_tool/tests/data/README.md`, with constructive Stage-2 golden tests for
-component edges, unknown fields on known messages, and subfield-bearing
-workout steps (explicit `xfail` where runtime is still incomplete).

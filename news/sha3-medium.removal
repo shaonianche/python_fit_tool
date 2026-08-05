@@ -1,1 +1,0 @@
-Deprecate ``Record.from_bytes`` for full-file decode. Prefer ``FitFile.from_bytes`` / ``WireDecoder`` + compatibility; the method remains for isolated record pack/unpack tests.

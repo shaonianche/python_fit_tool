@@ -1,1 +1,0 @@
-Move profile-generation packages (`openpyxl`, `inflection`, plus `jinja2`) to an optional `[gen]` extra and drop unused `bitstruct` from the runtime install.

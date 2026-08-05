@@ -1,1 +1,0 @@
-Protocol high-severity fixes: chained multi-segment FIT decode, trailing-byte rejection, compressed-timestamp reconstruction, known component expansion, and wire preservation encode for unedited buffer-decoded files.

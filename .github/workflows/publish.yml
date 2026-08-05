@@ -1,10 +1,12 @@
 name: Release
 
+# Formal releases are tag-only. Tags must be vX.Y.Z (stable) or a PEP 440
+# prerelease with a v prefix (e.g. v0.9.16a1). The package version in
+# pyproject.toml is the source of truth and must match the tag (without v).
 on:
   push:
     tags:
-      - "*"
-  workflow_dispatch:
+      - "v*"
 
 jobs:
   release-pypi:
@@ -22,39 +24,122 @@ jobs:
         with:
           enable-cache: "auto"
 
-      - name: Check prerelease
-        id: check_version
+      - name: Parse tag and verify package version
+        id: ver
         run: |
-          if [[ "${{ github.ref }}" =~ ^refs/tags/[0-9.]+$ ]]; then
-            echo "PRERELEASE=false" >> $GITHUB_OUTPUT
+          set -euo pipefail
+          TAG="${GITHUB_REF#refs/tags/}"
+
+          # Stable: v1.2.3
+          if [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            TAG_VERSION="${BASH_REMATCH[1]}"
+            PRERELEASE=false
+          # Prerelease (PEP 440-ish): v1.2.3a1, v1.2.3b2, v1.2.3rc1, v1.2.3.dev0, …
+          elif [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+((a|b|rc|alpha|beta)[0-9]*|\.dev[0-9]+))$ ]]; then
+            TAG_VERSION="${BASH_REMATCH[1]}"
+            PRERELEASE=true
           else
-            echo "PRERELEASE=true" >> $GITHUB_OUTPUT
+            echo "Unsupported tag format: $TAG" >&2
+            echo "Expected vX.Y.Z or a PEP 440 prerelease with a v prefix (e.g. v0.9.16a1)." >&2
+            exit 1
           fi
+
+          PKG_VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          if [[ "$PKG_VERSION" != "$TAG_VERSION" ]]; then
+            echo "Version mismatch: tag=$TAG_VERSION pyproject=$PKG_VERSION" >&2
+            echo "Bump pyproject.toml [project].version to match the tag before releasing." >&2
+            exit 1
+          fi
+
+          {
+            echo "TAG_VERSION=$TAG_VERSION"
+            echo "PRERELEASE=$PRERELEASE"
+          } >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG version=$TAG_VERSION prerelease=$PRERELEASE"
 
       - name: Build package
         run: uv build
+
+      - name: Assert dist version matches tag
+        run: |
+          set -euo pipefail
+          TAG_VERSION="${{ steps.ver.outputs.TAG_VERSION }}"
+          shopt -s nullglob
+          wheels=(dist/*.whl)
+          sdists=(dist/*.tar.gz)
+          if [[ ${#wheels[@]} -eq 0 ]]; then
+            echo "No wheel found under dist/" >&2
+            exit 1
+          fi
+          for path in "${wheels[@]}"; do
+            base=$(basename "$path")
+            if [[ ! "$base" =~ ^fit_tool-(.+)-py[0-9]+-none-any\.whl$ ]]; then
+              echo "Unexpected wheel name: $base" >&2
+              exit 1
+            fi
+            if [[ "${BASH_REMATCH[1]}" != "$TAG_VERSION" ]]; then
+              echo "Wheel version ${BASH_REMATCH[1]} != tag version $TAG_VERSION" >&2
+              exit 1
+            fi
+          done
+          for path in "${sdists[@]}"; do
+            base=$(basename "$path")
+            if [[ ! "$base" =~ ^fit[_-]tool-(.+)\.tar\.gz$ ]]; then
+              echo "Unexpected sdist name: $base" >&2
+              exit 1
+            fi
+            if [[ "${BASH_REMATCH[1]}" != "$TAG_VERSION" ]]; then
+              echo "Sdist version ${BASH_REMATCH[1]} != tag version $TAG_VERSION" >&2
+              exit 1
+            fi
+          done
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7.0.1
         with:
           name: fit-tool-wheel
-          path: dist/*.whl
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
           if-no-files-found: error
           retention-days: 15
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
-      - name: Get Changelog
-        id: get-changelog
+      - name: Extract changelog for this version
         run: |
-          awk '/## Release/{if (flag==1)exit;else;flag=1;next} flag' CHANGELOG.md > .changelog.md
+          set -euo pipefail
+          TAG_VERSION="${{ steps.ver.outputs.TAG_VERSION }}"
+          # Keep the ## Release header for this version; stop at the next ## Release.
+          awk -v ver="$TAG_VERSION" '
+            BEGIN { hdr = "## Release v" ver }
+            index($0, hdr) == 1 {
+              if (found) exit
+              found = 1
+              print
+              next
+            }
+            /^## Release/ && found { exit }
+            found { print }
+          ' CHANGELOG.md > .changelog.md
 
-      - name: Create Release
+          if ! grep -q "^## Release v${TAG_VERSION}" .changelog.md; then
+            echo "CHANGELOG.md has no section starting with '## Release v${TAG_VERSION}'" >&2
+            echo "Run: uv run towncrier build --version ${TAG_VERSION}" >&2
+            exit 1
+          fi
+          if [[ ! -s .changelog.md ]]; then
+            echo "Extracted changelog is empty" >&2
+            exit 1
+          fi
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
+          tag_name: ${{ github.ref_name }}
           body_path: .changelog.md
           draft: false
-          prerelease: ${{ steps.check_version.outputs.PRERELEASE }}
+          prerelease: ${{ steps.ver.outputs.PRERELEASE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

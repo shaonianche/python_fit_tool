@@ -1,1 +1,1 @@
-Document the release checklist and harden the tag-based PyPI/GitHub Release workflow (version gate, ``v``-prefix tags, changelog extraction).
+Document the release checklist and harden the tag-based PyPI/GitHub Release workflow (version gate, v-prefix tags, changelog extraction, split build/publish/github-release jobs).

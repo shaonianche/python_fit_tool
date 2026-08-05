@@ -3,18 +3,23 @@ name: Release
 # Formal releases are tag-only. Tags must be vX.Y.Z (stable) or a PEP 440
 # prerelease with a v prefix (e.g. v0.9.16a1). The package version in
 # pyproject.toml is the source of truth and must match the tag (without v).
+#
+# Jobs are split so a failed GitHub Release can be re-run without re-uploading
+# to PyPI. No GitHub Environment / approval gate (small maintainer set).
 on:
   push:
     tags:
       - "v*"
 
 jobs:
-  release-pypi:
-    name: Release to PyPI
+  build:
+    name: Build and validate
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: write
+      contents: read
+    outputs:
+      tag_version: ${{ steps.ver.outputs.TAG_VERSION }}
+      prerelease: ${{ steps.ver.outputs.PRERELEASE }}
 
     steps:
       - uses: actions/checkout@v7.0.1
@@ -121,20 +126,51 @@ jobs:
             exit 1
           fi
 
-      - name: Upload artifacts
+      - name: Upload release artifacts
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: fit-tool-wheel
+          name: fit-tool-release
           path: |
             dist/*.whl
             dist/*.tar.gz
+            .changelog.md
           if-no-files-found: error
           retention-days: 15
 
-      # Publish only after version + changelog gates pass so a missing
-      # Towncrier section never leaves an orphan PyPI upload.
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # No environment: approval gate intentionally omitted for a small maintainer set.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v7.0.1
+        with:
+          name: fit-tool-release
+          path: .
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  github-release:
+    name: Create GitHub Release
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v7.0.1
+        with:
+          name: fit-tool-release
+          path: .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
@@ -142,6 +178,6 @@ jobs:
           tag_name: ${{ github.ref_name }}
           body_path: .changelog.md
           draft: false
-          prerelease: ${{ steps.ver.outputs.PRERELEASE }}
+          prerelease: ${{ needs.build.outputs.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

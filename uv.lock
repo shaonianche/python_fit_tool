@@ -338,7 +338,7 @@ wheels = [
 
 [[package]]
 name = "fit-tool"
-version = "0.9.15"
+version = "0.9.16"
 source = { editable = "." }
 
 [package.optional-dependencies]

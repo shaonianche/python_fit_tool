@@ -1,3 +1,0 @@
-Move the detailed capability matrix and validation/encode notes from the
-README into ``docs/CAPABILITY_BOUNDARY.md``. The README now keeps a short
-install, public API, and minimal examples section, with a link to that doc.

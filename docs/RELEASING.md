@@ -13,8 +13,18 @@ Releases. Day-to-day contribution rules live in [`AGENTS.md`](../AGENTS.md).
 | PyPI | Trusted Publishing (OIDC); no long-lived API token in the repo |
 | GitHub Release | Created by the same workflow; body = the matching `CHANGELOG.md` section |
 
+The Release workflow is **three jobs** (no approval Environment):
+
+1. **`build`** — tag / `pyproject` gate, `uv build`, dist version check, changelog extraction, upload artifact  
+2. **`publish`** — download artifact → upload to PyPI  
+3. **`github-release`** — download artifact → create GitHub Release  
+
 The workflow **does not** rewrite the package version from the tag. It only
 checks that they match. If they differ, the job fails before publish.
+
+There is **no** GitHub Environment required-reviewer gate: push of a valid `v*`
+tag runs the full pipeline automatically (appropriate for a small maintainer
+set).
 
 **Tag rules**
 
@@ -47,7 +57,11 @@ checks that they match. If they differ, the job fails before publish.
    git tag v0.9.16
    git push origin v0.9.16
    ```
-9. **Watch** Actions → workflow **Release**. Expect: version gate → `uv build` → dist version check → **changelog section gate** → PyPI publish → GitHub Release with changelog body and `prerelease=false` for stable tags. (Changelog is validated *before* PyPI so a missing Towncrier section cannot leave an orphan upload.)
+9. **Watch** Actions → workflow **Release**:
+   - `build` → version / dist / changelog gates  
+   - `publish` → PyPI  
+   - `github-release` → GitHub Release (`prerelease=false` for stable tags)  
+   Changelog is validated in `build` *before* PyPI so a missing Towncrier section cannot leave an orphan upload.
 10. **Verify**:
     - https://pypi.org/project/fit-tool/ shows the new version
     - `pip install fit-tool==X.Y.Z` (or `uv add fit-tool==X.Y.Z`) works
@@ -63,7 +77,9 @@ checks that they match. If they differ, the job fails before publish.
 
 ## Failure notes
 
-- **PyPI succeeded, GitHub Release failed**: do **not** re-run the whole job blindly (PyPI will reject the same files). Create or edit the GitHub Release for that tag and paste the matching changelog section, or fix the Release step and re-run only that step if the workflow is later split.
+- **`build` failed**: fix the tag, `pyproject.toml` version, or changelog; push a corrected tag/commit as needed. Nothing was uploaded to PyPI.
+- **`publish` failed**: inspect the job log (Trusted Publishing / network). After a successful fix, use **Re-run failed jobs** so only `publish` (and then `github-release`) re-run.
+- **`publish` succeeded, `github-release` failed**: use **Re-run failed jobs** (re-runs only `github-release`). Do **not** use **Re-run all jobs** — that would re-enter `publish` and hit PyPI duplicate-file errors for the same version.
 - **Version already on PyPI**: bump to a new version; never try to overwrite.
 - **Never** push a release tag or publish to PyPI from an automated agent unless a human explicitly requested that release.
 

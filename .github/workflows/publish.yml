@@ -3,18 +3,23 @@ name: Release
 # Formal releases are tag-only. Tags must be vX.Y.Z (stable) or a PEP 440
 # prerelease with a v prefix (e.g. v0.9.16a1). The package version in
 # pyproject.toml is the source of truth and must match the tag (without v).
+#
+# Jobs are split so a failed GitHub Release can be re-run without re-uploading
+# to PyPI. No GitHub Environment / approval gate (small maintainer set).
 on:
   push:
     tags:
       - "v*"
 
 jobs:
-  release-pypi:
-    name: Release to PyPI
+  build:
+    name: Build and validate
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: write
+      contents: read
+    outputs:
+      tag_version: ${{ steps.ver.outputs.TAG_VERSION }}
+      prerelease: ${{ steps.ver.outputs.PRERELEASE }}
 
     steps:
       - uses: actions/checkout@v7.0.1
@@ -100,6 +105,7 @@ jobs:
           TAG_VERSION="${{ steps.ver.outputs.TAG_VERSION }}"
           # Match Towncrier headers exactly: "## Release v{version} ({date})".
           # Require a space after the version so v0.9.1 does not match v0.9.15.
+          # Non-dotfile name: upload-artifact ignores hidden files by default.
           awk -v ver="$TAG_VERSION" '
             $0 ~ ("^## Release v" ver " ") {
               if (found) exit
@@ -109,39 +115,70 @@ jobs:
             }
             /^## Release/ && found { exit }
             found { print }
-          ' CHANGELOG.md > .changelog.md
+          ' CHANGELOG.md > release-notes.md
 
-          if ! grep -Eq "^## Release v${TAG_VERSION} " .changelog.md; then
+          if ! grep -Eq "^## Release v${TAG_VERSION} " release-notes.md; then
             echo "CHANGELOG.md has no section header matching '## Release v${TAG_VERSION} …'" >&2
             echo "Run: uv run towncrier build --version ${TAG_VERSION}" >&2
             exit 1
           fi
-          if [[ ! -s .changelog.md ]]; then
+          if [[ ! -s release-notes.md ]]; then
             echo "Extracted changelog is empty" >&2
             exit 1
           fi
 
-      - name: Upload artifacts
+      - name: Upload release artifacts
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: fit-tool-wheel
+          name: fit-tool-release
           path: |
             dist/*.whl
             dist/*.tar.gz
+            release-notes.md
           if-no-files-found: error
           retention-days: 15
 
-      # Publish only after version + changelog gates pass so a missing
-      # Towncrier section never leaves an orphan PyPI upload.
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # No GitHub Environment / required-reviewer gate (small maintainer set).
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: fit-tool-release
+          path: .
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  github-release:
+    name: Create GitHub Release
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: fit-tool-release
+          path: .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
-          body_path: .changelog.md
+          body_path: release-notes.md
           draft: false
-          prerelease: ${{ steps.ver.outputs.PRERELEASE }}
+          prerelease: ${{ needs.build.outputs.prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

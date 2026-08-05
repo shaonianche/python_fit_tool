@@ -49,7 +49,7 @@ public-claims pass that keeps this table and `docs/CAPABILITY_BOUNDARY.md` hones
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** `UnknownField` + `raw_bytes` on main path |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done** per-record dirty + mixed encode; opt-in PRESERVATION findings |
 | Encode policies (canonical vs preserve, strict vs repair) | Phase 4 §6 | **G** SHA-19 | **Done** `EncodeMode` + policy matrix; no silent invalid clamp; `repair()` still future |
-| PROFILE scopes from bundled Profile.xlsx `21.205.0` | Phase 3 PROFILE / §3.1 | **H** SHA-20 | **Done** CORE/DOMAIN/FULL + gen `field_catalog`; default remains CORE; native required fields / units still residual |
+| PROFILE scopes from bundled Profile.xlsx `21.212.0` | Phase 3 PROFILE / §3.1 | **H** SHA-20 | **Done** CORE/DOMAIN/FULL + gen `field_catalog`; default remains CORE; native required fields / units still residual |
 | Workout FILE_TYPE rules | Phase 4 §7 | **I** SHA-21 | **Done** required messages/fields; SDK Workout*.fit pass FILE_TYPE |
 | Course FILE_TYPE rules | Phase 4 §7 | **J** SHA-22 | **Done** Course required messages/fields; Activity + Workout unchanged |
 | Public capability matrix / release-note pass | Phase 5 | **L** SHA-23 | **This pass** — README + this section + §11 residual checklist + Towncrier epic notes |
@@ -82,7 +82,7 @@ Passing one dimension must not be reported as passing all four.
 
 The conformance target is the Garmin FIT Protocol documentation and the exact
 `Profile.xlsx` version committed under `fit_tool/gen/`. The current repository
-uses Profile `21.205.0`.
+uses Profile `21.212.0`.
 
 Official references:
 
@@ -791,7 +791,7 @@ Honest status vs the bullets above. **None** of these residuals re-open C–J as
 | Garmin cross-validation | **Incomplete** | SDK samples used as smokes/fixtures; not a release gate for full interop |
 | Non-`xfail` tests for listed constructs | **Partial** | Strong constructive coverage for C–J; expand goldens / remove any remaining known-gap xfails as follow-up |
 | Strict mode no silent repair | **Met** | `strict=True` / DEFAULT_LEVELS never clamp or auto-repair; no `repair()` on strict path |
-| Published SDK/Profile version | **Met** | Profile / SDK `21.205.0` (`fit_tool/gen/`, `SDK_VERSION`) |
+| Published SDK/Profile version | **Met** | Profile / SDK `21.212.0` (`fit_tool/gen/`, `SDK_VERSION`) |
 
 **Bottom line:** SHA-12 may move to `done` / `in_review` with the residuals
 above explicit. Do **not** flip public marketing to “full Garmin FIT

@@ -23,7 +23,7 @@ Garmin publishes sample FIT files and tools under their FIT SDK license.
    - Site: <https://developer.garmin.com/fit/download/>  
    - Also: <https://github.com/garmin/fit-sdk-tools> and language SDKs such as
      <https://github.com/garmin/fit-javascript-sdk> (tag must match
-     `fit_tool.SDK_VERSION`, currently Profile **21.205.0**).
+     `fit_tool.SDK_VERSION`, currently Profile **21.212.0**).
 2. **What you may commit**  
    - Only small, redistributable SDK examples that Garmin ships as samples.  
    - Do **not** commit proprietary device dumps, Connect exports with PII, or
@@ -33,7 +33,7 @@ Garmin publishes sample FIT files and tools under their FIT SDK license.
    - This repository already vendors a minimal subset under `sdk/` for CI; do
      not bulk-replace it with a full SDK tree.
 4. **Profile spreadsheet**  
-   - Bundled at `fit_tool/gen/Profile_21.205.0.xlsx` for codegen only; not a
+   - Bundled at `fit_tool/gen/Profile_21.212.0.xlsx` for codegen only; not a
      runtime fixture.
 
 ## Live interop (optional)

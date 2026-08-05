@@ -9,7 +9,7 @@ encode policies): [`docs/CAPABILITY_BOUNDARY.md`](docs/CAPABILITY_BOUNDARY.md).
 Long-term strict-conformance **roadmap** (target architecture, not current
 guarantees): [`docs/FIT_CONFORMANCE_DESIGN.md`](docs/FIT_CONFORMANCE_DESIGN.md).
 
-Profile in use: `21.205.0` (`fit_tool.SDK_VERSION`).
+Profile in use: `21.212.0` (`fit_tool.SDK_VERSION`).
 
 ## Installation
 

@@ -85,7 +85,7 @@ class TestProfileCatalog(unittest.TestCase):
 
         self.assertEqual(PROFILE_SDK_VERSION, SDK_VERSION)
         self.assertEqual(PROFILE_MESSAGE_COUNT, 123)
-        self.assertEqual(PROFILE_FIELD_COUNT, 1406)
+        self.assertEqual(PROFILE_FIELD_COUNT, 1407)
         self.assertEqual(PROFILE_ENUM_TYPE_COUNT, 100)
         self.assertEqual(PROFILE_ENUM_FIELD_COUNT, 153)
         self.assertEqual(len(PROFILE_FIELDS), PROFILE_FIELD_COUNT)

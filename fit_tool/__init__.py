@@ -13,7 +13,7 @@ continue to work; no modules are moved or removed in this change.
 # import ``from fit_tool import SDK_VERSION`` during package initialization
 # (e.g. fit_file_header) see a fully assigned name.
 PROTOCOL_VERSION = '2.4'
-SDK_VERSION = '21.205.0'
+SDK_VERSION = '21.212.0'
 FIT_DATA_TYPE = b'.FIT'
 
 from fit_tool.api import (  # noqa: E402

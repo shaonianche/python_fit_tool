@@ -7,7 +7,7 @@ strict-conformance **target** architecture remains
 [`FIT_CONFORMANCE_DESIGN.md`](FIT_CONFORMANCE_DESIGN.md) (not a guarantee of
 what the installed package already does).
 
-Bundled Profile version: **`21.205.0`** (`fit_tool.SDK_VERSION` / `fit_tool/gen/`).
+Bundled Profile version: **`21.212.0`** (`fit_tool.SDK_VERSION` / `fit_tool/gen/`).
 Protocol version string: **`2.4`** (`fit_tool.PROTOCOL_VERSION`).
 
 ---
@@ -58,7 +58,7 @@ this package against the matrix above, not against full protocol conformance.
 | Level | What it checks | Status in code |
 | --- | --- | --- |
 | `ConformanceLevel.WIRE` | Local IDs, definition field layout/sizes, data records vs active definition | Implemented |
-| `ConformanceLevel.PROFILE` | Scoped Profile semantics via `profile_scope=` / `ProfileScope` | **CORE (default):** developer-field declarations + **ambiguous native subfields** as ERROR. **DOMAIN (opt-in):** CORE + native base-type and closed-enum checks on high-frequency Activity/Workout messages. **FULL (opt-in):** same native rules for the gen-exported catalog from Profile.xlsx `21.205.0`. FULL is never default `strict` (§3.1 O1). Open/ranged enums (e.g. `activity_class`) are excluded from closed-enum checks |
+| `ConformanceLevel.PROFILE` | Scoped Profile semantics via `profile_scope=` / `ProfileScope` | **CORE (default):** developer-field declarations + **ambiguous native subfields** as ERROR. **DOMAIN (opt-in):** CORE + native base-type and closed-enum checks on high-frequency Activity/Workout messages. **FULL (opt-in):** same native rules for the gen-exported catalog from Profile.xlsx `21.212.0`. FULL is never default `strict` (§3.1 O1). Open/ranged enums (e.g. `activity_class`) are excluded from closed-enum checks |
 | `ConformanceLevel.FILE_TYPE` | `file_id` first/unique + required fields; Activity, Workout, and Course rules | **`IMPLEMENTED_FILE_TYPES`** = Activity, Workout, Course; other `file_id.type` values **fail closed** |
 | `ConformanceLevel.PRESERVATION` | Post-edit rewrite loss (e.g. `UnknownField.raw_bytes` cleared) | **Opt-in** — not in `DEFAULT_LEVELS` / Builder `strict=True` |
 

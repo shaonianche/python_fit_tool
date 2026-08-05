@@ -23,10 +23,10 @@ TEST_DIR = Path(__file__).parent
 ACTIVITY_FIXTURE_PATH = TEST_DIR / 'data' / 'interop' / 'activity.json'
 GARMIN_BRIDGE_PATH = TEST_DIR / 'interop' / 'garmin_fit_bridge.mjs'
 
-# Produced by Garmin's official fit-javascript-sdk 21.205.0 Encoder for the
-# equivalent file_id values used below.
-GARMIN_JS_21_205_FILE_ID = bytes.fromhex(
-    '0e02d552230000002e4649548f2a'
+# file_id payload matching the prior Garmin fit-javascript-sdk encoder sample,
+# with Profile header/CRC updated for SDK 21.212.0 (profile u16 LE 0x52dc).
+GARMIN_JS_21_212_FILE_ID = bytes.fromhex(
+    '0e02dc52230000002e4649545f05'
     '40000000000500010201028402028403048c040486'
     '0004ff000000d204000080b4f43ffbfe'
 )
@@ -201,10 +201,10 @@ def _run_garmin_bridge(request):
 class TestGarminSdkInterop(unittest.TestCase):
 
     def test_decodes_official_javascript_sdk_file_and_profile_version(self):
-        fit_file = FitFile.from_bytes(GARMIN_JS_21_205_FILE_ID)
+        fit_file = FitFile.from_bytes(GARMIN_JS_21_212_FILE_ID)
         message = fit_file.records[-1].message
 
-        self.assertEqual('21.205', str(fit_file.header.profile_version))
+        self.assertEqual('21.212', str(fit_file.header.profile_version))
         self.assertEqual(FileType.ACTIVITY.value, message.type)
         self.assertEqual(1234, message.serial_number)
 
@@ -220,7 +220,7 @@ class TestGarminSdkInterop(unittest.TestCase):
         builder.add(message)
         fit_file = FitFile.from_bytes(builder.build_bytes())
 
-        self.assertEqual('21.205', str(fit_file.header.profile_version))
+        self.assertEqual('21.212', str(fit_file.header.profile_version))
 
 
 @unittest.skipUnless(

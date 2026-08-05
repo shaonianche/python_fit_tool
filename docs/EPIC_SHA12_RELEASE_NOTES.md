@@ -15,7 +15,7 @@ subfields, unknown fields, post-edit PRESERVATION, encode policies, PROFILE
 scopes CORE/DOMAIN/FULL, Workout + Course FILE_TYPE). Stage 5 (**L**) publishes
 honest Supported/Partial/Not-supported claims.
 
-Profile / SDK version: **`21.205.0`** (`SDK_VERSION`, `fit_tool/gen/`).
+Profile / SDK version: **`21.212.0`** (`SDK_VERSION`, `fit_tool/gen/`).
 
 ## User-visible capabilities (rollup)
 

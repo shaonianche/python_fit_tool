@@ -33,10 +33,10 @@ class TestFitFileHeader(unittest.TestCase):
         self.assertEqual(bytes1, bytes2)
 
     def test_current_profile_version_uses_three_digit_minor_version(self):
-        profile_version = ProfileVersion(21, 205)
+        profile_version = ProfileVersion(21, 212)
 
-        self.assertEqual(21205, profile_version.version_code)
-        self.assertEqual('21.205', str(ProfileVersion.from_bytes(profile_version.to_bytes())))
+        self.assertEqual(21212, profile_version.version_code)
+        self.assertEqual('21.212', str(ProfileVersion.from_bytes(profile_version.to_bytes())))
 
     def test_profile_versions_after_scale_transition_use_current_scale(self):
         profile_version = ProfileVersion(22, 0)
@@ -47,7 +47,7 @@ class TestFitFileHeader(unittest.TestCase):
     def test_default_profile_version_matches_sdk_version(self):
         header = FitFileHeader(records_size=0)
 
-        self.assertEqual('21.205', str(header.profile_version))
+        self.assertEqual('21.212', str(header.profile_version))
 
     def test_generate_crc(self):
         protocol_version = ProtocolVersion(2, 3)

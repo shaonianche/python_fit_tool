@@ -114,14 +114,15 @@ jobs:
             }
             /^## Release/ && found { exit }
             found { print }
-          ' CHANGELOG.md > .changelog.md
+          # Non-dotfile name: upload-artifact ignores hidden files by default.
+          ' CHANGELOG.md > release-notes.md
 
-          if ! grep -Eq "^## Release v${TAG_VERSION} " .changelog.md; then
+          if ! grep -Eq "^## Release v${TAG_VERSION} " release-notes.md; then
             echo "CHANGELOG.md has no section header matching '## Release v${TAG_VERSION} …'" >&2
             echo "Run: uv run towncrier build --version ${TAG_VERSION}" >&2
             exit 1
           fi
-          if [[ ! -s .changelog.md ]]; then
+          if [[ ! -s release-notes.md ]]; then
             echo "Extracted changelog is empty" >&2
             exit 1
           fi
@@ -133,7 +134,7 @@ jobs:
           path: |
             dist/*.whl
             dist/*.tar.gz
-            .changelog.md
+            release-notes.md
           if-no-files-found: error
           retention-days: 15
 
@@ -176,7 +177,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
-          body_path: .changelog.md
+          body_path: release-notes.md
           draft: false
           prerelease: ${{ needs.build.outputs.prerelease }}
         env:

@@ -105,6 +105,7 @@ jobs:
           TAG_VERSION="${{ steps.ver.outputs.TAG_VERSION }}"
           # Match Towncrier headers exactly: "## Release v{version} ({date})".
           # Require a space after the version so v0.9.1 does not match v0.9.15.
+          # Non-dotfile name: upload-artifact ignores hidden files by default.
           awk -v ver="$TAG_VERSION" '
             $0 ~ ("^## Release v" ver " ") {
               if (found) exit
@@ -114,7 +115,6 @@ jobs:
             }
             /^## Release/ && found { exit }
             found { print }
-          # Non-dotfile name: upload-artifact ignores hidden files by default.
           ' CHANGELOG.md > release-notes.md
 
           if ! grep -Eq "^## Release v${TAG_VERSION} " release-notes.md; then

@@ -141,7 +141,7 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    # No environment: approval gate intentionally omitted for a small maintainer set.
+    # No GitHub Environment / required-reviewer gate (small maintainer set).
     permissions:
       id-token: write
       contents: read

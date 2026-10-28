@@ -1,1 +1,0 @@
-`to_bytes(preserve=...)` now overrides `EncodeOptions.mode` instead of being silently ignored, and an explicit `strict=False` or `check_crc=...` overrides an options object. Omitted `strict` / `check_crc` still inherit from `options=`.

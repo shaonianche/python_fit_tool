@@ -1,3 +1,19 @@
+## Release v0.9.17 (2026-10-28)
+
+### Bug Fixes
+
+- Write FIT protocol version 2.0 in file headers (the SDK's `FIT_PROTOCOL_VERSION_20`) and report `PROTOCOL_VERSION` as `2.0`; 2.4 is the FIT protocol document revision, not a header value. ([#78](https://github.com/shaonianche/python_fit_tool/issues/78))
+- `to_bytes(preserve=...)` now overrides `EncodeOptions.mode` instead of being silently ignored, and an explicit `strict=False` or `check_crc=...` overrides an options object. Omitted `strict` / `check_crc` still inherit from `options=`. ([#82](https://github.com/shaonianche/python_fit_tool/issues/82))
+
+### Dependencies
+
+- Upgrade the bundled Garmin FIT SDK Profile to 21.218.0. ([#68](https://github.com/shaonianche/python_fit_tool/issues/68))
+
+### Miscellany
+
+- Add Python 3.15 to the CI test matrix and package classifiers. ([#python-315](https://github.com/shaonianche/python_fit_tool/issues/python-315))
+
+
 ## Release v0.9.16 (2026-08-05)
 
 ### Features & Improvements

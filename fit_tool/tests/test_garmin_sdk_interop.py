@@ -220,7 +220,7 @@ class TestGarminSdkInterop(unittest.TestCase):
         builder.add(message)
         fit_file = FitFile.from_bytes(builder.build_bytes())
 
-        self.assertEqual('21.213', str(fit_file.header.profile_version))
+        self.assertEqual('21.218', str(fit_file.header.profile_version))
 
 
 @unittest.skipUnless(

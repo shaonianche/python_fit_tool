@@ -82,83 +82,43 @@ class Field:
 
         return None
 
-    def get_name(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> str:
-        if sub_field:
-            sb = sub_field
-        elif sub_field_name is not None:
-            sb = self.get_sub_field(name=sub_field_name)
-        elif sub_field_index is not None:
-            sb = self.get_sub_field(index=sub_field_index)
-        else:
-            sb = None
+    def _select_sub_field(
+            self,
+            sub_field: SubField = None,
+            sub_field_name: str = None,
+            sub_field_index: int = None,
+    ) -> SubField | None:
+        """Resolve the caller-supplied subfield reference, if any."""
+        if sub_field is not None:
+            return sub_field
+        if sub_field_name is not None:
+            return self.get_sub_field(name=sub_field_name)
+        if sub_field_index is not None:
+            return self.get_sub_field(index=sub_field_index)
+        return None
 
-        if sb:
-            return sb.name
-        else:
-            return self.name
+    def get_name(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> str:
+        selected = self._select_sub_field(sub_field, sub_field_name, sub_field_index)
+        return selected.name if selected else self.name
 
     def get_units(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> str:
-        if sub_field:
-            sb = sub_field
-        elif sub_field_name is not None:
-            sb = self.get_sub_field(name=sub_field_name)
-        elif sub_field_index is not None:
-            sb = self.get_sub_field(index=sub_field_index)
-        else:
-            sb = None
-
-        if sb:
-            return sb.units
-        else:
-            return self.units
+        selected = self._select_sub_field(sub_field, sub_field_name, sub_field_index)
+        return selected.units if selected else self.units
 
     def get_base_type(self, sub_field: SubField = None, sub_field_name: str = None,
                       sub_field_index: int = None) -> BaseType:
-        if sub_field:
-            sb = sub_field
-        elif sub_field_name is not None:
-            sb = self.get_sub_field(name=sub_field_name)
-        elif sub_field_index is not None:
-            sb = self.get_sub_field(index=sub_field_index)
-        else:
-            sb = None
-
-        if sb:
-            return sb.base_type
-        else:
-            return self.base_type
+        selected = self._select_sub_field(sub_field, sub_field_name, sub_field_index)
+        return selected.base_type if selected else self.base_type
 
     def get_offset(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
             float | None:
-        if sub_field:
-            sb = sub_field
-        elif sub_field_name is not None:
-            sb = self.get_sub_field(name=sub_field_name)
-        elif sub_field_index is not None:
-            sb = self.get_sub_field(index=sub_field_index)
-        else:
-            sb = None
-
-        if sb:
-            return sb.offset
-        else:
-            return self.offset
+        selected = self._select_sub_field(sub_field, sub_field_name, sub_field_index)
+        return selected.offset if selected else self.offset
 
     def get_scale(self, sub_field: SubField = None, sub_field_name: str = None, sub_field_index: int = None) -> \
             float | None:
-        if sub_field:
-            sb = sub_field
-        elif sub_field_name is not None:
-            sb = self.get_sub_field(name=sub_field_name)
-        elif sub_field_index is not None:
-            sb = self.get_sub_field(index=sub_field_index)
-        else:
-            sb = None
-
-        if sb:
-            return sb.scale
-        else:
-            return self.scale
+        selected = self._select_sub_field(sub_field, sub_field_name, sub_field_index)
+        return selected.scale if selected else self.scale
 
     def clear(self):
         self.size = 0

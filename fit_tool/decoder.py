@@ -17,19 +17,14 @@ from __future__ import annotations
 from collections.abc import Iterator
 from typing import BinaryIO, Union
 
-from fit_tool.compatibility import (
-    project_data_record,
-    project_definition_record,
-    project_header,
-    register_developer_field,
-)
+from fit_tool.compatibility import project_header, project_raw_record
 from fit_tool.developer_field import DeveloperField
 from fit_tool.exceptions import FitEncodingError
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
 from fit_tool.utils.logging import logger
 from fit_tool.wire.decoder import ByteSourceInput, WireDecoder
-from fit_tool.wire.model import FitDocument, RawDataRecord, RawDefinitionRecord, RawRecord
+from fit_tool.wire.model import FitDocument, RawFileHeader, RawRecord
 
 Source = Union[bytes, bytearray, memoryview, BinaryIO]
 
@@ -37,10 +32,9 @@ Source = Union[bytes, bytearray, memoryview, BinaryIO]
 class FitDecoder:
     """Stateful decoder shared by full-load and streaming public APIs.
 
-    After :meth:`iter_records` / :meth:`decode` / :meth:`decode_document`
-    completes, session fields are available: :attr:`header`,
-    :attr:`calculated_crc`, :attr:`stored_crc`, :attr:`last_timestamp`,
-    :attr:`developer_fields_by_data_index`, and :attr:`wire_document` (buffer path).
+    Session state lives on the underlying :class:`WireDecoder` and is exposed
+    here as read-only properties; only the developer-field registry, the
+    retained wire document, and component accumulators are owned by this class.
     """
 
     def __init__(
@@ -58,13 +52,32 @@ class FitDecoder:
         self._reset_session()
 
     def _reset_session(self) -> None:
-        self.header: FitFileHeader | None = None
-        self.calculated_crc: int = 0
-        self.stored_crc: int = 0
-        self.last_timestamp: int | None = None
         self.developer_fields_by_data_index: dict[int, dict[int, DeveloperField]] = {}
         self.wire_document: FitDocument | None = None
         self._accumulators: dict[tuple[int, int], int] = {}
+
+    @property
+    def header(self) -> FitFileHeader | None:
+        """Projected file header; chained files report the first segment's."""
+        document = self.wire_document
+        raw_header: RawFileHeader | None
+        if document is not None and document.segments:
+            raw_header = document.segments[0].header
+        else:
+            raw_header = self._wire.header
+        return project_header(raw_header) if raw_header is not None else None
+
+    @property
+    def calculated_crc(self) -> int:
+        return self._wire.calculated_crc
+
+    @property
+    def stored_crc(self) -> int:
+        return self._wire.stored_crc
+
+    @property
+    def last_timestamp(self) -> int | None:
+        return self._wire.last_timestamp
 
     def iter_records(self, source: Source) -> Iterator[Record]:
         """Yield projected records from bytes or a binary stream.
@@ -77,92 +90,50 @@ class FitDecoder:
         registration and component expansion run during projection.
         """
         self._reset_session()
-        developer_registry = self.developer_fields_by_data_index
+        registry = self.developer_fields_by_data_index
 
+        raw_records: Iterator[RawRecord]
         if isinstance(source, (bytes, bytearray, memoryview)):
             document = self._wire.decode(
                 bytes(source),
                 allow_trailing_bytes=self.allow_trailing_bytes,
             )
             self.wire_document = document
-            for segment in document.segments:
-                if self.header is None:
-                    self.header = project_header(segment.header)
-                self.calculated_crc = segment.calculated_crc
-                self.stored_crc = segment.stored_crc
-                for raw in segment.records:
-                    record = self._project_raw(raw, developer_registry)
-                    register_developer_field(record, developer_registry)
-                    yield record
-            self.last_timestamp = self._wire.last_timestamp
-            if (
-                self.calculated_crc != self.stored_crc
-                and not self.check_crc
-                and document.segments
-            ):
-                logger.warning(
-                    f'Calculated crc ({hex(self.calculated_crc)}) does not match '
-                    f'crc in file ({hex(self.stored_crc)}).'
-                )
-            return
-
-        for raw in self._wire.iter_raw_records(source):
-            record = self._project_raw(raw, developer_registry)
-            register_developer_field(record, developer_registry)
-            self.last_timestamp = self._wire.last_timestamp
-            yield record
-
-        assert self._wire.header is not None
-        self.header = project_header(self._wire.header)
-        self.calculated_crc = self._wire.calculated_crc
-        self.stored_crc = self._wire.stored_crc
-        self.last_timestamp = self._wire.last_timestamp
-        # Stream path does not retain raw records for preservation encode.
-        self.wire_document = None
-
-        if self.calculated_crc != self.stored_crc and not self.check_crc:
-            logger.warning(
-                f'Calculated crc ({hex(self.calculated_crc)}) does not match '
-                f'crc in file ({hex(self.stored_crc)}).'
+            raw_records = (
+                raw for segment in document.segments for raw in segment.records
             )
+        else:
+            raw_records = self._wire.iter_raw_records(source)
+
+        for raw in raw_records:
+            yield project_raw_record(raw, registry, accumulators=self._accumulators)
+
+        self._warn_crc_mismatch()
+
+    def _warn_crc_mismatch(self) -> None:
+        if self.check_crc or self.calculated_crc == self.stored_crc:
+            return
+        logger.warning(
+            f'Calculated crc ({hex(self.calculated_crc)}) does not match '
+            f'crc in file ({hex(self.stored_crc)}).'
+        )
 
     def decode(self, source: Source) -> tuple[FitFileHeader, list[Record], int]:
         """Decode into header, projected records, and calculated CRC of the last segment."""
         records = list(self.iter_records(source))
-        if self.header is None:
+        header = self.header
+        if header is None:
             raise FitEncodingError('Decoder finished without a FIT header.')
-        return self.header, records, self.calculated_crc
+        return header, records, self.calculated_crc
 
     def decode_document(self, bytes_buffer: bytes) -> FitDocument:
         """Decode a buffer to a wire :class:`~fit_tool.wire.model.FitDocument`."""
         self._reset_session()
-        document = self._wire.decode(
+        self.wire_document = self._wire.decode(
             bytes_buffer,
             allow_trailing_bytes=self.allow_trailing_bytes,
         )
-        self.wire_document = document
-        if document.segments:
-            last = document.segments[-1]
-            self.header = project_header(document.segments[0].header)
-            self.calculated_crc = last.calculated_crc
-            self.stored_crc = last.stored_crc
-        self.last_timestamp = self._wire.last_timestamp
-        return document
-
-    def _project_raw(
-            self,
-            raw: RawRecord,
-            developer_fields_by_data_index: dict[int, dict[int, DeveloperField]],
-    ) -> Record:
-        if isinstance(raw, RawDefinitionRecord):
-            return project_definition_record(raw)
-        if isinstance(raw, RawDataRecord):
-            return project_data_record(
-                raw,
-                developer_fields_by_data_index,
-                accumulators=self._accumulators,
-            )
-        raise FitEncodingError(f'Unsupported wire record type: {type(raw)!r}')
+        return self.wire_document
 
 
 def iter_fit_records(

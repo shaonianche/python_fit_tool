@@ -203,6 +203,26 @@ def register_developer_field(
 _register_developer_field = register_developer_field
 
 
+def project_raw_record(
+        raw: RawRecord,
+        developer_fields_by_data_index: dict[int, dict[int, DeveloperField]],
+        *,
+        accumulators: dict[tuple[int, int], int] | None = None,
+) -> Record:
+    """Project one wire record and register any Field Description it carries."""
+    if isinstance(raw, RawDefinitionRecord):
+        return project_definition_record(raw)
+    if isinstance(raw, RawDataRecord):
+        record = project_data_record(
+            raw,
+            developer_fields_by_data_index,
+            accumulators=accumulators,
+        )
+        register_developer_field(record, developer_fields_by_data_index)
+        return record
+    raise FitRecordError(f'Unsupported wire record type: {type(raw)!r}')
+
+
 def project_segment(
         segment: FitSegment,
         *,
@@ -215,18 +235,13 @@ def project_segment(
         accumulators = {}
 
     for raw in segment.records:
-        if isinstance(raw, RawDefinitionRecord):
-            record = project_definition_record(raw)
-        elif isinstance(raw, RawDataRecord):
-            record = project_data_record(
+        records.append(
+            project_raw_record(
                 raw,
                 developer_fields_by_data_index,
                 accumulators=accumulators,
             )
-            register_developer_field(record, developer_fields_by_data_index)
-        else:
-            raise FitRecordError(f'Unsupported wire record type: {type(raw)!r}')
-        records.append(record)
+        )
 
     return records
 

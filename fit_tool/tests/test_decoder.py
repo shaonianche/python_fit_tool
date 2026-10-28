@@ -145,6 +145,14 @@ class TestFitDecoderParity(unittest.TestCase):
             [r.to_bytes() for r in full.records],
         )
 
+        # The mismatch is reported once per decoded segment, not once per path.
+        with self.assertLogs('fit_tool', level='WARNING') as logs:
+            list(FitFile.iter_stream(io.BytesIO(corrupted), check_crc=False))
+        self.assertEqual(
+            sum('does not match' in record.getMessage() for record in logs.records),
+            1,
+        )
+
     def test_sdk_developer_data_stream_matches_from_bytes(self):
         path = DATA_DIR / 'sdk' / 'DeveloperData.fit'
         if not path.exists():

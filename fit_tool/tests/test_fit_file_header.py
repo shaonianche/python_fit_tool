@@ -2,6 +2,7 @@
 
 import unittest
 
+from fit_tool import PROTOCOL_VERSION
 from fit_tool.fit_file_header import FitFileHeader, ProfileVersion, ProtocolVersion
 
 
@@ -9,6 +10,12 @@ class TestFitFileHeader(unittest.TestCase):
 
     def shortDescription(self):
         return None
+
+    def test_default_header_uses_sdk_wire_protocol_version(self):
+        header = FitFileHeader(records_size=0)
+
+        self.assertEqual(str(header.protocol_version), PROTOCOL_VERSION)
+        self.assertEqual(header.to_bytes()[1], 0x20)
 
     def test_protocol_version(self):
         protocol_version = ProtocolVersion(2, 3)

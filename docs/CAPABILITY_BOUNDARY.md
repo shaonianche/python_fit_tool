@@ -8,7 +8,10 @@ strict-conformance **target** architecture remains
 what the installed package already does).
 
 Bundled Profile version: **`21.218.0`** (`fit_tool.SDK_VERSION` / `fit_tool/gen/`).
-Protocol version string: **`2.4`** (`fit_tool.PROTOCOL_VERSION`).
+Wire protocol version: **`2.0`** (`fit_tool.PROTOCOL_VERSION`, the SDK's
+`FIT_PROTOCOL_VERSION_20`). The FIT *protocol document* revision is **2.4**
+(March 2019); that number is a documentation revision, not the value stored in
+the file header.
 
 ---
 

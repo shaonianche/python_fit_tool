@@ -12,7 +12,11 @@ continue to work; no modules are moved or removed in this change.
 # Version and format constants must be defined before re-exports so modules that
 # import ``from fit_tool import SDK_VERSION`` during package initialization
 # (e.g. fit_file_header) see a fully assigned name.
-PROTOCOL_VERSION = '2.4'
+# FIT wire protocol version written into file headers. The FIT *protocol
+# document* revision is 2.4 (March 2019, "Remove 255 byte message size
+# limitation"), but the value defined by the SDK for the header is 2.0
+# (FIT_PROTOCOL_VERSION_20); developer fields require 2.0.
+PROTOCOL_VERSION = '2.0'
 SDK_VERSION = '21.218.0'
 FIT_DATA_TYPE = b'.FIT'
 

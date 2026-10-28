@@ -61,7 +61,9 @@ class ProfileVersion:
         return f'{self.major}.{self.minor}'
 
 
-DEFAULT_PROTOCOL_VERSION = ProtocolVersion(2, 3)
+# SDK-defined wire protocol version (FIT_PROTOCOL_VERSION_20). The FIT protocol
+# document revision (2.4) is not the value stored in file headers.
+DEFAULT_PROTOCOL_VERSION = ProtocolVersion(2, 0)
 DEFAULT_PROFILE_VERSION = ProfileVersion.from_sdk_version(SDK_VERSION)
 
 

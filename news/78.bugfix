@@ -1,0 +1,1 @@
+Write FIT protocol version 2.0 in file headers (the SDK's `FIT_PROTOCOL_VERSION_20`) and report `PROTOCOL_VERSION` as `2.0`; 2.4 is the FIT protocol document revision, not a header value.

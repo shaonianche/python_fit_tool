@@ -139,9 +139,9 @@ class Record:
             return
         host = self.mark_dirty
         for field in message.fields:
-            field._dirty_host = host  # noqa: SLF001 — intentional host binding
+            field.on_change = host
         for field in message.developer_fields:
-            field._dirty_host = host  # noqa: SLF001
+            field.on_change = host
 
     @property
     def local_id(self) -> int:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import struct
+from collections.abc import Callable
 from enum import Enum
 
 from fit_tool.base_type import BaseType
@@ -48,6 +49,9 @@ class Field:
         self.ref_field_map = ref_field_map
         self.array_type = array_type
         self.array_fixed_length = array_fixed_length
+        # Set by Record.bind_mutation_hooks so authoring edits mark the owning
+        # record dirty for post-edit PRESERVATION.
+        self.on_change: Callable[[], None] | None = None
 
         self.encoded_values = [None for _ in range(Field.get_length_from_size(base_type, size))]
 
@@ -124,11 +128,10 @@ class Field:
         self.size = 0
         self.encoded_values = []
         # Generated property setters assign None via clear() rather than
-        # set_encoded_value(); still mark the owning Record dirty so
-        # preserve=True re-encodes instead of replaying stale source_bytes.
-        dirty_host = getattr(self, '_dirty_host', None)
-        if dirty_host is not None:
-            dirty_host()
+        # set_encoded_value(); still notify the owning Record so preserve=True
+        # re-encodes instead of replaying stale source_bytes.
+        if self.on_change is not None:
+            self.on_change()
 
     def is_valid(self) -> bool:
         return self.size != 0
@@ -223,10 +226,8 @@ class Field:
 
         # API mutations (check_validity=True) notify the owning Record for
         # post-edit PRESERVATION dirty tracking. Decode uses check_validity=False.
-        if check_validity:
-            dirty_host = getattr(self, '_dirty_host', None)
-            if dirty_host is not None:
-                dirty_host()
+        if check_validity and self.on_change is not None:
+            self.on_change()
 
     def encode_value(self, value, sub_field: SubField = None):
         if isinstance(value, str):

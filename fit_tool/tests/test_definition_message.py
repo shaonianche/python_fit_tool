@@ -8,8 +8,10 @@ from fit_tool.developer_field import DeveloperField
 from fit_tool.developer_field_definition import DeveloperFieldDefinition
 from fit_tool.endian import Endian
 from fit_tool.field_definition import FieldDefinition
+from fit_tool.fit_file_builder import FitFileBuilder
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
 from fit_tool.profile.profile_type import WorkoutStepDuration
+from fit_tool.record import Record
 
 
 class TestDefinitionMessage(unittest.TestCase):
@@ -25,6 +27,21 @@ class TestDefinitionMessage(unittest.TestCase):
         bytes2 = dm2.to_bytes()
 
         self.assertEqual(bytes2, bytes1)
+
+    def test_size_stays_derived_after_direct_field_definition_mutation(self):
+        definition = DefinitionMessage(global_id=20, local_id=0)
+        definition.field_definitions.append(
+            FieldDefinition(field_id=253, size=4, base_type=BaseType.UINT32)
+        )
+
+        record = Record.from_message(definition)
+        self.assertEqual(definition.size, len(definition.to_bytes()))
+        self.assertEqual(record.size, len(record.to_bytes()))
+
+        builder = FitFileBuilder()
+        builder.add(definition)
+        fit_file = builder.build()
+        self.assertEqual(fit_file.header.records_size, len(fit_file.records[0].to_bytes()))
 
     def test_big_endian_conversion(self):
         dm1 = DefinitionMessage(global_id=555, local_id=20,

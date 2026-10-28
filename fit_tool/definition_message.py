@@ -17,12 +17,15 @@ class DefinitionMessage(Message):
                  field_definitions: list[FieldDefinition] = None,
                  developer_field_definitions: list[DeveloperFieldDefinition] = None
                  ):
-        super().__init__(local_id=local_id, global_id=global_id,
-                         size=DefinitionMessage.calculate_size(field_definitions, developer_field_definitions),
-                         endian=endian)
+        super().__init__(local_id=local_id, global_id=global_id, endian=endian)
 
         self.field_definitions = field_definitions if field_definitions else []
         self.developer_field_definitions = developer_field_definitions if developer_field_definitions else []
+
+    @property
+    def size(self) -> int:
+        """Serialized definition record size (excluding the record header)."""
+        return len(self.to_bytes())
 
     @property
     def defined_data_size(self) -> int:
@@ -45,17 +48,14 @@ class DefinitionMessage(Message):
         field_definition = self.get_field_definition(field_id)
         if field_definition:
             self.field_definitions.remove(field_definition)
-            self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def remove_developer_field(self, developer_data_index: int, field_id: int):
         field_definition = self.get_developer_field_definition(developer_data_index, field_id)
         if field_definition:
             self.developer_field_definitions.remove(field_definition)
-            self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def add_field_definition(self, definition: FieldDefinition):
         self.field_definitions.append(definition)
-        self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def get_developer_field_definition(self, developer_data_index: int, field_id: int) \
             -> DeveloperFieldDefinition | None:
@@ -64,7 +64,6 @@ class DefinitionMessage(Message):
 
     def add_developer_field_definition(self, definition: DeveloperFieldDefinition):
         self.developer_field_definitions.append(definition)
-        self.size = DefinitionMessage.calculate_size(self.field_definitions, self.developer_field_definitions)
 
     def to_row(self) -> list:
         from fit_tool.profile.messages.message_factory import MessageFactory
@@ -219,17 +218,6 @@ class DefinitionMessage(Message):
             local_id=data_message.local_id,
             field_definitions=field_definitions,
             developer_field_definitions=developer_field_definitions)
-
-    @staticmethod
-    def calculate_size(field_definitions: list[FieldDefinition],
-                       developer_field_definitions: list[DeveloperFieldDefinition]):
-        field_definitions_count = len(field_definitions) if field_definitions else 0
-        developer_field_definitions_count = len(developer_field_definitions) if developer_field_definitions else 0
-
-        if developer_field_definitions_count == 0:
-            return 5 + FieldDefinition.field_definition_size() * field_definitions_count + DeveloperFieldDefinition.field_definition_size() * developer_field_definitions_count
-        else:
-            return 5 + FieldDefinition.field_definition_size() * field_definitions_count + 1 + DeveloperFieldDefinition.field_definition_size() * developer_field_definitions_count
 
     def supports(self, other) -> bool:
         if self.global_id != other.global_id:

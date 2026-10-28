@@ -71,11 +71,6 @@ class DataMessage(Message):
 
         return message_size
 
-    @size.setter
-    def size(self, _size: int):
-        if hasattr(self, 'fields'):
-            raise AttributeError('DataMessage.size is computed from fields and cannot be set directly.')
-
     def set_definition_message(self, definition_message: DefinitionMessage):
         self.definition_message = definition_message
         field_definitions_by_id = {

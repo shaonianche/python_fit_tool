@@ -54,6 +54,32 @@ class TestResolveEncodeOptions(unittest.TestCase):
         opts = resolve_encode_options(mode='canonical')
         self.assertEqual(opts.mode, EncodeMode.CANONICAL)
 
+    def test_preserve_overrides_options_mode(self):
+        opts = resolve_encode_options(
+            options=EncodeOptions(mode=EncodeMode.CANONICAL),
+            preserve=True,
+        )
+        self.assertEqual(opts.mode, EncodeMode.PRESERVE)
+
+    def test_mode_overrides_preserve_with_options(self):
+        opts = resolve_encode_options(
+            options=EncodeOptions(mode=EncodeMode.PRESERVE),
+            mode=EncodeMode.CANONICAL,
+            preserve=True,
+        )
+        self.assertEqual(opts.mode, EncodeMode.CANONICAL)
+
+    def test_explicit_strict_false_overrides_options_strict(self):
+        opts = resolve_encode_options(options=EncodeOptions(strict=True), strict=False)
+        self.assertFalse(opts.strict)
+
+    def test_omitted_kwargs_inherit_options(self):
+        base = EncodeOptions(mode=EncodeMode.CANONICAL, strict=True, check_crc=False)
+        opts = resolve_encode_options(options=base)
+        self.assertIs(opts.mode, EncodeMode.CANONICAL)
+        self.assertTrue(opts.strict)
+        self.assertFalse(opts.check_crc)
+
 
 class TestPreserveModeInvariants(unittest.TestCase):
     def test_untouched_identity(self):
@@ -62,6 +88,15 @@ class TestPreserveModeInvariants(unittest.TestCase):
         self.assertEqual(fit.to_bytes(mode=EncodeMode.PRESERVE), raw)
         # Legacy alias
         self.assertEqual(fit.to_bytes(preserve=True), raw)
+
+    def test_explicit_preserve_overrides_options_mode(self):
+        raw = build_record_with_unknown_field(heart_rate=101)
+        fit = FitFile.from_bytes(raw)
+        out = fit.to_bytes(
+            options=EncodeOptions(mode=EncodeMode.CANONICAL),
+            preserve=True,
+        )
+        self.assertEqual(out, raw)
 
     def test_dirty_unknown_survives_preserve(self):
         raw = build_record_with_unknown_field(

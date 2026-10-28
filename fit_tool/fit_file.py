@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, BinaryIO
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.encode import (
-    _CHECK_CRC_UNSET,
     EncodeMode,
     EncodeOptions,
     apply_strict_precheck,
@@ -180,11 +179,11 @@ class FitFile:
 
     def to_bytes(
             self,
-            check_crc: bool | object = _CHECK_CRC_UNSET,
+            check_crc: bool | None = None,
             *,
             preserve: bool | None = None,
             mode: EncodeMode | str | None = None,
-            strict: bool = False,
+            strict: bool | None = None,
             options: EncodeOptions | None = None,
     ) -> bytes:
         """Serialize this file.
@@ -372,7 +371,7 @@ class FitFile:
             *,
             preserve: bool | None = None,
             mode: EncodeMode | str | None = None,
-            strict: bool = False,
+            strict: bool | None = None,
     ) -> None:
         with open(path, 'wb') as file_object:
             file_object.write(

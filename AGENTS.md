@@ -38,7 +38,7 @@ dependency group already includes those packages so `uv sync --group dev` suppor
 the full suite and `uv run gen-profile`. For a published package, install with
 `pip install 'fit-tool[gen]'` or `uv add 'fit-tool[gen]'`.
 
-The CI baseline is a package build plus the full test suite on Python 3.9 through 3.14. Before finishing a normal code change, run the narrowest relevant tests and then the full suite when practical. Run `uv build` for packaging, entry-point, dependency, or metadata changes.
+The CI baseline is a package build plus the full test suite on Python 3.9 through 3.15. Before finishing a normal code change, run the narrowest relevant tests and then the full suite when practical. Run `uv build` for packaging, entry-point, dependency, or metadata changes.
 
 **Ruff is a CI gate** on the Python 3.12 job (`ruff check fit_tool`). Mypy is configured in `pyproject.toml` and runs in a limited form in CI; core modules are not all under strict mypy yet. Locally:
 

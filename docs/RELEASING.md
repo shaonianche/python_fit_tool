@@ -34,7 +34,7 @@ set).
 
 ## Checklist
 
-1. **`main` is green** — CI (Python 3.9–3.14 + Garmin JS interop) passes on the commit you will tag.
+1. **`main` is green** — CI (Python 3.9–3.15 + Garmin JS interop) passes on the commit you will tag.
 2. **News fragments are ready** — user-visible changes have `news/<id>.<type>` files (see `AGENTS.md`). Do not hand-edit an already-released section of `CHANGELOG.md`.
 3. **Choose the version** — e.g. `0.9.16` (patch) or `0.10.0` (broader capability signal). PyPI will not accept re-uploading an existing version.
 4. **Bump the package version** in `pyproject.toml`:

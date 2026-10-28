@@ -670,7 +670,7 @@ allocation based solely on untrusted lengths.
 
 ### 9.4 Required CI gates
 
-- Python 3.9-3.14 full tests (package requires Python >=3.9).
+- Python 3.9-3.15 full tests (package requires Python >=3.9).
 - Ruff and progressively expanded mypy.
 - Garmin conformance corpus.
 - Generated-profile determinism.

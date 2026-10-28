@@ -37,6 +37,24 @@ class EncodeMode(str, Enum):
     CANONICAL = 'canonical'
 
 
+# Sentinel so an explicit ``check_crc=True`` is distinguishable from an omitted
+# kwarg (a bare default of True cannot override ``EncodeOptions(check_crc=False)``).
+_CHECK_CRC_UNSET: object = object()
+
+
+def _resolve_mode(
+        *,
+        mode: EncodeMode | str | None,
+        preserve: bool | None,
+        default: EncodeMode = EncodeMode.PRESERVE,
+) -> EncodeMode:
+    if mode is not None:
+        return mode if isinstance(mode, EncodeMode) else EncodeMode(mode)
+    if preserve is not None:
+        return EncodeMode.PRESERVE if preserve else EncodeMode.CANONICAL
+    return default
+
+
 @dataclass(frozen=True)
 class EncodeOptions:
     """Options for FIT serialization.
@@ -58,29 +76,45 @@ class EncodeOptions:
 
 def resolve_encode_options(
         *,
+        options: EncodeOptions | None = None,
         mode: EncodeMode | str | None = None,
         preserve: bool | None = None,
         strict: bool = False,
-        check_crc: bool = True,
+        check_crc: bool | object = _CHECK_CRC_UNSET,
 ) -> EncodeOptions:
-    """Resolve legacy ``preserve=`` and new ``mode=`` into :class:`EncodeOptions`.
+    """Resolve kwargs and an optional :class:`EncodeOptions` into one value.
 
     Precedence:
 
     1. Explicit ``mode``
     2. Explicit ``preserve`` (``True`` → PRESERVE, ``False`` → CANONICAL)
-    3. Default PRESERVE
+    3. ``options.mode`` when an options object is supplied
+    4. Default PRESERVE
 
-    ``strict=True`` forces CANONICAL (see :class:`EncodeOptions`).
+    Explicit kwargs win over the supplied options object; omitted kwargs keep
+    the options object's values. ``strict=True`` forces CANONICAL (see
+    :class:`EncodeOptions`).
     """
-    if mode is not None:
-        resolved = EncodeMode(mode) if not isinstance(mode, EncodeMode) else mode
-    elif preserve is not None:
-        resolved = EncodeMode.PRESERVE if preserve else EncodeMode.CANONICAL
-    else:
-        resolved = EncodeMode.PRESERVE
+    check_crc_explicit = check_crc is not _CHECK_CRC_UNSET
+    check_crc_value = True if not check_crc_explicit else bool(check_crc)
 
-    return EncodeOptions(mode=resolved, strict=strict, check_crc=check_crc)
+    if options is None:
+        return EncodeOptions(
+            mode=_resolve_mode(mode=mode, preserve=preserve),
+            strict=strict,
+            check_crc=check_crc_value,
+        )
+
+    if mode is None and preserve is None and not strict and not check_crc_explicit:
+        return options
+
+    # `preserve` stays a legacy alias for the no-options path; an explicit
+    # `mode` still wins over it.
+    return EncodeOptions(
+        mode=_resolve_mode(mode=mode, preserve=None, default=options.mode),
+        strict=strict or options.strict,
+        check_crc=check_crc_value if check_crc_explicit else options.check_crc,
+    )
 
 
 def definition_includes_field(definition: DefinitionMessage | None, field_id: int) -> bool:

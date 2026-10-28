@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, BinaryIO
 
 from fit_tool.decoder import FitDecoder
 from fit_tool.encode import (
+    _CHECK_CRC_UNSET,
     EncodeMode,
     EncodeOptions,
     apply_strict_precheck,
@@ -25,10 +26,6 @@ from fit_tool.wire.model import FitDocument
 
 if TYPE_CHECKING:
     from fit_tool.validation import ConformanceLevel, ProfileScope, ValidationReport
-
-# Sentinel so explicit ``check_crc=True`` can override ``options.check_crc=False``
-# (a bare default of True is indistinguishable from "caller omitted the kwarg").
-_CHECK_CRC_UNSET: object = object()
 
 
 class FitFile:
@@ -215,31 +212,13 @@ class FitFile:
         ``options=`` object (including ``check_crc=True`` vs
         ``EncodeOptions(check_crc=False)``).
         """
-        check_crc_explicit = check_crc is not _CHECK_CRC_UNSET
-        check_crc_value = True if not check_crc_explicit else bool(check_crc)
-
-        if options is None:
-            options = resolve_encode_options(
-                mode=mode,
-                preserve=preserve,
-                strict=strict,
-                check_crc=check_crc_value,
-            )
-        elif (
-            preserve is not None
-            or mode is not None
-            or strict
-            or check_crc_explicit
-        ):
-            # Explicit kwargs win over a partial options object when both given.
-            options = resolve_encode_options(
-                mode=mode if mode is not None else options.mode,
-                preserve=preserve,
-                strict=strict or options.strict,
-                check_crc=(
-                    check_crc_value if check_crc_explicit else options.check_crc
-                ),
-            )
+        options = resolve_encode_options(
+            options=options,
+            mode=mode,
+            preserve=preserve,
+            strict=strict,
+            check_crc=check_crc,
+        )
 
         if options.strict:
             apply_strict_precheck(self)

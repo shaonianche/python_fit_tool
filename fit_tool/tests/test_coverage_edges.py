@@ -156,10 +156,24 @@ class TestWireModelProperties(unittest.TestCase):
 
 
 class TestCompatibilityEdges(unittest.TestCase):
-    def test_project_records_empty(self):
-        from fit_tool.compatibility import project_records
+    def test_project_segment_empty(self):
+        from fit_tool.compatibility import project_segment
+        from fit_tool.wire.model import FitSegment
 
-        self.assertEqual(project_records([]), [])
+        segment = FitSegment(
+            header=RawFileHeader(
+                header_size=14,
+                protocol_version=0x20,
+                profile_version=0,
+                records_size=0,
+                data_type=b'.FIT',
+                crc=None,
+                source_offset=0,
+                source_bytes=b'',
+            ),
+            records=[],
+        )
+        self.assertEqual(project_segment(segment), [])
 
     def test_register_developer_field_missing_metadata(self):
         from fit_tool.compatibility import register_developer_field

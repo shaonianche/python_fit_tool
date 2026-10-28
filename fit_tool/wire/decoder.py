@@ -17,6 +17,7 @@ from typing import BinaryIO, Protocol, Union
 from fit_tool.exceptions import FitCRCError, FitHeaderError, FitParseError, FitRecordError
 from fit_tool.wire.crc import crc16
 from fit_tool.wire.model import (
+    TIMESTAMP_FIELD_ID,
     FitDocument,
     FitSegment,
     RawDataRecord,
@@ -28,9 +29,6 @@ from fit_tool.wire.model import (
     RawRecordHeader,
 )
 from fit_tool.wire.timestamp import apply_compressed_time_offset
-
-# Native FIT date_time field number (seconds since 1989-12-31).
-_TIMESTAMP_FIELD_ID = 253
 
 _IS_TIME_COMPRESSED = 0x80
 _IS_DEFINITION = 0x40
@@ -314,7 +312,7 @@ class WireDecoder:
         endian_symbol = '<' if definition.architecture == 0 else '>'
         offset = 0
         for field_def in definition.field_definitions:
-            if field_def.field_id == _TIMESTAMP_FIELD_ID and field_def.size >= 4:
+            if field_def.field_id == TIMESTAMP_FIELD_ID and field_def.size >= 4:
                 # date_time is uint32; take the first 4 bytes of the field slot.
                 value, = struct.unpack_from(f'{endian_symbol}I', raw_record.payload, offset)
                 # Invalid FIT date_time is 0xFFFFFFFF.

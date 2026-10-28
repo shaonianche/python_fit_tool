@@ -7,7 +7,7 @@ from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.message import Message
 from fit_tool.record import Record
-from fit_tool.utils.crc import crc16
+from fit_tool.utils.crc import crc16_chunks
 from fit_tool.validation import (
     STRICT_LEVELS,
     validate_definition,
@@ -24,10 +24,7 @@ def calc_records_size(records: list[Record]) -> int:
 
 
 def calc_crc(header: FitFileHeader, records: list[Record]) -> int:
-    crc = crc16(header.to_bytes())
-    for record in records:
-        crc = crc16(record.to_bytes(), crc=crc)
-    return crc
+    return crc16_chunks([header.to_bytes(), *(record.to_bytes() for record in records)])
 
 
 class FitFileBuilder:

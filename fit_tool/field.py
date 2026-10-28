@@ -311,9 +311,9 @@ class Field:
 
     def get_encoded_value_from_bytes(self, bytes_buffer: bytes, offset: int = 0, endian: Endian = Endian.LITTLE):
         if self.base_type == BaseType.STRING:
-            length = len(bytes_buffer) - 1 - offset
-            value, = struct.unpack_from(f'{length}s', bytes_buffer, offset)
-            return value.decode('utf-8')
+            end = offset + self.size if self.size else len(bytes_buffer)
+            raw = bytes_buffer[offset:end]
+            return raw.split(b'\x00', 1)[0].decode('utf-8')
 
         endian_symbol = '<' if endian == Endian.LITTLE else '>'
 

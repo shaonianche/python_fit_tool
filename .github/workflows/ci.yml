@@ -31,9 +31,7 @@ jobs:
 
       - name: Type-check parser boundaries
         if: matrix.python-version == '3.12'
-        run: >-
-          uv run --frozen mypy fit_tool/fit_file.py fit_tool/fit_file_stream.py fit_tool/exceptions.py
-          --follow-imports=skip --allow-untyped-defs --allow-incomplete-defs --no-strict-optional
+        run: uv run --frozen mypy
 
       - name: Build package
         run: uv build

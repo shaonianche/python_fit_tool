@@ -123,10 +123,19 @@ extend-select = [
 known-first-party = ["fit_tool"]
 
 [tool.mypy]
+# Type checking covers the parser boundary modules only. The rest of the
+# handwritten library is not mypy-clean yet (issue #79); add modules to `files`
+# as they reach zero errors instead of advertising rules that are not enforced.
+files = [
+    "fit_tool/fit_file.py",
+    "fit_tool/fit_file_stream.py",
+    "fit_tool/exceptions.py",
+]
 follow_imports = "silent"
 ignore_missing_imports = true
 disallow_incomplete_defs = true
 disallow_untyped_defs = true
+# Keep generated profile code and tests out of ad-hoc `mypy fit_tool` runs.
 exclude = "fit_tool/(tests|examples|gen|profile/messages)"
 
 [tool.codespell]

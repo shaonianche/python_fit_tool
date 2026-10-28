@@ -40,11 +40,11 @@ the full suite and `uv run gen-profile`. For a published package, install with
 
 The CI baseline is a package build plus the full test suite on Python 3.9 through 3.15. Before finishing a normal code change, run the narrowest relevant tests and then the full suite when practical. Run `uv build` for packaging, entry-point, dependency, or metadata changes.
 
-**Ruff is a CI gate** on the Python 3.12 job (`ruff check fit_tool`). Mypy is configured in `pyproject.toml` and runs in a limited form in CI; core modules are not all under strict mypy yet. Locally:
+**Ruff is a CI gate** on the Python 3.12 job (`ruff check fit_tool`). Mypy is configured in `pyproject.toml` and runs in a limited form in CI; core modules are not all under strict mypy yet. The checked set lives in `[tool.mypy].files`; run `uv run mypy` (no path arguments) so the config applies. Locally:
 
 ```bash
 uv run ruff check fit_tool
-uv run mypy fit_tool
+uv run mypy
 ```
 
 Do not update `uv.lock` unless dependencies or dependency groups intentionally changed. Use `uv lock` or an appropriate `uv add`/`uv remove` command for intentional dependency changes; never edit the lock file by hand.

@@ -47,7 +47,7 @@ class TestFitFileHeader(unittest.TestCase):
     def test_default_profile_version_matches_sdk_version(self):
         header = FitFileHeader(records_size=0)
 
-        self.assertEqual('21.213', str(header.profile_version))
+        self.assertEqual('21.218', str(header.profile_version))
 
     def test_generate_crc(self):
         protocol_version = ProtocolVersion(2, 3)

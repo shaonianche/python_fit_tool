@@ -24,7 +24,7 @@ the FILE_TYPE level (intentional until more validators exist).
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING, Any
@@ -55,13 +55,6 @@ MAX_GLOBAL_MESSAGE_NUMBER = 65535
 MAX_FIELD_NUMBER = 255
 MAX_FIELD_SIZE = 255
 MAX_FIELD_COUNT = 255
-
-# file_id.type values with a FILE_TYPE rule set implemented today.
-IMPLEMENTED_FILE_TYPES = frozenset({
-    FileType.ACTIVITY.value,
-    FileType.WORKOUT.value,
-    FileType.COURSE.value,
-})
 
 # Course timer stop event types accepted by FILE_TYPE (Garmin devices vary).
 _COURSE_TIMER_STOP_TYPES = frozenset({
@@ -701,77 +694,116 @@ def _collect_file_type_findings(
         return
 
     message_counts = Counter(message.global_id for message in data_messages)
-    if file_type == FileType.ACTIVITY.value:
-        _require_fields_findings(
-            findings,
-            file_id,
-            ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
-            file_id_index,
-        )
-        if message_counts[MesgNum.RECORD.value] < 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                'An activity FIT file requires at least one record message.',
-            )
-        if message_counts[MesgNum.LAP.value] < 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                'An activity FIT file requires at least one lap message.',
-            )
-        if message_counts[MesgNum.SESSION.value] < 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                'An activity FIT file requires at least one session message.',
-            )
-        activity_count = message_counts[MesgNum.ACTIVITY.value]
-        if activity_count != 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                f'An activity FIT file requires exactly one activity message; found {activity_count}.',
-            )
-        _collect_activity_field_findings(data_messages, findings, data_message_indices)
-    elif file_type == FileType.WORKOUT.value:
-        _require_fields_findings(
-            findings,
-            file_id,
-            ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
-            file_id_index,
-        )
-        workout_count = message_counts[MesgNum.WORKOUT.value]
-        if workout_count != 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                f'A workout FIT file requires exactly one workout message; found {workout_count}.',
-            )
-        if message_counts[MesgNum.WORKOUT_STEP.value] < 1:
-            _error(
-                findings,
-                ConformanceLevel.FILE_TYPE,
-                'A workout FIT file requires at least one workout_step message.',
-            )
-        _collect_workout_field_findings(data_messages, findings, data_message_indices)
-    elif file_type == FileType.COURSE.value:
-        # Product is optional on real Course exports (e.g. Stages Link).
-        _require_fields_findings(
-            findings,
-            file_id,
-            ('type', 'manufacturer', 'serial_number', 'time_created'),
-            file_id_index,
-        )
-        _collect_course_structure_findings(data_messages, findings, message_counts)
-        _collect_course_field_findings(data_messages, findings, data_message_indices)
-    else:
+    validator = _FILE_TYPE_VALIDATORS.get(file_type)
+    if validator is None:
         _error(
             findings,
             ConformanceLevel.FILE_TYPE,
             f'Strict file-type validation is not implemented for file_id.type {file_type!r}.',
             file_id_index,
         )
+        return
+    validator(data_messages, findings, data_message_indices, message_counts)
+
+
+def _collect_activity_file_findings(
+        data_messages: Sequence[DataMessage],
+        findings: list[ValidationFinding],
+        data_message_indices: Mapping[int, int],
+        message_counts: Counter,
+) -> None:
+    _require_fields_findings(
+        findings,
+        data_messages[0],
+        ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
+        data_message_indices.get(0),
+    )
+    if message_counts[MesgNum.RECORD.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'An activity FIT file requires at least one record message.',
+        )
+    if message_counts[MesgNum.LAP.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'An activity FIT file requires at least one lap message.',
+        )
+    if message_counts[MesgNum.SESSION.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'An activity FIT file requires at least one session message.',
+        )
+    activity_count = message_counts[MesgNum.ACTIVITY.value]
+    if activity_count != 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            f'An activity FIT file requires exactly one activity message; found {activity_count}.',
+        )
+    _collect_activity_field_findings(data_messages, findings, data_message_indices)
+
+
+def _collect_workout_file_findings(
+        data_messages: Sequence[DataMessage],
+        findings: list[ValidationFinding],
+        data_message_indices: Mapping[int, int],
+        message_counts: Counter,
+) -> None:
+    _require_fields_findings(
+        findings,
+        data_messages[0],
+        ('type', 'manufacturer', 'product', 'serial_number', 'time_created'),
+        data_message_indices.get(0),
+    )
+    workout_count = message_counts[MesgNum.WORKOUT.value]
+    if workout_count != 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            f'A workout FIT file requires exactly one workout message; found {workout_count}.',
+        )
+    if message_counts[MesgNum.WORKOUT_STEP.value] < 1:
+        _error(
+            findings,
+            ConformanceLevel.FILE_TYPE,
+            'A workout FIT file requires at least one workout_step message.',
+        )
+    _collect_workout_field_findings(data_messages, findings, data_message_indices)
+
+
+def _collect_course_file_findings(
+        data_messages: Sequence[DataMessage],
+        findings: list[ValidationFinding],
+        data_message_indices: Mapping[int, int],
+        message_counts: Counter,
+) -> None:
+    # Product is optional on real Course exports (e.g. Stages Link).
+    _require_fields_findings(
+        findings,
+        data_messages[0],
+        ('type', 'manufacturer', 'serial_number', 'time_created'),
+        data_message_indices.get(0),
+    )
+    _collect_course_structure_findings(data_messages, findings, message_counts)
+    _collect_course_field_findings(data_messages, findings, data_message_indices)
+
+
+_FileTypeValidator = Callable[
+    [Sequence[DataMessage], list[ValidationFinding], Mapping[int, int], Counter],
+    None,
+]
+
+_FILE_TYPE_VALIDATORS: dict[int, _FileTypeValidator] = {
+    FileType.ACTIVITY.value: _collect_activity_file_findings,
+    FileType.WORKOUT.value: _collect_workout_file_findings,
+    FileType.COURSE.value: _collect_course_file_findings,
+}
+
+# file_id.type values with a FILE_TYPE rule set implemented today.
+IMPLEMENTED_FILE_TYPES = frozenset(_FILE_TYPE_VALIDATORS)
 
 
 def _collect_activity_field_findings(

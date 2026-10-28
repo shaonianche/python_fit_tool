@@ -44,7 +44,7 @@ public-claims pass that keeps this table and `docs/CAPABILITY_BOUNDARY.md` hones
 | --- | --- | --- | --- |
 | Docs / status truth vs main | Phase 0 | **A** SHA-13 | **Done** (re-synced at Stage 5 / L) |
 | Fixture / golden corpus for protocol edges | Phase 0 | **B** SHA-14 | **Done** inventory + constructive goldens; expand as follow-up only |
-| Full component / accumulator coverage beyond `_KNOWN_COMPONENTS` | Phase 3 | **C** SHA-15 | **Done** main-field registry + nested + rollover; active-subfield components via D |
+| Full component / accumulator coverage beyond `PROFILE_COMPONENTS` | Phase 3 | **C** SHA-15 | **Done** main-field registry + nested + rollover; active-subfield components via D |
 | Subfield resolution (type / scale / units / components) | Phase 3 | **D** SHA-16 | **Done** runtime match + PROFILE ambiguity ERROR |
 | Unknown field ids on known messages (decode retain + raw bytes) | Phase 3 | **E** SHA-17 | **Done** `UnknownField` + `raw_bytes` on main path |
 | Post-edit PRESERVATION (edited files, dirty records) | Phase 4 / PRESERVATION level | **F** SHA-18 | **Done** per-record dirty + mixed encode; opt-in PRESERVATION findings |

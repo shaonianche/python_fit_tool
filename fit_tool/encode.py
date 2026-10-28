@@ -23,11 +23,10 @@ from fit_tool.data_message import DataMessage
 from fit_tool.definition_message import DefinitionMessage
 from fit_tool.exceptions import FitEncodingError
 from fit_tool.record import Record, RecordHeader
+from fit_tool.wire.model import TIMESTAMP_FIELD_ID
 
 if TYPE_CHECKING:
     from fit_tool.fit_file import FitFile
-
-_TIMESTAMP_FIELD_ID = 253
 
 
 class EncodeMode(str, Enum):
@@ -139,7 +138,7 @@ def expand_compressed_header(record: Record) -> RecordHeader:
 
 def can_expand_compressed_to_normal(message: DataMessage) -> bool:
     """True when field 253 is on the definition so a normal header can carry the ts."""
-    return definition_includes_field(message.definition_message, _TIMESTAMP_FIELD_ID)
+    return definition_includes_field(message.definition_message, TIMESTAMP_FIELD_ID)
 
 
 def encode_record_projected(

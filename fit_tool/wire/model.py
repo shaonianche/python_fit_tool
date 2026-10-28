@@ -10,6 +10,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Union
 
+# Native FIT date_time field number (seconds since 1989-12-31).
+TIMESTAMP_FIELD_ID = 253
+
 
 @dataclass(frozen=True)
 class RawRecordHeader:

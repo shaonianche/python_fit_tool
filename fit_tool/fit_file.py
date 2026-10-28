@@ -19,7 +19,7 @@ from fit_tool.encode import (
 from fit_tool.exceptions import FitCRCError, FitEncodingError
 from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.record import Record
-from fit_tool.utils.crc import crc16
+from fit_tool.utils.crc import crc16_chunks
 from fit_tool.utils.logging import logger
 from fit_tool.wire.encoder import encode_document, encode_document_mixed
 from fit_tool.wire.model import FitDocument
@@ -311,14 +311,11 @@ class FitFile:
                 self.header.protocol_version, self.header.profile_version, records_size
             )
 
-        calculated_crc = 0
-        bytes_buffer = bytearray()
-        buffer = self.header.to_bytes()
-        calculated_crc = crc16(buffer, crc=calculated_crc)
-        bytes_buffer.extend(buffer)
+        header_bytes = self.header.to_bytes()
+        calculated_crc = crc16_chunks([header_bytes, *record_buffers])
+        bytes_buffer = bytearray(header_bytes)
 
         for buffer in record_buffers:
-            calculated_crc = crc16(buffer, crc=calculated_crc)
             bytes_buffer.extend(buffer)
 
         if self._crc is None:

@@ -22,9 +22,6 @@ from fit_tool.profile.component_registry import (
     PROFILE_COMPONENTS,
 )
 
-# Back-compat alias: historical name used by docs and early tests.
-_KNOWN_COMPONENTS = PROFILE_COMPONENTS
-
 
 def components_for_field(
         global_id: int,
@@ -238,7 +235,6 @@ def expand_message_components(
 __all__ = [
     'PROFILE_COMPONENT_SOURCE_COUNT',
     'PROFILE_COMPONENTS',
-    '_KNOWN_COMPONENTS',
     'components_for_field',
     'expand_message_components',
     'registry_coverage',

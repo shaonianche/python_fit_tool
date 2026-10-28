@@ -36,11 +36,6 @@ class EncodeMode(str, Enum):
     CANONICAL = 'canonical'
 
 
-# Sentinel so an explicit ``check_crc=True`` is distinguishable from an omitted
-# kwarg (a bare default of True cannot override ``EncodeOptions(check_crc=False)``).
-_CHECK_CRC_UNSET: object = object()
-
-
 def _resolve_mode(
         *,
         mode: EncodeMode | str | None,
@@ -78,8 +73,8 @@ def resolve_encode_options(
         options: EncodeOptions | None = None,
         mode: EncodeMode | str | None = None,
         preserve: bool | None = None,
-        strict: bool = False,
-        check_crc: bool | object = _CHECK_CRC_UNSET,
+        strict: bool | None = None,
+        check_crc: bool | None = None,
 ) -> EncodeOptions:
     """Resolve kwargs and an optional :class:`EncodeOptions` into one value.
 
@@ -90,29 +85,15 @@ def resolve_encode_options(
     3. ``options.mode`` when an options object is supplied
     4. Default PRESERVE
 
-    Explicit kwargs win over the supplied options object; omitted kwargs keep
-    the options object's values. ``strict=True`` forces CANONICAL (see
-    :class:`EncodeOptions`).
+    Explicit ``strict`` / ``check_crc`` values override the supplied options
+    object; omitted (``None``) values keep it. ``strict=True`` forces CANONICAL
+    (see :class:`EncodeOptions`).
     """
-    check_crc_explicit = check_crc is not _CHECK_CRC_UNSET
-    check_crc_value = True if not check_crc_explicit else bool(check_crc)
-
-    if options is None:
-        return EncodeOptions(
-            mode=_resolve_mode(mode=mode, preserve=preserve),
-            strict=strict,
-            check_crc=check_crc_value,
-        )
-
-    if mode is None and preserve is None and not strict and not check_crc_explicit:
-        return options
-
-    # `preserve` stays a legacy alias for the no-options path; an explicit
-    # `mode` still wins over it.
+    base = options or EncodeOptions()
     return EncodeOptions(
-        mode=_resolve_mode(mode=mode, preserve=None, default=options.mode),
-        strict=strict or options.strict,
-        check_crc=check_crc_value if check_crc_explicit else options.check_crc,
+        mode=_resolve_mode(mode=mode, preserve=preserve, default=base.mode),
+        strict=base.strict if strict is None else strict,
+        check_crc=base.check_crc if check_crc is None else check_crc,
     )
 
 

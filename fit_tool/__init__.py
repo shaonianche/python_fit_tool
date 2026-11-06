@@ -17,7 +17,7 @@ continue to work; no modules are moved or removed in this change.
 # limitation"), but the value defined by the SDK for the header is 2.0
 # (FIT_PROTOCOL_VERSION_20); developer fields require 2.0.
 PROTOCOL_VERSION = '2.0'
-SDK_VERSION = '21.218.0'
+SDK_VERSION = '21.221.0'
 FIT_DATA_TYPE = b'.FIT'
 
 from fit_tool.api import (  # noqa: E402

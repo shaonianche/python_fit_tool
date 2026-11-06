@@ -293,10 +293,10 @@ class TestProfileCatalog(unittest.TestCase):
         from fit_tool import SDK_VERSION
 
         self.assertEqual(PROFILE_SDK_VERSION, SDK_VERSION)
-        self.assertEqual(PROFILE_MESSAGE_COUNT, 124)
-        self.assertEqual(PROFILE_FIELD_COUNT, 1566)
-        self.assertEqual(PROFILE_ENUM_TYPE_COUNT, 115)
-        self.assertEqual(PROFILE_ENUM_FIELD_COUNT, 164)
+        self.assertEqual(PROFILE_MESSAGE_COUNT, 127)
+        self.assertEqual(PROFILE_FIELD_COUNT, 1593)
+        self.assertEqual(PROFILE_ENUM_TYPE_COUNT, 119)
+        self.assertEqual(PROFILE_ENUM_FIELD_COUNT, 167)
         self.assertEqual(len(PROFILE_FIELDS), PROFILE_FIELD_COUNT)
 
     def test_file_id_type_in_catalog(self):

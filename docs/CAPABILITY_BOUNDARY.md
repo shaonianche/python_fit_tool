@@ -80,6 +80,17 @@ validate_fit_file(fit_file, levels={ConformanceLevel.PRESERVATION})
 with `raise_on_error=True`. Prefer `validate_fit_file` for reports and level
 selection on the read path.
 
+## Invalid values
+
+FIT invalid sentinels decode as `None` (no value), both for scalars and for
+array elements: `record.cadence` written as `0xFF` reads as `None`, and an
+unset `time_in_*_zone` array contains `None` entries. The raw encoded value
+stays on the field, so PRESERVE and CANONICAL re-encoding reproduce the same
+bytes. `byte` payloads stay opaque (`0xFF` inside a developer
+`application_id` is data), except that a wholly invalid byte field reads as
+`None`. FILE_TYPE required-field checks treat an invalid required field as
+missing.
+
 ---
 
 ## Encode policies

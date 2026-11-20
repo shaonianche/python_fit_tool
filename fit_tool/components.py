@@ -81,7 +81,7 @@ def registry_coverage() -> dict[str, object]:
 
 def _field_raw_as_int(field: Field) -> int | None:
     """Combine numeric encoded values into a little-endian bit bucket."""
-    if not field.is_valid() or not field.encoded_values:
+    if not field.has_value() or not field.encoded_values:
         return None
     if field.base_type.is_string() or field.base_type.is_float():
         return None
@@ -103,7 +103,10 @@ def _destination_has_wire_value(field: Field) -> bool:
         return False
     if not field.encoded_values:
         return False
-    return any(value is not None for value in field.encoded_values)
+    return any(
+        value is not None and not field.base_type.is_invalid_value(value)
+        for value in field.encoded_values
+    )
 
 
 def _ensure_destination_slot(destination: Field, index: int) -> None:

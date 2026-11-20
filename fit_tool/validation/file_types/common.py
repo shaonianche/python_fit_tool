@@ -14,8 +14,20 @@ def require_fields_findings(
         field_names: tuple,
         record_index: int | None,
 ) -> None:
-    """Report one finding listing every required field the message left unset."""
-    missing = [name for name in field_names if getattr(message, name, None) is None]
+    """Report one finding listing every required field the message left unset.
+
+    A field present on the wire but carrying only FIT invalid sentinels counts
+    as unset (:meth:`~fit_tool.field.Field.has_value`), so a required field
+    written as the protocol sentinel is reported instead of accepted.
+    """
+    missing = []
+    for name in field_names:
+        field = message.get_field_by_name(name)
+        if field is not None and not field.has_value():
+            missing.append(name)
+        elif getattr(message, name, None) is None:
+            missing.append(name)
+
     if missing:
         add_error(
             findings,

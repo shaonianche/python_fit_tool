@@ -147,9 +147,9 @@ class TestAccumulatorRollover(unittest.TestCase):
         source.size = 2
         acc: dict[tuple[int, int], int] = {}
 
-        source.encoded_values = [65535]
+        source.encoded_values = [65534]
         expand_message_components(message, acc)
-        self.assertEqual(acc[(20, 29)], 65535)
+        self.assertEqual(acc[(20, 29)], 65534)
 
         source.encoded_values = [1]
         expand_message_components(message, acc)
@@ -157,6 +157,21 @@ class TestAccumulatorRollover(unittest.TestCase):
         assert power is not None
         self.assertEqual(acc[(20, 29)], 65537)
         self.assertEqual(power.get_value(), 65537)
+
+    def test_all_invalid_source_does_not_expand(self):
+        """0xFFFF is the uint16 sentinel, so a packed field with no value expands nothing."""
+        message = RecordMessage()
+        source = message.get_field(28)
+        assert source is not None
+        source.size = 2
+        acc: dict[tuple[int, int], int] = {}
+
+        source.encoded_values = [65535]
+        expand_message_components(message, acc)
+        self.assertNotIn((20, 29), acc)
+        power = message.get_field(29)
+        assert power is not None
+        self.assertEqual(power.size, 0)
 
     def test_8bit_cycles_accumulate_to_total_cycles(self):
         message = RecordMessage()

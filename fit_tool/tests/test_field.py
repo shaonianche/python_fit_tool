@@ -1,5 +1,6 @@
 # nosetests --nocapture  tests/test_field.py
 
+import struct
 import unittest
 
 from fit_tool.base_type import BaseType
@@ -357,3 +358,105 @@ class TestFieldSubFieldsAndHelpers(unittest.TestCase):
         self.assertEqual(row[0], 'hrv')
         self.assertIn('10', str(row[1]))
         self.assertIn('20', str(row[1]))
+
+
+class TestInvalidValues(unittest.TestCase):
+    SENTINELS = (
+        (BaseType.ENUM, 0xff),
+        (BaseType.SINT8, 0x7f),
+        (BaseType.UINT8, 0xff),
+        (BaseType.SINT16, 0x7fff),
+        (BaseType.UINT16, 0xffff),
+        (BaseType.SINT32, 0x7fffffff),
+        (BaseType.UINT32, 0xffffffff),
+        (BaseType.UINT8Z, 0),
+        (BaseType.UINT16Z, 0),
+        (BaseType.UINT32Z, 0),
+        (BaseType.SINT64, 0x7fffffffffffffff),
+        (BaseType.UINT64, 0xffffffffffffffff),
+        (BaseType.UINT64Z, 0),
+    )
+
+    def test_scalar_sentinel_decodes_as_none_and_round_trips(self):
+        for base_type, sentinel in self.SENTINELS:
+            with self.subTest(base_type=base_type):
+                field = Field(name='x', base_type=base_type, size=base_type.size)
+                wire = field.encoded_value_to_bytes(sentinel)
+                field.read_all_from_bytes(wire)
+
+                self.assertIsNone(field.get_value())
+                self.assertFalse(field.has_value())
+                self.assertTrue(field.is_valid())
+                self.assertEqual(field.encoded_values, [sentinel])
+                self.assertEqual(field.to_bytes(), wire)
+
+    def test_scaled_sentinel_is_none_not_a_measurement(self):
+        field = Field(name='speed', base_type=BaseType.UINT16, size=2, scale=1000.0)
+        field.read_all_from_bytes(b'\xff\xff')
+
+        self.assertIsNone(field.get_value())
+        self.assertNotEqual(field.get_value(), 65.535)
+        self.assertEqual(field.to_bytes(), b'\xff\xff')
+
+    def test_invalid_array_elements_decode_as_none(self):
+        field = Field(name='time_in_power_zone', base_type=BaseType.UINT32, size=12, scale=1000.0)
+        wire = struct.pack('<III', 1000, 0xFFFFFFFF, 2000)
+        field.read_all_from_bytes(wire)
+
+        self.assertEqual(field.get_values(), [1.0, None, 2.0])
+        self.assertTrue(field.has_value())
+        self.assertEqual(field.to_bytes(), wire)
+
+    def test_all_invalid_array_has_no_value(self):
+        field = Field(name='time_in_power_zone', base_type=BaseType.UINT32, size=8, scale=1000.0)
+        field.read_all_from_bytes(b'\xff' * 8)
+
+        self.assertEqual(field.get_values(), [None, None])
+        self.assertFalse(field.has_value())
+        self.assertEqual(field.to_bytes(), b'\xff' * 8)
+
+    def test_byte_array_keeps_opaque_payload(self):
+        """0xFF is legal payload inside a byte array (developer application ids)."""
+        field = Field(name='application_id', base_type=BaseType.BYTE, size=3)
+        field.read_all_from_bytes(b'\xaa\xff\x00')
+
+        self.assertEqual(field.get_values(), [0xaa, 0xff, 0x00])
+        self.assertTrue(field.has_value())
+        self.assertEqual(field.to_bytes(), b'\xaa\xff\x00')
+
+    def test_all_invalid_byte_array_has_no_value(self):
+        field = Field(name='application_id', base_type=BaseType.BYTE, size=3)
+        field.read_all_from_bytes(b'\xff\xff\xff')
+
+        self.assertIsNone(field.get_values())
+        self.assertFalse(field.has_value())
+        self.assertEqual(field.to_bytes(), b'\xff\xff\xff')
+
+    def test_setting_none_writes_sentinel_and_reads_back_as_none(self):
+        for base_type, sentinel in self.SENTINELS:
+            with self.subTest(base_type=base_type):
+                field = Field(name='x', base_type=base_type, size=base_type.size)
+                field.set_value(0, None)
+
+                self.assertEqual(field.to_bytes(), field.encoded_value_to_bytes(sentinel))
+                self.assertIsNone(field.get_value())
+
+    def test_date_time_sentinel_is_none(self):
+        field = Field(
+            name='timestamp',
+            base_type=BaseType.UINT32,
+            size=4,
+            scale=1 / 1000.0,
+            offset=-631065600000.0,
+            type_name='date_time',
+        )
+        field.read_all_from_bytes(b'\xff\xff\xff\xff')
+
+        self.assertIsNone(field.get_value())
+        self.assertEqual(field.to_bytes(), b'\xff\xff\xff\xff')
+
+    def test_to_row_emits_no_value(self):
+        field = Field(name='cadence', base_type=BaseType.UINT8, size=1)
+        field.set_encoded_value(0, 0xff, check_validity=False)
+
+        self.assertEqual(field.to_row(), ['cadence', None, ''])

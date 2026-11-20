@@ -199,3 +199,105 @@ class TestSdkFiles(unittest.TestCase):
             fit_file = FitFile.from_bytes(bytes_buffer)
             # print(f'Profile version: {fit_file.header.profile_version}')
             fit_file.to_rows()
+
+
+class TestInvalidValueDecoding(unittest.TestCase):
+    """FIT sentinels read as no value while their raw bytes still round-trip."""
+
+    @staticmethod
+    def _load(name):
+        path = os.path.join(os.path.dirname(__file__), 'data', 'sdk', name)
+        with open(path, 'rb') as file_object:
+            return FitFile.from_bytes(file_object.read())
+
+    @staticmethod
+    def _records(fit_file, message_name):
+        from fit_tool.data_message import DataMessage
+
+        for record in fit_file.records:
+            message = record.message
+            if isinstance(message, DataMessage) and message.name == message_name:
+                yield message
+
+    def test_activity_scalar_sentinels_decode_as_none(self):
+        sentinels = {'cadence': 0xff, 'speed': 0xffff, 'left_pco': 0x7f}
+        seen = {}
+        for message in self._records(self._load('Activity.fit'), 'record'):
+            for name, sentinel in sentinels.items():
+                field = message.get_field_by_name(name)
+                if field is not None and field.size and sentinel in field.encoded_values:
+                    seen.setdefault(name, (message, field))
+
+        self.assertEqual(set(seen), set(sentinels))
+        for name, (message, field) in seen.items():
+            self.assertIsNone(getattr(message, name))
+            self.assertFalse(field.has_value())
+            self.assertIn(sentinels[name], field.encoded_values)
+
+    def test_activity_power_phase_sentinels_decode_as_none(self):
+        for message in self._records(self._load('Activity.fit'), 'record'):
+            field = message.get_field_by_name('left_power_phase')
+            if field is not None and field.size and 0xff in field.encoded_values:
+                self.assertEqual(message.left_power_phase, [None, None])
+                self.assertEqual(field.to_bytes(), b'\xff\xff')
+                return
+        self.fail('no record with an invalid left_power_phase')
+
+    def test_lap_unset_power_zones_decode_as_none(self):
+        for message in self._records(self._load('activity_poolswim_with_hr.fit'), 'lap'):
+            field = message.get_field_by_name('time_in_power_zone')
+            if field is not None and field.size and all(
+                value == 0xffffffff for value in field.encoded_values
+            ):
+                self.assertEqual(message.time_in_power_zone, [None] * len(field.encoded_values))
+                self.assertEqual(field.to_bytes(), b'\xff' * field.size)
+                return
+        self.fail('no lap with an unset time_in_power_zone')
+
+    def test_edited_record_keeps_invalid_sentinel_bytes(self):
+        fit_file = self._load('Activity.fit')
+        target = None
+        for message in self._records(fit_file, 'record'):
+            cadence = message.get_field_by_name('cadence')
+            heart_rate = message.get_field_by_name('heart_rate')
+            if (
+                cadence is not None
+                and cadence.size
+                and cadence.get_value() is None
+                and heart_rate is not None
+                and heart_rate.size
+                and message.timestamp is not None
+            ):
+                target = message
+                break
+        self.assertIsNotNone(target)
+        timestamp = target.timestamp
+        target.heart_rate = 123
+
+        for message in self._records(FitFile.from_bytes(fit_file.to_bytes()), 'record'):
+            if message.timestamp == timestamp:
+                cadence = message.get_field_by_name('cadence')
+                self.assertIsNone(cadence.get_value())
+                self.assertEqual(cadence.encoded_values, [0xff])
+                self.assertEqual(message.heart_rate, 123)
+                return
+        self.fail('edited record not found after re-encode')
+
+    def test_all_fixtures_round_trip_byte_identical(self):
+        data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        paths = []
+        for root, _, files in os.walk(data_dir):
+            paths.extend(
+                os.path.join(root, filename)
+                for filename in files
+                if filename.endswith('.fit')
+            )
+        self.assertGreaterEqual(len(paths), 20)
+        for path in sorted(paths):
+            with open(path, 'rb') as file_object:
+                raw = file_object.read()
+            self.assertEqual(
+                FitFile.from_bytes(raw).to_bytes(),
+                raw,
+                os.path.basename(path),
+            )

@@ -139,15 +139,41 @@ class Field:
     def is_not_valid(self) -> bool:
         return not self.is_valid()
 
+    def has_value(self) -> bool:
+        """True when the field is on the wire and carries a real value.
+
+        ``is_valid()`` stays size-based so encode and definition handling are
+        unchanged; a field whose payload is entirely the FIT invalid sentinel
+        is present on the wire but has no value.
+        """
+        return self.is_valid() and not self._has_no_value()
+
+    def _has_no_value(self) -> bool:
+        if not self.encoded_values:
+            return True
+        if self.base_type.is_string():
+            return False
+        if self.base_type is BaseType.BYTE:
+            invalid = self.base_type.invalid_raw_value()
+            return all(value is None or value == invalid for value in self.encoded_values)
+        return all(self.base_type.is_invalid_value(value) for value in self.encoded_values)
+
     def get_value(self, index: int = 0, sub_field: SubField = None):
         if index < 0 or index >= len(self.encoded_values):
+            return None
+        # Byte fields are opaque, so only a wholly invalid payload means "no
+        # value"; other base types are handled per element in decode_value.
+        if self.base_type is BaseType.BYTE and self._has_no_value():
             return None
 
         encoded_value = self.encoded_values[index]
         return self.decode_value(encoded_value, sub_field)
 
-    # Return values as a list
+    # Return values as a list. Invalid array elements decode to None; a byte
+    # field whose payload is entirely the invalid sentinel has no value at all.
     def get_values(self):
+        if self.base_type is BaseType.BYTE and self._has_no_value():
+            return None
         return [self.decode_value(encoded_value) for encoded_value in self.encoded_values]
 
     def set_values(self, values):
@@ -157,6 +183,11 @@ class Field:
     def decode_value(self, encoded_value, sub_field: SubField = None):
         if encoded_value is None or isinstance(encoded_value, str):
             return encoded_value
+
+        # FIT sentinels mean "no value", not a real reading. Raw encoded values
+        # stay in ``encoded_values`` so re-encoding reproduces the same bytes.
+        if self.base_type.is_invalid_value(encoded_value):
+            return None
 
         scale = self.get_scale(sub_field=sub_field)
         offset = self.get_offset(sub_field=sub_field)
@@ -431,23 +462,23 @@ class Field:
         return self.resolve_sub_field(fields).selected
 
     def to_row(self, sub_field: SubField = None) -> list:
-        row = []
-        values = []
+        name = sub_field.name if sub_field else self.name
+        units = sub_field.units if sub_field else self.units
 
-        for i in range(len(self.encoded_values)):
-            values.append(self.get_value(index=i, sub_field=sub_field))
+        if not self.has_value():
+            return [name, None, units]
 
-        row.append(sub_field.name if sub_field else self.name)
+        values = [
+            self.decode_value(value, sub_field)
+            for value in self.encoded_values
+        ]
 
         if len(values) == 1:
-            row.append(values[0])
+            value = values[0]
         else:
-            values_str = '[' + ','.join([str(v) for v in values]) + ']'
-            row.append(values_str)
+            value = '[' + ','.join('' if item is None else str(item) for item in values) + ']'
 
-        row.append(sub_field.units if sub_field else self.units)
-
-        return row
+        return [name, value, units]
 
 
 class UnknownField(Field):

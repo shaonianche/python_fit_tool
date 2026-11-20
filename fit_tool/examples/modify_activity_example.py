@@ -28,7 +28,7 @@ def main():
             if isinstance(message, RecordMessage):
                 # remove records where the power is too high
                 power_field = message.get_field(RecordPowerField.ID)
-                if power_field and power_field.is_valid():
+                if power_field and power_field.has_value():
                     power = power_field.get_value()
                     if power > 800:
                         include_record = False

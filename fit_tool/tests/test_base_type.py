@@ -267,3 +267,36 @@ class TestFieldType:
         assert ft.get_name_by_value(0) == 'running'
         assert ft.get_name_by_value(1) == 'cycling'
         assert ft.get_name_by_value(99) is None
+
+
+class TestBaseTypeIsInvalidValue:
+    @pytest.mark.parametrize("base_type, sentinel", [
+        (BaseType.ENUM, 0xff),
+        (BaseType.SINT8, 0x7f),
+        (BaseType.UINT8, 0xff),
+        (BaseType.SINT16, 0x7fff),
+        (BaseType.UINT16, 0xffff),
+        (BaseType.SINT32, 0x7fffffff),
+        (BaseType.UINT32, 0xffffffff),
+        (BaseType.UINT8Z, 0),
+        (BaseType.UINT16Z, 0),
+        (BaseType.UINT32Z, 0),
+        (BaseType.SINT64, 0x7fffffffffffffff),
+        (BaseType.UINT64, 0xffffffffffffffff),
+        (BaseType.UINT64Z, 0),
+    ])
+    def test_sentinel_is_invalid(self, base_type, sentinel):
+        assert base_type.is_invalid_value(sentinel) is True
+        neighbour = sentinel - 1 if sentinel else 1
+        assert base_type.is_invalid_value(neighbour) is False
+
+    def test_none_is_invalid(self):
+        assert BaseType.UINT8.is_invalid_value(None) is True
+
+    def test_byte_is_opaque(self):
+        assert BaseType.BYTE.is_invalid_value(0xff) is False
+        assert BaseType.BYTE.is_invalid_value(0) is False
+
+    def test_string_has_no_integer_sentinel(self):
+        assert BaseType.STRING.is_invalid_value('') is False
+        assert BaseType.STRING.is_invalid_value(0) is False

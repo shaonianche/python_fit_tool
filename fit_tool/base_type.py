@@ -58,6 +58,19 @@ class BaseType(Enum):
     def invalid_raw_value(self) -> int:
         return _BASE_TYPE_INFO[self][2]
 
+    def is_invalid_value(self, value) -> bool:
+        """Return True when *value* is the FIT invalid sentinel for this type.
+
+        ``byte`` is opaque: the Profile uses it for packed bit fields and
+        developer application ids where ``0xFF`` is legal payload. Field-level
+        code decides when an entire byte field is unset.
+        """
+        if value is None:
+            return True
+        if self.is_string() or self is BaseType.BYTE:
+            return False
+        return value == self.invalid_raw_value()
+
     @property
     def max(self) -> int | None:
         return _BASE_TYPE_INFO[self][4]

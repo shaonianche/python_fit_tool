@@ -50,11 +50,11 @@ class TestComponentExpansionEdges(unittest.TestCase):
         source.size = 2
         acc: dict[tuple[int, int], int] = {}
 
-        source.encoded_values = [65535]
+        source.encoded_values = [65534]
         expand_message_components(message, acc)
-        self.assertEqual(acc[(20, 29)], 65535)
+        self.assertEqual(acc[(20, 29)], 65534)
 
-        source.encoded_values = [1]  # wrap past 0xFFFF → modular delta 2
+        source.encoded_values = [1]  # wrap past 0xFFFE → modular delta 3
         expand_message_components(message, acc)
         power = message.get_field(29)
         assert power is not None

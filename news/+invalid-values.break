@@ -1,0 +1,8 @@
+**Behaviour change:** FIT invalid sentinel values now decode as `None` instead
+of numbers — scalars such as `record.cadence` (0xFF) and `record.speed`
+(0xFFFF), and invalid elements inside arrays such as unset `time_in_*_zone`
+values. Callers must check for `None` before arithmetic or comparisons; an
+all-invalid numeric array is returned as a list of `None` so positions survive.
+Raw wire values are retained, so re-encoding is byte-identical, and FILE_TYPE
+required-field checks now report a required field written as its sentinel as
+missing.

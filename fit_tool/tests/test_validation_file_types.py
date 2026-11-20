@@ -333,3 +333,43 @@ class TestValidationFileTypes(unittest.TestCase):
         report5 = validate_fit_file(fit, levels={ConformanceLevel.FILE_TYPE})
         self.assertTrue(report5.has_errors)
         self.assertTrue(any('missing required field' in f.message for f in report5.errors))
+
+    def test_invalid_sentinel_required_field_is_reported(self):
+        builder = FitFileBuilder(auto_define=True)
+        file_id = FileIdMessage()
+        file_id.type = FileType.ACTIVITY
+        file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+        file_id.product = 0
+        file_id.serial_number = 0  # uint32z invalid sentinel
+        file_id.get_field(4).set_encoded_value(0, 0xFFFFFFFF, check_validity=False)  # date_time invalid
+        builder.add(file_id)
+
+        report = validate_fit_file(builder.build(), levels={ConformanceLevel.FILE_TYPE})
+        messages = [finding.message for finding in report.errors]
+
+        self.assertTrue(
+            any('missing required field' in message and 'serial_number' in message for message in messages),
+            messages,
+        )
+        self.assertTrue(
+            any('missing required field' in message and 'time_created' in message for message in messages),
+            messages,
+        )
+
+    def test_valid_required_fields_still_pass(self):
+        builder = FitFileBuilder(auto_define=True)
+        file_id = FileIdMessage()
+        file_id.type = FileType.ACTIVITY
+        file_id.manufacturer = Manufacturer.DEVELOPMENT.value
+        file_id.product = 0
+        file_id.serial_number = 1234
+        file_id.time_created = 1_700_000_000_000
+        builder.add(file_id)
+
+        report = validate_fit_file(builder.build(), levels={ConformanceLevel.FILE_TYPE})
+        messages = [finding.message for finding in report.errors]
+
+        self.assertFalse(
+            any('missing required field' in message for message in messages),
+            messages,
+        )

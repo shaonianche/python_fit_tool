@@ -1,9 +1,0 @@
-`event.data` now also expands the three Profile subfield-gated component sets,
-so packed event payloads decode into named fields instead of only a `uint32`:
-gear-change events (Di2 / eTap) populate `front_gear_num`, `front_gear`,
-`rear_gear_num` and `rear_gear`, Garmin Varia radar threat alerts populate
-`radar_threat_level_max`, `radar_threat_count`, `radar_threat_avg_approach_speed`
-and `radar_threat_max_approach_speed` (m/s), and `sport_point` events populate
-`score` and `opponent_score`. The generator now emits these components from the
-bundled Profile spreadsheet; `event.data` keeps its packed wire value, so
-re-encoding is unchanged.

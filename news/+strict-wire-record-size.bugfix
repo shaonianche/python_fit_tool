@@ -1,0 +1,13 @@
+`validate()` and `to_bytes(strict=True)` no longer report WIRE size errors on
+records that carry component-expanded fields (`enhanced_speed`,
+`enhanced_altitude`) or a reconstructed compressed timestamp. The record size
+check now counts only the fields the active definition writes, so a standard
+Garmin activity validates with no findings and still re-encodes byte-for-byte,
+while a genuinely mismatched definition size is still reported.
+
+Two caller-visible consequences: clearing a field after decode (for example
+`record.heart_rate = None`) no longer trips the WIRE size check, because encode
+writes the protocol-invalid value at the definition's size; and an Activity
+`file_id` no longer has to carry `serial_number`, which Garmin's own activity
+files omit and which Garmin's FIT documentation marks optional. `type`,
+`manufacturer` and `time_created` are still required.

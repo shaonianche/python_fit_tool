@@ -9,7 +9,8 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
-from fit_tool.sub_field import SubField
+{% if message.has_subfield_components %}from fit_tool.field_component import FieldComponent
+{% endif %}from fit_tool.sub_field import SubField
 from fit_tool.profile.messages.common_fields import MessageIndexField, TimestampField
 from fit_tool.profile.profile_type import *
 from typing import List as list
@@ -232,7 +233,18 @@ class {{message.field_class_name_by_name[field_name]}}(Field):
         {{message.field_class_name_by_name[reference_name]}}.ID: {{sub_field.ref_field_map[reference_name]}}
         {%- if not loop.last %}, {% endif %}
         {%- endfor %}
-        }){%- if not loop.last %}, {% endif %}
+        }{%- if sub_field.components %},
+        components = [
+            {%- for component in sub_field.components %}
+            FieldComponent(
+                field_id={{ component.field_id }},
+                accumulate={{ component.accumulate }},
+                bits={{ component.bits }},
+                scale={{ component.scale }},
+                offset={{ component.offset }})
+            {%- if not loop.last %}, {% endif %}
+            {%- endfor %}
+        ]{%- endif %}){%- if not loop.last %}, {% endif %}
         {%- endfor %}
         ]
         )

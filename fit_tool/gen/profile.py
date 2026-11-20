@@ -4,6 +4,7 @@ import re
 from fit_tool import SDK_VERSION
 from fit_tool.base_type import BaseType, FieldType
 from fit_tool.field import ArrayType, Field
+from fit_tool.field_component import FieldComponent
 from fit_tool.utils.logging import logger
 
 
@@ -58,6 +59,54 @@ def parse_array_field(value):
             return ArrayType.FIXED, int(match.group(1))
 
     raise ValueError(f'Invalid array field value: {value!r}')
+
+
+def split_profile_list(value) -> list[str]:
+    """Split a comma-separated Profile cell into stripped non-empty entries."""
+    if value is None:
+        return []
+    if isinstance(value, (int, float)):
+        return [str(value)]
+    return [part.strip() for part in str(value).split(',') if part.strip() != '']
+
+
+def parse_subfield_components(message_name: str, subfield_name: str, row,
+                              field_ids_by_name: dict[tuple[str, str], int]) -> list[FieldComponent]:
+    """Build packed-component specs for a subfield row's ``Components`` cell.
+
+    Subfield rows declare components by destination field name, with per-component
+    scale, offset, bit width and accumulate flag in the same row. Destination ids
+    come from ``field_ids_by_name`` because a destination field can be declared
+    after the subfield row that packs it (``event.data`` → ``front_gear``).
+    """
+    component_names = split_profile_list(row[5].value)
+    if not component_names:
+        return []
+
+    scales = split_profile_list(row[6].value)
+    offsets = split_profile_list(row[7].value)
+    bits_list = split_profile_list(row[9].value)
+    accumulate_list = split_profile_list(row[10].value)
+
+    def cell_value(values: list[str], index: int):
+        return values[index] if index < len(values) else None
+
+    components = []
+    for index, dest_name in enumerate(component_names):
+        dest_id = field_ids_by_name.get((message_name, dest_name))
+        if dest_id is None:
+            raise ValueError(
+                f'Component destination {dest_name!r} not found on message '
+                f'{message_name!r} (subfield {subfield_name!r})'
+            )
+        components.append(FieldComponent(
+            field_id=dest_id,
+            accumulate=bool(parse_profile_number(cell_value(accumulate_list, index), 0)),
+            bits=int(parse_profile_number(cell_value(bits_list, index), 0)),
+            scale=parse_profile_number(cell_value(scales, index), 1),
+            offset=parse_profile_number(cell_value(offsets, index), 0),
+        ))
+    return components
 
 
 def parse_profile_number(value, default):
@@ -199,6 +248,25 @@ class Profile:
         # Parse the Messages worksheet
         #
         ws = wb['Messages']
+
+        # Field names → ids per message. Subfield component destinations are
+        # listed by name, and a destination can appear after its packing row, so
+        # resolve ids up front instead of relying on parse order.
+        field_ids_by_name: dict[tuple[str, str], int] = {}
+        field_message_name = None
+        for index, row in enumerate(ws.rows):
+            if index == 0:
+                continue
+            message_name = row[0].value
+            if message_name:
+                field_message_name = str(message_name)
+                continue
+            field_id = normalize_blank(row[1].value)
+            field_name = normalize_blank(row[2].value)
+            if field_id is None or field_name is None:
+                continue
+            field_ids_by_name[(field_message_name, str(field_name))] = int(field_id)
+
         current_message = None
         for index, row in enumerate(ws.rows):
             if index == 0:
@@ -327,6 +395,12 @@ class Profile:
                         current_message.add_field(field)
                     else:
                         subfield = field_or_subfield
+                        subfield.components = parse_subfield_components(
+                            current_message.name,
+                            subfield.name,
+                            row,
+                            field_ids_by_name,
+                        )
                         field.sub_fields.append(subfield)
 
         cls._resolve_subfield_references(profile)

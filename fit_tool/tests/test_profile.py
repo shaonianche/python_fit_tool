@@ -68,6 +68,31 @@ class TestProfileTypes(unittest.TestCase):
         self.assertEqual(1000, LapMessage().get_field(7).scale)
 
 
+class TestProfileSubfieldComponents(unittest.TestCase):
+
+    def test_event_data_subfield_components_come_from_profile(self):
+        # Three Profile component sets apply only under a subfield value; they are
+        # generated onto SubField objects because the registry is keyed by the
+        # packing field. Order is LSB first.
+        pytest.importorskip("openpyxl")
+
+        profile = Profile.get_default_profile()
+        data = profile.get_message_by_name('event').get_field_by_name('data')
+        sub_fields = {sub_field.name: sub_field for sub_field in data.sub_fields}
+
+        gear = sub_fields['gear_change_data'].components
+        self.assertEqual([11, 12, 9, 10], [component.field_id for component in gear])
+        self.assertEqual([8, 8, 8, 8], [component.bits for component in gear])
+
+        radar = sub_fields['radar_threat_alert'].components
+        self.assertEqual([21, 22, 23, 24], [component.field_id for component in radar])
+        self.assertEqual([1, 1, 10, 10], [component.scale for component in radar])
+
+        sport_point = sub_fields['sport_point'].components
+        self.assertEqual([7, 8], [component.field_id for component in sport_point])
+        self.assertEqual([16, 16], [component.bits for component in sport_point])
+
+
 class TestParseProfileNumber(unittest.TestCase):
 
     def test_parses_numeric_strings_without_discarding_scale(self):

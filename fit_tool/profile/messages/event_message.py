@@ -9,6 +9,7 @@ from fit_tool.definition_message import DefinitionMessage
 from fit_tool.developer_field import DeveloperField
 from fit_tool.endian import Endian
 from fit_tool.field import Field
+from fit_tool.field_component import FieldComponent
 from fit_tool.sub_field import SubField
 from fit_tool.profile.messages.common_fields import MessageIndexField, TimestampField
 from fit_tool.profile.profile_type import *
@@ -1447,7 +1448,21 @@ class EventDataField(Field):
                 offset = 0,
         reference_map = {
         EventEventField.ID: [33]
-        }), 
+        },
+        components = [
+            FieldComponent(
+                field_id=7,
+                accumulate=False,
+                bits=16,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=8,
+                accumulate=False,
+                bits=16,
+                scale=1,
+                offset=0)
+        ]), 
         SubField(
             name='gear_change_data',
             base_type=BaseType.UINT32,
@@ -1455,7 +1470,33 @@ class EventDataField(Field):
                 offset = 0,
         reference_map = {
         EventEventField.ID: [42, 43]
-        }), 
+        },
+        components = [
+            FieldComponent(
+                field_id=11,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=12,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=9,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=10,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0)
+        ]), 
         SubField(
             name='rider_position',
             base_type=BaseType.ENUM,
@@ -1496,7 +1537,33 @@ class EventDataField(Field):
                 offset = 0,
         reference_map = {
         EventEventField.ID: [75]
-        })
+        },
+        components = [
+            FieldComponent(
+                field_id=21,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=22,
+                accumulate=False,
+                bits=8,
+                scale=1,
+                offset=0), 
+            FieldComponent(
+                field_id=23,
+                accumulate=False,
+                bits=8,
+                scale=10,
+                offset=0), 
+            FieldComponent(
+                field_id=24,
+                accumulate=False,
+                bits=8,
+                scale=10,
+                offset=0)
+        ])
         ]
         )
 

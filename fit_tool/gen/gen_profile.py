@@ -241,6 +241,12 @@ def main():
         for field in message.fields_by_name.values():
             field.is_common_field = is_common_field(field)
 
+        message.has_subfield_components = any(
+            sub_field.components
+            for field in message.fields_by_name.values()
+            for sub_field in field.sub_fields
+        )
+
         message.field_class_name_by_name = {k: field_name_to_class_name(message, message.fields_by_name[k], k) for k in
                                             message.fields_by_name.keys()}
         message.field_property_name_by_name = {k: field_name_to_property_name(message, k) for k in

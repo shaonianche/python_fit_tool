@@ -71,7 +71,7 @@ capability matrix; residual §11 blockers are in
 | Component: 16-bit / 8-bit / 12-bit accumulator **rollover** | Supported | Constructive expansion helper | `test_components.py`, `test_protocol_gap_fixtures` | C done |
 | Nested components (e.g. speed → enhanced_speed) | Supported | Constructive | `test_components.py` | C done |
 | Full Profile **main-field** component set | Supported (37/37 sources, generated registry) | `fit_tool/profile/component_registry.py` | `test_components.TestRegistryCoverage` | C done |
-| Subfield-gated components (event sport_point, etc.) | **Supported** (active subfield via D) | Constructive / unit | `test_components`, `test_subfields` | D done |
+| Subfield-gated components (`event.data` gear change / radar threat / sport point) | **Supported** (3/3 Profile sets generated onto `SubField`) | Generated from Profile subfield rows; constructed wire bytes (no device fixture) | `test_components.TestProfileSubfieldGatedComponents`, `test_subfields` | D done |
 | Unknown **global** messages | Partial (`GenericMessage`) | Device/SDK files with odd IDs; wire decode | `test_wire.py`, SDK smokes | E |
 | Unknown **field ids** on known messages | **Supported** (`UnknownField` + `raw_bytes`; unedited + post-edit preserve when not mutated) | Constructive definition + data | `test_protocol_gap_fixtures`, `test_post_edit_preservation` | E/F done |
 | Subfields (e.g. `workout_step.duration_value`) | **Supported** (ref match + scale/units; multi-ref AND; PROFILE ERROR on ambiguity) | Constructive workout step | `test_subfields`, `test_protocol_gap_fixtures` | D done |

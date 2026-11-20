@@ -1,3 +1,50 @@
+## Release v0.10.0 (2026-11-20)
+
+### Breaking Changes
+
+- **Behaviour change:** FIT invalid sentinel values now decode as `None` instead
+  of numbers — scalars such as `record.cadence` (0xFF) and `record.speed`
+  (0xFFFF), and invalid elements inside arrays such as unset `time_in_*_zone`
+  values. Callers must check for `None` before arithmetic or comparisons; an
+  all-invalid numeric array is returned as a list of `None` so positions survive.
+  Raw wire values are retained, so re-encoding is byte-identical, and FILE_TYPE
+  required-field checks now report a required field written as its sentinel as
+  missing. CSV export changes with it: `FitFile.to_csv` writes an empty value cell
+  where it previously wrote the sentinel's decoded value (`255` bpm for
+  `record.cadence`, `65.535` m/s for `record.speed`, `127.5` % for
+  `battery_soc`), and `to_rows()` returns `None` there, so anything that read
+  those numbers as data now sees a blank cell.
+
+### Bug Fixes
+
+- `event.data` now also expands the three Profile subfield-gated component sets,
+  so packed event payloads decode into named fields instead of only a `uint32`:
+  gear-change events (Di2 / eTap) populate `front_gear_num`, `front_gear`,
+  `rear_gear_num` and `rear_gear`, Garmin Varia radar threat alerts populate
+  `radar_threat_level_max`, `radar_threat_count`, `radar_threat_avg_approach_speed`
+  and `radar_threat_max_approach_speed` (m/s), and `sport_point` events populate
+  `score` and `opponent_score`. The generator now emits these components from the
+  bundled Profile spreadsheet; `event.data` keeps its packed wire value, so
+  re-encoding is unchanged.
+- `validate()` and `to_bytes(strict=True)` no longer report WIRE size errors on
+  records that carry component-expanded fields (`enhanced_speed`,
+  `enhanced_altitude`) or a reconstructed compressed timestamp. The record size
+  check now counts only the fields the active definition writes, so a standard
+  Garmin activity validates with no findings and still re-encodes byte-for-byte,
+  while a genuinely mismatched definition size is still reported.
+
+  Two caller-visible consequences: clearing a field after decode (for example
+  `record.heart_rate = None`) no longer trips the WIRE size check, because encode
+  writes the protocol-invalid value at the definition's size; and an Activity
+  `file_id` no longer has to carry `serial_number`, which Garmin's own activity
+  files omit and which Garmin's FIT documentation marks optional. `type`,
+  `manufacturer` and `time_created` are still required.
+
+### Dependencies
+
+- Upgrade the bundled Garmin FIT SDK Profile to 21.222.0. ([#88](https://github.com/shaonianche/python_fit_tool/issues/88))
+
+
 ## Release v0.9.17 (2026-10-28)
 
 ### Bug Fixes

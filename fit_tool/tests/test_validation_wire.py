@@ -284,6 +284,30 @@ class TestWireRecordSizeCheck(unittest.TestCase):
         self.assertGreater(record.size, definition.defined_data_size)
         validate_data_message(record, definition)
 
+    def test_definition_field_missing_from_message_is_reported(self):
+        fit_file = FitFile.from_bytes(_load_activity_bytes())
+        record = self._first_expanded_record(fit_file)
+        definition = record.definition_message
+
+        # A projection that lost a field its definition still lists must not be
+        # sized from the fields it kept.
+        record.fields = [field for field in record.fields if field.field_id != 3]
+        with self.assertRaisesRegex(FitValidationError, 'encodes'):
+            validate_data_message(record, definition)
+
+    def test_developer_field_payload_is_counted(self):
+        fit_file = FitFile.from_file(os.path.join(DATA_DIR, 'sdk', 'activity_developerdata.fit'))
+        record = next(
+            candidate.message for candidate in fit_file.records
+            if getattr(candidate.message, 'developer_fields', None)
+        )
+        definition = record.definition_message
+        validate_data_message(record, definition)
+
+        record.developer_fields.pop()
+        with self.assertRaisesRegex(FitValidationError, 'encodes'):
+            validate_data_message(record, definition)
+
     def test_corrupted_definition_size_is_still_reported(self):
         fit_file = FitFile.from_bytes(_load_activity_bytes())
         record = self._first_expanded_record(fit_file)

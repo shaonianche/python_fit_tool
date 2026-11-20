@@ -76,6 +76,42 @@ def validate_definition(definition: DefinitionMessage) -> None:
         developer_field_ids.add(key)
 
 
+def _data_record_payload_size(message: DataMessage, definition: DefinitionMessage) -> int:
+    """Bytes *message* writes into a data record laid out by *definition*.
+
+    Only fields the definition lists are payload. Decode-time projection adds
+    fields that never reach the wire for that definition: component expansion
+    destinations (``enhanced_speed`` derived from ``speed``) and the field 253
+    timestamp reconstructed for a compressed-timestamp record. Those must not
+    count, or a record that round-trips byte-for-byte looks oversized.
+
+    A listed field that was cleared in memory counts its definition size,
+    because encode pads it with protocol-invalid bytes.
+    """
+    fields_by_id = {field.field_id: field for field in reversed(message.fields)}
+    developer_fields_by_key = {
+        (field.developer_data_index, field.field_id): field
+        for field in reversed(message.developer_fields)
+    }
+
+    size = 0
+    for field_definition in definition.field_definitions:
+        field = fields_by_id.get(field_definition.field_id)
+        if field is None:
+            continue
+        size += field.size if field.is_valid() else field_definition.size
+
+    for field_definition in definition.developer_field_definitions:
+        field = developer_fields_by_key.get(
+            (field_definition.developer_data_index, field_definition.field_id)
+        )
+        if field is None:
+            continue
+        size += field.size if field.is_valid() else field_definition.size
+
+    return size
+
+
 def validate_data_message(message: DataMessage, definition: DefinitionMessage) -> None:
     """Validate a data message against the active local definition."""
     validate_message_header(message)
@@ -84,9 +120,10 @@ def validate_data_message(message: DataMessage, definition: DefinitionMessage) -
         raise FitValidationError(
             f'Active definition does not support {message.name} on local_id {message.local_id}.'
         )
-    if message.size != definition.defined_data_size:
+    payload_size = _data_record_payload_size(message, definition)
+    if payload_size != definition.defined_data_size:
         raise FitValidationError(
-            f'{message.name} encodes {message.size} bytes but its definition requires '
+            f'{message.name} encodes {payload_size} bytes but its definition requires '
             f'{definition.defined_data_size}.'
         )
 

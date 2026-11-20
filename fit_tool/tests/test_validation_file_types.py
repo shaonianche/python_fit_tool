@@ -347,14 +347,13 @@ class TestValidationFileTypes(unittest.TestCase):
         report = validate_fit_file(builder.build(), levels={ConformanceLevel.FILE_TYPE})
         messages = [finding.message for finding in report.errors]
 
-        self.assertTrue(
-            any('missing required field' in message and 'serial_number' in message for message in messages),
-            messages,
-        )
+        # A required field written as the protocol sentinel counts as unset.
         self.assertTrue(
             any('missing required field' in message and 'time_created' in message for message in messages),
             messages,
         )
+        # Garmin's own SDK activities omit serial_number, so it is not required.
+        self.assertFalse(any('serial_number' in message for message in messages), messages)
 
     def test_valid_required_fields_still_pass(self):
         builder = FitFileBuilder(auto_define=True)

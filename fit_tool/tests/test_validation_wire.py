@@ -1,16 +1,25 @@
 """WIRE-level validation: headers, definitions, and data records."""
 
+import os
+import struct
 import unittest
 
 from fit_tool.base_type import BaseType
+from fit_tool.definition_message import DefinitionMessage
 from fit_tool.exceptions import FitValidationError
+from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
+from fit_tool.fit_file_header import FitFileHeader
 from fit_tool.profile.messages.record_message import RecordMessage
 from fit_tool.profile.messages.workout_step_message import WorkoutStepMessage
+from fit_tool.utils.crc import crc16
 from fit_tool.validation import (
     ConformanceLevel,
+    validate_data_message,
     validate_fit_file,
 )
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 
 
 class TestValidationWire(unittest.TestCase):
@@ -206,3 +215,133 @@ class TestValidationWire(unittest.TestCase):
             levels={ConformanceLevel.WIRE},
         )
         self.assertTrue(report.has_errors)
+
+
+def _load_activity_bytes() -> bytes:
+    with open(os.path.join(DATA_DIR, 'sdk', 'Activity.fit'), 'rb') as file_object:
+        return file_object.read()
+
+
+def _definition_record(local_id: int, global_id: int, fields: list) -> bytes:
+    record = bytes([0x40 | local_id, 0, 0]) + struct.pack('<H', global_id) + bytes([len(fields)])
+    for field_id, size, base_type in fields:
+        record += bytes([field_id, size, base_type])
+    return record
+
+
+def _compressed_timestamp_file() -> bytes:
+    """Garmin's recommended pattern: a normal record, then a compressed one.
+
+    Local 0 defines ``timestamp`` + ``heart_rate``; local 1 defines only
+    ``heart_rate`` and its data record uses a compressed-timestamp header, so
+    the decoder reconstructs field 253 for a record whose definition is 1 byte.
+    """
+    uint32, uint8 = 0x86, 0x02
+    records = _definition_record(0, 20, [(253, 4, uint32), (3, 1, uint8)])
+    records += bytes([0x00]) + struct.pack('<I', 1_000_000_000) + bytes([140])
+    records += _definition_record(1, 20, [(3, 1, uint8)])
+    records += bytes([0x80 | (1 << 5) | 10]) + bytes([141])
+
+    raw = FitFileHeader(records_size=len(records)).to_bytes() + records
+    return raw + struct.pack('<H', crc16(raw))
+
+
+class TestWireRecordSizeCheck(unittest.TestCase):
+    """A record's size check compares wire payload, not projected fields."""
+
+    def _first_expanded_record(self, fit_file: FitFile):
+        return next(
+            record.message for record in fit_file.records
+            if getattr(record.message, 'name', '') == 'record'
+            and any(field.is_expanded_field and field.size for field in record.message.fields)
+        )
+
+    def test_standard_garmin_activity_validates_clean_under_strict_mode(self):
+        raw = _load_activity_bytes()
+        fit_file = FitFile.from_bytes(raw)
+
+        report = fit_file.validate()
+        self.assertFalse(
+            report.has_errors,
+            [finding.message for finding in report.errors[:5]],
+        )
+
+        # strict forces a canonical rebuild of every record, expanded fields included
+        self.assertEqual(fit_file.to_bytes(strict=True), raw)
+
+        builder = FitFileBuilder(strict=True)
+        for record in fit_file.records:
+            builder.add(record.message)
+        self.assertIsNotNone(builder.build())
+
+    def test_component_expanded_fields_are_not_counted_as_payload(self):
+        fit_file = FitFile.from_bytes(_load_activity_bytes())
+        record = self._first_expanded_record(fit_file)
+        definition = record.definition_message
+
+        # enhanced_speed/enhanced_altitude are projected from packed fields and
+        # never written under this definition.
+        self.assertGreater(record.size, definition.defined_data_size)
+        validate_data_message(record, definition)
+
+    def test_definition_field_missing_from_message_is_reported(self):
+        fit_file = FitFile.from_bytes(_load_activity_bytes())
+        record = self._first_expanded_record(fit_file)
+        definition = record.definition_message
+
+        # A projection that lost a field its definition still lists must not be
+        # sized from the fields it kept.
+        record.fields = [field for field in record.fields if field.field_id != 3]
+        with self.assertRaisesRegex(FitValidationError, 'encodes'):
+            validate_data_message(record, definition)
+
+    def test_developer_field_payload_is_counted(self):
+        fit_file = FitFile.from_file(os.path.join(DATA_DIR, 'sdk', 'activity_developerdata.fit'))
+        record = next(
+            candidate.message for candidate in fit_file.records
+            if getattr(candidate.message, 'developer_fields', None)
+        )
+        definition = record.definition_message
+        validate_data_message(record, definition)
+
+        record.developer_fields.pop()
+        with self.assertRaisesRegex(FitValidationError, 'encodes'):
+            validate_data_message(record, definition)
+
+    def test_corrupted_definition_size_is_still_reported(self):
+        fit_file = FitFile.from_bytes(_load_activity_bytes())
+        record = self._first_expanded_record(fit_file)
+
+        # Make the active definition claim 4 more bytes for the timestamp field.
+        definition_record = next(
+            candidate.message for candidate in fit_file.records
+            if isinstance(candidate.message, DefinitionMessage)
+            and candidate.message.local_id == record.local_id
+            and candidate.message.global_id == record.global_id
+        )
+        timestamp_definition = definition_record.get_field_definition(253)
+        timestamp_definition.size += 4
+
+        report = validate_fit_file(fit_file.records, levels={ConformanceLevel.WIRE})
+        self.assertTrue(
+            any('encodes' in finding.message for finding in report.errors),
+            [finding.message for finding in report.errors],
+        )
+
+    def test_compressed_timestamp_record_is_not_flagged_and_corruption_is(self):
+        raw = _compressed_timestamp_file()
+        fit_file = FitFile.from_bytes(raw)
+
+        compressed = fit_file.records[-1].message
+        self.assertTrue(fit_file.records[-1].header.is_time_compressed)
+        self.assertEqual(compressed.definition_message.defined_data_size, 1)
+        # The reconstructed timestamp is projected but not on the wire.
+        self.assertGreater(compressed.size, 1)
+        self.assertEqual(fit_file.to_bytes(), raw)
+        self.assertEqual(fit_file.validate(levels={ConformanceLevel.WIRE}).errors, [])
+        validate_data_message(compressed, compressed.definition_message)
+
+        compressed.definition_message.field_definitions[0].size = 2
+        with self.assertRaisesRegex(FitValidationError, 'encodes 1 bytes'):
+            validate_data_message(compressed, compressed.definition_message)
+

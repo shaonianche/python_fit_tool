@@ -13,7 +13,9 @@ from fit_tool.validation.file_types.common import (
 )
 from fit_tool.validation.report import ConformanceLevel, add_error
 
-_REQUIRED_FILE_ID_FIELDS = ('type', 'manufacturer', 'product', 'serial_number', 'time_created')
+# Garmin's own SDK activities write no serial_number (field 3 is absent from
+# their file_id definition), so it is not a required Activity field.
+_REQUIRED_FILE_ID_FIELDS = ('type', 'manufacturer', 'product', 'time_created')
 
 _REQUIRED_FIELDS = {
     MesgNum.RECORD.value: ('timestamp',),
